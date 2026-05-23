@@ -130,7 +130,7 @@ Write-Host $outputFile
 
 ## 3.1 — The resulting file structure:
 
-Edit RESAGEBURB2020_ALL.csv file to verify you have this info separated for coma:
+Edit RESAGEBURB2020_ALL.csv file to verify you have this info separated by coma:
 
    
 |ENTIDAD|NOM_ENT|MUN|NOM_MUN|LOC|NOM_LOC|AGEB|MZA|VIVTOT|VIVPAR_DES|POBTOT|
