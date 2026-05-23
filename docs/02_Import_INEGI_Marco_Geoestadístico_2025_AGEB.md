@@ -103,7 +103,7 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
 );
 ```
 
-**Import (TAB + UTF‑8):*8
+**Import (TAB + UTF‑8):**
 (check file path you used to store INEGI files)
 
 ```sql
