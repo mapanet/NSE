@@ -23,7 +23,7 @@ We will download 32 ZIP files and then de decompress them, Prepare a folder stru
 D:\INEGI\Census 2020\             **<= here we will have the CSV files and work on them**
 D:\INEGI\Census 2020\Downloads\   **<= place here the downloaded files**
 
-### 3.1 — Download SCITEL Data
+## 3.1 — Download SCITEL Data
 
 In right panel are a variety of data selectors, we will choose the one those we need. This selections will remain in place por every state we download.
 
@@ -127,13 +127,14 @@ foreach ($file in $files) {
 Write-Host "Done. Combined file created at:"
 Write-Host $outputFile
 
+## 3.1 — The resulting file structure:
 
-### The resulting file structure:
+Edit RESAGEBURB2020_ALL.csv file to verify you have this info:
 
 ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC, AGEB, MZA, VIVTOT, VIVPAR_DES, POBTOT
 
-Import from:
+## 3.2 — Import CSV from into SQL:
 
-`D:\INEGI\Census 2020\\RESAGEBURB2020_ALL.csv`
+`D:\INEGI\Census 2020\RESAGEBURB2020_ALL.csv`
 
 
