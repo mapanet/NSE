@@ -2,7 +2,7 @@
 
 This dataset contains:
 
-Census 2020 data at the block (manzana) level.  
+Census 2020 data at the block (AGEB) level.  
 By aggregating blocks, we obtain **Population** and **Residences** per AGEB.  
 If needed later, we can compute:
 
