@@ -27,12 +27,13 @@ D:\INEGI\Census 2020\Downloads\   **<= place here the downloaded files**
 
 ## 3.1 — Download SCITEL Data
 
-In right panel are a variety of data selectors, we will choose the one those we need. This selections will remain in place por every state we download.
+In right panel are a variety of data selectors, we will choose the one those we need:
+(this selections will remain in place por every state we download)
 
-- "Indetificacion geografica" (Geographic identication)
+- "Indetificacion geografica" (Geographic identication, all marked) 
 - Check: Poblacion => Poblacion total (Population Total)
-- Check: Vivenda => Total de viviendas (Dewlling Total) 
-- Check: Vivenda => Total de viviendas habitadas (Dewlling Total in use)
+- Check: Vivenda   => Total de viviendas (Dewlling Total) 
+- Check: Vivenda   => Total de viviendas habitadas (Dewlling Total in use)
 
 - In left Panel select a state: Aguascalientes
 - In bottom-right hit the black button "Generar Consulta", you will see the results in a table.
@@ -40,42 +41,49 @@ In right panel are a variety of data selectors, we will choose the one those we 
 - Go back to previous page and select the next state
 - Repeat the process until you export the 32 states CSV files
 
+### IMPORTANT
+
+In left Panel when you select a state: Aguascalientes for example, you will see a CSV button right thereto download the COMPLETE CSV file for that state.
+Do not not download that file, it contain full set of parameters from Census 2020 and they are a lot.
+(we have a specific Power Shell script to use those complete files and extract the addioonal fields for other purposes)
+
+
 ### Verify you are all 32 files in D:\INEGI\Census 2020\Download
 
 | File name - (State code, State name) |
-|----------------------|
+|--------------------------------------|
 |RESAGEBURB2020 - 01 Aguascalientes.csv|
-|resageburb_02csv20.csv|
-|resageburb_03csv20.csv|
-|resageburb_04csv20.csv|
-|resageburb_05csv20.csv|
-|resageburb_06csv20.csv|
-|resageburb_07csv20.csv|
-|resageburb_08csv20.csv|
-|resageburb_09csv20.csv|
-|resageburb_10csv20.csv|
-|resageburb_11csv20.csv|
-|resageburb_12csv20.csv|
-|resageburb_13csv20.csv|
-|resageburb_14csv20.csv|
-|resageburb_15csv20.csv|
-|resageburb_16csv20.csv|
-|resageburb_17csv20.csv|
-|resageburb_18csv20.csv|
-|resageburb_19csv20.csv|
-|resageburb_20csv20.csv|
-|resageburb_21csv20.csv|
-|resageburb_22csv20.csv|
-|resageburb_23csv20.csv|
-|resageburb_24csv20.csv|
-|resageburb_25csv20.csv|
-|resageburb_26csv20.csv|
-|resageburb_27csv20.csv|
-|resageburb_28csv20.csv|
-|resageburb_29csv20.csv|
-|resageburb_30csv20.csv|
-|resageburb_31csv20.csv|
-|resageburb_32csv20.csv|
+|RESAGEBURB2020 - 02 Baja California.csv|
+|RESAGEBURB2020 - 03 Baja California Sur.csv|
+|RESAGEBURB2020 - 04 Campeche.csv|
+|RESAGEBURB2020 - 05 Coahuila de Zaragoza.csv|
+|RESAGEBURB2020 - 06 Colima.csv|
+|RESAGEBURB2020 - 07 Chiapas.csv|
+|RESAGEBURB2020 - 08 Chihuahua.csv|
+|RESAGEBURB2020 - 09 Ciudad de México.csv|
+|RESAGEBURB2020 - 10 Durango.csv|
+|RESAGEBURB2020 - 11 Guanajuato.csv|
+|RESAGEBURB2020 - 12 Guerrero.csv|
+|RESAGEBURB2020 - 13 Hidalgo.csv|
+|RESAGEBURB2020 - 14 Jalisco.csv|
+|RESAGEBURB2020 - 15 México.csv|
+|RESAGEBURB2020 - 16 Michoacán de Ocampo.csv|
+|RESAGEBURB2020 - 17 Morelos.csv|
+|RESAGEBURB2020 - 18 Nayarit.csv|
+|RESAGEBURB2020 - 19 Nuevo León.csv|
+|RESAGEBURB2020 - 20 Oaxaca.csv|
+|RESAGEBURB2020 - 21 Puebla.csv|
+|RESAGEBURB2020 - 22 Querétaro.csv|
+|RESAGEBURB2020 - 23 Quintana Roo.csv|
+|RESAGEBURB2020 - 24 San Luis Potosí.csv|
+|RESAGEBURB2020 - 25 Sinaloa.csv|
+|RESAGEBURB2020 - 26 Sonora.csv|
+|RESAGEBURB2020 - 27 Tabasco.csv|
+|RESAGEBURB2020 - 28 Tamaulipas.csv|
+|RESAGEBURB2020 - 29 Tlaxcala.csv|
+|RESAGEBURB2020 - 30 Veracruz de Ignacio de la Llave.csv|
+|RESAGEBURB2020 - 31 Yucatán.csv|
+|RESAGEBURB2020 - 32 Zacatecas.csv|
 
 ### Concatenate All files
 
