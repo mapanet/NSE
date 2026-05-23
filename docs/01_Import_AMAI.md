@@ -199,6 +199,7 @@ CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
 ) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+'''
 
 ## 1.9 Import CSV into MS SQL Server 2022
 
@@ -213,6 +214,7 @@ WITH (
     ROWTERMINATOR = '\n',
     CODEPAGE = '65001'
 );
+'''
 
 ## 1.10 Post‑Import Validations
 
@@ -223,6 +225,7 @@ SELECT CVEGEO, COUNT(*)
 FROM NSE_AMAI_2024_AGEB
 GROUP BY CVEGEO
 HAVING COUNT(*) > 1;
+'''
 
 ### Validate that TOTAL = sum of socioeconomic levels
 
@@ -230,6 +233,7 @@ HAVING COUNT(*) > 1;
 SELECT *
 FROM NSE_AMAI_2024_AGEB
 WHERE TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
+'''
 
 ### Validate correct CVEGEO length (13 characters)
 
@@ -237,4 +241,5 @@ WHERE TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
 SELECT *
 FROM NSE_AMAI_2024_AGEB
 WHERE LEN(CVEGEO) <> 13;
+'''
 
