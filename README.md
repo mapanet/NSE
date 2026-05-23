@@ -12,7 +12,7 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 
 ---
 
-## 📁 Repository Structure
+📁 Repository Structure
 /docs — Step‑by‑step technical documentation (SQL, GIS, ETL)
 /data — CSV, SHP, and original source files (not public)
 /scripts — SQL scripts, PowerShell utilities, automation
@@ -24,10 +24,10 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 
 1. [Import AMAI data](docs/01_Import_AMAI.md)
 2. [Import AGEB 2025 geometries](docs/02_Boundaries_AGEB_2025.md)
-3. [Import INEGI Census 2020 data](docs/03_INEGI_Censo_2020_AGEB.md)
-4. [Import INEGI DCAH Colonias 2023](docs/04_INEGI_DCAH_Colonias_2023.md)
+3. [Import INEGI Census 2020 data](docs/03_INEGI_Census_2020_AGEB.md)
+4. [Import INEGI DCAH Neighborhoods 2023](docs/04_INEGI_DCAH_Neighborhoods_2023.md)
 5. [Colonias × AGEB spatial intersection](docs/05_Intersections.md)
-6. [AMAI population weighting by colonia](docs/06_Ponderacion.md)
+6. [AMAI population weighting by colonia](docs/06_Weighting_by_Neighborhood.md)
 7. [Final validations](docs/07_Validaciones.md)
 
 
