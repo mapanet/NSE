@@ -170,10 +170,9 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 
 ### Validate invalid geometries
 
-✅ Both queries should return nothing
+✅ Querys should return nothing
 
-Query must return **no rows**.  
-If either query returns results, it indicates a problem that must be fixed.
+If query returns results, it indicates a problem that must be fixed.
 
 ```sql
 SELECT ID, CVEGEO
