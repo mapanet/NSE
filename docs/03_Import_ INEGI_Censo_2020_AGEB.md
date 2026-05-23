@@ -33,61 +33,108 @@ In right panel are a variety of data selectors, we will choose the one those we 
 
 - In left Panel select a state: Aguascalientes
 - Download file: Next to the State name you will see the formats available XLSX or CSV, choose **CSV** and download file.
-- Save in a folder D:\INEGI\Census 2020\Downloads\
+- Save in a folder **D:\INEGI\Census 2020\Downloads\**
 
-Download Files:
+### Download Files:
 
-Files are named with state code in the name "resageburb_01csv20.zip" where 01 on resageburb_**01**csv20.zip means 01 Aguascalientes
+Files are named contain state code in the name "resageburb_01csv20.zip" where **01** = Aguascalientes
+Decompress echa file into **D:\INEGI\Census 2020\**
 
 | File name | State code | State name |
 |----------------------|----|----------------------------|
-|resageburb_01csv20.zip|01|Aguascalientes|
-|resageburb_02csv20.zip|02|Baja California|
-|resageburb_03csv20.zip|03|Baja California Sur|
-|resageburb_04csv20.zip|04|Campeche|
-|resageburb_05csv20.zip|05|Coahuila de Zaragoza|
-|resageburb_06csv20.zip|06|Colima|
-|resageburb_07csv20.zip|07|Chiapas|
-|resageburb_08csv20.zip|08|Chihuahua|
-|resageburb_09csv20.zip|09|Ciudad de México|
-|resageburb_10csv20.zip|10|Durango|
-|resageburb_11csv20.zip|11|Guanajuato|
-|resageburb_12csv20.zip|12|Guerrero|
-|resageburb_13csv20.zip|13|Hidalgo|
-|resageburb_14csv20.zip|14|Jalisco|
-|resageburb_15csv20.zip|15|México|
-|resageburb_16csv20.zip|16|Michoacán de Ocampo|
-|resageburb_17csv20.zip|17|Morelos|
-|resageburb_18csv20.zip|18|Nayarit|
-|resageburb_19csv20.zip|19|Nuevo León|
-|resageburb_20csv20.zip|20|Oaxaca|
-|resageburb_21csv20.zip|21|Puebla|
-|resageburb_22csv20.zip|22|Querétaro|
-|resageburb_23csv20.zip|23|Quintana Roo|
-|resageburb_24csv20.zip|24|San Luis Potosí|
-|resageburb_25csv20.zip|25|Sinaloa|
-|resageburb_26csv20.zip|26|Sonora|
-|resageburb_27csv20.zip|27|Tabasco|
-|resageburb_28csv20.zip|28|Tamaulipas|
-|resageburb_29csv20.zip|29|Tlaxcala.|
-|resageburb_30csv20.zip|30|Veracruz de Ignacio de la Llave|
-|resageburb_31csv20.zip|31|Yucatán|
-|resageburb_32csv20.zip|32|Zacatecas|
+|resageburb_01csv20.csv|01|Aguascalientes|
+|resageburb_02csv20.csv|02|Baja California|
+|resageburb_03csv20.csv|03|Baja California Sur|
+|resageburb_04csv20.csv|04|Campeche|
+|resageburb_05csv20.csv|05|Coahuila de Zaragoza|
+|resageburb_06csv20.csv|06|Colima|
+|resageburb_07csv20.csv|07|Chiapas|
+|resageburb_08csv20.csv|08|Chihuahua|
+|resageburb_09csv20.csv|09|Ciudad de México|
+|resageburb_10csv20.csv|10|Durango|
+|resageburb_11csv20.csv|11|Guanajuato|
+|resageburb_12csv20.csv|12|Guerrero|
+|resageburb_13csv20.csv|13|Hidalgo|
+|resageburb_14csv20.csv|14|Jalisco|
+|resageburb_15csv20.csv|15|México|
+|resageburb_16csv20.csv|16|Michoacán de Ocampo|
+|resageburb_17csv20.csv|17|Morelos|
+|resageburb_18csv20.csv|18|Nayarit|
+|resageburb_19csv20.csv|19|Nuevo León|
+|resageburb_20csv20.csv|20|Oaxaca|
+|resageburb_21csv20.csv|21|Puebla|
+|resageburb_22csv20.csv|22|Querétaro|
+|resageburb_23csv20.csv|23|Quintana Roo|
+|resageburb_24csv20.csv|24|San Luis Potosí|
+|resageburb_25csv20.csv|25|Sinaloa|
+|resageburb_26csv20.csv|26|Sonora|
+|resageburb_27csv20.csv|27|Tabasco|
+|resageburb_28csv20.csv|28|Tamaulipas|
+|resageburb_29csv20.csv|29|Tlaxcala.|
+|resageburb_30csv20.csv|30|Veracruz de Ignacio de la Llave|
+|resageburb_31csv20.csv|31|Yucatán|
+|resageburb_32csv20.csv|32|Zacatecas|
 
-The file structure is:
+### Concatenate All files
+
+Use the following Power Shell script to concatenate all files:
+
+To build this file, concatenate all states **RESAGEBURB** files into:
+
+**RESAGEBURB2020_ALL.csv**
+
+### Concatenation script:
+
+**RESAGEBURB2020.ps1**
+
+```powershell
+# Force the script to run in its own directory
+Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
+
+# Path where the 32 "RESAGEBURB2020_**NN**CSV20.csv" files are located
+$inputFolder = "D:\INEGI\Census 2020"
+
+# Final combined output file
+$outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL.csv"
+
+# Get all files that start with RESAGEBURB_
+$files = Get-ChildItem -Path $inputFolder -Filter "RESAGEBURB_*.csv"
+
+# Validation
+if ($files.Count -eq 0) {
+    Write-Host "No RESAGEBURB_*.csv files were found"
+    exit
+}
+
+# Read the header from the first file (using absolute path)
+$header = Get-Content -Path $files[0].FullName -First 1
+
+# Create the final file with the header
+Set-Content -Path $outputFile -Value $header
+
+# Concatenate all files, skipping the header
+foreach ($file in $files) {
+    Write-Host "Processing: $($file.Name)"
+
+    # Read all lines except the first one (header)
+    $content = Get-Content -Path $file.FullName | Select-Object -Skip 1
+
+    # Append to the final file
+    Add-Content -Path $outputFile -Value $content
+}
+
+Write-Host "Done. Combined file created at:"
+Write-Host $outputFile
+
+The resust id a file 
+
+
+### The resulting file structure:
 
 ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC, AGEB, MZA, VIVTOT, VIVPAR_DES, POBTOT
 
 Import from:
 
-`D:\Postal Codes Databases\Mexico MX\INEGI.org.mx\Censos 2020\Tabulados AGEB por AGEB- Censo 2020\RESAGEBURB2020_ALL.csv`
+`D:\INEGI\Census 2020\\RESAGEBURB2020_ALL.csv`
 
-To build this file, concatenate all **RESAGEBURB2020** files from each state into:
 
-**RESAGEBURB2020_ALL.csv**
-
-Concatenation script:
-
-**RESAGEBURB2020.ps1**
-
-Make sure to check for `*` characters in the data and replace them with **nothing**.
