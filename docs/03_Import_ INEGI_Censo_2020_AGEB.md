@@ -38,8 +38,10 @@ In right panel are a variety of data selectors, we will choose the one those we 
 
 ### Download Files:
 
-Files are named contain state code in the name "resageburb_01csv20.zip" where **01** = Aguascalientes
-Decompress echa file into **D:\INEGI\Census 2020\**
+Files are contain state code in the name "resageburb_01csv20.zip" where **01** equal to 01 Aguascalientes
+Decompress each file into working folder **D:\INEGI\Census 2020\**
+
+Files you should get in the working folder (state code and name are listed only for reference)
 
 | File name | State code | State name |
 |----------------------|----|----------------------------|
