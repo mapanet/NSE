@@ -89,7 +89,7 @@ From this new layer, export to CSV as:
 | CVEGEO   | Full geographic key |
 | AMBITO   | Urban / Rural |
 
-If you edit the CSV you should see somethin like this:
+If you edit the CSV you should see something like this:
 
 | WKT | CVE_ENT |CVE_MUN | CVE_LOC | CVE_AGEB | CVEGEO | AMBITO |
 |---------------------------------------------------|---------|---------|---------|---------|--------------|-------|
