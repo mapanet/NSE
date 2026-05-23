@@ -29,7 +29,8 @@ In right panel are a variety of data selectors, we will choose the one those we 
 
 - "Indetificacion geografica" (Geographic identication)
 - Check: Poblacion => Poblacion total (Population Total)
-- Check: Vivenda => Total de viviendas (Dewlling Total) and Total de viviendas habitadas (Dewlling Total in use)
+- Check: Vivenda => Total de viviendas (Dewlling Total) 
+- Check: Vivenda => Total de viviendas habitadas (Dewlling Total in use)
 
 - In left Panel select a state: Aguascalientes
 - Download file: Next to the State name you will see the formats available XLSX or CSV, choose **CSV** and download file.
