@@ -170,7 +170,10 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 
 ### Validate invalid geometries
 
-Should return NOTHING
+✅ Both queries should return nothing
+
+Query must return **no rows**.  
+If either query returns results, it indicates a problem that must be fixed.
 
 ```sql
 SELECT ID, CVEGEO
@@ -180,7 +183,8 @@ WHERE geom.STIsValid() = 0;
 
 ### Correct invalid geometries using MakeValid
 
-Should return NOTHING if all are fixed (typically returns NOTHING)
+1️⃣ Invalid geometries check
+This should return zero rows:
 
 ```sql
 UPDATE Boundaries_AGEB_2025
@@ -197,7 +201,8 @@ SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 
 Validate:
 
-Should return NOTHING
+2️⃣ Missing geography check
+This should also return zero rows:
 
 ```sql
 SELECT ID
