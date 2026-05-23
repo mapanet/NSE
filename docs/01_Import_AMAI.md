@@ -167,5 +167,74 @@ If necessary, edit the CSV with EditPad Pro or Notepad++ to verify:
 
 Note: TAB is used for convenience, but comma (,) may be used if BULK INSERT is configured with the appropriate FIELDTERMINATOR.
 
+## 1.8 Create Final AMAI SQL Table in MS SQL Server 2022
 
+```sql
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
+    [CVEGEO] [nvarchar](13) NOT NULL,
+    [AB] [int] NULL,
+    [CPLUS] [int] NULL,
+    [C] [int] NULL,
+    [CMINUS] [int] NULL,
+    [DPLUS] [int] NULL,
+    [D] [int] NULL,
+    [E] [int] NULL,
+    [NSE_LABEL] [nvarchar](10) NULL,
+    [TOTAL] [int] NULL,
+ CONSTRAINT [PK_NSE_AMAI_2024_AGEB] PRIMARY KEY CLUSTERED 
+(
+    [CVEGEO] ASC
+) WITH (
+    PAD_INDEX = OFF,
+    STATISTICS_NORECOMPUTE = OFF,
+    IGNORE_DUP_KEY = OFF,
+    ALLOW_ROW_LOCKS = ON,
+    ALLOW_PAGE_LOCKS = ON,
+    OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF
+) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+## 1.9 Import CSV into MS SQL Server 2022
+
+Make sure the directory path matches where you saved the AMAI CSV file.
+
+```sql
+BULK INSERT NSE_AMAI_2024_AGEB
+FROM 'D:\AMAI\NSE_AMAI_2024_AGEB_IMPORT.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = '\t',
+    ROWTERMINATOR = '\n',
+    CODEPAGE = '65001'
+);
+
+## 1.10 Post‑Import Validations
+
+### Validate duplicate CVEGEO values
+
+```sql
+SELECT CVEGEO, COUNT(*)
+FROM NSE_AMAI_2024_AGEB
+GROUP BY CVEGEO
+HAVING COUNT(*) > 1;
+
+### Validate that TOTAL = sum of socioeconomic levels
+
+```sql
+SELECT *
+FROM NSE_AMAI_2024_AGEB
+WHERE TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
+
+### Validate correct CVEGEO length (13 characters)
+
+```sql
+SELECT *
+FROM NSE_AMAI_2024_AGEB
+WHERE LEN(CVEGEO) <> 13;
 
