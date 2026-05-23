@@ -38,8 +38,8 @@ In right panel are a variety of data selectors, we will choose the one those we 
 
 ### Download Files:
 
-Files contain state code in the name "resageburb_01csv20.zip" where **01**, where 01 is Aguascalientes 
-Decompress each file into working folder **D:\INEGI\Census 2020\**
+- Files contain state code in the name "resageburb_01csv20.zip" where **01** is the state of Aguascalientes
+- Decompress each file into working folder **D:\INEGI\Census 2020\**
 
 You should get all this files in the working folder D:\INEGI\Census 2020 (state code and name are listed only for reference)
 
