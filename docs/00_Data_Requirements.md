@@ -83,7 +83,7 @@ Official neighborhood (colonia) boundaries, including:
 ✔ Building Boundaries Layer 6  
 ✔ Spatial intersection with AGEB  
 ✔ Area‑weighted NSE calculation  
-✔ Generating the final colonia‑level dataset  
+✔ Generating the final neighborhood‑level (colonia) dataset  
 
 ---
 
@@ -95,6 +95,6 @@ Once all four datasets are loaded and validated, the system is ready for:
 - Geometry validation (topology, overlaps, empties)  
 - Colonias × AGEB spatial intersection  
 - Area‑weighted AMAI distribution  
-- NSE calculation per colonia  
+- NSE calculation per neighborhood (colonia)  
 - Final Layer 6 generation (NSE, population, residences, metadata)
 
