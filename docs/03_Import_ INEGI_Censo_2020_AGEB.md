@@ -132,10 +132,9 @@ Write-Host $outputFile
 
 Edit RESAGEBURB2020_ALL.csv file to verify you have this info separated for coma:
 
-<div style="font-size: 85%">
-    
+   
 |ENTIDAD|NOM_ENT|MUN|NOM_MUN|LOC|NOM_LOC|AGEB|MZA|VIVTOT|VIVPAR_DES|POBTOT|
-|-------|-------------------|---|--------------------------|----|-----------------|-----|---|----------|--------|----------|
+|-------|-------------------|---|-----------------------|----|-----------------|-----|---|----------|--------|---------|
 |01|Aguascalientes|000|Total Aguascalientes|0000|Total de la entidad|0000|000|463972|60327|1425607|
 |01|Aguascalientes|001|Aguascalientes|0000|Total municipio|0000|000|313256|37113|948990|
 |01|Aguascalientes|001|Aguascalientes|0001|Total localidad urbana|0000|000|286646|33043|863893|
