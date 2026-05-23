@@ -132,8 +132,7 @@ Write-Host $outputFile
 
 Edit RESAGEBURB2020_ALL.csv file to verify you have this info separated for coma:
 
-<small>
-    
+<div style="font-size: 85%">
 |ENTIDAD|NOM_ENT|MUN|NOM_MUN|LOC|NOM_LOC|AGEB|MZA|VIVTOT|VIVPAR_DES|POBTOT|
 |-------|-------------------|---|--------------------------|----|-----------------|-----|---|----------|--------|----------|
 |01|Aguascalientes|000|Total Aguascalientes|0000|Total de la entidad|0000|000|463972|60327|1425607|
@@ -142,8 +141,7 @@ Edit RESAGEBURB2020_ALL.csv file to verify you have this info separated for coma
 |01|Aguascalientes|001|Aguascalientes|0001|Total AGEB urbana|0017|000|1288|633|2237|
 |01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|001|82|28|170|
 |01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|002|83|31|198|
-
-</small>
+</div>
 
 ## 3.2 — Import CSV from into SQL:
 
