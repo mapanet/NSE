@@ -1,0 +1,91 @@
+# STEP 2 — Marco Geoestadístico 2025
+
+Objective: Build the table `Boundaries_AGEB_2025` using the official AGEB geometries from INEGI MG 2025.  
+This table will be used for:
+
+- Intersecting colonias with AGEB
+- Calculating area proportions
+- Weighting AMAI population by colonia
+
+## 2.1 Official Download of Marco Geoestadístico 2025
+
+The Marco Geoestadístico 2025 can be downloaded from INEGI:
+
+https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=889463807469
+
+The downloaded file is:
+
+**794551163061_s.zip**
+
+Inside the ZIP you will find:
+
+- mg_2025_integrado.zip  
+  - conjunto_de_datos/  
+    - 00a.shp **← main AGEB file**
+
+Files inside the dataset:
+
+- a = Urban AGEB (polygon) **← this is the one we need**  
+- ar = Rural AGEB (polygon)  
+- m = Block (manzana) (polygon)  
+- l = Locality (point)  
+- lpr = Locality (polygon)  
+- ent = State (polygon)  
+- mun = Municipality (polygon)
+
+### CDMX Note
+
+Mexico City provides an independent AGEB 2023 dataset:
+
+https://datos.cdmx.gob.mx/dataset/ageb-urbanas-areas-geoestadisticas-basicas-urbanas
+
+We will not use it here.  
+Later we will compare it with Marco Geoestadístico 2025 to verify whether it contains more complete data (but it should be the same).
+
+## 2.2 Contents of the file 00a.shp
+
+When loading `00a.shp` in QGIS, the layer contains the following fields:
+
+### Attribute Table
+
+| Field     | Description                          |
+|-----------|--------------------------------------|
+| CVE_ENT   | State code (2 digits)                |
+| CVE_MUN   | Municipality code (3 digits)         |
+| CVE_LOC   | Locality code (4 digits)             |
+| CVE_AGEB  | AGEB code (4 digits)                 |
+| CVEGEO    | Full geographic key (13 digits)      |
+| AMBITO    | Urban / Rural                        |
+| geom      | Geometry (Polygon / MultiPolygon)    |
+
+Total records: **82,263 AGEB**  
+Original CRS: **MEXICO_IRF‑2008_LLC** (will be converted to **EPSG:4326**)
+
+---
+
+## 2.3 Export from QGIS
+
+Export the layer `00a.shp` as:
+
+**Boundaries_AGEB_2025.shp**  
+CRS: **EPSG:4326** (very important)
+
+From this new layer, export to CSV as:
+
+**Boundaries_AGEB_2025_WKT.csv**
+
+- UTF‑8 encoding  
+- TAB delimiter  
+
+### CSV Columns
+
+| Column   | Description |
+|----------|-------------|
+| WKT      | Geometry in WKT format |
+| CVE_ENT  | State code |
+| CVE_MUN  | Municipality code |
+| CVE_LOC  | Locality code |
+| CVE_AGEB | AGEB code |
+| CVEGEO   | Full geographic key |
+| AMBITO   | Urban / Rural |
+
