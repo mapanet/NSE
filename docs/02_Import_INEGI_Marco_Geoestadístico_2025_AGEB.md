@@ -172,7 +172,7 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 
 ✅ Querys should return nothing
 
-If query returns results, it indicates a problem that must be fixed.
+If query returns results, it indicates a problem that must be fixed. Then use the next step to correct them.
 
 ```sql
 SELECT ID, CVEGEO
