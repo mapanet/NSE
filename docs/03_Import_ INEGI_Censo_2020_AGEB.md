@@ -78,9 +78,7 @@ Decompress echa file into **D:\INEGI\Census 2020\**
 
 ### Concatenate All files
 
-Use the following Power Shell script to concatenate all files:
-
-This script will concatenate all state files **RESAGEBURB** files into:
+Use the following Power Shell script to concatenate all **RESAGEBURB** state files into one file:
 
 **RESAGEBURB2020_ALL.csv**
 
