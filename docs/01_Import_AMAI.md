@@ -21,24 +21,25 @@ It is the current version for 2024–2027.
 The file contains one row per urban AGEB from Census 2020.
 
 Original columns:
-Column	Meaning
-ENTIDAD	State code
-NOMBRE ENTIDAD	State name
-MUNICIPIO	Municipality code
-NOMBRE MUNICIPIO	Municipality name
-LOCALIDAD	Locality code
-NOMBRE LOCALIDAD	Locality name
-AGEB	AGEB code (4 chars)
-AB	Dwellings in socioeconomic level AB
-C+	Dwellings in socioeconomic level C+
-C	Dwellings in socioeconomic level C
-C-	Dwellings in socioeconomic level C–
-D+	Dwellings in socioeconomic level D+
-D	Dwellings in socioeconomic level D
-E	Dwellings in socioeconomic level E
-NIVEL_PREDOMINANTE	Dominant socioeconomic level
-VIVIENDAS	Total occupied private dwellings
-TAMAÑO_DE_LOCALIDAD	Locality population range
+| Column | Meaning |
+| --- | --- |
+| ENTIDAD | State code |
+| NOMBRE ENTIDAD | State name |
+| MUNICIPIO | Municipality code |
+| NOMBRE MUNICIPIO | Municipality name |
+| LOCALIDAD | Locality code |
+| NOMBRE LOCALIDAD | Locality name |
+| AGEB | AGEB code (4 chars) |
+| AB | Dwellings in socioeconomic level AB |
+| C+ | Dwellings in socioeconomic level C+ |
+| C | Dwellings in socioeconomic level C |
+| C- | Dwellings in socioeconomic level C– |
+| D+ | Dwellings in socioeconomic level D+ |
+| D | Dwellings in socioeconomic level D |
+| E | Dwellings in socioeconomic level E |
+| NIVEL_PREDOMINANTE | Dominant socioeconomic level |
+| VIVIENDAS | Total occupied private dwellings |
+| TAMAÑO_DE_LOCALIDAD | Locality population range |
 
 
 1.4. Header Normalization (Renaming)
