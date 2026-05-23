@@ -2,8 +2,9 @@
 
 This dataset contains:
 
-Census 2020 data at the block (AGEB) level.  
-By aggregating blocks, we obtain **Population** and **Residences** per AGEB.  
+Census 2020 data at the block block level (AGEB and MZA).  
+By aggregating blocks, we can obtain **Population** and **Residences** per AGEB, City, Municaplity, State.  
+
 If needed later, we can compute:
 
 **Residences_In_Use = VIVTOT – VIVPAR_DES**  
@@ -13,7 +14,8 @@ If needed later, we can compute:
 
 We will download from **INEGI** using data from **SCITEL** system
 
-URL: https://www.inegi.org.mx/app/scitel/Default?ev=10
+URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
+(Results by AGEB and MZA (AGEB area and urban block "Manzana")
 
 ### Prepare a folder structure to store the downlodas IMPORTANT
 
@@ -33,50 +35,47 @@ In right panel are a variety of data selectors, we will choose the one those we 
 - Check: Vivenda => Total de viviendas habitadas (Dewlling Total in use)
 
 - In left Panel select a state: Aguascalientes
-- Download file: Next to the State name you will see the formats available XLSX or CSV, choose **CSV** and download file.
-- Save in a folder **D:\INEGI\Census 2020\Downloads\**
+- In bottom-right hit the black button "Generar Consulta", you will see the results in a table.
+- At bottom, in "Exportar a" (Export to) FORMAT: select CVS and save the file in **D:\INEGI\Census 2020\Downloads\**
+- Go back to previous page and select the next state
+- Repeat the process until you export the 32 states CSV files
 
-### Download Files:
+### Verify you are all 32 files in D:\INEGI\Census 2020\Download
 
-- Files contain state code in the name "resageburb_01csv20.zip" where **01** is the state of Aguascalientes
-- Decompress each file into working folder **D:\INEGI\Census 2020\**
-
-You should get all this files in the working folder D:\INEGI\Census 2020 (state code and name are listed only for reference)
-
-| File name | State code | State name |
-|----------------------|----|----------------------------|
-|resageburb_01csv20.csv|01|Aguascalientes|
-|resageburb_02csv20.csv|02|Baja California|
-|resageburb_03csv20.csv|03|Baja California Sur|
-|resageburb_04csv20.csv|04|Campeche|
-|resageburb_05csv20.csv|05|Coahuila de Zaragoza|
-|resageburb_06csv20.csv|06|Colima|
-|resageburb_07csv20.csv|07|Chiapas|
-|resageburb_08csv20.csv|08|Chihuahua|
-|resageburb_09csv20.csv|09|Ciudad de México|
-|resageburb_10csv20.csv|10|Durango|
-|resageburb_11csv20.csv|11|Guanajuato|
-|resageburb_12csv20.csv|12|Guerrero|
-|resageburb_13csv20.csv|13|Hidalgo|
-|resageburb_14csv20.csv|14|Jalisco|
-|resageburb_15csv20.csv|15|México|
-|resageburb_16csv20.csv|16|Michoacán de Ocampo|
-|resageburb_17csv20.csv|17|Morelos|
-|resageburb_18csv20.csv|18|Nayarit|
-|resageburb_19csv20.csv|19|Nuevo León|
-|resageburb_20csv20.csv|20|Oaxaca|
-|resageburb_21csv20.csv|21|Puebla|
-|resageburb_22csv20.csv|22|Querétaro|
-|resageburb_23csv20.csv|23|Quintana Roo|
-|resageburb_24csv20.csv|24|San Luis Potosí|
-|resageburb_25csv20.csv|25|Sinaloa|
-|resageburb_26csv20.csv|26|Sonora|
-|resageburb_27csv20.csv|27|Tabasco|
-|resageburb_28csv20.csv|28|Tamaulipas|
-|resageburb_29csv20.csv|29|Tlaxcala.|
-|resageburb_30csv20.csv|30|Veracruz de Ignacio de la Llave|
-|resageburb_31csv20.csv|31|Yucatán|
-|resageburb_32csv20.csv|32|Zacatecas|
+| File name - (State code, State name) |
+|----------------------|
+|RESAGEBURB2020 - 01 Aguascalientes.csv|
+|resageburb_02csv20.csv|
+|resageburb_03csv20.csv|
+|resageburb_04csv20.csv|
+|resageburb_05csv20.csv|
+|resageburb_06csv20.csv|
+|resageburb_07csv20.csv|
+|resageburb_08csv20.csv|
+|resageburb_09csv20.csv|
+|resageburb_10csv20.csv|
+|resageburb_11csv20.csv|
+|resageburb_12csv20.csv|
+|resageburb_13csv20.csv|
+|resageburb_14csv20.csv|
+|resageburb_15csv20.csv|
+|resageburb_16csv20.csv|
+|resageburb_17csv20.csv|
+|resageburb_18csv20.csv|
+|resageburb_19csv20.csv|
+|resageburb_20csv20.csv|
+|resageburb_21csv20.csv|
+|resageburb_22csv20.csv|
+|resageburb_23csv20.csv|
+|resageburb_24csv20.csv|
+|resageburb_25csv20.csv|
+|resageburb_26csv20.csv|
+|resageburb_27csv20.csv|
+|resageburb_28csv20.csv|
+|resageburb_29csv20.csv|
+|resageburb_30csv20.csv|
+|resageburb_31csv20.csv|
+|resageburb_32csv20.csv|
 
 ### Concatenate All files
 
