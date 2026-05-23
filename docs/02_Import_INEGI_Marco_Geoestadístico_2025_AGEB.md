@@ -160,6 +160,8 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 
 ### Validate invalid geometries
 
+SQL query should return NOTHING
+
 ```sql
 SELECT ID, CVEGEO
 FROM Boundaries_AGEB_2025
@@ -168,6 +170,8 @@ WHERE geom.STIsValid() = 0;
 
 ### Correct invalid geometries using MakeValid
 
+Should return NOTHING if all are fixed (typically returns NOTHING)
+
 ```sql
 UPDATE Boundaries_AGEB_2025
 SET geom = geom.MakeValid()
@@ -175,6 +179,8 @@ WHERE geom.STIsValid() = 0;
 ```
 
 ## 2.8 Create the geography Column
+
+SQL queries should return NOTHING
 
 ```sql
 UPDATE Boundaries_AGEB_2025
@@ -186,7 +192,7 @@ Validate:
 SELECT ID
 FROM Boundaries_AGEB_2025
 WHERE geog IS NULL;
-``
+```
 
 ## 2.9 Create Spatial Indexes
 
