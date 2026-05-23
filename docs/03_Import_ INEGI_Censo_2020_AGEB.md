@@ -132,7 +132,7 @@ Write-Host $outputFile
 
 Edit RESAGEBURB2020_ALL.csv file to verify you have this info separated for coma:
 
-<div style="font-size: 85%">
+<div style="font-size: 13px">
     
 |ENTIDAD|NOM_ENT|MUN|NOM_MUN|LOC|NOM_LOC|AGEB|MZA|VIVTOT|VIVPAR_DES|POBTOT|
 |-------|-------------------|---|--------------------------|----|-----------------|-----|---|----------|--------|----------|
