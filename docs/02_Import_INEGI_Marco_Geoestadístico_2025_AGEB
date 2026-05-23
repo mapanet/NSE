@@ -89,3 +89,137 @@ From this new layer, export to CSV as:
 | CVEGEO   | Full geographic key |
 | AMBITO   | Urban / Rural |
 
+## 2.4 Create the SQL Staging Table: Boundaries_AGEB_2025_IMPORT
+
+```sql
+CREATE TABLE Boundaries_AGEB_2025_IMPORT (
+    WKT        nvarchar(MAX),
+    CVE_ENT    char(2),
+    CVE_MUN    char(3),
+    CVE_LOC    char(4),
+    CVE_AGEB   char(4),
+    CVEGEO     nvarchar(13),
+    AMBITO     char(10)
+);
+```
+Import (TAB + UTF‑8):
+
+```sql
+BULK INSERT Boundaries_AGEB_2025_IMPORT 
+FROM 'D:\INEGI\Boundaries_AGEB_2025_IMPORT.csv' 
+WITH ( 
+    FIRSTROW = 2,
+    FIELDTERMINATOR = '\t', 
+    ROWTERMINATOR = '\n', 
+    CODEPAGE = '65001'
+);
+```
+
+## 2.5 Create Final Table: Boundaries_AGEB_2025
+
+```sql
+CREATE TABLE Boundaries_AGEB_2025 (
+    ID          bigint IDENTITY(1,1) PRIMARY KEY,
+    CVEGEO      nvarchar(13) NOT NULL,
+    CVE_ENT     char(2),
+    CVE_MUN     char(3),
+    CVE_LOC     char(4),
+    CVE_AGEB    char(4),
+    Type        char(10),      -- Urban / Rural
+    geom        geometry,      -- EPSG:4326
+    geog        geography,     -- EPSG:4326
+    Population  int NULL,      -- will be filled later
+    Residences  int NULL       -- will be filled later
+);
+```
+
+## 2.6 Insert Data from the Staging Table
+
+```sql
+INSERT INTO Boundaries_AGEB_2025 (
+    CVEGEO, CVE_ENT, CVE_MUN, CVE_LOC, CVE_AGEB, Type, geom
+)
+SELECT
+    CVEGEO,
+    CVE_ENT,
+    CVE_MUN,
+    CVE_LOC,
+    CVE_AGEB,
+    AMBITO,
+    geometry::STGeomFromText(WKT, 4326)
+FROM Boundaries_AGEB_2025_IMPORT;
+```
+
+Finally, drop the staging table:
+
+```sql
+DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
+```
+
+## 2.7 Geometry Validation and Correction
+
+### Validate invalid geometries
+
+```sql
+SELECT ID, CVEGEO
+FROM Boundaries_AGEB_2025
+WHERE geom.STIsValid() = 0;
+```
+
+### Correct invalid geometries using MakeValid
+
+```sql
+UPDATE Boundaries_AGEB_2025
+SET geom = geom.MakeValid()
+WHERE geom.STIsValid() = 0;
+```
+
+## 2.8 Create the geography Column
+
+```sql
+UPDATE Boundaries_AGEB_2025
+SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
+```
+Validate:
+
+```sql
+SELECT ID
+FROM Boundaries_AGEB_2025
+WHERE geog IS NULL;
+``
+
+## 2.9 Create Spatial Indexes
+
+```sql
+CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geom 
+ON Boundaries_AGEB_2025(geom);
+```
+
+```sql
+CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geog
+ON Boundaries_AGEB_2025(geog);
+```
+
+## 2.10 Final Result
+
+The table `Boundaries_AGEB_2025` now contains:
+
+- 82,263 AGEB
+- Valid geometries
+- Complete CVEGEO
+- Urban/Rural scope
+- Population and Residences fields ready to be filled later
+
+It is used for:
+
+- Intersecting colonias with AGEB
+- Calculating area proportions
+- Weighting AMAI population by colonia
+- Serving as the base for NSE calculation per Neighborhood (colonia)
+
+
+
+
+
+
+
