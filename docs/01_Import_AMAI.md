@@ -76,64 +76,65 @@ To standardize column names using INEGI conventions and prepare the file for SQL
 | VIVIENDAS | TOTAL |
 | TAMAÑO DE LOCALIDAD | (discarded, not used in any calculation) |
 
-## 1.5 Construcción de la clave geográfica CVEGEO
 
-INEGI define CVEGEO como la concatenación de:
+## 1.5 Construction of the Geographic Key (CVEGEO)
 
-- CVE_ENT (2 dígitos)
-- CVE_MUN (3 dígitos)
-- CVE_LOC (4 dígitos)
-- CVE_AGEB (4 dígitos)
+INEGI defines CVEGEO as the concatenation of:
 
-Ejemplo:
+- CVE_ENT (2 digits)
+- CVE_MUN (3 digits)
+- CVE_LOC (4 digits)
+- CVE_AGEB (4 digits)
+
+Example:
 
 01 + 001 + 0001 + 0163 = 0100100010163
 
-Fórmula en Excel:
+Excel formula:
 
 =CVE_ENT & CVE_MUN & CVE_LOC & CVE_AGEB
 
 ---
 
-## 1.6 Columnas que se descartan y se corrigen
+## 1.6 Columns to Discard and Data Corrections
 
-Las siguientes columnas no participan en el pipeline NSE y se descartan:
+The following columns do not participate in the NSE pipeline and are discarded:
 
 - CVE_ENT, NOM_ENT
 - CVE_MUN, NOM_MUN
 - CVE_LOC, NOM_LOC
 - TAMAÑO_DE_LOCALIDAD
 
-Motivos: no participan en joins, no intervienen en cálculos, no aportan valor analítico y agregan ruido.
+Reason: they do not participate in joins, do not intervene in calculations, do not add analytical value, and introduce noise.
 
-### Corrección de valores “N/D”
+### Correction of “N/D” values
 
-1. Columnas numéricas  
-   AB, C+, C, C–, D+, D, E → AMAI marca “N/D” cuando no hay información suficiente.
+1. Numeric columns  
+   AB, C+, C, C–, D+, D, E → AMAI uses “N/D” when there is insufficient information.
 
-2. Columna categórica  
-   NIVEL_PREDOMINANTE → “N/D” cuando no existe un nivel dominante claro.
+2. Categorical column  
+   NIVEL_PREDOMINANTE → “N/D” when no dominant socioeconomic level exists.
 
-Para que el pipeline funcione, se usa:
+To ensure the pipeline works correctly, we use:
 
-NULL = dato no disponible
+NULL = data not available
 
-### Regla de normalización
+### Normalization rule
 
-Reemplazar "N/D" por celda vacía ("") para que al importar a SQL se convierta en NULL.
+Replace "N/D" with an empty cell ("") so that when importing into SQL it becomes NULL.
 
-Esto evita errores en:
+This prevents errors in:
 
 - SUM()
-- Cálculos de porcentajes
-- Validaciones
-- Consistencia del pipeline
+- Percentage calculations
+- Validations
+- Pipeline consistency
 
 ---
 
-## 1.7 Exportar desde Excel a CSV (para su importación a SQL)
+## 1.7 Export from Excel to CSV (for SQL import)
 
-El archivo CSV debe quedar como sigue:
+The CSV file should look like this (TAB‑delimited):
 
 | CVEGEO        | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E   | NSE_LABEL | TOTAL |
 |---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|
@@ -144,26 +145,27 @@ El archivo CSV debe quedar como sigue:
 | 0100100010182 | 345 | 187    | 63  | 46      | 13     | 6   | 0   | A/B       | 660    |
 | 0100100010229 | 25  | 36     | 14  | 20      | 9      | 7   | 0   | C+        | 111    |
 
-Guardar como:
+Save as:
 
 NSE_AMAI_2024_AGEB_IMPORT.csv  
-(UTF‑8, delimitado por TAB)
+(UTF‑8, TAB‑delimited)
 
-### Configuración de exportación
+### Export settings
 
-- Formato: CSV
-- Separador: TAB
-- Codificación: UTF‑8
-- Comillas: no usar comillas en los datos
-- Sin BOM (Excel ya exporta UTF‑8 sin BOM)
-- Sin filas vacías al final
-- Sin columnas ocultas
+- Format: CSV  
+- Separator: TAB  
+- Encoding: UTF‑8  
+- Quotes: do not use quotes  
+- No BOM (Excel exports UTF‑8 without BOM)  
+- No empty rows at the end  
+- No hidden columns  
 
-Si fuera necesario, editar el CSV con EditPad Pro o Notepad++ para verificar:
+If necessary, edit the CSV with EditPad Pro or Notepad++ to verify:
 
-- Codificación UTF‑8 sin BOM
-- Delimitador TAB
+- UTF‑8 without BOM  
+- TAB delimiter  
 
-Nota: Se usa separador TAB por conveniencia, pero puede usarse coma (,) ajustando el `FIELDTERMINATOR` en el BULK INSERT.
+Note: TAB is used for convenience, but comma (,) may be used if BULK INSERT is configured with the appropriate FIELDTERMINATOR.
+
 
 
