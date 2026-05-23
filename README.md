@@ -12,11 +12,20 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 
 ---
 
-📁 Repository Structure
-/docs — Step‑by‑step technical documentation (SQL, GIS, ETL)
-/data — CSV, SHP, and original source files (not public)
-/scripts — SQL scripts, PowerShell utilities, automation
-/images — Diagrams, maps, and reference figures
+## 📁 Repository Structure
+
+- `/docs`  
+  Step‑by‑step technical documentation (SQL, GIS, ETL)
+
+- `/data`  
+  CSV, SHP, and original source files (not public)
+
+- `/scripts`  
+  SQL scripts, PowerShell utilities, automation
+
+- `/images`  
+  Diagrams, maps, and reference figures
+
 
 ---
 
