@@ -24,9 +24,9 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 ## 📘 Documentation Index
 
 1. [Import AMAI data](docs/01_Import_AMAI.md)
-2. [Import AGEB 2025 geometries](docs/02_Import_Boundaries_AGEB_2025.md)
+2. [Import AGEB 2025 geometries_data](docs/02_Import_Boundaries_AGEB_2025.md)
 3. [Import INEGI Census 2020 data](docs/03_Import_INEGI_Census_2020_AGEB.md)
-4. [Import INEGI DCAH Neighborhoods 2023](docs/04_Import_INEGI_DCAH_Neighborhoods_2023.md)
+4. [Import INEGI DCAH Neighborhoods 2023_data](docs/04_Import_INEGI_DCAH_Neighborhoods_2023.md)
 5. [Colonias × AGEB spatial intersection](docs/05_Intersections.md)
 6. [AMAI Households Weighting by Neighborhood](docs/06_Weighting_by_Neighborhood.md)
 7. [Final validations](docs/07_Validations.md)
