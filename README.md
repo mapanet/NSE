@@ -27,8 +27,8 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 3. [Import INEGI Census 2020 data](docs/03_INEGI_Census_2020_AGEB.md)
 4. [Import INEGI DCAH Neighborhoods 2023](docs/04_INEGI_DCAH_Neighborhoods_2023.md)
 5. [Colonias × AGEB spatial intersection](docs/05_Intersections.md)
-6. [AMAI population weighting by colonia](docs/06_Weighting_by_Neighborhood.md)
-7. [Final validations](docs/07_Validaciones.md)
+6. [AMAI Households Weighting by Neighborhood](docs/06_Weighting_by_Neighborhood.md)
+7. [Final validations](docs/07_Validacions.md)
 
 
 ---
