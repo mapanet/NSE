@@ -1,28 +1,37 @@
-#STEP 1 — AMAI Data Ingestion (NSE by AGEB)
+# 01 — Import AMAI Data (NSE by AGEB)
 
-Objective: Convert the official AMAI file NSE_por_AGEB_AMAI.xlsx into a normalized SQL table ready for the NSE pipeline.
+## STEP 1 — AMAI Data Ingestion
 
-##1.1. Official Source File
+Objective: Convert the official AMAI file `NSE_por_AGEB_AMAI.xlsx` into a normalized SQL table ready for the NSE pipeline.
 
-AMAI publishes the dataset in its downloads section:
+---
 
-Direct XLSX download: https://www.amai.org/descargas/NSE_por_AGEB_AMAI.xlsx
+## 1.1 Official Source File
 
-Office Online viewer: https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.amai.org%2Fdescargas%2FNSE_por_AGEB_AMAI.xlsx
+AMAI publishes the dataset here:
 
-Important characteristics: 
+- Direct XLSX download:  
+  https://www.amai.org/descargas/NSE_por_AGEB_AMAI.xlsx
 
-- The file name does not include a year.
-- It corresponds to the NSE 2024 methodology.
-- It is the current version for 2024–2027.
+- Office Online viewer:  
+  https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.amai.org%2Fdescargas%2FNSE_por_AGEB_AMAI.xlsx
 
-##1.2. Original File Structure
+Important characteristics:
+
+- The file name does not include a year  
+- It corresponds to NSE 2024 methodology  
+- Valid for 2024–2027  
+
+---
+
+## 1.2 Original File Structure
 
 The file contains one row per urban AGEB from Census 2020.
 
 Original columns:
+
 | Column | Meaning |
-| --- | --- |
+|--------|---------|
 | ENTIDAD | State code |
 | NOMBRE ENTIDAD | State name |
 | MUNICIPIO | Municipality code |
@@ -41,14 +50,16 @@ Original columns:
 | VIVIENDAS | Total occupied private dwellings |
 | TAMAÑO_DE_LOCALIDAD | Locality population range |
 
+---
 
-1.4. Header Normalization (Renaming)
-To standardize column names using INEGI conventions and prepare the file for SQL import, headers were renamed and saved as:
+## 1.4 Header Normalization
 
-NSE_AMAI_2024_AGEB_IMPORT.xlsx
+Headers were renamed and saved as:
+
+`NSE_AMAI_2024_AGEB_IMPORT.xlsx`
 
 | Original | New |
-| --- | --- |
+|----------|-----|
 | ENTIDAD | CVE_ENT |
 | NOMBRE ENTIDAD | NOM_ENT |
 | MUNICIPIO | CVE_MUN |
@@ -67,46 +78,61 @@ NSE_AMAI_2024_AGEB_IMPORT.xlsx
 | VIVIENDAS | TOTAL |
 | TAMAÑO_DE_LOCALIDAD | (discarded) |
 
+---
 
-1.5. Building the Geographic Key (CVEGEO)
-INEGI defines CVEGEO as the concatenation of:
+## 1.5 Building the Geographic Key (CVEGEO)
 
-CVE_ENT (2 digits)
-CVE_MUN (3 digits)
-CVE_LOC (4 digits)
-CVE_AGEB (4 digits)
+INEGI defines CVEGEO as: 
 
-Example:  
+```sql
+CVE_ENT (2) + CVE_MUN (3) + CVE_LOC (4) + CVE_AGEB (4)
+
+Example:
+
+```sql
 01 + 001 + 0001 + 0163 = 0100100010163
 
 Excel formula:
 
-Code
+```sql
 =CVE_ENT & CVE_MUN & CVE_LOC & CVE_AGEB
 
-1.6. Columns to Discard and Data Cleaning
-Discarded columns (not used in the NSE pipeline):
 
-CVE_ENT, NOM_ENT
-CVE_MUN, NOM_MUN
-CVE_LOC, NOM_LOC
-TAMAÑO_DE_LOCALIDAD
+---
 
-Reason:  
-They do not participate in joins, calculations, or add analytical value.
+## 1.6 Columns to Discard and Data Cleaning
 
-Handling “N/D” values
-AMAI uses “N/D” to indicate missing data:
+Discarded columns:
 
-In numeric columns: AB, CPLUS, C, CMINUS, DPLUS, D, E
+- CVE_ENT, NOM_ENT  
+- CVE_MUN, NOM_MUN  
+- CVE_LOC, NOM_LOC  
+- TAMAÑO_DE_LOCALIDAD  
 
-In categorical column: NSE_LABEL
+Reason: They do not participate in joins or calculations.
+
+### Handling “N/D” values
+
+AMAI uses “N/D” to indicate missing data.
+
+Numeric columns affected:
+
+- AB  
+- CPLUS  
+- C  
+- CMINUS  
+- DPLUS  
+- D  
+- E  
+
+Categorical column affected:
+
+- NSE_LABEL  
 
 Normalization rule:
-Replace "N/D" with an empty cell ("") so that SQL imports it as:
 
-Code
-NULL = data not available
+Replace `"N/D"` with an empty cell so SQL imports it as NULL.
+
 This prevents errors in:
 
 - SUM()
@@ -114,40 +140,36 @@ This prevents errors in:
 - Validations
 - Pipeline consistency
 
-1.7. Export to CSV (for SQL Import)
+---
 
-The CSV should contain:
+## 1.7 Export to CSV (for SQL Import)
 
-Code
-CVEGEO  AB  CPLUS   C   CMINUS  DPLUS   D   E   NSE_LABEL   TOTAL
-0100100010017   0   12  39  111 153 331     D   648
-010010001006A   178 124 60  24  9   4   0   A/B 399
-0100100010106   183 375 247 128 62  32      C+  1028
-0100100010163   35  157 228 167 124 78  0   C   789
-0100100010182   345 187 63  46  13  6   0   A/B 660
-0100100010229   25  36  14  20  9   7   0   C+  111
-CSV Export Settings
-Format: CSV
+Expected CSV:
 
-Separator: TAB
+|    CVEGEO   |  AB    | CPLUS  |   C    | CMINUS | DPLUS  |   D    |    E   | NSE_LABEL | TOTAL |
+|-------------|--------|--------|--------|--------|--------|--------|--------|-----------|-------|
+|0100100010017|   0   |12  |39  |111 |153 |331|     D|   |648|
+|010010001006A|   178 |124 |60  |24  |9   |4   |0   |A/B |399
+|0100100010106|   183 |375 |247 |128 |62  |32  |    |C+  |1028
+|0100100010163|   35  |157 |228 |167 |124 |78  |0   |C   |789
+|0100100010182|   345 |187 |63  |46  |13  |6   |0   |A/B |660
+|0100100010229|   25  |36  |14  |20  |9   |7   |0   |C+  |111
 
-Encoding: UTF‑8 (no BOM)
 
-No quotes
+CSV export settings:
 
-No trailing blank rows
+- Format: CSV  
+- Separator: TAB  
+- Encoding: UTF‑8 (no BOM)  
+- No quotes  
+- No trailing blank rows  
+- No hidden columns  
 
-No hidden columns
+---
 
-If needed, verify encoding using EditPad Pro or Notepad++.
+## 1.8 Create SQL Table (SQL Server 2022)
 
-1.8. Create SQL Table (SQL Server 2022)
-sql
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
+```sql
 CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
     [CVEGEO] [nvarchar](13) NOT NULL,
     [AB] [int] NULL,
@@ -160,10 +182,11 @@ CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
     [NSE_LABEL] [nvarchar](10) NULL,
     [TOTAL] [int] NULL,
  CONSTRAINT [PK_NSE_AMAI_2024_AGEB] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
-) ON [PRIMARY]
-GO
-1.9. Import CSV into SQL Server
-sql
+);
+
+##1.9 Import CSV into SQL Server
+
+```sql
 BULK INSERT NSE_AMAI_2024_AGEB
 FROM 'D:\AMAI\NSE_AMAI_2024_AGEB_IMPORT.csv'
 WITH (
@@ -172,32 +195,44 @@ WITH (
     ROWTERMINATOR = '\n',
     CODEPAGE = '65001'
 );
-1.10. Post‑Import Validations
-✔ Check for duplicate CVEGEO
-sql
+
+##1.10 Post‑Import Validations
+
+Check for duplicate CVEGEO
+
+```sql
 SELECT CVEGEO, COUNT(*)
 FROM NSE_AMAI_2024_AGEB
 GROUP BY CVEGEO
 HAVING COUNT(*) > 1;
-✔ Validate TOTAL = sum of levels
-sql
+
+Validate TOTAL = sum of levels
+
+```sql
 SELECT *
 FROM NSE_AMAI_2024_AGEB
 WHERE TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
-✔ Validate CVEGEO length (13 chars)
-sql
+
+Validate CVEGEO length (13 chars)
+
+```sql
 SELECT *
 FROM NSE_AMAI_2024_AGEB
 WHERE LEN(CVEGEO) <> 13;
-1.11. Final Result
+
+##1.11 Final Result
+
 Your final SQL table should look like:
 
-Code
-CVEGEO        AB  CPLUS  C   CMINUS  DPLUS  D   E   NSE_LABEL  TOTAL
-0100100010017 0   12     39  111     153    331     D          648
-010010001006A 178 124    60  24      9      4   0   A/B        399
-0100100010106 183 375    247 128     62     32      C+         1028
-0100100010163 35  157    228 167     124    78  0   C          789
-0100100010182 345 187    63  46      13     6   0   A/B        660
-0100100010229 25  36     14  20      9      7   0   C+         111
+|    CVEGEO   |  AB    | CPLUS  |   C    | CMINUS | DPLUS  |   D    |    E   | NSE_LABEL | TOTAL |
+|-------------|--------|--------|--------|--------|--------|--------|--------|-----------|-------|
+|0100100010017|   0   |12  |39  |111 |153 |331|     D|   |648|
+|010010001006A|   178 |124 |60  |24  |9   |4   |0   |A/B |399
+|0100100010106|   183 |375 |247 |128 |62  |32  |    |C+  |1028
+|0100100010163|   35  |157 |228 |167 |124 |78  |0   |C   |789
+|0100100010182|   345 |187 |63  |46  |13  |6   |0   |A/B |660
+|0100100010229|   25  |36  |14  |20  |9   |7   |0   |C+  |111
+
 This table becomes the official AMAI input for all subsequent NSE calculation steps.
+
+
