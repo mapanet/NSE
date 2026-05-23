@@ -126,6 +126,7 @@ foreach ($file in $files) {
 
 Write-Host "Done. Combined file created at:"
 Write-Host $outputFile
+```
 
 ## 3.1 — The resulting file structure:
 
