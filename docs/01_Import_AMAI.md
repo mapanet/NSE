@@ -54,7 +54,7 @@ Original columns:
 
 To standardize column names using INEGI conventions and prepare the file for SQL import, headers were renamed and saved as:
 
-`NSE_AMAI_2024_AGEB_IMPORT.xlsx`
+**`NSE_AMAI_2024_AGEB_IMPORT.xlsx`**
 
 | Original | New |
 |----------|-----|
@@ -147,7 +147,7 @@ The CSV file should look like this (TAB‑delimited):
 
 Save as:
 
-NSE_AMAI_2024_AGEB_IMPORT.csv  
+**NSE_AMAI_2024_AGEB_IMPORT.csv**  
 (UTF‑8, TAB‑delimited)
 
 ### Export settings
