@@ -163,7 +163,7 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 
 ### Validate invalid geometries
 
-SQL query should return NOTHING
+Should return NOTHING
 
 ```sql
 SELECT ID, CVEGEO
@@ -183,13 +183,14 @@ WHERE geom.STIsValid() = 0;
 
 ## 2.8 Create the geography Column
 
-SQL queries should return NOTHING
-
 ```sql
 UPDATE Boundaries_AGEB_2025
 SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 ```
+
 Validate:
+
+Should return NOTHING
 
 ```sql
 SELECT ID
