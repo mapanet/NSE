@@ -102,7 +102,9 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
     AMBITO     char(10)
 );
 ```
-Import (TAB + UTF‑8):
+
+**Import (TAB + UTF‑8):*8
+(check file path you used to store INEGI files)
 
 ```sql
 BULK INSERT Boundaries_AGEB_2025_IMPORT 
