@@ -89,6 +89,13 @@ From this new layer, export to CSV as:
 | CVEGEO   | Full geographic key |
 | AMBITO   | Urban / Rural |
 
+If you edit teh CSV you should see:
+
+| WKT | CVE_ENT |CVE_MUN | CVE_LOC | CVE_AGEB | CVEGEO | AMBITO |
+|-----------------------------------------------------------------------------------------|---------|---------|---------|---------|--------------|-------|
+|MULTIPOLYGON (((-102.270576849837 21.8736316903194, ... -102.270576849837 21.8736316903194)))| 01 | 001 | 0001 | 216A | 010010001216A | Urbana |
+|MULTIPOLYGON (((-102.24857117043 21.865572950224, ... -102.24857117043 21.865572950224)))	| 01 | 001 | 0001 | 2649 | 0100100012649 | Urbana |
+
 ## 2.4 Create the SQL Staging Table: Boundaries_AGEB_2025_IMPORT
 
 ```sql
