@@ -198,7 +198,7 @@ UPDATE Boundaries_AGEB_2025
 SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 ```
 
-Validate:
+### Validate geog:
 
 2️⃣ Missing geography check
 This should also return zero rows:
