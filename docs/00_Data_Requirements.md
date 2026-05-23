@@ -22,7 +22,8 @@ Official AMAI dataset containing the number of dwellings per socioeconomic level
 
 Each record is associated with a **CVEGEO (13‑digit AGEB key)**.
 
-**Used for:**  
+**Used for:**
+
 ✔ Base NSE values per AGEB  
 ✔ Area‑weighted interpolation from AGEB → colonia  
 ✔ Calculation of NSE_SCORE and NSE_LABEL for each neighborhood  
