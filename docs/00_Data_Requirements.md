@@ -31,7 +31,7 @@ Each record is associated with a **CVEGEO (13‑digit AGEB key)**.
 ---
 
 ## 2. INEGI Marco Geoestadístico 2025 (AGEB Geometries)
-#### (INEGI Geo‑Statistical Framework 2025)
+#### (INEGI AGEB: Geo‑Statistical Area)
 
 **Source:** INEGI MG 2025  
 **Description:**  
@@ -44,7 +44,7 @@ Official AGEB polygons for the entire country, including:
 - Geometry in **EPSG:4326**
 
 **Used for:**  
-✔ Spatial intersection with colonias  
+✔ Spatial intersection with neighborhoods (colonias)  
 ✔ Area proportion calculations  
 ✔ Area‑weighted distribution of AMAI dwellings  
 ✔ Geometric foundation for Layer 6  
@@ -58,7 +58,8 @@ Official AGEB polygons for the entire country, including:
 Demographic and housing data at the AGEB level:
 
 - Total population  
-- Occupied private dwellings  
+- Total dwellings
+- Occupied dwellings  
 - CVEGEO (13 digits)
 
 **Used for:**  
