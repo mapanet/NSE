@@ -27,7 +27,7 @@ We will download from **INEGI** using data from **SCITEL** system
 URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
 (Results by AGEB and MZA (AGEB area and urban block "Manzana")
 
-### Download folder
+### Working folder
 
 D:\INEGI\Census_2020
 
