@@ -46,7 +46,6 @@ Later we will compare it with Marco Geoestadístico 2025 to verify whether it is
 
 When loading `00a.shp` in QGIS, the layer contains the following fields:
 
-#### Attribute Table
 
 | Field     | Description                          |
 |-----------|--------------------------------------|
