@@ -19,12 +19,9 @@ We will download from **INEGI** using data from **SCITEL** system
 URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
 (Results by AGEB and MZA (AGEB area and urban block "Manzana")
 
-### Prepare a folder structure to store the downlodas IMPORTANT
+### Download folder
 
-We need to download individual files, one per state, 32 files in total.
-We will download 32 ZIP files and then de decompress them, Prepare a folder structure for original zip's in Downloads folder to keep them away of working folder.
-
-D:\INEGI\Census 2020\   **<= here we will have the CSV files and work on them**
+D:\INEGI\Census_2020
 
 ## 3.1 — Download SCITEL Data
 
@@ -38,7 +35,7 @@ In right panel are a variety of data selectors, we will choose the one those we 
 
 - In left Panel select a state: Aguascalientes
 - In bottom-right hit the black button "Generar Consulta", you will see the results in a table.
-- At bottom, in "Exportar a" (Export to) FORMAT: select CVS and save the file in **D:\INEGI\Census 2020**
+- At bottom, in "Exportar a" (Export to) FORMAT: select CVS and save the file in **D:\INEGI\Census_2020**
 - Go back to previous page and select the next state
 - Repeat the process until you export the 32 states CSV files
 
@@ -49,7 +46,7 @@ Do not not download that file, it contain full set of Census values and they are
 (however, when needed, we have a specific Power Shell script can use those CSV with complete files and extract only aditional fields for other purposes)
 
 
-### Verify you are all 32 files in D:\INEGI\Census 2020
+### Verify you are all 32 files in D:\INEGI\Census_2020
 
 | File name - (State code, State name) |
 |--------------------------------------|
@@ -90,6 +87,7 @@ Do not not download that file, it contain full set of Census values and they are
 
 Concatenate all RESAGEBURB2020 state files into one file: RESAGEBURB2020_ALL.csv
 Result with be a UTF-8 no BOM, TAB separated values to import to MS SQL 2022
+Replace all values with * asterisk by "" (empty) as they are N/A, so when we import they become NULL
 
 ### Concatenation script
 
@@ -100,7 +98,7 @@ Result with be a UTF-8 no BOM, TAB separated values to import to MS SQL 2022
 Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
 
 # Path where the 32 "RESAGEBURB2020 - **NN** Name .csv" files are located
-$inputFolder = "D:\INEGI\Census 2020"
+$inputFolder = "D:\INEGI\Census_2020"
 
 # Final combined output file CSV (TSV)
 $outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL.csv"
@@ -147,17 +145,26 @@ Edit RESAGEBURB2020_ALL.csv file to verify you have this info separated by TAB
 Powershell script replaced all values with asterkisk (*) to empty so when we import N/A values result in NULL
 
 |ENTIDAD|NOM_ENT|MUN|NOM_MUN|LOC|NOM_LOC|AGEB|MZA|POBTOT|VIVTOT|TVIVHAB|
-|-------|-------------------|---|-----------------------|----|-----------------|-----|---|----------|--------|---------|
-|01|Aguascalientes|000|Total Aguascalientes|0000|Total de la entidad|0000|000|463972|60327|1425607|
-|01|Aguascalientes|001|Aguascalientes|0000|Total municipio|0000|000|313256|37113|948990|
-|01|Aguascalientes|001|Aguascalientes|0001|Total localidad urbana|0000|000|286646|33043|863893|
-|01|Aguascalientes|001|Aguascalientes|0001|Total AGEB urbana|0017|000|1288|633|2237|
-|01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|001|82|28|170|
-|01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|002|83|31|198|
+|-------|-------|---|-------|---|-------|----|---|------|------|-------|
+01|Aguascalientes|000|Total de la entidad Aguascalientes|0000|Total de la entidad|0000|000|1425607|463972|386671|
+01|Aguascalientes|001|Aguascalientes|0000|Total del municipio|0000|000|948990|313256|266942|
+01|Aguascalientes|001|Aguascalientes|0001|Total de la localidad urbana|0000|000|863893|286646|246259|
+01|Aguascalientes|001|Aguascalientes|0001|Total AGEB urbana|0017|000|2237|1288|648|
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|011|115|80|33|
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|012|39|23|10|
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|013|12|13|4|
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|014|171|83|44|
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|015|93|54|29|
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|016|11|11|5|
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|017|49|80|11|
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|018|0|80||
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|019|0|39||
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|020|7|5|3|
+01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|021|6|4|1|
 
 
 ## 3.2 — Import CSV from into SQL:
 
-`D:\INEGI\Census 2020\RESAGEBURB2020_ALL.csv`
+`D:\INEGI\Census_2020\RESAGEBURB2020_ALL.csv`
 
 
