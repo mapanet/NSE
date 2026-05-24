@@ -3,9 +3,22 @@
 This dataset contains:
 
 Census 2020 data at the block block level (AGEB and MZA).  
-By aggregating blocks, we can obtain **Population** and **Residences** per AGEB, City, Municaplity, State.  
+By aggregating blocks, we can obtain **Population** and **Households** per AGEB, City, Municaplity, State.  
 
 If needed later, we can compute: **Households_Not_In_Use** = Households – Households_in_use
+
+*Result table:* INEGI_Censo_2020_AGEB
+
+|CVEGEO|Type|PK|
+|------|----|----|
+|CVEGEO|varchar(16)|PRIMARY KEY|
+|State|nvarchar(85)|
+|Municipality|nvarchar(85)|
+|City|nvarchar(110)|
+|Population|int|
+|Hoseholds|int|
+|Hoseholds_in_use|int|
+
 
 ## Prepare to Download Census 2020 data
 
@@ -216,10 +229,10 @@ GO
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
 CREATE TABLE INEGI_Censo_2020_AGEB (
-    CVEGEO varchar(16) PRIMARY KEY, -- -- CVEGEO de 16 dígitos (AGEB) concatenando ENTIDAD + MUN + LOC + AGEB + MZA
+    CVEGEO varchar(16) PRIMARY KEY, -- CVEGEO of 16 dígits (AGEB) concatenating ENTIDAD + MUN + LOC + AGEB + MZA
     State nvarchar(85) NULL,
     Municipality nvarchar(85) NULL,
-    City nvarchar(150) NULL,
+    City nvarchar(110) NULL,
     Population int NULL,
     Hoseholds int NULL,
     Hoseholds_in_use int NULL,
