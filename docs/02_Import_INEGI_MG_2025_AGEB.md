@@ -76,8 +76,6 @@ From this new layer, export to CSV as:
 - UTF‑8 encoding  
 - TAB delimiter  
 
-#### CSV Columns
-
 | Column   | Description |
 |----------|-------------|
 | WKT      | Geometry in WKT format |
