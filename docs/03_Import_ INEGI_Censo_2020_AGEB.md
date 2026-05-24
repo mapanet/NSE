@@ -44,9 +44,9 @@ In right panel are a variety of data selectors, we will choose the one those we 
 
 ### IMPORTANT
 
-In left Panel when you select a state: Aguascalientes for example, you will see a CSV button right thereto download the COMPLETE CSV file for that state.
-Do not not download that file, it contain full set of parameters from Census 2020 and they are a lot.
-(we have a specific Power Shell script to use those complete files and extract the addioonal fields for other purposes)
+In left Panel when you select a state: Aguascalientes for example, you will see a CSV button right there to download, that doanload COMPLETE Census data.
+Do not not download that file, it contain full set of Census values and they are a lot.
+(however, when needed, we have a specific Power Shell script can use those CSV with complete files and extract only aditional fields for other purposes)
 
 
 ### Verify you are all 32 files in D:\INEGI\Census 2020
@@ -88,18 +88,19 @@ Do not not download that file, it contain full set of parameters from Census 202
 
 ### Concatenate All files
 
-Concatenate all RESAGEBURB2020 state files into one file: **RESAGEBURB2020_ALL.csv**
+Concatenate all RESAGEBURB2020 state files into one file: RESAGEBURB2020_ALL.csv
+Result with be a UTF-8 no BOM, TAB separated values to import to MS SQL 2022
 
-### Concatenation script:
+### Concatenation script
 
-**Concatenate_RESAGEBURB2020.ps1**
+**Concatenate_RESAGEBURB2020_TAB.ps1**
 
 ```powershell
 # Force the script to run in its own directory
 Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
 
 # Path where the 32 "RESAGEBURB2020 - **NN** Name .csv" files are located
-$inputFolder = "D:\Postal Codes Databases\Mexico MX\INEGI.org.mx\Censos 2020\Tabulados AGEB Manzana"
+$inputFolder = "D:\INEGI\Census 2020"
 
 # Final combined output file CSV (TSV)
 $outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL.csv"
