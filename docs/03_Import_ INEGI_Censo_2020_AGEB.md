@@ -27,25 +27,25 @@ D:\INEGI\Census_2020
 
 ### IMPORTANT
 
-In left Panel when you select a state: Aguascalientes for example, you will see a CSV button right there to download, that doanload COMPLETE Census data.
-Do not not download that file, it contain full set of Census values and they are a lot.
-(however, when needed, we have a specific Power Shell script can use those CSV with complete files and extract only aditional fields for other purposes)
+In left Panel when select a state: Aguascalientes for example, you will see a gray CSV button, that download COMPLETE Census data. Do not use that, follow steps below.
+(if needed, you can download that, we have a specific Power Shell script can use complete CSV files and extract specific additional fields for other purposes).
 
 #### Download
 
-In right panel are a variety of data selectors, we will choose the one those we need:
-(this selections will remain in place por every state we download)
+In right panel are select:
 
-- "Indetificacion geografica" (Geographic identication, all marked) 
-- Check: Poblacion => Poblacion total (Population Total)
-- Check: Vivenda   => Total de viviendas (Dewlling Total) 
-- Check: Vivenda   => Total de viviendas habitadas (Dewlling Total in use)
+1. Indetificacion geografica (Geographic identication, all marked) 
+2. Check: Poblacion => Poblacion total (Population Total)
+3. Check: Vivenda   => Total de viviendas (Dewlling Total) 
+4. Check: Vivenda   => Total de viviendas habitadas (Dewlling Total in use)
 
-- In left Panel select a state: Aguascalientes
-- In bottom-right hit the black button "Generar Consulta", you will see the results in a table.
-- At bottom, in "Exportar a" (Export to) FORMAT: select CVS and save the file in **D:\INEGI\Census_2020**
-- Go back to previous page and select the next state
-- Repeat the process until you export the 32 states CSV files
+Repeat the process below until you export the 32 states:
+
+1. In left Panel select a state (example: Aguascalientes)
+2. Bottom-right use black button **Generar Consulta**, and you will see the results in a table.
+3. At bottom a black button **Exportar a** (Export to) select **FORMAT CVS** and save the file in D:\INEGI\Census_2020
+4. Go back to previous page and select the next state
+
 
 ### Verify you are all 32 files in D:\INEGI\Census_2020
 
