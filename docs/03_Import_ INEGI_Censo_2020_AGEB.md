@@ -144,7 +144,12 @@ Write-Host $outputFile
 
 ## 3.1 — The resulting file structure:
 
-Edit RESAGEBURB2020_ALL.csv file to verify data is with proper enconding, TAB, no astersiks (*)
+Edit RESAGEBURB2020_ALL.csv file to verify data  
+
+- enconding UTF-8 No BOM
+- TAB delimited
+- No astersiks (*)
+- 
 Powershell script replaced all values with asterkisk (*) to empty so when we import N/A values result in NULL
 
 |ENTIDAD|NOM_ENT|MUN|NOM_MUN|LOC|NOM_LOC|AGEB|MZA|POBTOT|VIVTOT|TVIVHAB|
