@@ -1,4 +1,4 @@
-# NSE — AMAI Socioeconomic Level INEGI Neighborhoods
+# NSE — AMAI Socioeconomic Level of INEGI Neighborhoods
 
 This private repository documents the technical pipeline for calculating the AMAI Socioeconomic Level (NSE) at the neighborhood (colonia) level, integrating the following official datasets:
 
