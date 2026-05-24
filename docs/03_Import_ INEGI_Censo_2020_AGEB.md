@@ -169,17 +169,22 @@ Edit RESAGEBURB2020_ALL.csv file to verify data
 
 ## 3.2 — Import CSV from into SQL:
 
+### Census 2020 AGEB Step 1.0 Create table INEGI_Censo_2020_AGEB (block level / manzana).
+
+-- SUMMARY: We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Hoseholds at AGEB and dwellings level.
+-- This dataset is used later, in calculation NSE Step 4.9 to update Population and Hoseholds at Neighborhood level (Colonia) level using weighted aggregation.
+-- It can be used also used with aggregation to update Population and Hoseholds at City, Municipality, State levels.
+
+-- We use a temporary Staging table to import the date, then transfor it to modeled INEGI_Censo_2020_AGEB.
+
 ```sql
--- Census 2020 AGEB Step 1.0 Create table INEGI_Censo_2020_AGEB (block level / manzana).
-
--- SUMMARY: We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Hoseholds up to the AGEB and dwellings level.
--- This dataset is used later, in calculation NSE Step 4.9 to update Population and Residences at Neighborhood (Colonia) level using weighted aggregation.
--- It can be used also used with aggregation at any level, AGEB, City, Municipality, State.
-
--- We use a temporary Staging table because INEGI_Censo_2020_AGEB includes an ID column.
--- Once imported, we will copy the tagging into INEGI_Censo_2020_AGEB and concatenate CVEGEO.
-
 USE INMO    -- Your DB
+GO
+
+-----------------------
+-- Create staging table 
+-----------------------
+DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
 
 -----------------------
@@ -207,7 +212,7 @@ GO
 -- Bulk Insert
 --------------
 BULK INSERT INEGI_Censo_2020_AGEB_Staging
-FROM 'D:\Postal Codes Databases\Mexico MX\INEGI.org.mx\Censos 2020\Tabulados AGEB Manzana\RESAGEBURB2020_ALL_TAB.csv'
+FROM 'D:\INEGI\Census_2020\RESAGEBURB2020_ALL_TAB.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
@@ -222,26 +227,14 @@ GO
 ------------------------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
-
 CREATE TABLE INEGI_Censo_2020_AGEB (
-    ID bigint IDENTITY(1,1) PRIMARY KEY,
-    CVEGEO varchar(16) NULL, -- -- CVEGEO de 16 dígitos (AGEB) concatenando ENTIDAD + MUN + LOC + AGEB + MZA
-
-    CVE_ENT varchar(2) NOT NULL,
-    NOM_ENT nvarchar(100) NULL,
-
-    CVE_MUN varchar(3) NOT NULL,
-    NOM_MUN nvarchar(100) NULL,
-
-    CVE_LOC varchar(4) NOT NULL,
-    NOM_LOC nvarchar(150) NULL,
-
-    AGEB varchar(4) NOT NULL,
-    MZA varchar(3) NOT NULL,
-
-    POBTOT int NULL,
-    VIVTOT int NULL,
-    TVIVHAB int NULL,
+    CVEGEO varchar(16) PRIMARY KEY, -- -- CVEGEO de 16 dígitos (AGEB) concatenando ENTIDAD + MUN + LOC + AGEB + MZA
+    State nvarchar(85) NULL,
+    Municipality nvarchar(85) NULL,
+    City nvarchar(150) NULL,
+    Population int NULL,
+    Hoseholds int NULL,
+    Hoseholds_in_use int NULL,
 );
 GO
 
@@ -249,20 +242,23 @@ GO
 -- Copy staging to INEGI_Censo_2020_AGEB
 ----------------------------------------
 INSERT INTO INEGI_Censo_2020_AGEB (
-    CVE_ENT, NOM_ENT, CVE_MUN, NOM_MUN, CVE_LOC, NOM_LOC,
-    AGEB, MZA, POBTOT, VIVTOT, TVIVHAB
+    CVEGEO, -- CVEGEO de 16 dígitos (AGEB) concatenando ENTIDAD + MUN + LOC + AGEB + MZA
+    State, 
+    Municipality, 
+    City, 
+    Population, 
+    Hoseholds, 
+    Hoseholds_in_use
 )
 SELECT
-    ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC,
-    AGEB, MZA, POBTOT, VIVTOT, TVIVHAB
+    ENTIDAD + MUN + LOC + AGEB + MZA As CVEGEO, 
+    NOM_ENT, 
+    NOM_MUN, 
+    NOM_LOC,
+    POBTOT, 
+    VIVTOT, 
+    TVIVHAB
 FROM INEGI_Censo_2020_AGEB_Staging;
-GO
-
----------------------------------
--- Concatenate CVEGEO (16 digits)
----------------------------------
-UPDATE INEGI_Censo_2020_AGEB
-SET CVEGEO = CVE_ENT + CVE_MUN + CVE_LOC + AGEB + MZA;
 GO
 
 --------
