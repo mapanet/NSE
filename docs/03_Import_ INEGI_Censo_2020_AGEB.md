@@ -25,6 +25,14 @@ D:\INEGI\Census_2020
 
 ## 3.1 — Download SCITEL Data
 
+### IMPORTANT
+
+In left Panel when you select a state: Aguascalientes for example, you will see a CSV button right there to download, that doanload COMPLETE Census data.
+Do not not download that file, it contain full set of Census values and they are a lot.
+(however, when needed, we have a specific Power Shell script can use those CSV with complete files and extract only aditional fields for other purposes)
+
+#### Download
+
 In right panel are a variety of data selectors, we will choose the one those we need:
 (this selections will remain in place por every state we download)
 
@@ -38,13 +46,6 @@ In right panel are a variety of data selectors, we will choose the one those we 
 - At bottom, in "Exportar a" (Export to) FORMAT: select CVS and save the file in **D:\INEGI\Census_2020**
 - Go back to previous page and select the next state
 - Repeat the process until you export the 32 states CSV files
-
-### IMPORTANT
-
-In left Panel when you select a state: Aguascalientes for example, you will see a CSV button right there to download, that doanload COMPLETE Census data.
-Do not not download that file, it contain full set of Census values and they are a lot.
-(however, when needed, we have a specific Power Shell script can use those CSV with complete files and extract only aditional fields for other purposes)
-
 
 ### Verify you are all 32 files in D:\INEGI\Census_2020
 
