@@ -99,6 +99,11 @@ If you edit the CSV you should see something like this:
 ## 2.4 Create the SQL Staging Table: Boundaries_AGEB_2025_IMPORT
 
 ```sql
+----------------------------------------------------------------
+-- 2.4 Create the SQL Staging Table: Boundaries_AGEB_2025_IMPORT
+----------------------------------------------------------------
+DROP TABLE IF EXISTS dbo.Boundaries_AGEB_2025_IMPORT;
+
 CREATE TABLE Boundaries_AGEB_2025_IMPORT (
     WKT        nvarchar(MAX),
     CVE_ENT    char(2),
@@ -109,14 +114,21 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
     AMBITO     char(10)
 );
 ```
+### Expected result
 
-**Import (TAB + UTF‑8):**
+Commands completed successfully.
+Completion time: 2026-05-24T18:11:21.7628144-05:00
+
+**Import Boundaries_AGEB_2025_WKT.csv**
 
 * check file path you used to store INEGI files
 
 ```sql
+--------------------------------------
+-- Import Boundaries_AGEB_2025_WKT.csv
+--------------------------------------
 BULK INSERT Boundaries_AGEB_2025_IMPORT 
-FROM 'D:\INEGI\Boundaries_AGEB_2025_IMPORT.csv' 
+FROM 'D:\INEGI\Boundaries_AGEB_2025_WKT.csv' 
 WITH ( 
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t', 
@@ -128,6 +140,9 @@ WITH (
 ## 2.5 Create Final Table: Boundaries_AGEB_2025
 
 ```sql
+-----------------------------------------------
+-- 2.5 Create Final Table: Boundaries_AGEB_2025
+-----------------------------------------------
 CREATE TABLE Boundaries_AGEB_2025 (
     ID          bigint IDENTITY(1,1) PRIMARY KEY,
     CVEGEO      nvarchar(13) NOT NULL,
@@ -146,6 +161,9 @@ CREATE TABLE Boundaries_AGEB_2025 (
 ## 2.6 Insert Data from the Staging Table
 
 ```sql
+-----------------------------------------
+-- 2.6 Insert Data from the Staging Table
+-----------------------------------------
 INSERT INTO Boundaries_AGEB_2025 (
     CVEGEO, CVE_ENT, CVE_MUN, CVE_LOC, CVE_AGEB, Type, geom
 )
@@ -163,6 +181,9 @@ FROM Boundaries_AGEB_2025_IMPORT;
 Finally, drop the staging table:
 
 ```sql
+-------------------------
+-- drop the staging table
+-------------------------
 DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 ```
 
