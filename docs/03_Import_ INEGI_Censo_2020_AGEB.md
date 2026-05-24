@@ -158,11 +158,8 @@ Edit RESAGEBURB2020_ALL.csv file to verify data
 01|Aguascalientes|001|Aguascalientes|0001|Total AGEB urbana|0017|000|2237|1288|648|
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|011|115|80|33|
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|012|39|23|10|
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|013|12|13|4|
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|018|0|80||
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|019|0|39||
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|020|7|5|3|
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|021|6|4|1|
 
 
 ## 3.2 — Import CSV from into SQL:
