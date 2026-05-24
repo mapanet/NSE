@@ -46,7 +46,7 @@ Later we will compare it with Marco Geoestadístico 2025 to verify whether it is
 
 When loading `00a.shp` in QGIS, the layer contains the following fields:
 
-### Attribute Table
+#### Attribute Table
 
 | Field     | Description                          |
 |-----------|--------------------------------------|
@@ -77,7 +77,7 @@ From this new layer, export to CSV as:
 - UTF‑8 encoding  
 - TAB delimiter  
 
-### CSV Columns
+#### CSV Columns
 
 | Column   | Description |
 |----------|-------------|
