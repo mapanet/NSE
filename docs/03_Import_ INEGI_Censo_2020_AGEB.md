@@ -96,9 +96,9 @@ In right panel are select:
 
 #### Purpose
 
-Concatenate all 32 state files into a clean CSV readi to bulk import to SQL
+Concatenate all 32 state files into a clean CSV ready to bulk import to SQL
 
-### Expected result
+### Expected file
 
 **RESAGEBURB2020_ALL_TAB.csv**
 
@@ -157,9 +157,11 @@ Write-Host $outputFile
 
 [Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/powershell/Concatenate_RESAGEBURB2020_TAB.ps1)
 
-## 3.1 — Check resulting file
+### Expected reults
 
-Edit RESAGEBURB2020_ALL_TAB.csv file to verify data is: 
+RESAGEBURB2020_ALL_TAB.csv
+
+Edit it to verify data is: 
 
 - UTF-8 No BOM enconding
 - TAB delimited
@@ -186,7 +188,19 @@ Edit RESAGEBURB2020_ALL_TAB.csv file to verify data is:
 -- It can be used also used with aggregation to update Population and Hoseholds at City, Municipality, State levels.
 
 -- We use a temporary Staging table to import the date, then transfor it to modeled INEGI_Censo_2020_AGEB.
+#### Expected results
 
+SQL table **INEGI_Censo_2020_AGEB** with this fields and primaru key CVEGEO
+
+| Field | Type | Description | Key |
+|CVEGEO| varchar(16) |CVEGEO 16 dígits (AGEB) ENTIDAD + MUN + LOC + AGEB + MZA|PRIMARY KEY|
+|State| nvarchar(85) |State name||
+|Municipality| nvarchar(85) |Municipality||
+|City| nvarchar(110) |City name||
+|Population| int |Total Population||
+|Hoseholds| int |Total Hoseholds||
+|Hoseholds_in_use| int |Hoseholds occupied||
+    
 ```sql
 USE INMO    -- Your DB
 GO
