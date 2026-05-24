@@ -164,8 +164,6 @@ Edit RESAGEBURB2020_ALL.csv file to verify data
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|020|7|5|3|
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|021|6|4|1|
 
-### Save CSV file
-
 
 ## 3.2 — Import CSV from into SQL:
 
