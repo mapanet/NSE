@@ -96,7 +96,7 @@ Once all four datasets are loaded and validated, the system is ready for:
 
 - Key normalization (CVEGEO, locality codes, etc.)  
 - Geometry validation (topology, overlaps, empties)  
-- Colonias × AGEB spatial intersection  
+- Neighborhoods (Colonias) × AGEB spatial intersection  
 - Area‑weighted AMAI distribution  
 - NSE calculation per neighborhood (colonia)  
 - Final Layer 6 generation (NSE, population, residences, metadata)
