@@ -86,13 +86,13 @@ In right panel are select:
 
 ### Concatenate All files
 
-Concatenate all state files into: RESAGEBURB2020_ALL.csv
+Concatenate all state files into: RESAGEBURB2020_ALL.csv with the next script.
 
 - Encoding: UTF-8 no BOM
 - TAB separated values
 - Replace all values with * asterisk to "" (empty), they are N/A data and must become NULL in SQL
 
-### Concatenation script
+### Power Shell Concatenation script
 
 **Concatenate_RESAGEBURB2020_TAB.ps1**
 
@@ -146,13 +146,29 @@ Write-Host $outputFile
 
 Edit RESAGEBURB2020_ALL.csv file to verify data  
 
-- enconding UTF-8 No BOM
+- UTF-8 No BOM enconding
 - TAB delimited
 - No astersiks (*)
-- 
-Powershell script replaced all values with asterkisk (*) to empty so when we import N/A values result in NULL
 
-|ENTIDAD|NOM_ENT|MUN|NOM_MUN|LOC|NOM_LOC|AGEB|MZA|POBTOT|VIVTOT|TVIVHAB|
+### Standarize field names
+
+Change field names in CSV to INEGI standard codes and field names we use:
+
+| From | To | Changes | Description |
+|-------|-------|---------|---------------|
+|ENTIDAD|CVE_ENT|Renamed| State code |
+|NOM_ENT|NOM_ENT|| State name |
+|MUN|CVE_MUN|Renamed| Municiplality code |
+|NOM_MUN|| Municiplaity name |
+|LOC|CVE_LOC|Renamed| City code |
+|NOM_LOC|| City/Place name |
+|AGEB|| AGEB code |
+|MZA|| Dweling code |
+|POBTOT|| Population |
+|VIVTOT|| Residences |
+|TVIVHAB|| Residences habited |
+
+|CVE_ENT|NOM_ENT|CVE_MUN|NOM_MUN|CVE_LOC|NOM_LOC|AGEB|MZA|POBTOT|VIVTOT|TVIVHAB|
 |-------|-------|---|-------|---|-------|----|---|------|------|-------|
 01|Aguascalientes|000|Total de la entidad Aguascalientes|0000|Total de la entidad|0000|000|1425607|463972|386671|
 01|Aguascalientes|001|Aguascalientes|0000|Total del municipio|0000|000|948990|313256|266942|
@@ -161,18 +177,121 @@ Powershell script replaced all values with asterkisk (*) to empty so when we imp
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|011|115|80|33|
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|012|39|23|10|
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|013|12|13|4|
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|014|171|83|44|
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|015|93|54|29|
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|016|11|11|5|
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|017|49|80|11|
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|018|0|80||
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|019|0|39||
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|020|7|5|3|
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|021|6|4|1|
 
+### Save CSV file
+
 
 ## 3.2 — Import CSV from into SQL:
 
-`D:\INEGI\Census_2020\RESAGEBURB2020_ALL.csv`
+### Step 1.0 Create table INEGI_Censo_2020_AGEB at block level (manzana)
+
+SUMMARY: We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Hoseholds up to the AGEB and dwellings level.
+This dataset is used later, in calculation NSE Step 4.9 to update Population and Residences at Neighborhood (Colonia) level using weighted aggregation.
+It can be used also used with aggregation at any level, AGEB, City, Municipality, State.
+
+Table: **INEGI_Censo_2020_AGEB**
+
+#### Import `D:\INEGI\Census_2020\RESAGEBURB2020_ALL.csv`
+
+- We use a temporary Staging table because INEGI_Censo_2020_AGEB includes an ID column.
+- Once imported, we will copy the stagging into INEGI_Censo_2020_AGEB and concatenate CVEGEO.
+
+#### Create staging table 
+Since INEGI_Censo_2020_AGEB has an ID field, we can not bulk import straight the CSV 
+(unless we add a blank field in the CSV at begining, which we didn't) 
+
+We will standarize TO INEGI field names here as:
+
+
+
+
+```sql
+DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
+GO
+
+CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
+    CVE_ENT varchar(2) NOT NULL,
+    NOM_ENT nvarchar(100) NULL,
+    CVE_MUN varchar(3) NOT NULL,
+    NOM_MUN nvarchar(100) NULL,
+    CVE_LOC varchar(4) NOT NULL,
+    NOM_LOC nvarchar(150) NULL,
+    AGEB varchar(4) NOT NULL,
+    MZA varchar(3) NOT NULL,
+    POBTOT int NULL,
+    VIVTOT int NULL,
+    TVIVHAB int NULL, 
+);
+GO
+
+-- Bulk Insert
+
+BULK INSERT INEGI_Censo_2020_AGEB_Staging
+FROM 'D:\INEGI\Census_2020\RESAGEBURB2020_ALL.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = '\t',
+    ROWTERMINATOR = '\n',
+    CODEPAGE = '65001',  -- UTF-8
+    TABLOCK
+);
+GO
+
+-- Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Dwelling)
+
+```sql
+DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
+GO
+
+CREATE TABLE INEGI_Censo_2020_AGEB (
+    ID bigint IDENTITY(1,1) PRIMARY KEY,
+    CVEGEO varchar(16) NULL,  -- CVEGEO of 16 digits (AGEB + MZA) concatenating CVE_ENT + CVE_MUN + CVE_LOC + AGEB + MZA
+
+    CVE_ENT varchar(2) NOT NULL,
+    NOM_ENT nvarchar(100) NULL,
+
+    CVE_MUN varchar(3) NOT NULL,
+    NOM_MUN nvarchar(100) NULL,
+
+    CVE_LOC varchar(4) NOT NULL,
+    NOM_LOC nvarchar(150) NULL,
+
+    AGEB varchar(4) NOT NULL,
+    MZA varchar(3) NOT NULL,
+
+    POBTOT int NULL,
+    VIVTOT int NULL,
+    TVIVHAB int NULL,
+);
+GO
+```
+
+#### Copy staging to INEGI_Censo_2020_AGEB
+
+INSERT INTO INEGI_Censo_2020_AGEB (
+    CVE_ENT, NOM_ENT, CVE_MUN, NOM_MUN, CVE_LOC, NOM_LOC,
+    AGEB, MZA, POBTOT, VIVTOT, TVIVHAB
+)
+SELECT
+    ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC,
+    AGEB, MZA, POBTOT, VIVTOT, TVIVHAB
+FROM INEGI_Censo_2020_AGEB_Staging;
+GO
+```
+
+#### Concatenate CVEGEO (16 digits) on INEGI_Censo_2020_AGEB table
+
+```sql
+UPDATE INEGI_Censo_2020_AGEB
+SET CVEGEO = ENTIDAD + MUN + LOC + AGEB + MZA;
+GO
+```
+
+
+
 
 
