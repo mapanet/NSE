@@ -1,18 +1,32 @@
--- Census 2020 AGEB - Step 1.0 Create table INEGI_Censo_2020_AGEB (block level / manzana).
+-- Census 2020 AGEB – Step 1.0 Create table INEGI_Censo_2020_AGEB (block / manzana level)
 
--- SUMMARY: We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Hoseholds at AGEB and dwellings level.
--- This dataset is used later, in calculation NSE Step 4.9 to update Population and Hoseholds at Neighborhood level (Colonia) level using weighted aggregation.
--- It can be used also used with aggregation to update Population and Hoseholds at City, Municipality, State levels.
+-- SUMMARY:
+-- This step builds the Census 2020 AGEB dataset at the dwelling-block (manzana) level.
+-- From this block-level data we obtain Population and Households at both the AGEB level
+-- and the block level.
 
--- We use a temporary Staging table to import the date, then transfor it to modeled INEGI_Censo_2020_AGEB.
+-- The resulting dataset is later used in NSE Calculation Step 4.9 to update Population
+-- and Households at the Neighborhood (Colonia) level using weighted aggregation.
+
+-- It can also be aggregated to compute Population and Households at the City,
+-- Municipality, and State levels.
+
+-- PROCEDURE SUMMARY:
+-- 1. Create a staging table for importing raw Census 2020 block-level data.
+-- 2. Bulk insert the combined RESAGEBURB2020_ALL_TAB.csv file.
+-- 3. Create the final INEGI_Censo_2020_AGEB table with modeled fields.
+-- 4. Transform and load data from staging into the final table.
+-- 5. Validate record count and CVEGEO length length is 16 characters.
+-- 6. Drop the staging table.
+
 
 
 USE INMO    -- Your DB
 GO
 
------------------------
--- Create staging table 
------------------------
+----------------------------------------------------------------------------
+-- 1. Create a staging table for importing raw Census 2020 block-level data.
+----------------------------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
 
@@ -31,9 +45,9 @@ CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
 );
 GO
 
---------------
--- Bulk Insert
---------------
+---------------------------------------------------------------
+-- 2. Bulk insert the combined RESAGEBURB2020_ALL_TAB.csv file.
+---------------------------------------------------------------
 BULK INSERT INEGI_Censo_2020_AGEB_Staging
 FROM 'D:\Postal Codes Databases\Mexico MX\INEGI.org.mx\Censos 2020\Tabulados AGEB Manzana\RESAGEBURB2020_ALL_TAB.csv'
 WITH (
@@ -46,9 +60,9 @@ WITH (
 GO
 
 
-------------------------------------------------------------------------
--- Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Dwelling)
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
+-- 3. Create the final INEGI_Censo_2020_AGEB table with modeled fields.
+-----------------------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
 CREATE TABLE INEGI_Censo_2020_AGEB (
@@ -62,9 +76,9 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
 );
 GO
 
-----------------------------------------
--- Copy staging to INEGI_Censo_2020_AGEB
-----------------------------------------
+----------------------------------------------------------------
+-- 4. Transform and load data from staging into the final table.
+----------------------------------------------------------------
 INSERT INTO INEGI_Censo_2020_AGEB (
     CVEGEO, -- CVEGEO de 16 dígitos (AGEB) concatenando ENTIDAD + MUN + LOC + AGEB + MZA
     State, 
@@ -85,24 +99,17 @@ SELECT
 FROM INEGI_Censo_2020_AGEB_Staging;
 GO
 
-
-
---------
--- Count
---------
+---------------------------------------------------------------
+-- 5. Validate record count and CVEGEO length is 16 characters.
+---------------------------------------------------------------
 
 SELECT COUNT(*) AS Records_Written FROM INEGI_Censo_2020_AGEB;
 
-----------------------
--- CVEGEO is correct ?
-----------------------
+SELECT TOP 20 CVEGEO, LEN(CVEGEO) as Len FROM INEGI_Censo_2020_AGEB;
 
-SELECT TOP 20 CVEGEO, LEN(CVEGEO) as Len
-FROM INEGI_Censo_2020_AGEB;
-
------------------
--- Delete staging
------------------
+-----------------------------
+-- 6. Drop the staging table.
+-----------------------------
 
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
