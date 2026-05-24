@@ -27,7 +27,7 @@ D:\INEGI\Census_2020
 
 ### IMPORTANT
 
-In left Panel when select a state: Aguascalientes for example, you will see a gray CSV button, that download COMPLETE Census data. Do not use that, follow steps below.
+In left Panel when select a state: Aguascalientes for example, you will see a gray CSV button, that download COMPLETE Census data. Do not use that, follow steps below.  
 (if needed, you can download that, we have a specific Power Shell script can use complete CSV files and extract specific additional fields for other purposes).
 
 #### Download
