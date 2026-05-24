@@ -94,13 +94,16 @@ In right panel are select:
 
 ### Concatenate All files
 
-Concatenate all state files into: RESAGEBURB2020_ALL_TAB.csv with the script eblow.
+Concatenate all state files with the script below:
+
+*Concatenate_RESAGEBURB2020_TAB.ps1*
+
+Result file: **RESAGEBURB2020_ALL_TAB.csv**
 
 - Encoding: UTF-8 no BOM
 - TAB separated values
 - Replace all values * asterisk to "" (empty) as they are N/A data and must become NULL in SQL
 
-**Concatenate_RESAGEBURB2020_TAB.ps1**
 
 ```powershell
 # Force the script to run in its own directory
