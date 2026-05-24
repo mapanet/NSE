@@ -193,6 +193,7 @@ Edit it to verify data is:
 SQL table **INEGI_Censo_2020_AGEB** with this fields and primaru key CVEGEO  
 
 |Field|Type | Description | Key |
+|------|-------------|--------------------------------------------------------|-----------|
 |CVEGEO| varchar(16) |CVEGEO 16 dígits (AGEB) ENTIDAD + MUN + LOC + AGEB + MZA|PRIMARY KEY|
 |State| nvarchar(85) |State name||
 |Municipality| nvarchar(85) |Municipality||
