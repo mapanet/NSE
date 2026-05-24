@@ -309,7 +309,7 @@ SELECT TOP (20) CVEGEO, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE_LABEL, TOTAL FROM
 | 0100100010182 | 345 | 187    | 63  | 46      | 13     | 6   | 0   | A/B       | 660    |
 | 0100100010229 | 25  | 36     | 14  | 20      | 9      | 7   | 0   | C+        | 111    |
 
-This table is the official AMAI source for the *NSE calculation steps*.  
+This table is the official AMAI source for the **NSE calculation steps**.  
 
 
 
