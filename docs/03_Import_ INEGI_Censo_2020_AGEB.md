@@ -148,7 +148,7 @@ Write-Host "Done. Combined TSV created at:"
 Write-Host $outputFile
 ```
 
-## 3.1 — The resulting file structure:
+## 3.1 — The resulting file
 
 Edit RESAGEBURB2020_ALL.csv file to verify data  
 
