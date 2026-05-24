@@ -292,7 +292,7 @@ DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
 ```
 
-### Results
+### Validation results
 
 Records_Written: **863069**
 
@@ -322,5 +322,7 @@ Records_Written: **863069**
 ### Full script
 
 [01.0_AGEB_CreateTable.sql](../scripts/SQL/Censo_2020/01.0_AGEB_CreateTable.sql)
+
+
 
 
