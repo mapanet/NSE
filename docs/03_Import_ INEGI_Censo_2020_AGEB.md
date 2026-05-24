@@ -190,9 +190,9 @@ Edit it to verify data is:
 -- We use a temporary Staging table to import the date, then transfor it to modeled INEGI_Censo_2020_AGEB.
 #### Expected results
 
-SQL table **INEGI_Censo_2020_AGEB** with this fields and primaru key CVEGEO
+SQL table **INEGI_Censo_2020_AGEB** with this fields and primaru key CVEGEO  
 
-| Field | Type | Description | Key |
+|Field|Type | Description | Key |
 |CVEGEO| varchar(16) |CVEGEO 16 dígits (AGEB) ENTIDAD + MUN + LOC + AGEB + MZA|PRIMARY KEY|
 |State| nvarchar(85) |State name||
 |Municipality| nvarchar(85) |Municipality||
