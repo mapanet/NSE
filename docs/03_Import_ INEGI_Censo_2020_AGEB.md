@@ -107,7 +107,7 @@ Concatenate all state files into: RESAGEBURB2020_ALL_TAB.csv with the script ebl
 Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
 
 # Path where the 32 "RESAGEBURB2020 - **NN** Name .csv" files are located
-$inputFolder = "D:\Postal Codes Databases\Mexico MX\INEGI.org.mx\Censos 2020\Tabulados AGEB Manzana"
+$inputFolder = "D:\INEGI\Census_2020"
 
 # Final combined output file CSV (TSV)
 $outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL_TAB.csv"
