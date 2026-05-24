@@ -47,7 +47,7 @@ In right panel are select:
 - Go back to previous page with browser <= button and select the next state.
 
 
-#### Verify you are all 32 files in D:\INEGI\Census_2020
+#### Verify you have all 32 states files in D:\INEGI\Census_2020
 
 | File name - State code, State name |
 |--------------------------------------|
