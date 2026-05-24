@@ -4,7 +4,7 @@ This private repository documents the technical pipeline for calculating the AMA
 
 - AMAI 2024 (NSE by AGEB)
 - INEGI Marco Geoestadístico 2025 (AGEB geometries)
-- INEGI Census 2020 (population and households at dwellings level)
+- INEGI Census 2020 (population and households at dwelling level)
 - INEGI DCAH 2023 neighborhoods (colonias)
 - Spatial weighting from AGEB geometries → neighborhoods geometries (colonia) 
 
