@@ -84,7 +84,7 @@ From this new layer, export to CSV as:
 | CVE_LOC  | Locality code |
 | CVE_AGEB | AGEB code |
 | CVEGEO   | Full geographic key |
-| AMBITO   | Urban / Rural |
+| AMBITO   | Urbano / Rural |
 
 If you edit the CSV you should see something like this:
 
