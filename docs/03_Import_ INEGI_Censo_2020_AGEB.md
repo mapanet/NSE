@@ -94,9 +94,9 @@ In right panel are select:
 
 ### Concatenate All files
 
-Concatenate all state files with the script below:
+Concatenate all state files
 
-*Concatenate_RESAGEBURB2020_TAB.ps1*
+Power Shell Script: **Concatenate_RESAGEBURB2020_TAB.ps1**
 
 Result file: **RESAGEBURB2020_ALL_TAB.csv**
 
