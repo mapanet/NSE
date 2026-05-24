@@ -5,12 +5,7 @@ This dataset contains:
 Census 2020 data at the block block level (AGEB and MZA).  
 By aggregating blocks, we can obtain **Population** and **Residences** per AGEB, City, Municaplity, State.  
 
-If needed later, we can compute:
-
-ENTIDAD,NOM_ENT,MUN,NOM_MUN,LOC,NOM_LOC,AGEB,MZA,POBTOT,VIVTOT,TVIVHAB
-
-**Residences_In_Use = VIVTOT – TVIVHAB**  
-(where TVIVHAB = habited dwellings)
+If needed later, we can compute: **Households_Not_In_Use** = Households – Households_in_use
 
 ## Prepare to Download Census 2020 data
 
