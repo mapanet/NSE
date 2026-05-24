@@ -151,7 +151,7 @@ Write-Host "Done. Combined TSV created at:"
 Write-Host $outputFile
 ```
 
-## Full Power Shell script
+### Full Power Shell script
 
 /scripts/powershell/Concatenate_RESAGEBURB2020_TAB.ps1
 
@@ -317,7 +317,7 @@ Records_Written: **863069**
 |2402800014156006|	16|
 |2402800014156007|	16|
 
-## Full script
+### Full script
 
 /scripts/SQL/Censo_2020/Step_1.0_Create_table_INEGI_Censo_2020_AGEB.sql
 
