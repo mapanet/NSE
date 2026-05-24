@@ -114,6 +114,7 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
     AMBITO     char(10)
 );
 ```
+
 ### Expected result
 
 Commands completed successfully.
@@ -137,6 +138,11 @@ WITH (
 );
 ```
 
+### Expected result
+
+(82283 rows affected)
+Completion time: 2026-05-24T18:16:03.7467723-05:00
+
 ## 2.5 Create Final Table: Boundaries_AGEB_2025
 
 ```sql
@@ -154,9 +160,13 @@ CREATE TABLE Boundaries_AGEB_2025 (
     geom        geometry,      -- EPSG:4326
     geog        geography,     -- EPSG:4326
     Population  int NULL,      -- will be filled later
-    Residences  int NULL       -- will be filled later
+    Dwellings   int NULL       -- will be filled later
 );
 ```
+### Expect results
+
+Commands completed successfully.
+Completion time: 2026-05-24T18:18:21.1765627-05:00
 
 ## 2.6 Insert Data from the Staging Table
 
@@ -178,7 +188,12 @@ SELECT
 FROM Boundaries_AGEB_2025_IMPORT;
 ```
 
-Finally, drop the staging table:
+### Expected results
+
+(82283 rows affected)
+Completion time: 2026-05-24T18:21:38.1908732-05:00
+
+## If all ok => Drop the staging table
 
 ```sql
 -------------------------
@@ -194,30 +209,55 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 ✅ Querys should return nothing
 
 ```sql
+-----------------------------------------
+-- 2.7 Geometry Validation and Correction
+-----------------------------------------
 SELECT ID, CVEGEO
 FROM Boundaries_AGEB_2025
 WHERE geom.STIsValid() = 0;
 ```
+### Expected results
+
+ID	CVEGEO
+None
+(all geometries are valid)
 
 ### Correct invalid geometries using MakeValid
 
 If query returns results, it indicates a problem that must be fixed. Then use the next step to correct them.
 
-1️⃣ Invalid geometries check
-This should return zero rows:
+1️⃣ Only if Invalid geometries run:
+This SQL should make all invalid to valid and return zero rows:
 
 ```sql
+-----------------------------------------------
+-- 1 Correct invalid geometries using MakeValid
+-----------------------------------------------
 UPDATE Boundaries_AGEB_2025
 SET geom = geom.MakeValid()
 WHERE geom.STIsValid() = 0;
 ```
 
-## 2.8 Create the geography Column
+### Expected results
+
+(0 rows affected)
+Completion time: 2026-05-24T18:32:20.6926452-05:00
+
+
+## 2.8 Copy geometry: geom column to geography: geog column
 
 ```sql
+-----------------------------------------------------------
+-- 2.8 Copy geometry: geom column to geography: geog column
+-----------------------------------------------------------
 UPDATE Boundaries_AGEB_2025
 SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 ```
+
+### Expected results
+
+(82283 rows affected)
+Completion time: 2026-05-24T18:38:41.5409824-05:00
 
 ### Validate geog:
 
@@ -225,22 +265,48 @@ SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 This should also return zero rows:
 
 ```sql
+------------------------------
+-- 2 - Missing geography check
+------------------------------
 SELECT ID
 FROM Boundaries_AGEB_2025
 WHERE geog IS NULL;
 ```
 
+### Expected results
+
+ID
+None
+(all geography has gemoetry)
+
 ## 2.9 Create Spatial Indexes
 
 ```sql
-CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geom 
-ON Boundaries_AGEB_2025(geom);
+-----------------------------
+-- 2.9 Create Spatial Indexes
+----------------------------
+CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geom
+ON dbo.Boundaries_AGEB_2025(geom)
+WITH (
+    BOUNDING_BOX = (-180, -90, 180, 90)
+);
 ```
+
+### Expected results
+
+Commands completed successfully.
+Completion time: 2026-05-24T18:47:16.7518921-05:00
 
 ```sql
 CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geog
 ON Boundaries_AGEB_2025(geog);
 ```
+
+### Expected results
+
+Commands completed successfully.
+Completion time: 2026-05-24T18:47:16.7518921-05:00
+
 
 ## 2.10 Final Result
 
@@ -250,13 +316,13 @@ The table `Boundaries_AGEB_2025` now contains:
 - Valid geometries
 - Complete CVEGEO
 - Urban/Rural scope
-- Population and Residences fields ready to be filled later
+- Population and Dwellings fields ready to be filled later
 
 It is used for:
 
-- Intersecting colonias with AGEB
+- Intersecting neighborhood (colonias) with AGEB geometries
 - Calculating area proportions
-- Weighting AMAI population by colonia
+- Weighting AMAI population by neighborhood (colonia)
 - Serving as the base for NSE calculation per Neighborhood (colonia)
 
 
