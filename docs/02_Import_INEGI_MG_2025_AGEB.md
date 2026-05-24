@@ -54,7 +54,7 @@ When loading `00a.shp` in QGIS, the layer contains the following fields:
 | CVE_LOC   | Locality code (4 digits)             |
 | CVE_AGEB  | AGEB code (4 digits)                 |
 | CVEGEO    | Full geographic key (13 digits)      |
-| AMBITO    | Urban / Rural                        |
+| AMBITO    | Urbano / Rural                       |
 | geom      | Geometry (Polygon / MultiPolygon)    |
 
 Total records: **82,263 AGEB**  
