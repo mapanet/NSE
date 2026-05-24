@@ -27,7 +27,7 @@ We will download from **INEGI** using data from **SCITEL** system
 URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
 Results by AGEB and MZA (AGEB area and urban block)
 
-### Working folder
+### Work folder
 
 D:\INEGI\Census_2020
 
@@ -38,7 +38,7 @@ D:\INEGI\Census_2020
 In left Panel at select state you will see a gray CSV button, that downloads COMPLETE data. Do not use that, follow steps below.  
 (if needed, you can download those, we have a specific PS script to extract specific fields for other purposes).
 
-#### Download
+#### Download procedure
 
 In right panel are select:
 
@@ -98,7 +98,9 @@ In right panel are select:
 
 Concatenate all 32 state files into a clean CSV readi to bulk import to SQL
 
-Expected result: **RESAGEBURB2020_ALL_TAB.csv**
+### Expected result
+
+**RESAGEBURB2020_ALL_TAB.csv**
 
 - Encoding: UTF-8 no BOM
 - TAB separated values
