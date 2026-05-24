@@ -6,7 +6,7 @@ This private repository documents the technical pipeline for calculating the AMA
 - INEGI Marco Geoestadístico 2025 (AGEB geometries)
 - INEGI Census 2020 (population and dwellings)
 - INEGI DCAH 2023 (colonias / neighborhoods)
-- Spatial weighting from AGEB → colonia
+- Spatial weighting from AGEB geometries → neighborhoods geometries (colonia) 
 
 The objective is to generate a final, reproducible, auditable, and standardized NSE dataset at the colonia level (Layer 6).
 
@@ -14,7 +14,7 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 
 ## 📁 Repository Structure
 
-- `/docs` — Step‑by‑step technical documentation (SQL, GIS, ETL)
+- `/docs` — Step‑by‑step technical documentation (SQL, GIS, ETL, OSM)
 - `/data` — CSV, SHP, and original source files (not public)
 - `/scripts` — SQL scripts, PowerShell utilities, Python scripts, automation
 - `/images` — Diagrams, maps, and reference figures
