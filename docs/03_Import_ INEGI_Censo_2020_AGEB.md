@@ -86,11 +86,11 @@ In right panel are select:
 
 ### Concatenate All files
 
-Concatenate all state files into: RESAGEBURB2020_ALL.csv with the next script.
+Concatenate all state files into: RESAGEBURB2020_ALL_TAB.csv with the next script.
 
 - Encoding: UTF-8 no BOM
 - TAB separated values
-- Replace all values with * asterisk to "" (empty), they are N/A data and must become NULL in SQL
+- Replace all values * asterisk to "" (empty) as they are N/A data and must become NULL in SQL
 
 ### Power Shell Concatenation script
 
@@ -101,13 +101,13 @@ Concatenate all state files into: RESAGEBURB2020_ALL.csv with the next script.
 Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
 
 # Path where the 32 "RESAGEBURB2020 - **NN** Name .csv" files are located
-$inputFolder = "D:\INEGI\Census_2020"
+$inputFolder = "D:\Postal Codes Databases\Mexico MX\INEGI.org.mx\Censos 2020\Tabulados AGEB Manzana"
 
 # Final combined output file CSV (TSV)
-$outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL.csv"
+$outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL_TAB.csv"
 
 # Get all files that start with RESAGEBURB2020
-$files = Get-ChildItem -Path $inputFolder -Filter "RESAGEBURB2020*.csv"
+$files = Get-ChildItem -Path $inputFolder -Filter "RESAGEBURB2020 - *.csv"
 
 # Validation
 if ($files.Count -eq 0) {
@@ -150,25 +150,7 @@ Edit RESAGEBURB2020_ALL.csv file to verify data
 - TAB delimited
 - No astersiks (*)
 
-### Standarize field names
-
-Change field names in CSV to INEGI standard codes and field names we use:
-
-| From | To | Changes | Description |
-|-------|-------|---------|---------------|
-|ENTIDAD|CVE_ENT|Renamed| State code |
-|NOM_ENT|NOM_ENT|| State name |
-|MUN|CVE_MUN|Renamed| Municiplality code |
-|NOM_MUN|| Municiplaity name |
-|LOC|CVE_LOC|Renamed| City code |
-|NOM_LOC|| City/Place name |
-|AGEB|| AGEB code |
-|MZA|| Dweling code |
-|POBTOT|| Population |
-|VIVTOT|| Residences |
-|TVIVHAB|| Residences habited |
-
-|CVE_ENT|NOM_ENT|CVE_MUN|NOM_MUN|CVE_LOC|NOM_LOC|AGEB|MZA|POBTOT|VIVTOT|TVIVHAB|
+|ENTIDAD|NOM_ENT|CVE_MUN|NOM_MUN|CVE_LOC|NOM_LOC|AGEB|MZA|POBTOT|VIVTOT|TVIVHAB|
 |-------|-------|---|-------|---|-------|----|---|------|------|-------|
 01|Aguascalientes|000|Total de la entidad Aguascalientes|0000|Total de la entidad|0000|000|1425607|463972|386671|
 01|Aguascalientes|001|Aguascalientes|0000|Total del municipio|0000|000|948990|313256|266942|
@@ -187,38 +169,31 @@ Change field names in CSV to INEGI standard codes and field names we use:
 
 ## 3.2 — Import CSV from into SQL:
 
-### Step 1.0 Create table INEGI_Censo_2020_AGEB at block level (manzana)
-
-SUMMARY: We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Hoseholds up to the AGEB and dwellings level.
-This dataset is used later, in calculation NSE Step 4.9 to update Population and Residences at Neighborhood (Colonia) level using weighted aggregation.
-It can be used also used with aggregation at any level, AGEB, City, Municipality, State.
-
-Table: **INEGI_Censo_2020_AGEB**
-
-#### Import `D:\INEGI\Census_2020\RESAGEBURB2020_ALL.csv`
-
-- We use a temporary Staging table because INEGI_Censo_2020_AGEB includes an ID column.
-- Once imported, we will copy the stagging into INEGI_Censo_2020_AGEB and concatenate CVEGEO.
-
-#### Create staging table 
-Since INEGI_Censo_2020_AGEB has an ID field, we can not bulk import straight the CSV 
-(unless we add a blank field in the CSV at begining, which we didn't) 
-
-We will standarize TO INEGI field names here as:
-
-
-
-
 ```sql
+-- Census 2020 AGEB Step 1.0 Create table INEGI_Censo_2020_AGEB (block level / manzana).
+
+-- SUMMARY: We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Hoseholds up to the AGEB and dwellings level.
+-- This dataset is used later, in calculation NSE Step 4.9 to update Population and Residences at Neighborhood (Colonia) level using weighted aggregation.
+-- It can be used also used with aggregation at any level, AGEB, City, Municipality, State.
+
+-- We use a temporary Staging table because INEGI_Censo_2020_AGEB includes an ID column.
+-- Once imported, we will copy the tagging into INEGI_Censo_2020_AGEB and concatenate CVEGEO.
+
+USE INMO    -- Your DB
+GO
+
+-----------------------
+-- Create staging table 
+-----------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
 
 CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
-    CVE_ENT varchar(2) NOT NULL,
+    ENTIDAD varchar(2) NOT NULL,
     NOM_ENT nvarchar(100) NULL,
-    CVE_MUN varchar(3) NOT NULL,
+    MUN varchar(3) NOT NULL,
     NOM_MUN nvarchar(100) NULL,
-    CVE_LOC varchar(4) NOT NULL,
+    LOC varchar(4) NOT NULL,
     NOM_LOC nvarchar(150) NULL,
     AGEB varchar(4) NOT NULL,
     MZA varchar(3) NOT NULL,
@@ -228,10 +203,11 @@ CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
 );
 GO
 
+--------------
 -- Bulk Insert
-
+--------------
 BULK INSERT INEGI_Censo_2020_AGEB_Staging
-FROM 'D:\INEGI\Census_2020\RESAGEBURB2020_ALL.csv'
+FROM 'D:\Postal Codes Databases\Mexico MX\INEGI.org.mx\Censos 2020\Tabulados AGEB Manzana\RESAGEBURB2020_ALL_TAB.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
@@ -241,15 +217,15 @@ WITH (
 );
 GO
 
+------------------------------------------------------------------------
 -- Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Dwelling)
-
-```sql
+------------------------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
 
 CREATE TABLE INEGI_Censo_2020_AGEB (
     ID bigint IDENTITY(1,1) PRIMARY KEY,
-    CVEGEO varchar(16) NULL,  -- CVEGEO of 16 digits (AGEB + MZA) concatenating CVE_ENT + CVE_MUN + CVE_LOC + AGEB + MZA
+    CVEGEO varchar(16) NULL, -- -- CVEGEO de 16 dígitos (AGEB) concatenando ENTIDAD + MUN + LOC + AGEB + MZA
 
     CVE_ENT varchar(2) NOT NULL,
     NOM_ENT nvarchar(100) NULL,
@@ -268,10 +244,10 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
     TVIVHAB int NULL,
 );
 GO
-```
 
-#### Copy staging to INEGI_Censo_2020_AGEB
-
+----------------------------------------
+-- Copy staging to INEGI_Censo_2020_AGEB
+----------------------------------------
 INSERT INTO INEGI_Censo_2020_AGEB (
     CVE_ENT, NOM_ENT, CVE_MUN, NOM_MUN, CVE_LOC, NOM_LOC,
     AGEB, MZA, POBTOT, VIVTOT, TVIVHAB
@@ -281,15 +257,38 @@ SELECT
     AGEB, MZA, POBTOT, VIVTOT, TVIVHAB
 FROM INEGI_Censo_2020_AGEB_Staging;
 GO
-```
 
-#### Concatenate CVEGEO (16 digits) on INEGI_Censo_2020_AGEB table
-
-```sql
+---------------------------------
+-- Concatenate CVEGEO (16 digits)
+---------------------------------
 UPDATE INEGI_Censo_2020_AGEB
-SET CVEGEO = ENTIDAD + MUN + LOC + AGEB + MZA;
+SET CVEGEO = CVE_ENT + CVE_MUN + CVE_LOC + AGEB + MZA;
+GO
+
+--------
+-- Count
+--------
+
+SELECT COUNT(*) FROM INEGI_Censo_2020_AGEB;
+
+----------------------
+-- CVEGEO is correct ?
+----------------------
+
+SELECT TOP 20 CVEGEO, LEN(CVEGEO) as Len
+FROM INEGI_Censo_2020_AGEB;
+
+-----------------
+-- Delete staging
+-----------------
+
+DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
 ```
+
+### Results
+
+
 
 
 
