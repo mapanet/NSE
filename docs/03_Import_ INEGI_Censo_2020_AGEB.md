@@ -25,7 +25,7 @@ Census 2020 data at the block block level (AGEB and MZA).
 We will download from **INEGI** using data from **SCITEL** system
 
 URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
-(Results by AGEB and MZA (AGEB area and urban block "Manzana")
+Results by AGEB and MZA (AGEB area and urban block)
 
 ### Working folder
 
