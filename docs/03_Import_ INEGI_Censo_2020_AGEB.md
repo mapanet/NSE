@@ -194,14 +194,14 @@ SQL table **INEGI_Censo_2020_AGEB** with primary key CVEGEO
 
 |Field|Type | Description | Key |
 |------|-------------|--------------------------------------------------------|-----------|
-|CVEGEO| varchar(16) |CVEGEO 16 dígits (AGEB) ENTIDAD + MUN + LOC + AGEB + MZA|PRIMARY KEY|
+|CVEGEO| varchar(16) |CVEGEO 16 dígits: ENTIDAD + MUN + LOC + AGEB + MZA|PRIMARY KEY|
 |State| nvarchar(85) |State name||
 |Municipality| nvarchar(85) |Municipality name||
 |City| nvarchar(110) |City name||
 |Population| int |Total Population||
 |Hoseholds| int |Total Hoseholds||
 |Hoseholds_in_use| int |Hoseholds occupied||
-
+    
     
 ```sql
 USE INMO    -- Your DB
