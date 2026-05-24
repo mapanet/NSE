@@ -155,7 +155,6 @@ Write-Host $outputFile
 
 ### Full Power Shell script
 
-/scripts/powershell/Concatenate_RESAGEBURB2020_TAB.ps1
 [Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/powershell/Concatenate_RESAGEBURB2020_TAB.ps1)
 
 ## 3.1 — Check resulting file
