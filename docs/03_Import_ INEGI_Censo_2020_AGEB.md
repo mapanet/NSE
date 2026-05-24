@@ -156,6 +156,7 @@ Write-Host $outputFile
 ### Full Power Shell script
 
 /scripts/powershell/Concatenate_RESAGEBURB2020_TAB.ps1
+[Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/powershell/Concatenate_RESAGEBURB2020_TAB.ps1)
 
 ## 3.1 — Check resulting file
 
@@ -321,7 +322,6 @@ Records_Written: **863069**
 
 ### Full script
 
-/scripts/SQL/Censo_2020/Step_1.0_Create_table_INEGI_Censo_2020_AGEB.sql
 [01.0_AGEB_CreateTable.sql](../scripts/SQL/Censo_2020/01.0_AGEB_CreateTable.sql)
 
 
