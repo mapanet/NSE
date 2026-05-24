@@ -171,6 +171,9 @@ Note: TAB is used for my personal convenience, you can comma delimiter, just cor
 ## 1.8 Create Final AMAI SQL Table in MS SQL Server 2022
 
 ```sql
+--------------------------------------------------------
+-- 1.8 Create Final AMAI SQL Table in MS SQL Server 2022
+--------------------------------------------------------
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -202,11 +205,19 @@ CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
 GO
 ```
 
+### Expected result
+
+Commands completed successfully.
+Completion time: 2026-05-24T17:09:53.0742807-05:00
+
 ## 1.9 Import CSV into MS SQL Server 2022
 
 Make sure the directory path matches where you saved the AMAI CSV file.
 
 ```sql
+-----------------------------------------
+-- 1.9 Import CSV into MS SQL Server 2022
+-----------------------------------------
 BULK INSERT NSE_AMAI_2024_AGEB
 FROM 'D:\AMAI\NSE_AMAI_2024_AGEB_IMPORT.csv'
 WITH (
@@ -217,36 +228,78 @@ WITH (
 );
 ```
 
+### Expected result
+
+(246048 rows affected)
+Completion time: 2026-05-24T17:13:16.8534671-05:00
+
 ## 1.10 Post‑Import Validations
 
 ### Validate duplicate CVEGEO values
 
 ```sql
-SELECT CVEGEO, COUNT(*)
+-------------------------------
+-- 1.10 Post‑Import Validations
+-------------------------------
+
+-----------------------------------
+-- Validate duplicate CVEGEO values
+-----------------------------------
+SELECT CVEGEO, COUNT(*) As Duplicate_CVEGEO
 FROM NSE_AMAI_2024_AGEB
 GROUP BY CVEGEO
 HAVING COUNT(*) > 1;
 ```
 
+#### Exprected result
+
+CVEGEO Duplicate_CVEGEO
+None
+
 ### Validate that TOTAL = sum of socioeconomic levels
 
 ```sql
+----------------------------------------------------
+-- Validate that TOTAL = sum of socioeconomic levels
+----------------------------------------------------
 SELECT *
 FROM NSE_AMAI_2024_AGEB
 WHERE TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
 ```
 
+#### Exprected result
+
+CVEGEO	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE_LABEL	TOTAL
+None
+(this means there is no difference between total vs sum of components)
+
 ### Validate correct CVEGEO length (13 characters)
 
 ```sql
+-------------------------------------------------
+-- Validate correct CVEGEO length (13 characters)
+-------------------------------------------------
 SELECT *
 FROM NSE_AMAI_2024_AGEB
 WHERE LEN(CVEGEO) <> 13;
 ```
 
+#### Exprected result
+
+CVEGEO	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE_LABEL	TOTAL
+None
+(this means all CVEGEO are 13 characters: EEMMMLLLLAAAA)
+
 ## 1.11 Final Result
 
 Your final table IN SQL should look like this:
+
+```sql
+-------------------
+-- Show top 20 rows
+-------------------
+SELECT TOP (20) CVEGEO, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE_LABEL, TOTAL FROM dbo.NSE_AMAI_2024_AGEB
+```
 
 | CVEGEO        | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E   | NSE_LABEL | TOTAL |
 |---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|
