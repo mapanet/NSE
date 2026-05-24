@@ -49,7 +49,7 @@ In right panel are select:
 
 ### Verify you are all 32 files in D:\INEGI\Census_2020
 
-| File name - (State code, State name) |
+| File name - State code, State name |
 |--------------------------------------|
 |RESAGEBURB2020 - 01 Aguascalientes.csv|
 |RESAGEBURB2020 - 02 Baja California.csv|
