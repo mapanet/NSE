@@ -322,5 +322,6 @@ Records_Written: **863069**
 ### Full script
 
 /scripts/SQL/Censo_2020/Step_1.0_Create_table_INEGI_Censo_2020_AGEB.sql
+[01.0_AGEB_CreateTable.sql](../scripts/SQL/Censo_2020/01.0_AGEB_CreateTable.sql)
 
 
