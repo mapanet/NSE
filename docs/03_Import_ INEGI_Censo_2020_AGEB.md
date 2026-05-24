@@ -94,7 +94,7 @@ In right panel are select:
 
 ### Concatenate All files
 
-## Purpose
+#### Purpose
 
 Concatenate all 32 state files into a clean CSV readi to bulk import to SQL
 
