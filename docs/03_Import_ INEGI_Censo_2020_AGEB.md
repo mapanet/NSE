@@ -98,7 +98,11 @@ Concatenate all state files
 
 Power Shell Script: **Concatenate_RESAGEBURB2020_TAB.ps1**
 
-Result file: **RESAGEBURB2020_ALL_TAB.csv**
+## Full script
+
+/scripts/powershell/Concatenate_RESAGEBURB2020_TAB.ps1
+
+Expected result: **RESAGEBURB2020_ALL_TAB.csv**
 
 - Encoding: UTF-8 no BOM
 - TAB separated values
@@ -180,6 +184,10 @@ Edit RESAGEBURB2020_ALL_TAB.csv file to verify data is:
 -- It can be used also used with aggregation to update Population and Hoseholds at City, Municipality, State levels.
 
 -- We use a temporary Staging table to import the date, then transfor it to modeled INEGI_Censo_2020_AGEB.
+
+## Full script
+
+/scripts/SQL/Censo_2020/Step_1.0_Create_table_INEGI_Censo_2020_AGEB.sql
 
 ```sql
 USE INMO    -- Your DB
