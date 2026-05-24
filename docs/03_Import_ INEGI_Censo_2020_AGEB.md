@@ -86,9 +86,11 @@ In right panel are select:
 
 ### Concatenate All files
 
-Concatenate all RESAGEBURB2020 state files into one file: RESAGEBURB2020_ALL.csv
-Result with be a UTF-8 no BOM, TAB separated values to import to MS SQL 2022
-Replace all values with * asterisk by "" (empty) as they are N/A, so when we import they become NULL
+Concatenate all state files into: RESAGEBURB2020_ALL.csv
+
+- Encoding: UTF-8 no BOM
+- TAB separated values
+- Replace all values with * asterisk to "" (empty), they are N/A data and must become NULL in SQL
 
 ### Concatenation script
 
@@ -142,7 +144,7 @@ Write-Host $outputFile
 
 ## 3.1 — The resulting file structure:
 
-Edit RESAGEBURB2020_ALL.csv file to verify you have this info separated by TAB
+Edit RESAGEBURB2020_ALL.csv file to verify data is with proper enconding, TAB, no astersiks (*)
 Powershell script replaced all values with asterkisk (*) to empty so when we import N/A values result in NULL
 
 |ENTIDAD|NOM_ENT|MUN|NOM_MUN|LOC|NOM_LOC|AGEB|MZA|POBTOT|VIVTOT|TVIVHAB|
