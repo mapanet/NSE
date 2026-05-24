@@ -148,7 +148,6 @@ The CSV file should look like this (TAB‑delimited):
 Save as:
 
 **NSE_AMAI_2024_AGEB_IMPORT.csv**  
-(UTF‑8, TAB‑delimited)
 
 ### Export settings
 
@@ -165,8 +164,8 @@ If necessary, edit the CSV with EditPad Pro or Notepad++ to verify:
 - UTF‑8 without BOM  
 - TAB delimiter  
 
-Note: TAB is used for my personal convenience, you can comma delimiter, just correct BULK INSERT to the appropriate FIELDTERMINATOR = ','.
-(the reason always I use TAB since some Mexican data come with " in names, some also can have only one " so with CSV as TAB is easy to debug).
+Note: I use TAB for my personal convenience, you can comma delimiter, just correct BULK INSERT to the appropriate FIELDTERMINATOR = ','.
+(the reason always I use TAB since some Mexican data come with " in names, some also may have only one " so with with TAB is easy to debug).
 
 ## 1.8 Create Final AMAI SQL Table in MS SQL Server 2022
 
