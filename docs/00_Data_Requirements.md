@@ -31,6 +31,7 @@ Each record is associated with a **CVEGEO (13‑digit AGEB key)**.
 ---
 
 ## 2. INEGI Marco Geoestadístico 2025 (AGEB Geometries)
+#### (INEGI Geo‑Statistical Framework 2025)
 
 **Source:** INEGI MG 2025  
 **Description:**  
