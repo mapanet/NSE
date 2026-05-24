@@ -94,13 +94,9 @@ In right panel are select:
 
 ### Concatenate All files
 
-Concatenate all state files
+## Purpose
 
-Power Shell Script: **Concatenate_RESAGEBURB2020_TAB.ps1**
-
-## Full script
-
-/scripts/powershell/Concatenate_RESAGEBURB2020_TAB.ps1
+Concatenate all 32 state files into a clean CSV readi to bulk import to SQL
 
 Expected result: **RESAGEBURB2020_ALL_TAB.csv**
 
@@ -155,6 +151,10 @@ Write-Host "Done. Combined TSV created at:"
 Write-Host $outputFile
 ```
 
+## Full Power Shell script
+
+/scripts/powershell/Concatenate_RESAGEBURB2020_TAB.ps1
+
 ## 3.1 — Check resulting file
 
 Edit RESAGEBURB2020_ALL_TAB.csv file to verify data is: 
@@ -184,10 +184,6 @@ Edit RESAGEBURB2020_ALL_TAB.csv file to verify data is:
 -- It can be used also used with aggregation to update Population and Hoseholds at City, Municipality, State levels.
 
 -- We use a temporary Staging table to import the date, then transfor it to modeled INEGI_Censo_2020_AGEB.
-
-## Full script
-
-/scripts/SQL/Censo_2020/Step_1.0_Create_table_INEGI_Censo_2020_AGEB.sql
 
 ```sql
 USE INMO    -- Your DB
@@ -321,6 +317,8 @@ Records_Written: **863069**
 |2402800014156006|	16|
 |2402800014156007|	16|
 
+## Full script
 
+/scripts/SQL/Censo_2020/Step_1.0_Create_table_INEGI_Censo_2020_AGEB.sql
 
 
