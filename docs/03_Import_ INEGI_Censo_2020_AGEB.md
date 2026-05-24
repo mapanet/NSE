@@ -25,9 +25,9 @@ D:\INEGI\Census_2020
 
 ## 3.1 — Download SCITEL Data
 
-### IMPORTANT
+#### IMPORTANT
 
-In left Panel at select a state you will see a gray CSV button, that downloads COMPLETE data. Do not use that, follow steps below.  
+In left Panel at select state you will see a gray CSV button, that downloads COMPLETE data. Do not use that, follow steps below.  
 (if needed, you can download those, we have a specific PS script to extract specific fields for other purposes).
 
 #### Download
