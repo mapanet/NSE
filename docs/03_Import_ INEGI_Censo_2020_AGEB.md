@@ -1,6 +1,6 @@
-# 3 — INEGI_Censo_2020_AGEB (Census 2020)
+# 3 — INEGI Census 2020
 
-This dataset contains:
+Dataset will contain:
 
 Census 2020 data at the block block level (AGEB and MZA).  
 
