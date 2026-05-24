@@ -132,7 +132,7 @@ This prevents errors in:
 
 ---
 
-## 1.7 Export from Excel to CSV (for SQL import)
+## 1.7 Export from Excel to CSV (TSV)
 
 The CSV file should look like this (TAB‑delimited):
 
@@ -165,7 +165,8 @@ If necessary, edit the CSV with EditPad Pro or Notepad++ to verify:
 - UTF‑8 without BOM  
 - TAB delimiter  
 
-Note: TAB is used for convenience, but comma (,) may be used if BULK INSERT is configured with the appropriate FIELDTERMINATOR.
+Note: TAB is used for my personal convenience, you can comma delimiter, just correct BULK INSERT to the appropriate FIELDTERMINATOR = ','.
+(the reason always I use TAB since some Mexican data come with " in names, some also can have only one " so with CSV as TAB is easy to debug).
 
 ## 1.8 Create Final AMAI SQL Table in MS SQL Server 2022
 
