@@ -39,12 +39,12 @@ In right panel are select:
 3. Check: Vivenda   => Total de viviendas (Dewlling Total) 
 4. Check: Vivenda   => Total de viviendas habitadas (Dewlling Total in use)
 
-Repeat the process below until you export the 32 states:
+#### Repeat this process below until you export the 32 states:
 
-1. In left Panel select a state (example: Aguascalientes)
-2. Bottom-right use black button **Generar Consulta**, and you will see the results in a table.
-3. At bottom a black button **Exportar a** (Export to) select **FORMAT CVS** and save the file in D:\INEGI\Census_2020
-4. Go back to previous page with browser <= button and select the next state.
+- In left Panel select a state (example: Aguascalientes)
+- Bottom-right use black button **Generar Consulta**, and you will see the results in a table.
+- At bottom a black button **Exportar a** (Export to) select **FORMAT CVS** and save the file in D:\INEGI\Census_2020
+- Go back to previous page with browser <= button and select the next state.
 
 
 ### Verify you are all 32 files in D:\INEGI\Census_2020
