@@ -65,10 +65,12 @@ In right panel are select:
 - Bottom-center use black button **Exportar a** (Export to) select **FORMAT** CVS and save the file in your D:\INEGI\Census_2020
 - Go back to previous page with browser <= button and select the next state.
 
-Check values screen looks like this image:
-[<img src="/docs/images/Censo_2020_2.png" width="400">](/docs/images/Censo_2020_2.png)
-Select CSV format and save looks like this image:
-[<img src="/docs/images/Censo_2020_4.png" width="400">](/docs/images/Censo_2020_4.png)
+Check values screen looks like this:
+[<img src="/docs/images/Censo_2020_2.png" width="300" align="top">](/docs/images/Censo_2020_2.png)
+
+Select CSV format and save looks like this:
+[<img src="/docs/images/Censo_2020_4.png" width="300" align="top">](/docs/images/Censo_2020_4.png)
+
 
 #### Verify you have all 32 states files in D:\INEGI\Census_2020
 
