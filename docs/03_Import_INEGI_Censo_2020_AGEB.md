@@ -330,13 +330,6 @@ SELECT COUNT(*) AS Records_Written FROM INEGI_Censo_2020_AGEB;
 
 SELECT TOP 20 CVEGEO, LEN(CVEGEO) as Len
 FROM INEGI_Censo_2020_AGEB;
-
------------------
--- Delete staging
------------------
-
-DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
-GO
 ```
 
 ### Expect results
@@ -366,10 +359,16 @@ Records_Written: **863069**
 |2402800014156006|	16|
 |2402800014156007|	16|
 
+### Delect staging
 
+```sql
+-----------------
+-- Delete staging
+-----------------
 
-
-
+DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
+GO
+```
 
 
 
