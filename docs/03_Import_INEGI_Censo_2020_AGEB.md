@@ -256,8 +256,8 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
     Municipality nvarchar(85) NULL,
     City nvarchar(110) NULL,
     Population int NULL,
-    Hoseholds int NULL,
-    Hoseholds_in_use int NULL,
+    Dwellings int NULL,
+    Occupied_Dwellings int NULL,
 );
 GO
 
@@ -270,8 +270,8 @@ INSERT INTO INEGI_Censo_2020_AGEB (
     Municipality, 
     City, 
     Population, 
-    Hoseholds, 
-    Hoseholds_in_use
+    Dwellings, 
+    Occupied_Dwellings
 )
 SELECT
     ENTIDAD + MUN + LOC + AGEB + MZA As CVEGEO, 
