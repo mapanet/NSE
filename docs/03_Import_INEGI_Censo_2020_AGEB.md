@@ -31,7 +31,7 @@ Result table will be: INEGI_Censo_2020_AGEB
 
 #### Working folder
 
-D:\INEGI\Censo_2020
+D:\INEGI\
 
 ## Prepare to Download Census 2020 data
 
@@ -40,7 +40,7 @@ We will download from **INEGI** using data from **SCITEL** system
 URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
 Results by AGEB and MZA (AGEB area and urban block)
 
-[<img src="/docs/images/Censo_2020_1.png" width="1000">](/docs/images/Censo_2020_1.png)
+[<img src="/docs/images/_1.png" width="1000">](/docs/images/Censo_2020_1.png)
 
 ## 3.1 — Download SCITEL Data
 
