@@ -266,18 +266,6 @@ Completion time: 2026-05-24T22:09:13.9363948-05:00
 
 ## 3.4 — Copy the data from Staging table to final table INEGI_Censo_2020_AGEB
 
-Here we will concatenate all codes into a since CVEGEO 16 digit codes and assign fields with final names in english.
-
-|Field|Type | Description | Key |
-|------|-------------|--------------------------------------------------------|-----------|
-|CVEGEO| varchar(16) |CVEGEO 16 dígits: ENTIDAD + MUN + LOC + AGEB + MZA|PRIMARY KEY|
-|State| nvarchar(85) |State name||
-|Municipality| nvarchar(85) |Municipality name||
-|City| nvarchar(110) |City name||
-|Population| int |Total Population||
-|Dwellings| int |Total Dwellings||
-|Occupied_Dwellings| int |Occupied Dwellings||
-
 ```sql
 ----------------------------------------
 -- Copy staging to INEGI_Censo_2020_AGEB
