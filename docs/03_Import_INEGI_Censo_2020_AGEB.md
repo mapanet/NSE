@@ -195,9 +195,13 @@ Edit it with EditPad Pro or Notepad to verify data is:
 We first create temporary Staging table to import the data as it comes from CSV.
 
 ```sql
------------------------
--- Create staging table 
------------------------
+---------------------------------
+-- 3.2 — Import CSV from into SQL
+---------------------------------
+
+-----------------------------
+-- 3.2.1 Create staging table 
+-----------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
 
@@ -216,9 +220,9 @@ CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
 );
 GO
 
---------------
--- Bulk Insert
---------------
+--------------------
+-- 3.2.2 Bulk Insert
+--------------------
 BULK INSERT INEGI_Censo_2020_AGEB_Staging
 FROM 'D:\INEGI\Census_2020\RESAGEBURB2020_ALL_TAB.csv'
 WITH (
@@ -236,12 +240,29 @@ GO
 (863069 rows affected)      
 Completion time: 2026-05-24T22:07:26.4095744-05:00   
 
+
 ## 3.3 — Create SQL table INEGI_Censo_2020_AGEB and copy data from staging table
 
+Here we will copy the staging data to final table but concatenating CVEGEO to a 16 digts code **CVEGEO** = ENTIDAD + MUN + LOC + AGEB + MZA
+
+|  Field  | Description |  Digits  |
+|---------|-------------|----------|
+| ENTIDAD | State code | 2 Digits  |
+| MUN     | Municiplaity code | 3 Digits |
+| LOC     | Locality code | 4 Digits |
+| AGEB    | AGEB area code | 4 Digits |
+| MZA     | Dwelling code | 3 Digits |
+
+And will be naming names fields in english: State, Muncipalyty and City names (NOM_ENT, NOM_MUN, NOM_LOC)
+
 ```sql
-----------------------------------------------------------------------------
--- Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Census Block)
-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- 3.3 — Create SQL table INEGI_Censo_2020_AGEB and copy data from staging table
+--------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------
+-- 3.3.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Census Block)
+----------------------------------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
 CREATE TABLE INEGI_Censo_2020_AGEB (
@@ -255,9 +276,9 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
 );
 GO
 
-----------------------------------------
--- Copy staging to INEGI_Censo_2020_AGEB
-----------------------------------------
+----------------------------------------------
+-- 3.3.2 Copy staging to INEGI_Censo_2020_AGEB
+----------------------------------------------
 INSERT INTO INEGI_Censo_2020_AGEB (
     CVEGEO, -- CVEGEO de 16 digits (Full AGEB Area) concatening codes: ENTIDAD + MUN + LOC + AGEB + MZA
     State, 
@@ -281,7 +302,7 @@ GO
 
 #### Expected results
 
-SQL INEGI_Censo_2020_AGEB table with this data:
+SQL INEGI_Censo_2020_AGEB table with 863069 records and CVEGEO unique key.
 
 ```sql
 ------------------------
