@@ -138,8 +138,8 @@ WITH (
 
 #### Expected result
 
-(82283 rows affected)
-Completion time: 2026-05-24T18:16:03.7467723-05:00
+(82283 rows affected)   
+Completion time: 2026-05-24T18:16:03.7467723-05:00   
 
 ## 2.5 Create Final Table: Boundaries_AGEB_2025
 
@@ -164,8 +164,8 @@ CREATE TABLE Boundaries_AGEB_2025 (
 
 #### Expect results
 
-Commands completed successfully.
-Completion time: 2026-05-24T18:18:21.1765627-05:00
+Commands completed successfully.   
+Completion time: 2026-05-24T18:18:21.1765627-05:00   
 
 ## 2.6 Insert Data from the Staging Table
 
@@ -189,8 +189,8 @@ FROM Boundaries_AGEB_2025_IMPORT;
 
 #### Expected results
 
-(82283 rows affected)
-Completion time: 2026-05-24T18:21:38.1908732-05:00
+(82283 rows affected)   
+Completion time: 2026-05-24T18:21:38.1908732-05:00   
 
 ## If all ok => Drop the staging table
 
@@ -218,9 +218,9 @@ WHERE geom.STIsValid() = 0;
 
 #### Expected results
 
-ID	CVEGEO
-None
-(all geometries are valid)
+ID	CVEGEO   
+None  
+(all geometries are valid)   
 
 ### Correct invalid geometries using MakeValid
 
@@ -240,8 +240,8 @@ WHERE geom.STIsValid() = 0;
 
 #### Expected results
 
-(0 rows affected)
-Completion time: 2026-05-24T18:32:20.6926452-05:00
+(0 rows affected)   
+Completion time: 2026-05-24T18:32:20.6926452-05:00   
 
 
 ## 2.8 Copy geometry: geom column to geography: geog column
@@ -256,8 +256,8 @@ SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 
 #### Expected results
 
-(82283 rows affected)
-Completion time: 2026-05-24T18:38:41.5409824-05:00
+(82283 rows affected)   
+Completion time: 2026-05-24T18:38:41.5409824-05:00   
 
 ### Validate geog:
 
@@ -275,9 +275,9 @@ WHERE geog IS NULL;
 
 #### Expected results
 
-ID
-None
-(all geography has gemoetry)
+ID  
+None  
+(all geography has gemoetry)  
 
 ## 2.9 Create Spatial Indexes
 
@@ -294,8 +294,8 @@ WITH (
 
 #### Expected results
 
-Commands completed successfully.
-Completion time: 2026-05-24T18:47:16.7518921-05:00
+Commands completed successfully.   
+Completion time: 2026-05-24T18:47:16.7518921-05:00  
 
 ```sql
 CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geog
@@ -304,8 +304,8 @@ ON Boundaries_AGEB_2025(geog);
 
 #### Expected results
 
-Commands completed successfully.
-Completion time: 2026-05-24T18:47:16.7518921-05:00
+Commands completed successfully.  
+Completion time: 2026-05-24T18:47:16.7518921-05:00   
 
 
 ## 2.10 Final Result
