@@ -2,8 +2,7 @@
 
 ## Brief Description
 
-This document describes the complete technical pipeline used to calculate the AMAI Socioeconomic Level (NSE) at the Neighborhood (Colonia) level, also known as Boundaries Layer 6.  
-The process integrates four official datasets:
+This document describes the complete technical pipeline used to calculate the AMAI Socioeconomic Level (NSE) at the Neighborhood (Colonia) level, also known as Boundaries Layer 6. The process integrates four official datasets:   
 
 - AMAI NSE 2024
 - INEGI Marco Geoestadístico 2025
