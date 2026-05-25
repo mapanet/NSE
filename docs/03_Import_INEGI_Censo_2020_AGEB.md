@@ -56,8 +56,8 @@ https://www.inegi.org.mx/app/scitel/Default?ev=10
 
 ### ⚠️ IMPORTANT — Do NOT use the gray CSV or XLSX buttons
 
-In the **left panel**, you will see **gray CSV and XLSX buttons**.  
-These export the **full dataset**, which contains many fields we do not need.
+In the **left panel**, you will see **gray CSV and XLSX** buttons.  
+These export the **full dataset**, which contains to many fields we do not need.
 
 We only want:
 
