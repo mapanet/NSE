@@ -157,7 +157,7 @@ Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
 # Path where the 32 "RESAGEBURB2020 - **NN** Name .csv" files are located
 $inputFolder = "D:\INEGI\Censo_2020"
 
-# Final combined output file CSV (TSV)
+# Final combined output file CSV
 $outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL_TAB.csv"
 
 # Get all files that start with RESAGEBURB2020
@@ -188,11 +188,11 @@ foreach ($file in $files) {
         $_ -replace "\*", "" -replace ",","`t"
     }
 
-    # Append to final TSV
+    # Append to final CSV
     Add-Content -Path $outputFile -Value $converted
 }
 
-Write-Host "Done. Combined TSV created at:"
+Write-Host "Done. Combined CSV created at:"
 Write-Host $outputFile
 ```
 
@@ -234,14 +234,14 @@ Example rows:
 
 ---
 
-# 3.3 — Import CSV (TSV) into SQL Server
+# 3.3 — Import CSV into SQL Server
 
-We first import the raw TSV into a **staging table**.  
+We first import the raw CSV into a **staging table**.  
 This table mirrors the structure of the SCITEL export.
 
 ```sql
 ---------------------------------
--- 3.3 — Import CSV (TSV) into SQL
+-- 3.3 — Import CSV into SQL
 ---------------------------------
 
 -----------------------------
