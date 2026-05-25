@@ -62,13 +62,13 @@ In right panel are select:
 
 - Left Panel select a state (example: Aguascalientes)
 - Bottom-right use => Black button **Generar Consulta** to generate the list of that state, you will see the results in a table).
-- Bottom-center use = > Black button **Exportar a** (Export to) select **CSV* and save the file in your D:\INEGI\Census_2020 folder.
+- Bottom-center use = > Black button **Exportar a** (Export to) select **CSV* and save the file in your D:\INEGI\Censo_2020 folder.
 - Go back to *previous page* with browser < button and select the next state.
 
 Results  
 [<img src="/docs/images/Censo_2020_3.png" width="1000">](/docs/images/Censo_2020_3.png)
 
-#### Verify you have all 32 states files in D:\INEGI\Census_2020
+#### Verify you have all 32 states files in D:\INEGI\Censo_2020
 
 | File name - State code, State name |
 |--------------------------------------|
@@ -168,7 +168,7 @@ Write-Host $outputFile
 
 ### Full PS script
 
-[Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/03_Census_2020/Concatenate_RESAGEBURB2020_TAB.ps1)
+[Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/03_Censo_2020/Concatenate_RESAGEBURB2020_TAB.ps1)
 
 ### Expected results
 
@@ -227,7 +227,7 @@ GO
 -- 3.2.2 Bulk Insert
 --------------------
 BULK INSERT INEGI_Censo_2020_AGEB_Staging
-FROM 'D:\INEGI\Census_2020\RESAGEBURB2020_ALL_TAB.csv'
+FROM 'D:\INEGI\Censo_2020\RESAGEBURB2020_ALL_TAB.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
