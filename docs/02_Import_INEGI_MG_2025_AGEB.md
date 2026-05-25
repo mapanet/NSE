@@ -277,7 +277,7 @@ WHERE geog IS NULL;
 
 ID  
 None  
-(all geography has gemoetry)  
+(all geography fields have a geometry)  
 
 ## 2.9 Create Spatial Indexes
 
