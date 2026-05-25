@@ -130,7 +130,7 @@ Example result:
 
 ---
 
-# 3.2 — Concatenate All Files into One Clean TSV
+# 3.2 — Concatenate All Files into One Clean CSV (TSV)
 
 ### Purpose
 Combine all 32 state CSV files into a single **UTF‑8 (no BOM)**, **TAB‑separated** file ready for SQL Server bulk import.
@@ -191,44 +191,57 @@ Write-Host "Done. Combined TSV created at:"
 Write-Host $outputFile
 ```
 
-### Full PS script
+---
+
+### Full PowerShell Script
+
+The full script used to concatenate all 32 state files into a single clean TSV is available here:
 
 [Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/03_Censo_2020/Concatenate_RESAGEBURB2020_TAB.ps1)
 
-### Expected results
+---
+
+### Expected Output File
+
+After running the script, you should have:
 
 RESAGEBURB2020_ALL_TAB.csv
 
-Edit it with EditPad Pro or Notepad to verify data is: 
 
-- UTF-8 No BOM enconding
-- TAB delimited
-- No astersiks (*)
+Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
 
-|ENTIDAD|NOM_ENT|CVE_MUN|NOM_MUN|CVE_LOC|NOM_LOC|AGEB|MZA|POBTOT|VIVTOT|TVIVHAB|
-|-------|-------|---|-------|---|-------|----|---|------|------|-------|
-01|Aguascalientes|000|Total de la entidad Aguascalientes|0000|Total de la entidad|0000|000|1425607|463972|386671|
-01|Aguascalientes|001|Aguascalientes|0000|Total del municipio|0000|000|948990|313256|266942|
-01|Aguascalientes|001|Aguascalientes|0001|Total de la localidad urbana|0000|000|863893|286646|246259|
-01|Aguascalientes|001|Aguascalientes|0001|Total AGEB urbana|0017|000|2237|1288|648|
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|011|115|80|33|
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|012|39|23|10|
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|018|0|80||
-01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|019|0|39||
+- Encoding: **UTF‑8 (No BOM)**
+- Separator: **TAB**
+- No asterisks (`*`)
+- All rows aligned and complete
 
+Example rows:
 
+| ENTIDAD | NOM_ENT       | CVE_MUN | NOM_MUN                         | CVE_LOC | NOM_LOC                       | AGEB | MZA | POBTOT | VIVTOT | TVIVHAB |
+|---------|---------------|---------|----------------------------------|---------|--------------------------------|------|-----|--------|--------|---------|
+| 01      | Aguascalientes| 000     | Total de la entidad Aguascalientes | 0000 | Total de la entidad           | 0000 | 000 | 1425607 | 463972 | 386671 |
+| 01      | Aguascalientes| 001     | Aguascalientes                   | 0000 | Total del municipio            | 0000 | 000 | 948990  | 313256 | 266942 |
+| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Total de la localidad urbana   | 0000 | 000 | 863893  | 286646 | 246259 |
+| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Total AGEB urbana              | 0017 | 000 | 2237    | 1288   | 648     |
+| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Aguascalientes                 | 0017 | 011 | 115     | 80     | 33      |
+| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Aguascalientes                 | 0017 | 012 | 39      | 23     | 10      |
+| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Aguascalientes                 | 0017 | 018 | 0       | 80     |         |
+| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Aguascalientes                 | 0017 | 019 | 0       | 39     |         |
 
-## 3.2 — Import CSV from into SQL
+---
 
-We first create temporary Staging table to import the data as it comes from CSV.
+# 3.2 — Import TSV into SQL Server
+
+We first import the raw TSV into a **staging table**.  
+This table mirrors the structure of the SCITEL export.
 
 ```sql
 ---------------------------------
--- 3.2 — Import CSV from into SQL
+-- 3.2 — Import CSV (TSV) into SQL
 ---------------------------------
 
 -----------------------------
--- 3.2.1 Create staging table 
+-- 3.2.1 Create staging table
 -----------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
@@ -244,7 +257,7 @@ CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
     MZA varchar(3) NOT NULL,
     POBTOT int NULL,
     VIVTOT int NULL,
-    TVIVHAB int NULL, 
+    TVIVHAB int NULL
 );
 GO
 
@@ -271,23 +284,25 @@ Completion time: 2026-05-24T22:07:26.4095744-05:00
 
 ## 3.3 — Create SQL table INEGI_Censo_2020_AGEB and copy data from staging table
 
-Here we will copy the staging data to final table but concatenating CVEGEO to a 16 digts code **CVEGEO** = ENTIDAD + MUN + LOC + AGEB + MZA
+We now create the final table INEGI_Censo_2020_AGEB, where:
 
-|  Field  | Description |  Digits  |
-|---------|-------------|----------|
-| ENTIDAD | State code | 2 Digits  |
-| MUN     | Municiplaity code | 3 Digits |
-| LOC     | Locality code | 4 Digits |
-| AGEB    | AGEB area code | 4 Digits |
-| MZA     | Dwelling code | 3 Digits |
+✔ CVEGEO is a 16‑digit unique identifier **CVEGEO** = ENTIDAD + MUN + LOC + AGEB + MZA
 
-And will be naming names fields in english: State, Muncipalyty and City names (NOM_ENT, NOM_MUN, NOM_LOC)
+✔ Field names are converted to EN‑US
+
+- NOM_ENT → State
+- NOM_MUN → Municipality
+- NOM_LOC → City
+
+✔ Population and dwelling fields are standardized  
+
+- POBTOT → Population
+- VIVTOT → Dwellings
+- TVIVHAB → Occupied_Dwellings
+
+## 3.3.1 — Create Final Table
 
 ```sql
---------------------------------------------------------------------------------
--- 3.3 — Create SQL table INEGI_Censo_2020_AGEB and copy data from staging table
---------------------------------------------------------------------------------
-
 ----------------------------------------------------------------------------------
 -- 3.3.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Census Block)
 ----------------------------------------------------------------------------------
@@ -303,7 +318,11 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
     Occupied_Dwellings int NULL,
 );
 GO
+```
 
+## 3.3.2 — Copy Data from Staging
+
+```sql
 ----------------------------------------------
 -- 3.3.2 Copy staging to INEGI_Censo_2020_AGEB
 ----------------------------------------------
@@ -330,7 +349,12 @@ GO
 
 #### Expected results
 
-SQL INEGI_Censo_2020_AGEB table with 863069 records and CVEGEO unique key.
+The final table should contain:
+
+- 863069 records
+- CVEGEO unique for every block
+
+Test query:
 
 ```sql
 ------------------------
@@ -352,26 +376,46 @@ SELECT TOP (10) CVEGEO, State, Municipality, City, Population, Dwellings, Occupi
 |0100100010017005|Aguascalientes|Aguascalientes                    |Aguascalientes              |       157|         68|    48|
 |0100100010017006|Aguascalientes|Aguascalientes                    |Aguascalientes               |      167|         82|    50|
 
-## 3.5 — Final validations
+
+
+# 3.4 — Final Validations
+
+After loading the final table, we run a set of validation queries to confirm:
+
+- The expected number of records was written  
+- All CVEGEO codes are correctly generated with 16 digits  
+- The staging table can be safely removed  
+
+---
+
+## ✔ Validate Record Count
 
 ```sql
 ----------------
 -- Count records
 ----------------
-
-SELECT COUNT(*) AS Records_Written FROM INEGI_Censo_2020_AGEB;
-
-----------------------
--- CVEGEO is correct ?
-----------------------
-
-SELECT TOP 10 CVEGEO, LEN(CVEGEO) as Len
+SELECT COUNT(*) AS Records_Written
 FROM INEGI_Censo_2020_AGEB;
 ```
 
 #### Expected results
 
-Records_Written: **863069**
+Records_Written: 863069
+This confirms that all block‑level rows from the 32 states were successfully imported.
+
+### ✔ Validate CVEGEO Format (16 Digits)
+
+```sql
+----------------------
+-- CVEGEO is correct ?
+----------------------
+SELECT TOP 10
+    CVEGEO,
+    LEN(CVEGEO) AS Len
+FROM INEGI_Censo_2020_AGEB;
+```
+
+#### Expected Output
 
 |CVEGEO|Len|
 |---------------|-----|
@@ -386,13 +430,22 @@ Records_Written: **863069**
 |2402800014141050|	16|
 |2402800014141051|	16|
 
-### Delete staging
+This confirms that:
+
+- All codes were concatenated correctly
+- No missing digits
+- No malformed CVEGEO values
+
+---
+
+### Remove Staging Table
+
+Once validation is complete, the staging table is no longer needed.
 
 ```sql
 -----------------
 -- Delete staging
 -----------------
-
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
 ```
