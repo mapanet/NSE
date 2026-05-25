@@ -168,7 +168,7 @@ Write-Host $outputFile
 
 RESAGEBURB2020_ALL_TAB.csv
 
-Edit it to verify data is: 
+Edit it with EditPad Pro or Notepad to verify data is: 
 
 - UTF-8 No BOM enconding
 - TAB delimited
