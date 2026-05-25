@@ -118,7 +118,7 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
 Commands completed successfully.
 Completion time: 2026-05-24T18:11:21.7628144-05:00
 
-**Import Boundaries_AGEB_2025_WKT.csv**
+## Import Boundaries_AGEB_2025_WKT.csv
 
 * check file path you used to store INEGI files
 
