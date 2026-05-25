@@ -12,7 +12,10 @@ Census 2020 data at the block block level (AGEB and MZA).
 - Using aggregation, we can obtain **Population** and **Dwellings** per AGEB, City, Municaplity, State.  
 - Later we can compute: **Unoccupied_Dwellings** = Dwellings – Occupied_Dwellings
 
-**Clartification:** "AGEB" means Geo-Statistical Area and "Manzana" is a Block.
+**AGEB and Manzana meaning** 
+
+- "AGEB" means Geo-Statistical Area
+- "Manzana" is a Block
 
 Result table will be: INEGI_Censo_2020_AGEB
 
