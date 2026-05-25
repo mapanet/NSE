@@ -227,18 +227,18 @@ Example rows:
 
 ---
 
-# 3.2 — Import TSV into SQL Server
+# 3.3 — Import CSV (TSV) into SQL Server
 
 We first import the raw TSV into a **staging table**.  
 This table mirrors the structure of the SCITEL export.
 
 ```sql
 ---------------------------------
--- 3.2 — Import CSV (TSV) into SQL
+-- 3.3 — Import CSV (TSV) into SQL
 ---------------------------------
 
 -----------------------------
--- 3.2.1 Create staging table
+-- 3.3.1 Create staging table
 -----------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
@@ -259,7 +259,7 @@ CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
 GO
 
 --------------------
--- 3.2.2 Bulk Insert
+-- 3.3.2 Bulk Insert
 --------------------
 BULK INSERT INEGI_Censo_2020_AGEB_Staging
 FROM 'D:\INEGI\Censo_2020\RESAGEBURB2020_ALL_TAB.csv'
@@ -279,7 +279,7 @@ GO
 Completion time: 2026-05-24T22:07:26.4095744-05:00   
 
 
-## 3.3 — Create SQL table INEGI_Censo_2020_AGEB and copy data from staging table
+## 3.4 — Create SQL table INEGI_Censo_2020_AGEB and copy data from staging table
 
 We now create the final table INEGI_Censo_2020_AGEB, where:
 
@@ -297,11 +297,11 @@ We now create the final table INEGI_Censo_2020_AGEB, where:
 - VIVTOT → Dwellings
 - TVIVHAB → Occupied_Dwellings
 
-## 3.3.1 — Create Final Table
+## 3.4.1 — Create Final Table
 
 ```sql
 ----------------------------------------------------------------------------------
--- 3.3.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Census Block)
+-- 3.4.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Census Block)
 ----------------------------------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
@@ -317,11 +317,11 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
 GO
 ```
 
-## 3.3.2 — Copy Data from Staging
+## 3.4.2 — Copy Data from Staging
 
 ```sql
 ----------------------------------------------
--- 3.3.2 Copy staging to INEGI_Censo_2020_AGEB
+-- 3.4.2 Copy staging to INEGI_Censo_2020_AGEB
 ----------------------------------------------
 INSERT INTO INEGI_Censo_2020_AGEB (
     CVEGEO, -- CVEGEO de 16 digits (Full AGEB Area) concatening codes: ENTIDAD + MUN + LOC + AGEB + MZA
@@ -375,7 +375,7 @@ SELECT TOP (10) CVEGEO, State, Municipality, City, Population, Dwellings, Occupi
 
 
 
-# 3.4 — Final Validations
+# 3.5 — Final Validations
 
 After loading the final table, we run a set of validation queries to confirm:
 
