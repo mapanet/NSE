@@ -192,7 +192,7 @@ Write-Host $outputFile
 
 ### Full PowerShell Script
 
-The full script used to concatenate all 32 state files into a single clean TSV is available here:
+The full script used to concatenate all 32 state files into a single clean CVS (TSV) is available here:
 
 [Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/03_Censo_2020/Concatenate_RESAGEBURB2020_TAB.ps1)
 
