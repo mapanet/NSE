@@ -189,15 +189,7 @@ Edit it to verify data is:
 
 ## 3.2 — Import CSV from into SQL
 
-|Field| Meaning |
-|-----|---------|
-|ENTIDAD| State code|
-|MUN| Municipality code|
-|LOC| City code |
-|AGEB| Statstical area code|
-|MZA| Block code|
-
--- We first create temporary Staging table to import the data as it comes.
+We first create temporary Staging table to import the data as it comes from CSV.
 
 ```sql
 -----------------------
@@ -220,7 +212,13 @@ CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
     TVIVHAB int NULL, 
 );
 GO
+```
+#### Expected results
 
+Commands completed successfully.  
+Completion time: 2026-05-24T22:04:58.4073590-05:00
+
+```sql
 --------------
 -- Bulk Insert
 --------------
@@ -235,6 +233,11 @@ WITH (
 );
 GO
 ```
+
+#### Expected results
+
+(863069 rows affected)
+Completion time: 2026-05-24T22:07:26.4095744-05:00
 
 ## 3.3 — Create SQL table INEGI_Censo_2020_AGEB
 
@@ -255,6 +258,11 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
 );
 GO
 ```
+
+#### Expected results
+
+Commands completed successfully.
+Completion time: 2026-05-24T22:09:13.9363948-05:00
 
 ## 3.4 — Copy the data from Staging table to final table INEGI_Censo_2020_AGEB
 
@@ -293,7 +301,21 @@ SELECT
     TVIVHAB
 FROM INEGI_Censo_2020_AGEB_Staging;
 GO
+```
 
+#### Expected results
+
+A SQL table with this data:
+
+|      CVEGEO    |    State     | Municipality   | City                                         |Population| Dwellings | Occupied_Dwellings |
+|----------------|--------------|----------------|----------------------------------------------|----------|-----------|--------------------|
+|0100000000000000|Aguascalientes|Total de la entidad Aguascalientes|Total de la entidad         |   1425607|	 463972|386671|
+|0100100000000000|Aguascalientes|Aguascalientes                    |Total del municipio         |    948990|	 313256|266942|
+|0100100010000000|Aguascalientes|Aguascalientes                    |Total de la localidad urbana|    863893|     286646|246259|
+|0100100010017000|Aguascalientes|Aguascalientes                    |Total AGEB urbana	        |      2237|       1288|   648|
+|0100100010017001|Aguascalientes|Aguascalientes                    |Aguascalientes              |       170|         82|    54|
+|0100100010017002|Aguascalientes|Aguascalientes                    |Aguascalientes	            |       198|         83|    52|
+|0100100010017003|Aguascalientes|Aguascalientes                    |Aguascalientes              |       198|         84|    55|
 
 ----------------
 -- Count records
