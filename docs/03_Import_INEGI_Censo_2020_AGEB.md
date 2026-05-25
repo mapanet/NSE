@@ -215,13 +215,7 @@ CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
     TVIVHAB int NULL, 
 );
 GO
-```
-#### Expected results
 
-Commands completed successfully.  
-Completion time: 2026-05-24T22:04:58.4073590-05:00
-
-```sql
 --------------
 -- Bulk Insert
 --------------
@@ -242,7 +236,7 @@ GO
 (863069 rows affected)      
 Completion time: 2026-05-24T22:07:26.4095744-05:00   
 
-## 3.3 — Create SQL table INEGI_Censo_2020_AGEB
+## 3.3 — Create SQL table INEGI_Censo_2020_AGEB and copy data from staging table
 
 ```sql
 ----------------------------------------------------------------------------
@@ -260,16 +254,7 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
     Occupied_Dwellings int NULL,
 );
 GO
-```
 
-#### Expected results
-
-Commands completed successfully.   
-Completion time: 2026-05-24T22:09:13.9363948-05:00   
-
-## 3.4 — Copy the data from Staging table to final table INEGI_Censo_2020_AGEB
-
-```sql
 ----------------------------------------
 -- Copy staging to INEGI_Censo_2020_AGEB
 ----------------------------------------
