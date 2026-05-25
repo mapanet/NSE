@@ -26,6 +26,9 @@ Result table will be: INEGI_Censo_2020_AGEB
 |Dwellings|int|
 |Occupied_Dwellings|int|
 
+### Working folder
+
+D:\INEGI\Censo_2020
 
 ## Prepare to Download Census 2020 data
 
@@ -34,13 +37,7 @@ We will download from **INEGI** using data from **SCITEL** system
 URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
 Results by AGEB and MZA (AGEB area and urban block)
 
-Screen should look like this image:
-
 [<img src="/docs/images/Censo_2020_1.png" width="400">](/docs/images/Censo_2020_1.png)
-
-### Working folder
-
-D:\INEGI\Censo_2020
 
 ## 3.1 — Download SCITEL Data
 
@@ -65,12 +62,7 @@ In right panel are select:
 - Bottom-center use black button **Exportar a** (Export to) select **FORMAT** CVS and save the file in your D:\INEGI\Census_2020
 - Go back to previous page with browser <= button and select the next state.
 
-Check values looks like this:
-[<img src="/docs/images/Censo_2020_2.png" width="400">](/docs/images/Censo_2020_2.png)
-Select CSV format and save looks like this:
 [<img src="/docs/images/Censo_2020_4.png" width="400">](/docs/images/Censo_2020_4.png)
-
-
 
 #### Verify you have all 32 states files in D:\INEGI\Census_2020
 
