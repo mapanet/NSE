@@ -1,4 +1,4 @@
-# STEP 02 — Marco Geoestadístico 2025
+# STEP 2 — Marco Geoestadístico 2025
 
 Objective: Build the table `Boundaries_AGEB_2025` using the official AGEB geometries from INEGI MG 2025.  
 This table will be used for:
