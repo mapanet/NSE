@@ -7,7 +7,7 @@ Census 2020 data at the block block level (AGEB and MZA).
 ## IMPORTANT CLARIFICATIONS
 
 - We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Dwellings at dwelling level.
-- This dataset is used later in calculation NSE Step 5.9 to update Population and Dwellings at Neighborhood level (Colonia) using weighted aggregation.
+- This dataset will be used calculations NSE Step 5.9 to update Population and Dwellings at Neighborhood (Colonia) using weighted aggregation.
 - It can be used also used with aggregation to update Population and Dwellings at City, Municipality, State levels.
 - Using aggregation, we can obtain **Population** and **Dwellings** per AGEB, City, Municaplity, State.  
 - Later we can compute: **Unoccupied_Dwellings** = Dwellings – Occupied_Dwellings
