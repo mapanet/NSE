@@ -1,4 +1,4 @@
-# Boundaries of Neighborhoods with NSE (layer = 6)
+# NSE of Neighborhoods (Boundaries layer = 6)
 
 To generate the AMAI Socioeconomic Level (NSE) at the neighborhood (colonia) Layer 6, four official datasets are required.   
 Each dataset plays a specific role in the spatial, demographic, and statistical pipeline.
