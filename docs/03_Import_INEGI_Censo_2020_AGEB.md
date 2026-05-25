@@ -293,10 +293,14 @@ GO
 
 #### Expected results
 
-A SQL table with this data:
+SQL INEGI_Censo_2020_AGEB table with this data:
 
-|      CVEGEO    |    State     | Municipality   | City                                         |Population| Dwellings | Occupied_Dwellings |
-|----------------|--------------|----------------|----------------------------------------------|----------|-----------|--------------------|
+```sql
+SELECT TOP (10) CVEGEO, State, Municipality, City, Population, Dwellings, Occupied_Dwellings FROM dbo.INEGI_Censo_2020_AGEB
+```
+
+|      CVEGEO    |    State     | Municipality                     | City                       |Population| Dwellings | Occupied_Dwellings |
+|----------------|--------------|----------------------------------|----------------------------|----------|-----------|--------------------|
 |0100000000000000|Aguascalientes|Total de la entidad Aguascalientes|Total de la entidad         |   1425607|	 463972|386671|
 |0100100000000000|Aguascalientes|Aguascalientes                    |Total del municipio         |    948990|	 313256|266942|
 |0100100010000000|Aguascalientes|Aguascalientes                    |Total de la localidad urbana|    863893|     286646|246259|
@@ -304,7 +308,11 @@ A SQL table with this data:
 |0100100010017001|Aguascalientes|Aguascalientes                    |Aguascalientes              |       170|         82|    54|
 |0100100010017002|Aguascalientes|Aguascalientes                    |Aguascalientes	            |       198|         83|    52|
 |0100100010017003|Aguascalientes|Aguascalientes                    |Aguascalientes              |       198|         84|    55|
+|0100100010017004|Aguascalientes|Aguascalientes                    |Aguascalientes              |       202|         84|    57|
+|0100100010017005|Aguascalientes|Aguascalientes                    |Aguascalientes              |       157|         68|    48|
+|0100100010017006|Aguascalientes|Aguascalientes                    |Aguascalientes               |      167|         82|    50|
 
+``sql
 ----------------
 -- Count records
 ----------------
@@ -326,7 +334,7 @@ DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
 GO
 ```
 
-### Validation results
+### Expect results
 
 Records_Written: **863069**
 
