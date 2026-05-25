@@ -106,7 +106,7 @@ Results
 
 #### Purpose
 
-Concatenate all 32 state files into a clean CSV ready to bulk import to SQL
+Concatenate all 32 state files into a clean CSV ready to bulk import in MS SQL 2022 using the script below.
 
 ### Expected file
 
@@ -114,7 +114,7 @@ Concatenate all 32 state files into a clean CSV ready to bulk import to SQL
 
 - Encoding: UTF-8 no BOM
 - TAB separated values
-- Replace all values * asterisk to "" (empty) as they are N/A data and must become NULL in SQL
+- Replaces all values * asterisk to "" (empty) as they are N/A data and must become NULL in SQL
 
 
 ```powershell
