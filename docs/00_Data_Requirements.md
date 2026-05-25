@@ -1,4 +1,4 @@
-# 00 — Data Requirements (Ingestion Layer)
+# Data Requirements to create Boundaries layer = 6 (Neighborhood layer) NSE
 
 To generate the AMAI Socioeconomic Level (NSE) at the neighborhood (colonia) level (Layer 6), four official datasets are required. Each dataset plays a specific role in the spatial, demographic, and statistical pipeline.
 
