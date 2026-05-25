@@ -315,6 +315,8 @@ SELECT TOP (10) CVEGEO, State, Municipality, City, Population, Dwellings, Occupi
 |0100100010017005|Aguascalientes|Aguascalientes                    |Aguascalientes              |       157|         68|    48|
 |0100100010017006|Aguascalientes|Aguascalientes                    |Aguascalientes               |      167|         82|    50|
 
+## 3.4 — Final validations
+
 ```sql
 ----------------
 -- Count records
