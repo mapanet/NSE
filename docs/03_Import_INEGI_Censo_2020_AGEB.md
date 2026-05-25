@@ -52,9 +52,9 @@ https://www.inegi.org.mx/app/scitel/Default?ev=10
 
 ---
 
-## ⚠️ IMPORTANT — Do NOT use the gray CSV button
+## ⚠️ IMPORTANT — Do NOT use the gray CSV or XLSX button
 
-In the **left panel**, you will see a **gray CSV button**.  
+In the **left panel**, you will see a **gray CSV and XLSX buttons**.  
 This downloads the **full dataset**, which contains many fields we do not need.
 
 We only want **Population**, **Total Dwellings**, and **Occupied Dwellings**.
