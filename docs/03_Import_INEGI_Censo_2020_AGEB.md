@@ -58,11 +58,11 @@ In right panel are select:
 #### Repeat this process below until you export the 32 states:
 
 - Left Panel select a state (example: Aguascalientes)
-- Bottom-right use black button **Generar Consulta** (you will see the results in a table).
-- Bottom-center use black button **Exportar a** (Export to) select **FORMAT** CVS and save the file in your D:\INEGI\Census_2020
-- Go back to previous page with browser <= button and select the next state.
+- Bottom-right use => Black button **Generar Consulta** to generate the list of that state, you will see the results in a table).
+- Bottom-center use = > Black button **Exportar a** (Export to) select **CSV* and save the file in your D:\INEGI\Census_2020 folder.
+- Go back to *previous page* with browser < button and select the next state.
 
-   
+Results  
 [<img src="/docs/images/Censo_2020_3.png" width="1000">](/docs/images/Censo_2020_3.png)
 
 #### Verify you have all 32 states files in D:\INEGI\Census_2020
