@@ -37,7 +37,7 @@ We will download from **INEGI** using data from **SCITEL** system
 URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
 Results by AGEB and MZA (AGEB area and urban block)
 
-[<img src="/docs/images/Censo_2020_1.png" width="900">](/docs/images/Censo_2020_1.png)
+[<img src="/docs/images/Censo_2020_1.png" width="1000">](/docs/images/Censo_2020_1.png)
 
 ## 3.1 — Download SCITEL Data
 
