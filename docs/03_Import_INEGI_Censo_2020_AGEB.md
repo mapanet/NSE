@@ -40,7 +40,7 @@ D:\INEGI\Censo_2020
 
 ## 3.1 — Download SCITEL Data
 
-[<img src="../images/Censo_2020_1.png" width="400">](../images/Censo_2020_1.png)
+[<img src="/docs/images/Censo_2020_1.png" width="400">](/docs/images/Censo_2020_1.png)
 
 #### IMPORTANT
 
