@@ -66,9 +66,9 @@ In right panel are select:
 - Go back to previous page with browser <= button and select the next state.
 
 Check values looks like this:
-<a href="/docs/images/Censo_2020_2.png"><img src="/docs/images/Censo_2020_2.png" width="300" style="margin-right:20px;"></a>
+[<img src="/docs/images/Censo_2020_2.png" width="400">](/docs/images/Censo_2020_2.png)
 Select CSV format and save looks like this:
-<a href="/docs/images/Censo_2020_4.png"><img src="/docs/images/Censo_2020_4.png" width="300"></a>
+[<img src="/docs/images/Censo_2020_4.png" width="400">](/docs/images/Censo_2020_4.png)
 
 
 
