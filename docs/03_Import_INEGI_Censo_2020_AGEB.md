@@ -4,10 +4,17 @@ Dataset will contain:
 
 Census 2020 data at the block block level (AGEB and MZA).  
 
-- By aggregating blocks, we can obtain **Population** and **Dwellings** per AGEB, City, Municaplity, State.  
+## IMPORTANT CLARIFICATIONS
+
+- We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Dwellings at dwelling level.
+- This dataset is used later in calculation NSE Step 5.9 to update Population and Dwellings at Neighborhood level (Colonia) using weighted aggregation.
+- It can be used also used with aggregation to update Population and Dwellings at City, Municipality, State levels.
+- Using aggregation, we can obtain **Population** and **Dwellings** per AGEB, City, Municaplity, State.  
 - Later we can compute: **Unoccupied_Dwellings** = Dwellings – Occupied_Dwellings
 
-*Result table:* INEGI_Censo_2020_AGEB
+**Clartification:** "AGEB" means Geo-Statistical Area and "Manzana" is a Block.
+
+Result table will be: INEGI_Censo_2020_AGEB
 
 |CVEGEO|Type|PK|
 |------|----|----|
@@ -27,9 +34,9 @@ We will download from **INEGI** using data from **SCITEL** system
 URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
 Results by AGEB and MZA (AGEB area and urban block)
 
-### Work folder
+### Working folder
 
-D:\INEGI\Census_2020
+D:\INEGI\Censo_2020
 
 ## 3.1 — Download SCITEL Data
 
@@ -112,7 +119,7 @@ Concatenate all 32 state files into a clean CSV ready to bulk import to SQL
 Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
 
 # Path where the 32 "RESAGEBURB2020 - **NN** Name .csv" files are located
-$inputFolder = "D:\INEGI\Census_2020"
+$inputFolder = "D:\INEGI\Censo_2020"
 
 # Final combined output file CSV (TSV)
 $outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL_TAB.csv"
@@ -153,11 +160,11 @@ Write-Host "Done. Combined TSV created at:"
 Write-Host $outputFile
 ```
 
-### Full Power Shell script
+### Full PS script
 
 [Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/03_Census_2020/Concatenate_RESAGEBURB2020_TAB.ps1)
 
-### Expected reults
+### Expected results
 
 RESAGEBURB2020_ALL_TAB.csv
 
@@ -179,37 +186,20 @@ Edit it to verify data is:
 01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|0017|019|0|39||
 
 
-## 3.2 — Import CSV from into SQL:
 
-### Census 2020 AGEB Step 1.0 Create table INEGI_Censo_2020_AGEB (block level / manzana).
+## 3.2 — Import CSV from into SQL
 
--- SUMMARY: We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Hoseholds at AGEB and dwelling level.
--- This dataset is used later, in calculation NSE Step 4.9 to update Population and Hoseholds at Neighborhood level (Colonia) level using weighted aggregation.
--- It can be used also used with aggregation to update Population and Hoseholds at City, Municipality, State levels.
+|Field| Meaning |
+|-----|---------|
+|ENTIDAD| State code|
+|MUN| Municipality code|
+|LOC| City code |
+|AGEB| Statstical area code|
+|MZA| Block code|
 
--- We use a temporary Staging table to import the date, then transfor it to modeled INEGI_Censo_2020_AGEB.
-#### Expected results
+-- We first create temporary Staging table to import the data as it comes.
 
-SQL table **INEGI_Censo_2020_AGEB** with primary key CVEGEO  
-
-|Field|Type | Description | Key |
-|------|-------------|--------------------------------------------------------|-----------|
-|CVEGEO| varchar(16) |CVEGEO 16 dígits: ENTIDAD + MUN + LOC + AGEB + MZA|PRIMARY KEY|
-|State| nvarchar(85) |State name||
-|Municipality| nvarchar(85) |Municipality name||
-|City| nvarchar(110) |City name||
-|Population| int |Total Population||
-|Dwellings| int |Total Dwellings||
-|Occupied_Dwellings| int |Occupied Dwellings||
-    
-    
 ```sql
------------------------
--- Create staging table 
------------------------
-DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
-GO
-
 -----------------------
 -- Create staging table 
 -----------------------
@@ -244,10 +234,14 @@ WITH (
     TABLOCK
 );
 GO
+```
 
-------------------------------------------------------------------------
--- Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Dwelling)
-------------------------------------------------------------------------
+## 3.3 — Create SQL table INEGI_Censo_2020_AGEB
+
+```sql
+----------------------------------------------------------------------------
+-- Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Census Block)
+----------------------------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
 CREATE TABLE INEGI_Censo_2020_AGEB (
@@ -260,12 +254,28 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
     Occupied_Dwellings int NULL,
 );
 GO
+```
 
+## 3.4 — Copy the data from Staging table to final table INEGI_Censo_2020_AGEB
+
+Here we will concatenate all codes into a since CVEGEO 16 digit codes and assign fields with final names in english.
+
+|Field|Type | Description | Key |
+|------|-------------|--------------------------------------------------------|-----------|
+|CVEGEO| varchar(16) |CVEGEO 16 dígits: ENTIDAD + MUN + LOC + AGEB + MZA|PRIMARY KEY|
+|State| nvarchar(85) |State name||
+|Municipality| nvarchar(85) |Municipality name||
+|City| nvarchar(110) |City name||
+|Population| int |Total Population||
+|Dwellings| int |Total Dwellings||
+|Occupied_Dwellings| int |Occupied Dwellings||
+
+```sql
 ----------------------------------------
 -- Copy staging to INEGI_Censo_2020_AGEB
 ----------------------------------------
 INSERT INTO INEGI_Censo_2020_AGEB (
-    CVEGEO, -- CVEGEO de 16 dígitos (AGEB) concatenando ENTIDAD + MUN + LOC + AGEB + MZA
+    CVEGEO, -- CVEGEO de 16 digits (Full AGEB Area) concatening codes: ENTIDAD + MUN + LOC + AGEB + MZA
     State, 
     Municipality, 
     City, 
@@ -284,9 +294,10 @@ SELECT
 FROM INEGI_Censo_2020_AGEB_Staging;
 GO
 
---------
--- Count
---------
+
+----------------
+-- Count records
+----------------
 
 SELECT COUNT(*) AS Records_Written FROM INEGI_Censo_2020_AGEB;
 
@@ -334,7 +345,7 @@ Records_Written: **863069**
 
 ### Full script
 
-[01.0_AGEB_CreateTable.sql](../scripts/SQL/Censo_2020/01.0_AGEB_CreateTable.sql)
+
 
 
 
