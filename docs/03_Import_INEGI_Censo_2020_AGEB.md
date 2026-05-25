@@ -43,8 +43,8 @@ Results by AGEB and MZA (AGEB area and urban block)
 
 #### IMPORTANT
 
-In left Panel at select state you will see a gray CSV button, that downloads COMPLETE data. Do not use that, follow steps below.  
-(if needed, you can download those, we have a specific PS script to extract specific fields for other purposes).
+In left Panel at select state you will see a gray CSV button, that downloads COMPLETE data. Do not use that, follow steps below.
+(if you want many other fields, you can download that CSV, we have a specific PS script to extract specific fields for other purposes).
 
 #### Download procedure
 
