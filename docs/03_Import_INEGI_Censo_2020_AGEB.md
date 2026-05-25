@@ -332,7 +332,7 @@ SELECT TOP 10 CVEGEO, LEN(CVEGEO) as Len
 FROM INEGI_Censo_2020_AGEB;
 ```
 
-### Expect results
+#### Expected results
 
 Records_Written: **863069**
 
