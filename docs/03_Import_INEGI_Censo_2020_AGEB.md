@@ -40,6 +40,8 @@ D:\INEGI\Censo_2020
 
 ## 3.1 — Download SCITEL Data
 
+[<img src="../images/Censo_2020_1.png" width="400">](../images/Censo_2020_1.png)
+
 #### IMPORTANT
 
 In left Panel at select state you will see a gray CSV button, that downloads COMPLETE data. Do not use that, follow steps below.  
