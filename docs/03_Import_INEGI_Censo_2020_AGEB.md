@@ -10,8 +10,9 @@ This dataset contains **Census 2020 population and dwelling data at the block le
 - We create a **Census 2020 block-level dataset** to obtain **Population**, **Dwellings**, and **Occupied_Dwellings** at the **Manzana (Block)** level.
 - This dataset is used in **NSE Step 5.9** to update **Population** and **Dwellings** at the **Neighborhood (Colonia)** level using weighted aggregation.
 - It can also be aggregated to obtain totals at the **AGEB**, **City**, **Municipality**, and **State** levels.
-- Later we compute: Unoccupied_Dwellings = Dwellings – Occupied_Dwellings
+- Later we compute:
 
+Unoccupied_Dwellings = Dwellings – Occupied_Dwellings
 
 ### Terminology
 
@@ -34,9 +35,10 @@ This dataset contains **Census 2020 population and dwelling data at the block le
 | Dwellings | int |
 | Occupied_Dwellings | int |
 
-#### Working folder
+Working folder:
 
 D:\INEGI\
+
 
 ---
 
@@ -52,12 +54,16 @@ https://www.inegi.org.mx/app/scitel/Default?ev=10
 
 ---
 
-## ⚠️ IMPORTANT — Do NOT use the gray CSV or XLSX button
+## ⚠️ IMPORTANT — Do NOT use the gray CSV or XLSX buttons
 
-In the **left panel**, you will see a **gray CSV and XLSX buttons**.  
-This downloads the **full dataset**, which contains many fields we do not need.
+In the **left panel**, you will see **gray CSV and XLSX buttons**.  
+These export the **full dataset**, which contains many fields we do not need.
 
-We only want **Population**, **Total Dwellings**, and **Occupied Dwellings**.
+We only want:
+
+- **Population Total**  
+- **Total Dwellings**  
+- **Occupied Dwellings**  
 
 ---
 
@@ -78,6 +84,7 @@ Then repeat the following steps for each state:
 4. Save the file into:
 
 D:\INEGI\Censo_2020\
+
 
 
 5. Click the browser **Back** button and select the next state.
@@ -135,6 +142,7 @@ Combine all 32 state CSV files into a single **UTF‑8 (no BOM)**, **TAB‑separ
 ### Output File
 
 RESAGEBURB2020_ALL_TAB.csv
+
 
 - Encoding: **UTF‑8 no BOM**  
 - Separator: **TAB**  
@@ -204,7 +212,6 @@ After running the script, you should have:
 
 RESAGEBURB2020_ALL_TAB.csv
 
-
 Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
 
 - Encoding: **UTF‑8 (No BOM)**
@@ -214,16 +221,16 @@ Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
 
 Example rows:
 
-| ENTIDAD | NOM_ENT       | CVE_MUN | NOM_MUN                         | CVE_LOC | NOM_LOC                       | AGEB | MZA | POBTOT | VIVTOT | TVIVHAB |
-|---------|---------------|---------|----------------------------------|---------|--------------------------------|------|-----|--------|--------|---------|
-| 01      | Aguascalientes| 000     | Total de la entidad Aguascalientes | 0000 | Total de la entidad           | 0000 | 000 | 1425607 | 463972 | 386671 |
-| 01      | Aguascalientes| 001     | Aguascalientes                   | 0000 | Total del municipio            | 0000 | 000 | 948990  | 313256 | 266942 |
-| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Total de la localidad urbana   | 0000 | 000 | 863893  | 286646 | 246259 |
-| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Total AGEB urbana              | 0017 | 000 | 2237    | 1288   | 648     |
-| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Aguascalientes                 | 0017 | 011 | 115     | 80     | 33      |
-| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Aguascalientes                 | 0017 | 012 | 39      | 23     | 10      |
-| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Aguascalientes                 | 0017 | 018 | 0       | 80     |         |
-| 01      | Aguascalientes| 001     | Aguascalientes                   | 0001 | Aguascalientes                 | 0017 | 019 | 0       | 39     |         |
+| ENTIDAD | NOM_ENT        | CVE_MUN | NOM_MUN                          | CVE_LOC | NOM_LOC                        | AGEB | MZA | POBTOT | VIVTOT | TVIVHAB |
+|---------|----------------|---------|-----------------------------------|---------|---------------------------------|------|-----|--------|--------|---------|
+| 01      | Aguascalientes | 000     | Total de la entidad Aguascalientes | 0000 | Total de la entidad            | 0000 | 000 | 1425607 | 463972 | 386671 |
+| 01      | Aguascalientes | 001     | Aguascalientes                    | 0000 | Total del municipio             | 0000 | 000 | 948990  | 313256 | 266942 |
+| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Total de la localidad urbana    | 0000 | 000 | 863893  | 286646 | 246259 |
+| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Total AGEB urbana               | 0017 | 000 | 2237    | 1288   | 648     |
+| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 011 | 115     | 80     | 33      |
+| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 012 | 39      | 23     | 10      |
+| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 018 | 0       | 80     |         |
+| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 019 | 0       | 39     |         |
 
 ---
 
@@ -279,20 +286,17 @@ GO
 Completion time: 2026-05-24T22:07:26.4095744-05:00   
 
 
-## 3.4 — Create SQL table INEGI_Censo_2020_AGEB and copy data from staging table
+## 3.4 — Create Final Table and Copy Data
 
 We now create the final table INEGI_Censo_2020_AGEB, where:
 
-✔ CVEGEO is a 16‑digit unique identifier **CVEGEO** = ENTIDAD + MUN + LOC + AGEB + MZA
-
-✔ Field names are converted to EN‑US
+- CVEGEO is a 16‑digit unique identifier: **CVEGEO** = ENTIDAD + MUN + LOC + AGEB + MZA
+- Field names are converted to EN‑US
+- Population and dwelling fields are standardized
 
 - NOM_ENT → State
 - NOM_MUN → Municipality
 - NOM_LOC → City
-
-✔ Population and dwelling fields are standardized  
-
 - POBTOT → Population
 - VIVTOT → Dwellings
 - TVIVHAB → Occupied_Dwellings
@@ -300,13 +304,13 @@ We now create the final table INEGI_Censo_2020_AGEB, where:
 ## 3.4.1 — Create Final Table
 
 ```sql
-----------------------------------------------------------------------------------
--- 3.4.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Census Block)
-----------------------------------------------------------------------------------
+---------------------------------------------------------------------------
+-- 3.4.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Block)
+---------------------------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
 CREATE TABLE INEGI_Censo_2020_AGEB (
-    CVEGEO varchar(16) PRIMARY KEY, -- CVEGEO of 16 dígits (AGEB) concatenating ENTIDAD + MUN + LOC + AGEB + MZA
+    CVEGEO varchar(16) PRIMARY KEY, -- 16 digit full block code (ENTIDAD + MUN + LOC + AGEB + MZA)
     State nvarchar(85) NULL,
     Municipality nvarchar(85) NULL,
     City nvarchar(110) NULL,
@@ -379,13 +383,13 @@ SELECT TOP (10) CVEGEO, State, Municipality, City, Population, Dwellings, Occupi
 
 After loading the final table, we run a set of validation queries to confirm:
 
-- The expected number of records was written  
-- All CVEGEO codes are correctly generated with 16 digits  
-- The staging table can be safely removed  
+- The expected number of records was written
+- All CVEGEO codes are correctly generated with 16 digits
+- The staging table can be safely removed
 
 ---
 
-## ✔ Validate Record Count
+✔ Validate Record Count
 
 ```sql
 ----------------
@@ -398,7 +402,7 @@ FROM INEGI_Censo_2020_AGEB;
 #### Expected results
 
 Records_Written: 863069
-This confirms that all block‑level rows from the 32 states were successfully imported.
+This confirms that all block‑level rows from the 32 states were successfully imported (same count as in the CSV).
 
 ### ✔ Validate CVEGEO Format (16 Digits)
 
