@@ -1,124 +1,149 @@
-# 3 — INEGI Census 2020
+# 3 — INEGI Census 2020 (Block-Level Data)
 
-Dataset will contain:
+This dataset contains **Census 2020 population and dwelling data at the block level**  
+(AGEB + Manzana). It is a core input for the NSE pipeline.
 
-Census 2020 data at the block block level (AGEB and MZA).  
+---
 
-## IMPORTANT CLARIFICATIONS
+## 📌 Important Clarifications
 
-- We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Dwellings at dwelling level.
-- Dataset will be used calculations NSE Step 5.9 to update Population and Dwellings by Neighborhood (Colonia) weighted aggregation.
-- It can be used also used with aggregation to update Population and Dwellings at City, Municipality, State levels.
-- Using aggregation, we can obtain **Population** and **Dwellings** per AGEB, City, Municaplity, State.  
-- Later we can compute: **Unoccupied_Dwellings** = Dwellings – Occupied_Dwellings
+- We create a **Census 2020 block-level dataset** to obtain **Population**, **Dwellings**, and **Occupied_Dwellings** at the **Manzana (Block)** level.
+- This dataset is used in **NSE Step 5.9** to update **Population** and **Dwellings** at the **Neighborhood (Colonia)** level using weighted aggregation.
+- It can also be aggregated to obtain totals at the **AGEB**, **City**, **Municipality**, and **State** levels.
+- Later we compute: Unoccupied_Dwellings = Dwellings – Occupied_Dwellings
 
-**AGEB and Manzana meaning** 
 
-- "AGEB" means Geo-Statistical Area
-- "Manzana" is a Block
+### Terminology
 
-Result table will be: INEGI_Censo_2020_AGEB
+| Spanish | English | Meaning |
+|---------|---------|---------|
+| AGEB | Basic Geo‑Statistical Area | INEGI statistical unit |
+| Manzana | Block | Smallest urban unit |
 
-|CVEGEO|Type|PK|
-|------|----|----|
-|CVEGEO|varchar(16)|PRIMARY KEY|
-|State|nvarchar(85)|
-|Municipality|nvarchar(85)|
-|City|nvarchar(110)|
-|Population|int|
-|Dwellings|int|
-|Occupied_Dwellings|int|
+---
+
+## 📄 Resulting Table: `INEGI_Censo_2020_AGEB`
+
+| Column | Type | Notes |
+|--------|------|--------|
+| CVEGEO | varchar(16) | **Primary Key** |
+| State | nvarchar(85) |
+| Municipality | nvarchar(85) |
+| City | nvarchar(110) |
+| Population | int |
+| Dwellings | int |
+| Occupied_Dwellings | int |
+
+Working folder:
 
 #### Working folder
 
 D:\INEGI\
 
-## Prepare to Download Census 2020 data
 
-We will download from **INEGI** using data from **SCITEL** system
+---
 
-URL: https://www.inegi.org.mx/app/scitel/Default?ev=10 
-Results by AGEB and MZA (AGEB area and urban block)
+# 3.1 — Download Census 2020 Data (SCITEL)
 
-[<img src="/docs/images/_1.png" width="1000">](/docs/images/Censo_2020_1.png)
+We download Census 2020 block-level data from **INEGI SCITEL**:
 
-## 3.1 — Download SCITEL Data
+**URL:**  
+https://www.inegi.org.mx/app/scitel/Default?ev=10  
+**Section:** *Resultados por AGEB y Manzana Urbana*
 
-#### IMPORTANT
+[<img src="/docs/images/Censo_2020_1.png" width="1000">](/docs/images/Censo_2020_1.png)
 
-In left Panel at select state you will see a gray CSV button, that downloads COMPLETE data. Do not use that, follow steps below.
-(if you want many other fields, you can download that CSV, we have a specific PS script to extract specific fields for other purposes).
+---
 
-#### Download procedure
+## ⚠️ IMPORTANT — Do NOT use the gray CSV button
 
-In right panel are select:
+In the **left panel**, you will see a **gray CSV button**.  
+This downloads the **full dataset**, which contains many fields we do not need.
 
-1. Indetificacion geografica (Geographic identification, all marked) 
-2. Check: Poblacion => Poblacion total (Population Total)
-3. Check: Vivenda   => Total de viviendas (Dewlling Total) 
-4. Check: Vivenda   => Total de viviendas habitadas (Dewlling Total in use)
+We only want **Population**, **Total Dwellings**, and **Occupied Dwellings**.
 
-#### Repeat this process below until you export the 32 states:
+---
 
-- Left Panel select a state (example: Aguascalientes)
-- Bottom-right use => Black button **Generar Consulta** to generate the list of that state, you will see the results in a table).
-- Bottom-center use = > Black button **Exportar a** (Export to) select **CSV* and save the file in your D:\INEGI\Censo_2020 folder.
-- Go back to *previous page* with browser < button and select the next state.
+# ✔ Download Procedure (Repeat for All 32 States)
 
-Results  
+In the **right panel**, select:
+
+1. **Identificación geográfica** → all checked  
+2. **Población** → *Población total*  
+3. **Vivienda** → *Total de viviendas*  
+4. **Vivienda** → *Total de viviendas habitadas*  
+
+Then repeat the following steps for each state:
+
+1. In the **left panel**, select a state (example: *Aguascalientes*).  
+2. Bottom‑right → click **Generar Consulta** (Generate Query).  
+3. Bottom‑center → click **Exportar a → CSV**.  
+4. Save the file into:
+
+D:\INEGI\Censo_2020\
+
+
+5. Click the browser **Back** button and select the next state.
+
+Example result:
+
 [<img src="/docs/images/Censo_2020_3.png" width="1000">](/docs/images/Censo_2020_3.png)
 
-#### Verify you have all 32 states files in D:\INEGI\Censo_2020
+---
 
-| File name - State code, State name |
-|--------------------------------------|
-|RESAGEBURB2020 - 01 Aguascalientes.csv|
-|RESAGEBURB2020 - 02 Baja California.csv|
-|RESAGEBURB2020 - 03 Baja California Sur.csv|
-|RESAGEBURB2020 - 04 Campeche.csv|
-|RESAGEBURB2020 - 05 Coahuila de Zaragoza.csv|
-|RESAGEBURB2020 - 06 Colima.csv|
-|RESAGEBURB2020 - 07 Chiapas.csv|
-|RESAGEBURB2020 - 08 Chihuahua.csv|
-|RESAGEBURB2020 - 09 Ciudad de México.csv|
-|RESAGEBURB2020 - 10 Durango.csv|
-|RESAGEBURB2020 - 11 Guanajuato.csv|
-|RESAGEBURB2020 - 12 Guerrero.csv|
-|RESAGEBURB2020 - 13 Hidalgo.csv|
-|RESAGEBURB2020 - 14 Jalisco.csv|
-|RESAGEBURB2020 - 15 México.csv|
-|RESAGEBURB2020 - 16 Michoacán de Ocampo.csv|
-|RESAGEBURB2020 - 17 Morelos.csv|
-|RESAGEBURB2020 - 18 Nayarit.csv|
-|RESAGEBURB2020 - 19 Nuevo León.csv|
-|RESAGEBURB2020 - 20 Oaxaca.csv|
-|RESAGEBURB2020 - 21 Puebla.csv|
-|RESAGEBURB2020 - 22 Querétaro.csv|
-|RESAGEBURB2020 - 23 Quintana Roo.csv|
-|RESAGEBURB2020 - 24 San Luis Potosí.csv|
-|RESAGEBURB2020 - 25 Sinaloa.csv|
-|RESAGEBURB2020 - 26 Sonora.csv|
-|RESAGEBURB2020 - 27 Tabasco.csv|
-|RESAGEBURB2020 - 28 Tamaulipas.csv|
-|RESAGEBURB2020 - 29 Tlaxcala.csv|
-|RESAGEBURB2020 - 30 Veracruz de Ignacio de la Llave.csv|
-|RESAGEBURB2020 - 31 Yucatán.csv|
-|RESAGEBURB2020 - 32 Zacatecas.csv|
+## ✔ Verify All 32 Files Are Downloaded
 
-### Concatenate All files
+| File Name |
+|-----------|
+| RESAGEBURB2020 - 01 Aguascalientes.csv |
+| RESAGEBURB2020 - 02 Baja California.csv |
+| RESAGEBURB2020 - 03 Baja California Sur.csv |
+| RESAGEBURB2020 - 04 Campeche.csv |
+| RESAGEBURB2020 - 05 Coahuila de Zaragoza.csv |
+| RESAGEBURB2020 - 06 Colima.csv |
+| RESAGEBURB2020 - 07 Chiapas.csv |
+| RESAGEBURB2020 - 08 Chihuahua.csv |
+| RESAGEBURB2020 - 09 Ciudad de México.csv |
+| RESAGEBURB2020 - 10 Durango.csv |
+| RESAGEBURB2020 - 11 Guanajuato.csv |
+| RESAGEBURB2020 - 12 Guerrero.csv |
+| RESAGEBURB2020 - 13 Hidalgo.csv |
+| RESAGEBURB2020 - 14 Jalisco.csv |
+| RESAGEBURB2020 - 15 México.csv |
+| RESAGEBURB2020 - 16 Michoacán de Ocampo.csv |
+| RESAGEBURB2020 - 17 Morelos.csv |
+| RESAGEBURB2020 - 18 Nayarit.csv |
+| RESAGEBURB2020 - 19 Nuevo León.csv |
+| RESAGEBURB2020 - 20 Oaxaca.csv |
+| RESAGEBURB2020 - 21 Puebla.csv |
+| RESAGEBURB2020 - 22 Querétaro.csv |
+| RESAGEBURB2020 - 23 Quintana Roo.csv |
+| RESAGEBURB2020 - 24 San Luis Potosí.csv |
+| RESAGEBURB2020 - 25 Sinaloa.csv |
+| RESAGEBURB2020 - 26 Sonora.csv |
+| RESAGEBURB2020 - 27 Tabasco.csv |
+| RESAGEBURB2020 - 28 Tamaulipas.csv |
+| RESAGEBURB2020 - 29 Tlaxcala.csv |
+| RESAGEBURB2020 - 30 Veracruz.csv |
+| RESAGEBURB2020 - 31 Yucatán.csv |
+| RESAGEBURB2020 - 32 Zacatecas.csv |
 
-#### Purpose
+---
 
-Concatenate all 32 state files into a clean CSV ready to bulk import in MS SQL 2022 using the script below.
+# 3.2 — Concatenate All Files into One Clean TSV
 
-### Expected file
+### Purpose
+Combine all 32 state CSV files into a single **UTF‑8 (no BOM)**, **TAB‑separated** file ready for SQL Server bulk import.
 
-**RESAGEBURB2020_ALL_TAB.csv**
+### Output File
 
-- Encoding: UTF-8 no BOM
-- TAB separated values
-- Replaces all values * asterisk to "" (empty) as they are N/A data and must become NULL in SQL
+RESAGEBURB2020_ALL_TAB.csv
 
+- Encoding: **UTF‑8 no BOM**  
+- Separator: **TAB**  
+- Replace all `*` with empty string (NULL in SQL)
+
+### PowerShell Script
 
 ```powershell
 # Force the script to run in its own directory
