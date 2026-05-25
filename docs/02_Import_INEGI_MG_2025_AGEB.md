@@ -74,7 +74,8 @@ From this new layer, export to CSV as:
 **Boundaries_AGEB_2025_WKT.csv**
 
 - UTF‑8 encoding  
-- TAB delimiter  
+- TAB delimiter
+- WKT with EPSG:4326 coordinates
 
 | Column   | Description |
 |----------|-------------|
