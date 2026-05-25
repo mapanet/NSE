@@ -62,7 +62,7 @@ In right panel are select:
 - Bottom-center use black button **Exportar a** (Export to) select **FORMAT** CVS and save the file in your D:\INEGI\Census_2020
 - Go back to previous page with browser <= button and select the next state.
 
-[<img src="/docs/images/Censo_2020_4.png" width="400">](/docs/images/Censo_2020_4.png)
+[<img src="/docs/images/Censo_2020_4.png" width="1000">](/docs/images/Censo_2020_4.png)
 
 #### Verify you have all 32 states files in D:\INEGI\Census_2020
 
