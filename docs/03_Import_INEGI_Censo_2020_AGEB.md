@@ -4,8 +4,8 @@ Dataset will contain:
 
 Census 2020 data at the block block level (AGEB and MZA).  
 
-- By aggregating blocks, we can obtain **Population** and **Households** per AGEB, City, Municaplity, State.  
-- Later we can compute: **Households_Not_In_Use** = Households – Households_in_use
+- By aggregating blocks, we can obtain **Population** and **Dwellings** per AGEB, City, Municaplity, State.  
+- Later we can compute: **Unoccupied_Dwellings** = Dwellings – Occupied_Dwellings
 
 *Result table:* INEGI_Censo_2020_AGEB
 
@@ -16,8 +16,8 @@ Census 2020 data at the block block level (AGEB and MZA).
 |Municipality|nvarchar(85)|
 |City|nvarchar(110)|
 |Population|int|
-|Hoseholds|int|
-|Hoseholds_in_use|int|
+|Dwellings|int|
+|Occupied_Dwellings|int|
 
 
 ## Prepare to Download Census 2020 data
