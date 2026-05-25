@@ -183,7 +183,7 @@ Edit it to verify data is:
 
 ### Census 2020 AGEB Step 1.0 Create table INEGI_Censo_2020_AGEB (block level / manzana).
 
--- SUMMARY: We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Hoseholds at AGEB and dwellings level.
+-- SUMMARY: We will create Census 2020 AGEB at dwelling level (Manzana) dataset to have Population and Hoseholds at AGEB and dwelling level.
 -- This dataset is used later, in calculation NSE Step 4.9 to update Population and Hoseholds at Neighborhood level (Colonia) level using weighted aggregation.
 -- It can be used also used with aggregation to update Population and Hoseholds at City, Municipality, State levels.
 
@@ -199,14 +199,11 @@ SQL table **INEGI_Censo_2020_AGEB** with primary key CVEGEO
 |Municipality| nvarchar(85) |Municipality name||
 |City| nvarchar(110) |City name||
 |Population| int |Total Population||
-|Hoseholds| int |Total Hoseholds||
-|Hoseholds_in_use| int |Hoseholds occupied||
+|Dwellings| int |Total Dwellings||
+|Occupied_Dwellings| int |Occupied Dwellings||
     
     
 ```sql
-USE INMO    -- Your DB
-GO
-
 -----------------------
 -- Create staging table 
 -----------------------
