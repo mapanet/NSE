@@ -113,7 +113,7 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
 );
 ```
 
-### Expected result
+#### Expected result
 
 Commands completed successfully.
 Completion time: 2026-05-24T18:11:21.7628144-05:00
@@ -136,7 +136,7 @@ WITH (
 );
 ```
 
-### Expected result
+#### Expected result
 
 (82283 rows affected)
 Completion time: 2026-05-24T18:16:03.7467723-05:00
@@ -161,7 +161,8 @@ CREATE TABLE Boundaries_AGEB_2025 (
     Dwellings   int NULL       -- will be filled later
 );
 ```
-### Expect results
+
+#### Expect results
 
 Commands completed successfully.
 Completion time: 2026-05-24T18:18:21.1765627-05:00
@@ -186,7 +187,7 @@ SELECT
 FROM Boundaries_AGEB_2025_IMPORT;
 ```
 
-### Expected results
+#### Expected results
 
 (82283 rows affected)
 Completion time: 2026-05-24T18:21:38.1908732-05:00
@@ -214,7 +215,8 @@ SELECT ID, CVEGEO
 FROM Boundaries_AGEB_2025
 WHERE geom.STIsValid() = 0;
 ```
-### Expected results
+
+#### Expected results
 
 ID	CVEGEO
 None
@@ -236,7 +238,7 @@ SET geom = geom.MakeValid()
 WHERE geom.STIsValid() = 0;
 ```
 
-### Expected results
+#### Expected results
 
 (0 rows affected)
 Completion time: 2026-05-24T18:32:20.6926452-05:00
@@ -252,7 +254,7 @@ UPDATE Boundaries_AGEB_2025
 SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 ```
 
-### Expected results
+#### Expected results
 
 (82283 rows affected)
 Completion time: 2026-05-24T18:38:41.5409824-05:00
@@ -271,7 +273,7 @@ FROM Boundaries_AGEB_2025
 WHERE geog IS NULL;
 ```
 
-### Expected results
+#### Expected results
 
 ID
 None
@@ -290,7 +292,7 @@ WITH (
 );
 ```
 
-### Expected results
+#### Expected results
 
 Commands completed successfully.
 Completion time: 2026-05-24T18:47:16.7518921-05:00
@@ -300,7 +302,7 @@ CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geog
 ON Boundaries_AGEB_2025(geog);
 ```
 
-### Expected results
+#### Expected results
 
 Commands completed successfully.
 Completion time: 2026-05-24T18:47:16.7518921-05:00
