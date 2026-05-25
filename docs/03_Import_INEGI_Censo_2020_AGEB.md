@@ -34,12 +34,9 @@ This dataset contains **Census 2020 population and dwelling data at the block le
 | Dwellings | int |
 | Occupied_Dwellings | int |
 
-Working folder:
-
 #### Working folder
 
 D:\INEGI\
-
 
 ---
 
