@@ -261,8 +261,8 @@ GO
 
 #### Expected results
 
-Commands completed successfully.
-Completion time: 2026-05-24T22:09:13.9363948-05:00
+Commands completed successfully.   
+Completion time: 2026-05-24T22:09:13.9363948-05:00   
 
 ## 3.4 — Copy the data from Staging table to final table INEGI_Censo_2020_AGEB
 
