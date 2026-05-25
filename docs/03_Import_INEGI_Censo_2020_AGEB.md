@@ -236,8 +236,8 @@ GO
 
 #### Expected results
 
-(863069 rows affected)
-Completion time: 2026-05-24T22:07:26.4095744-05:00
+(863069 rows affected)   
+Completion time: 2026-05-24T22:07:26.4095744-05:00  
 
 ## 3.3 — Create SQL table INEGI_Censo_2020_AGEB
 
