@@ -1,7 +1,16 @@
-# NSE of Neighborhoods (Boundaries layer = 6)
+# NSE Calculation for Neighborhoods (Boundaries Layer 6)
 
-To generate the AMAI Socioeconomic Level (NSE) at the neighborhood (colonia) Layer 6, four official datasets are required.   
-Each dataset plays a specific role in the spatial, demographic, and statistical pipeline.
+## Brief Description
+
+This document describes the complete technical pipeline used to calculate the AMAI Socioeconomic Level (NSE) at the Neighborhood (Colonia) level, also known as Boundaries Layer 6.  
+The process integrates four official datasets:
+
+— AMAI NSE 2024
+- INEGI Marco Geoestadístico 2025
+- INEGI Census 2020
+- INEGI DCAH 2023
+
+Each contributing essential spatial, demographic, and statistical components required to generate a final, auditable NSE dataset for all neighborhoods in Mexico.
 
 ---
 
