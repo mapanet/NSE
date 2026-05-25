@@ -115,8 +115,8 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
 
 #### Expected result
 
-Commands completed successfully.
-Completion time: 2026-05-24T18:11:21.7628144-05:00
+Commands completed successfully.  
+Completion time: 2026-05-24T18:11:21.7628144-05:00   
 
 ## Import Boundaries_AGEB_2025_WKT.csv
 
