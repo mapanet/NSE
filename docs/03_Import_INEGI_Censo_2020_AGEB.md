@@ -296,6 +296,9 @@ GO
 SQL INEGI_Censo_2020_AGEB table with this data:
 
 ```sql
+------------------------
+-- List first 10 records
+------------------------
 SELECT TOP (10) CVEGEO, State, Municipality, City, Population, Dwellings, Occupied_Dwellings FROM dbo.INEGI_Censo_2020_AGEB
 ```
 
