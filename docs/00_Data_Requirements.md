@@ -26,7 +26,7 @@ To generate Layer 6, the pipeline integrates **four official datasets**, each co
 
 Each dataset has its own ingestion and processing guide:
 
-- **Step 1 — AMAI NSE 2024**  [📄 document ](01_Import_AMAI.md)
+- **Step 1 — AMAI NSE 2024**  [📄 01_Import_AMAIL.md ](01_Import_AMAI.md)
 
 - **Step 2 — INEGI Marco Geoestadístico 2025 (AGEB Geometries)**  
   [📄 02_Import_INEGI_MG_2025_AGEB.md](02_Import_INEGI_MG_2025_AGEB.md)
