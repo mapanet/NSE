@@ -44,9 +44,9 @@ Extract this files:
 
 - 00_integrado.zip
   - catalogos
-      **asentamientos_humanos.csv** (list of neighbohoods)
-   conjunto_de_datos
-      *00as.shp (all SHP files with geometries)** (Datum ITRF2008)
+      - **asentamientos_humanos.csv** (list of neighbohoods)
+  - conjunto_de_datos
+      - *00as.shp (all SHP files with geometries)** (Datum ITRF2008)
 
 
 ---
