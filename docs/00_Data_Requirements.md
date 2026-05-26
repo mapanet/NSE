@@ -1,15 +1,33 @@
 # NSE Calculation for Neighborhoods (Boundaries Layer 6)
 
-## Brief Description
+This document describes the complete technical pipeline used to calculate the AMAI Socioeconomic Level (NSE) at the Neighborhood (Colonia) level, known as **Boundaries Layer 6**.  
+Layer 6 is the **final enriched dataset**, where each neighborhood polygon contains its corresponding NSE category and weighted demographic values.
 
-This document describes the complete technical pipeline used to calculate the AMAI Socioeconomic Level (NSE) at the Neighborhood (Colonia) level, also known as Boundaries Layer 6. The process integrates four official datasets:   
+Although Boundaries Layers **1 (State)**, **2 (Municipality)**, and **5 (City)** also receive NSE values through aggregation, this pipeline focuses specifically on **Layer 6**, where NSE is calculated using spatial intersections between neighborhood polygons and AGEB‑level socioeconomic and census data.
 
-- AMAI NSE 2024
-- INEGI Marco Geoestadístico 2025
-- INEGI Census 2020
-- INEGI DCAH 2023
+To generate Layer 6, the pipeline integrates four official datasets.  
+Each dataset contributes a specific component to the spatial, demographic, and statistical process:
 
-Each contributing essential spatial, demographic, and statistical components required to generate a final, auditable NSE dataset for all neighborhoods in Mexico.
+---
+
+### **1. AMAI NSE 2024 (NSE_AMAI_2024_AGEB)**  
+Provides socioeconomic indicators at the AGEB level.
+
+### **2. INEGI Marco Geoestadístico 2025 (AGEB Geometries)**  
+Provides the official AGEB boundaries required for spatial weighting.
+
+### **3. INEGI Census 2020 (AGEB Block‑Level Data)**  
+Provides population and dwelling counts used for demographic weighting.
+
+### **4. INEGI DCAH 2023 (Neighborhood Polygons)**  
+Provides the official neighborhood geometries used to aggregate NSE to Layer 6.
+
+---
+
+**Summary:**  
+Layer 6 is produced by intersecting neighborhood polygons with AGEB‑level NSE and Census data, applying demographic weighting, and assigning the final NSE category to each neighborhood.  
+This dataset is used for **mapping, analytics, and API consumption**.
+
 
 ---
 
