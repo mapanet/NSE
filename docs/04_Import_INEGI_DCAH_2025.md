@@ -5,7 +5,7 @@ These geometries are used to build **Boundaries Layer 6**, where the AMAI Socioe
 
 ---
 
-## 📄 Dataset Description
+## Dataset Description
 
 **Source:** INEGI — *Delimitación de colonias y otros asentamientos humanos (DCAH)*  
 **Edition (edicion):** 2025  
@@ -16,7 +16,7 @@ These geometries are used to build **Boundaries Layer 6**, where the AMAI Socioe
 
 ---
 
-## 📥 How to Download
+## How to Download
 
 1. Open the INEGI DCAH download page:  
    [https://www.inegi.org.mx/programas/dcah/#descargas](https://www.inegi.org.mx/programas/dcah/#descargas)
@@ -57,7 +57,7 @@ Extract the files is BOLD:
 
 ---
 
-## 🧩 File Contents
+## File Contents
 
 The dataset includes:
 
@@ -83,7 +83,7 @@ This dataset is used to:
 
 ---
 
-## 📊 Why Area Weighting Is Required
+## Why Area Weighting Is Required
 
 Neighborhoods often cross multiple AGEB boundaries.  
 Each AGEB has its own AMAI NSE classification, so the neighborhood inherits a **weighted NSE** based on the proportion of its area that falls within each AGEB.
@@ -105,7 +105,7 @@ This ensures that the NSE assigned to each neighborhood accurately reflects the 
 
 ---
 
-## 🧠 Next Steps
+## Next Steps
 
 After importing the DCAH polygons:
 
