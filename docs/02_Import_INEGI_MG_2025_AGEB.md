@@ -7,6 +7,12 @@ This table will be used for:
 - Calculating area proportions
 - Weighting AMAI population by colonia
 
+## Work directories
+
+- **D:\AXSI\INEGI\MG_2025** (work files)
+- **D:\AXSI\INEGI\MG_2025\Download** (downloaded file and unzipped content to load into QGIS)
+- **D:\AXSI\INEGI\MG_2025\AGEB** (save the processed AGEB shape MG_AGEB_2025.SHP as EPSG:4023)
+
 ## 2.1 Official Download of Marco Geoestadístico 2025
 
 The Marco Geoestadístico 2025 can be downloaded from INEGI:
@@ -17,21 +23,24 @@ The downloaded file is:
 
 **794551163061_s.zip**
 
+### Save as
+
+D:\AXSI\INEGI\MG_2025\Download\794551163061_s.zip
+
 Inside the ZIP you will find:
 
 - mg_2025_integrado.zip  
   - conjunto_de_datos/  
-    - 00a.shp **← main AGEB file**
+    - 00a.shp **← main AGEB areas file**
 
 Files inside the dataset:
 
-- a = Urban AGEB (polygon) **← this is the one we need**  
-- ar = Rural AGEB (polygon)  
-- m = Block (manzana) (polygon)  
-- l = Locality (point)  
-- lpr = Locality (polygon)  
-- ent = State (polygon)  
-- mun = Municipality (polygon)
+- 00_ent = State (polygons)  
+- 00_mun = Municipality (polygons)
+- 00_a = Urban and Rural AGEB (polygons **← AGEB areas**  
+- 00_lpr = Locality (point)  
+- 00_l = Locality Urban and Rural (polygons)  
+
 
 ### CDMX Note
 
@@ -44,7 +53,7 @@ Later we will compare it with Marco Geoestadístico 2025 to verify whether it is
 
 ## 2.2 Contents of the file 00a.shp
 
-When loading `00a.shp` in QGIS, the layer contains the following fields:
+Loas `00a.shp` in QGIS, the layer contains the following fields:
 
 
 | Field     | Description                          |
@@ -62,16 +71,16 @@ Original CRS: **MEXICO_IRF‑2008_LLC** (will be converted to **EPSG:4326**)
 
 ---
 
-## 2.3 Export from QGIS
+## 2.3 Export from QGIS to 
 
 Export the layer `00a.shp` as:
 
-**Boundaries_AGEB_2025.shp**  
-CRS: **EPSG:4326** (very important)
+**D:\AXSI\INEGI\MG_2025\AGEB\MG_AGEB_2025.shp**  
+Make sure select CRS: **EPSG:4326** (very important)
 
 From this new layer, export to CSV as:
 
-**Boundaries_AGEB_2025_WKT.csv**
+**D:\AXSI\INEGI\MG_2025\MG_AGEB_2025_WKT.csv**
 
 - UTF‑8 encoding  
 - TAB delimiter
@@ -118,7 +127,7 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
 Commands completed successfully.  
 Completion time: 2026-05-24T18:11:21.7628144-05:00   
 
-## Import Boundaries_AGEB_2025_WKT.csv
+## Import MG_AGEB_2025_WKT.csv
 
 * check file path you used to store INEGI files
 
@@ -127,7 +136,7 @@ Completion time: 2026-05-24T18:11:21.7628144-05:00
 -- Import Boundaries_AGEB_2025_WKT.csv
 --------------------------------------
 BULK INSERT Boundaries_AGEB_2025_IMPORT 
-FROM 'D:\INEGI\Boundaries_AGEB_2025_WKT.csv' 
+FROM 'D:\AXSI\INEGI\MG_2025\MG_AGEB_2025_WKT.csv' 
 WITH ( 
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t', 
