@@ -35,7 +35,7 @@ Each dataset has its own ingestion and processing guide:
 - **Step 3 — INEGI Census 2020 (AGEB Block-Level Data)**  
   [📄 03_Import_INEGI_Censo_2020_AGEB.md](03_Import_INEGI_Censo_2020_AGEB.md)
 
-- **Step 4 — INEGI DCAH 2023 (Neighborhood Polygons)**  
+- **Step 4 — INEGI DCAH 2025 (Neighborhood Polygons)**  
   [📄 04_Import_INEGI_DCAH_2025.md](04_Import_INEGI_DCAH_2025.md)
 
 ---
