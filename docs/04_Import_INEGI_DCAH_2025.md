@@ -42,7 +42,7 @@ File of 2025 is **794551163078_s.zip**
 Inside you will find a series of zip by state and one named: 00_integrado.zip that contain data of all states.
 Extract the files is BOLD:
 
-00_integrado.zip
+- 00_integrado.zip
   - catalogos
       - **asentamientos_humanos.csv** (list of neighbohoods)
   - conjunto_de_datos
