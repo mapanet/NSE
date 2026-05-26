@@ -43,6 +43,7 @@ Each dataset has its own ingestion and processing guide:
 
 **Source:** AMAI  
 **Unit:** Occupied private dwellings  
+**Process:** [📄 01_Import_AMAIL.md ](01_Import_AMAI.md)
 
 Provides the number of dwellings per socioeconomic level:
 
