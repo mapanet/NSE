@@ -37,6 +37,17 @@ These geometries are used to build **Boundaries Layer 6**, where the AMAI Socioe
 
 D:\INEGI\DCAH
 
+File of 2025 is **794551163078_s.zip**
+
+Inside you will find a series of zip by state and one named: 00_integrado.zip that contain data of all states.
+Extract this files:
+
+00_integrado.zip
+   catalogos
+      **asentamientos_humanos.csv** (list of neighbohoods)
+   conjunto_de_datos
+      *00as.shp (all SHP files with geometries)** (Datum ITRF2008)
+
 
 ---
 
