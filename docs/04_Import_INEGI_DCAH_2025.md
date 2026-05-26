@@ -40,13 +40,19 @@ D:\INEGI\DCAH
 File of 2025 is **794551163078_s.zip**
 
 Inside you will find a series of zip by state and one named: 00_integrado.zip that contain data of all states.
-Extract this files:
+Extract the files is BOLD:
 
 - 00_integrado.zip
   - catalogos
       - **asentamientos_humanos.csv** (list of neighbohoods)
   - conjunto_de_datos
-      - *00as.shp (all SHP files with geometries)** (Datum ITRF2008)
+      - **00as.shp** (SHP file main) Datum: ITRF2008
+      - **00as.cpg** (SHP file accesory)
+      - **00as.dbf** (SHP file accesory)
+      - **00as.prj** (SHP file accesory)
+      - **00as.sbn** (SHP file accesory)
+      - **00as.sbx** (SHP file accesory)
+      - **00as.shx** (SHP file accesory)
 
 
 ---
