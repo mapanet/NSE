@@ -8,10 +8,10 @@ These geometries are used to build **Boundaries Layer 6**, where the AMAI Socioe
 ## 📄 Dataset Description
 
 **Source:** INEGI — *Delimitación de colonias y otros asentamientos humanos (DCAH)*  
-**Edition:** 2025  
-**Coverage:** 2025‑01‑01 to 2025‑12‑31  
+**Edition (edicion):** 2025  
+**Coverage (cobertura):** 2025‑01‑01 to 2025‑12‑31  
 **Datum:** ITRF2008, Ellipsoid GRS80  
-**File Type:** SHP (530.26 MB)  
+**File type (tipo de archivo):** SHP (530.26 MB)  
 **Download URL:** [https://www.inegi.org.mx/programas/dcah/#descargas](https://www.inegi.org.mx/programas/dcah/#descargas)
 
 ---
