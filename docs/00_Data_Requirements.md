@@ -26,11 +26,10 @@ To generate Layer 6, the pipeline integrates **four official datasets**, each co
 
 Each dataset has its own ingestion and processing guide:
 
-- **Step 1 — AMAI NSE 2024**  [📄 01_Import_AMAIL.md ](01_Import_AMAI.md)
+- **Step 1 — AMAI NSE 2024**
 
 - **Step 2 — INEGI Marco Geoestadístico 2025 (AGEB Geometries)**  
-  [📄 02_Import_INEGI_MG_2025_AGEB.md](02_Import_INEGI_MG_2025_AGEB.md)
-
+  
 - **Step 3 — INEGI Census 2020 (AGEB Block-Level Data)**  
   [📄 03_Import_INEGI_Censo_2020_AGEB.md](03_Import_INEGI_Censo_2020_AGEB.md)
 
@@ -43,7 +42,7 @@ Each dataset has its own ingestion and processing guide:
 
 **Source:** AMAI  
 **Unit:** Occupied private dwellings  
-**Process:** [01_Import_AMAIL.md ](01_Import_AMAI.md)
+**Import and process:** [01_Import_AMAIL.md ](01_Import_AMAI.md)
 
 Provides the number of dwellings per socioeconomic level:
 
@@ -68,6 +67,7 @@ Each record is associated with a **CVEGEO (13‑digit AGEB key)**.
 ## 2. INEGI Marco Geoestadístico 2025 (AGEB Geometries)
 
 **Source:** INEGI MG 2025  
+**Import Process:** [02_Import_INEGI_MG_2025_AGEB.md](02_Import_INEGI_MG_2025_AGEB.md)
 
 Provides the official AGEB polygons for the entire country, including:
 
