@@ -36,3 +36,70 @@ These geometries are used to build **Boundaries Layer 6**, where the AMAI Socioe
 5. Download the ZIP file and extract the contents into:
 
 D:\INEGI\DCAH
+
+
+---
+
+## 🧩 File Contents
+
+The dataset includes:
+
+| Field | Description |
+|-------|--------------|
+| **Polygon geometry** | Neighborhood boundaries |
+| **NOM_COLONIA** | Neighborhood name |
+| **CVE_ENT** | State code |
+| **CVE_MUN** | Municipality code |
+| **CVE_LOC** | Locality code |
+| *(No population data)* | — |
+| *(No dwelling data)* | — |
+
+---
+
+## ⚙️ Purpose in the NSE Pipeline
+
+This dataset is used to:
+
+- ✔ Build **Boundaries Layer 6** (Neighborhoods)  
+- ✔ Perform **spatial intersection** with AGEB polygons  
+- ✔ Calculate **area‑weighted NSE** values per neighborhood  
+
+---
+
+## 📊 Why Area Weighting Is Required
+
+Neighborhoods often cross multiple AGEB boundaries.  
+Each AGEB has its own AMAI NSE classification, so the neighborhood inherits a **weighted NSE** based on the proportion of its area that falls within each AGEB.
+
+### Example
+
+| AGEB | % Area in Neighborhood | C+ | C | D+ | E |
+|------|------------------------|----|---|----|---|
+| A | 70 % | 40 | 30 | 20 | 10 |
+| B | 30 % | 10 | 20 | 40 | 30 |
+
+The neighborhood’s weighted values are:
+
+C+ = 0.7 × 40 + 0.3 × 10
+C  = 0.7 × 30 + 0.3 × 20
+
+
+This ensures that the NSE assigned to each neighborhood accurately reflects the socioeconomic composition of the AGEBs it overlaps.
+
+---
+
+## 🧠 Next Steps
+
+After importing the DCAH polygons:
+
+1. Validate geometry integrity (no empty or self‑intersecting polygons).  
+2. Normalize keys (**CVE_ENT**, **CVE_MUN**, **CVE_LOC**).  
+3. Intersect with AGEB geometries from **INEGI MG 2025**.  
+4. Apply area‑weighted NSE aggregation using **AMAI 2024** and **Census 2020** data.  
+5. Generate the final **Layer 6 NSE dataset**.
+
+---
+
+**Result:**  
+A complete, validated neighborhood‑level dataset ready for NSE calculation, mapping, and API integration.
+
