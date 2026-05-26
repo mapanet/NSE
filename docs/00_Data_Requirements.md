@@ -27,14 +27,9 @@ To generate Layer 6, the pipeline integrates **four official datasets**, each co
 Each dataset has its own ingestion and processing guide:
 
 - **Step 1 — AMAI NSE 2024**
-
 - **Step 2 — INEGI Marco Geoestadístico 2025 (AGEB Geometries)**  
-  
 - **Step 3 — INEGI Census 2020 (AGEB Block-Level Data)**  
-  [📄 03_Import_INEGI_Censo_2020_AGEB.md](03_Import_INEGI_Censo_2020_AGEB.md)
-
 - **Step 4 — INEGI DCAH 2025 (Neighborhood Polygons)**  
-  [📄 04_Import_INEGI_DCAH_2025.md](04_Import_INEGI_DCAH_2025.md)
 
 ---
 
@@ -42,7 +37,7 @@ Each dataset has its own ingestion and processing guide:
 
 **Source:** AMAI  
 **Unit:** Occupied private dwellings  
-**Import and process:** [01_Import_AMAIL](01_Import_AMAI.md)
+**Import process:** [01_Import_AMAIL](01_Import_AMAI.md)
 
 Provides the number of dwellings per socioeconomic level:
 
@@ -67,7 +62,7 @@ Each record is associated with a **CVEGEO (13‑digit AGEB key)**.
 ## 2. INEGI Marco Geoestadístico 2025 (AGEB Geometries)
 
 **Source:** INEGI MG 2025  
-**Import Process:** [02_Import_INEGI_MG_2025_AGEB](02_Import_INEGI_MG_2025_AGEB.md)
+**Import process:** [02_Import_INEGI_MG_2025_AGEB](02_Import_INEGI_MG_2025_AGEB.md)
 
 Provides the official AGEB polygons for the entire country, including:
 
@@ -87,6 +82,7 @@ Provides the official AGEB polygons for the entire country, including:
 ## 3. INEGI Census 2020 (AGEB Block‑Level Data)
 
 **Source:** INEGI SCINCE 2020  
+**Import process:** [03_Import_INEGI_Censo_2020_AGEB](03_Import_INEGI_Censo_2020_AGEB.md)
 
 Provides demographic and housing data at the AGEB level:
 
@@ -106,6 +102,7 @@ Provides demographic and housing data at the AGEB level:
 ## 4. INEGI DCAH 2025 (Neighborhood Polygons)
 
 **Source:** INEGI DCAH  
+**Import process:** [04_Import_INEGI_DCAH_2025](04_Import_INEGI_DCAH_2025.md)
 
 Provides the official neighborhood (colonia) boundaries, including:
 
