@@ -9,9 +9,9 @@ This table will be used for:
 
 ## Work directories
 
-- **D:\AXSI\INEGI\MG_2025** (work files)
-- **D:\AXSI\INEGI\MG_2025\Download** (downloaded file and unzipped content to load into QGIS)
-- **D:\AXSI\INEGI\MG_2025\AGEB** (save the processed AGEB shape MG_AGEB_2025.SHP as EPSG:4023)
+- D:\AXSI\INEGI\MG_2025 (work files)
+- D:\AXSI\INEGI\MG_2025\Download (downloaded file and unzipped content to load into QGIS)
+- D:\AXSI\INEGI\MG_2025\AGEB (save the processed AGEB shape MG_AGEB_2025.SHP as EPSG:4023)
 
 ## 2.1 Official Download of Marco Geoestadístico 2025
 
