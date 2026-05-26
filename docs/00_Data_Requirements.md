@@ -42,7 +42,7 @@ Each dataset has its own ingestion and processing guide:
 
 **Source:** AMAI  
 **Unit:** Occupied private dwellings  
-**Import and process:** [01_Import_AMAIL.md ](01_Import_AMAI.md)
+**Import and process:** [01_Import_AMAIL](01_Import_AMAI.md)
 
 Provides the number of dwellings per socioeconomic level:
 
@@ -67,7 +67,7 @@ Each record is associated with a **CVEGEO (13‑digit AGEB key)**.
 ## 2. INEGI Marco Geoestadístico 2025 (AGEB Geometries)
 
 **Source:** INEGI MG 2025  
-**Import Process:** [02_Import_INEGI_MG_2025_AGEB.md](02_Import_INEGI_MG_2025_AGEB.md)
+**Import Process:** [02_Import_INEGI_MG_2025_AGEB](02_Import_INEGI_MG_2025_AGEB.md)
 
 Provides the official AGEB polygons for the entire country, including:
 
