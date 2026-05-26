@@ -36,7 +36,7 @@ Each dataset has its own ingestion and processing guide:
   [📄 03_Import_INEGI_Censo_2020_AGEB.md](03_Import_INEGI_Censo_2020_AGEB.md)
 
 - **Step 4 — INEGI DCAH 2023 (Neighborhood Polygons)**  
-  [📄 04_Import_INEGI_DCAH_2023.md](04_Import_INEGI_DCAH_2023.md)
+  [📄 04_Import_INEGI_DCAH_2025.md](04_Import_INEGI_DCAH_2025.md)
 
 ---
 
@@ -103,7 +103,7 @@ Provides demographic and housing data at the AGEB level:
 
 ---
 
-## 4. INEGI DCAH 2023 (Neighborhood Polygons)
+## 4. INEGI DCAH 2025 (Neighborhood Polygons)
 
 **Source:** INEGI DCAH  
 
