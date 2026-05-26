@@ -5,7 +5,7 @@ This private repository documents the technical pipeline for calculating the AMA
 - AMAI 2024 (NSE by AGEB)
 - INEGI Marco Geoestadístico 2025 (AGEB geometries)
 - INEGI Census 2020 (population and households at dwelling level)
-- INEGI DCAH 2023 neighborhoods (colonias)
+- INEGI DCAH 2025 neighborhoods (colonias)
 - Spatial weighting from AGEB geometries → neighborhoods geometries (colonias) 
 
 The objective is to generate a final, reproducible, auditable, and standardized NSE dataset at the colonia level (Layer 6).
@@ -27,7 +27,7 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 1. [Import AMAI data](docs/01_Import_AMAI.md)
 2. [Import AGEB 2025 geometries data](docs/02_Import_Boundaries_AGEB_2025.md)
 3. [Import INEGI Census 2020 data](docs/03_Import_INEGI_Census_2020_AGEB.md)
-4. [Import INEGI DCAH Neighborhoods 2023 data](docs/04_Import_INEGI_DCAH_Neighborhoods_2023.md)
+4. [Import INEGI DCAH Neighborhoods 2025 data](docs/04_Import_INEGI_DCAH_2025.md)
 5. [Colonias × AGEB spatial intersection](docs/05_Intersections.md)
 6. [AMAI Households Weighting by Neighborhood](docs/06_Weighting_by_Neighborhood.md)
 7. [Final validations](docs/07_Validations.md)
