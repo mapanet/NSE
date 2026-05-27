@@ -78,6 +78,8 @@ Delete Rows:
 - NOMBRE LOCALIDAD
 - TAMAÑO DE LOCALIDAD
 
+[<img src="/docs/images/AMAI_1.png" width="1000">](/docs/images/AMAIL_1.png)
+
 Create a new header at row 3 and delete rows 1 and 2
 
 | Field | New name  |
