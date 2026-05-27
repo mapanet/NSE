@@ -45,16 +45,6 @@ Files inside the dataset:
 - 00_lpr = Locality (point)  
 - 00_l = Locality Urban and Rural (polygons)  
 
-
-### CDMX Note
-
-Mexico City provides an independent AGEB 2023 dataset:
-
-https://datos.cdmx.gob.mx/dataset/ageb-urbanas-areas-geoestadisticas-basicas-urbanas
-
-We will not use it here.  
-Later we will compare it with Marco Geoestadístico 2025 to verify whether it is the same or if somehow have more detail).
-
 ## 2.2 Contents of the file 00a.shp
 
 Loas `00a.shp` in QGIS, the layer contains the following fields:
