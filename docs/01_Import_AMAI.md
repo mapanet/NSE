@@ -66,8 +66,8 @@ File has merged cells as below, plus header names need to be standarized so lets
 
 Original files has some merged columns:
 
-TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO
-AB     C+    C     C-     D+     D     E  
+TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
+AB     C+    C     C-     D+     D     E   
 
 #### Fix the headers, get rid of columns we don't need, and calcualte concatenaded CVEGEO
 
