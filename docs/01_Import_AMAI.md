@@ -78,9 +78,17 @@ Delete Rows:
 - NOMBRE LOCALIDAD
 - TAMAÑO DE LOCALIDAD
 
-[<img src="/docs/images/AMAI_1.png" width="1000">](/docs/images/AMAIL_1.png)
+[<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
 
-Create a new header at row 3 and delete rows 1 and 2
+### Create a new header at row 3
+
+[<img src="/docs/images/NSE_2.png" width="1000">](/docs/images/NSE_2.png)
+
+### Delete rows 1 and 2
+
+[<img src="/docs/images/NSE_3.png" width="1000">](/docs/images/NSE_3.png)
+
+###  
 
 | Field | New name  |
 |-------|-----------|
@@ -88,14 +96,14 @@ Create a new header at row 3 and delete rows 1 and 2
 | MUNICIPIO | MUNICIPIO |
 | LOCALIDAD | LOCALIDAD |
 | AGEB | AGEB |
-| AB | AB |
-| C+ | CPLUS |
-| C |	CMINUS |
-| D+ | DPLUS |
-| D | D |
-|E | E |
+| AB | NSE_AB |
+| C+ | NSE_CPLUS |
+| C |	NSE_CMINUS |
+| D+ | NSE_DPLUS |
+| D | NSE D |
+|E | NSE_E |
 | NIVEL PREDOMINANTE | NSE |
-| VIVIENDAS | TOTAL |
+| VIVIENDAS | NSE_TOTAL |
 
 
 ## 1.4 Create CVEGEO by concatenating codes
@@ -129,6 +137,8 @@ Excel formula:
 - MUNICIPIO
 - LOCALIDAD
 - AGEB
+
+[<img src="/docs/images/NSE_4.png" width="1000">](/docs/images/NSE_4.png)
 
 ---
 
