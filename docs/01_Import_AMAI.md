@@ -54,8 +54,8 @@ Original columns:
 
 #### Save file as 
 
-Directory: D:\AXSI\AMAI
-File name: NSE_AMAI_2024_AGEB_IMPORT.xlsx
+Directory: D:\AXSI\AMAI   
+File name: NSE_AMAI_2024_AGEB_IMPORT.xlsx   
 
 ---
 
@@ -164,8 +164,8 @@ The CSV file should look like this (TAB‑delimited):
 
 Save as:
 
-Directory: D:\AXSI\AMAI
-File name: NSE_AMAI_2024_AGEB_IMPORT.csc
+Directory: D:\AXSI\AMAI   
+File name: NSE_AMAI_2024_AGEB_IMPORT.csv   
 
 ### Export settings
 
