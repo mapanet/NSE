@@ -47,7 +47,7 @@ Files inside the dataset:
 
 ## 2.2 Contents of the file 00a.shp
 
-Loas `00a.shp` in QGIS, the layer contains the following fields:
+Load `00a.shp` in QGIS, ch eck the layer contains the following fields:
 
 
 | Field     | Description                          |
@@ -61,24 +61,24 @@ Loas `00a.shp` in QGIS, the layer contains the following fields:
 | geom      | Geometry (Polygon / MultiPolygon)    |
 
 Total records: **82,263 AGEB**  
-Original CRS: **MEXICO_IRF‑2008_LLC** (will be converted to **EPSG:4326**)
+Original CRS: **MEXICO_IRF‑2008_LLC** 
 
 ---
 
-## 2.3 Export from QGIS to 
+## 2.3 Export from QGIS to CRS EPSG:4326)
 
 Export the layer `00a.shp` as:
 
 **D:\AXSI\INEGI\MG_2025\AGEB\MG_AGEB_2025.shp**  
 Make sure select CRS: **EPSG:4326** (very important)
 
-From this new layer, export to CSV as:
+From this new layer MG_AGEB_2025, export to CSV as:
 
 **D:\AXSI\INEGI\MG_2025\MG_AGEB_2025_WKT.csv**
 
 - UTF‑8 encoding  
 - TAB delimiter
-- WKT with EPSG:4326 coordinates
+- WKT as EPSG:4326 coordinates
 
 | Column   | Description |
 |----------|-------------|
