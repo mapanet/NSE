@@ -89,12 +89,13 @@ Provides demographic and housing data at the AGEB level:
 - Total population  
 - Total dwellings  
 - Occupied dwellings  
-- CVEGEO 16 digits
+- CVEGEO 16 digits (Dwelling level)
 
 **Used for:**  
 - Enriching the final Layer 6 dataset with:  
   - **Population**  
-  - **Residences**  
+  - **Dwellings**
+  - **Occupied_Dwellings**
 - Does *not* affect the NSE calculation itself  
 
 ---
