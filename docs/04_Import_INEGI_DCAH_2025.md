@@ -77,9 +77,9 @@ The dataset includes:
 
 This dataset is used to:
 
-- ✔ Build **Boundaries Layer 6** (Neighborhoods)  
-- ✔ Perform **spatial intersection** with AGEB polygons  
-- ✔ Calculate **area‑weighted NSE** values per neighborhood  
+- Build **Boundaries Layer 6** (Neighborhoods)  
+- Perform **spatial intersection** with AGEB polygons  
+- Calculate **area‑weighted NSE** values per neighborhood  
 
 ---
 
