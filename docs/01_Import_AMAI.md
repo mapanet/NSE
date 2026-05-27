@@ -305,9 +305,9 @@ Your final table IN SQL should look like this:
 
 ```sql
 -------------------
--- Show top 10 rows
+-- Show top 6 rows
 -------------------
-SELECT TOP (10) 
+SELECT TOP (6) 
   CVEGEO, 
   NSE_AB, 
   NSE_CPLUS, 
