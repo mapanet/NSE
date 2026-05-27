@@ -157,8 +157,8 @@ This prevents errors in:
 
 The CSV file should look like this (TAB‑delimited):
 
-| CVEGEO        | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E   | NSE_LABEL | TOTAL |
-|---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|
+| CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
+|---------------|---------|-----------|-------|------------|-----------|---------|----====-|-----|-----------|
 | 0100100010017 | 0   | 12     | 39  | 111     | 153    | 331 |     | D         | 648    |
 | 010010001006A | 178 | 124    | 60  | 24      | 9      | 4   | 0   | A/B       | 399    |
 | 0100100010106 | 183 | 375    | 247 | 128     | 62     | 32  |     | C+        | 1028   |
@@ -201,15 +201,15 @@ GO
 
 CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
     [CVEGEO] [nvarchar](13) NOT NULL,
-    [AB] [int] NULL,
-    [CPLUS] [int] NULL,
-    [C] [int] NULL,
-    [CMINUS] [int] NULL,
-    [DPLUS] [int] NULL,
-    [D] [int] NULL,
-    [E] [int] NULL,
+    [NSE_AB] [int] NULL,
+    [NSE_CPLUS] [int] NULL,
+    [NSE_C] [int] NULL,
+    [NSE_CMINUS] [int] NULL,
+    [NSE_DPLUS] [int] NULL,
+    [NSE_D] [int] NULL,
+    [NSE_E] [int] NULL,
     [NSE] [nvarchar](10) NULL,
-    [TOTAL] [int] NULL,
+    [NSE_TOTAL] [int] NULL,
  CONSTRAINT [PK_NSE_AMAI_2024_AGEB] PRIMARY KEY CLUSTERED 
 (
     [CVEGEO] ASC
@@ -284,12 +284,12 @@ None
 ----------------------------------------------------
 SELECT *
 FROM NSE_AMAI_2024_AGEB
-WHERE TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
+WHERE NSE_TOTAL <> (NSE_AB + NSE_CPLUS + NSE_C + NSE_CMINUS + NSE_DPLUS + NSE_D + NSE_E);
 ```
 
 #### Exprected result
 
-CVEGEO	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE_LABEL	TOTAL
+CVEGEO	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS NSE_DPLUS NSE_D NSE_E NSE_NSE_LABEL NSE_TOTAL
 None
 (this means there is no difference between total vs sum of components)
 
@@ -306,7 +306,7 @@ WHERE LEN(CVEGEO) <> 13;
 
 #### Exprected result
 
-CVEGEO	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE_LABEL	TOTAL
+CVEGEO	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE	NSE_TOTAL
 None
 (this means all CVEGEO are 13 characters: EEMMMLLLLAAAA)
 
@@ -321,7 +321,7 @@ Your final table IN SQL should look like this:
 SELECT TOP (20) CVEGEO, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE_LABEL, TOTAL FROM dbo.NSE_AMAI_2024_AGEB
 ```
 
-| CVEGEO        | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E   | NSE | TOTAL |
+| CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
 |---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|
 | 0100100010017 | 0   | 12     | 39  | 111     | 153    | 331 |     | D         | 648    |
 | 010010001006A | 178 | 124    | 60  | 24      | 9      | 4   | 0   | A/B       | 399    |
