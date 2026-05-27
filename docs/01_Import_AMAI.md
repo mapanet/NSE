@@ -243,7 +243,7 @@ Make sure the directory path matches where you saved the AMAI CSV file.
 -- 1.9 Import CSV into MS SQL Server 2022
 -----------------------------------------
 BULK INSERT NSE_AMAI_2024_AGEB
-FROM 'D:\AMAI\NSE_AMAI_2024_AGEB_IMPORT.csv'
+FROM 'D:\AXSI\AMAI\NSE_AMAI_2024_AGEB_IMPORT.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
