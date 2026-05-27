@@ -192,6 +192,8 @@ If necessary, edit the CSV with EditPad Pro or Notepad++ to verify:
 Note: I use TAB for my personal convenience, you can comma delimiter, just correct BULK INSERT to the appropriate FIELDTERMINATOR = ','.
 (the reason always I use TAB since some Mexican data come with " in names, some also may have only one " so with with TAB is easy to debug).
 
+---
+
 ## 1.7 Create Final AMAI SQL Table in MS SQL Server 2022
 
 ```sql
@@ -231,8 +233,10 @@ GO
 
 ### Expected result
 
-Commands completed successfully.
-Completion time: 2026-05-24T17:09:53.0742807-05:00
+Commands completed successfully.   
+Completion time: 2026-05-24T17:09:53.0742807-05:00   
+
+---
 
 ## 1.8 Import CSV into MS SQL Server 2022
 
@@ -254,8 +258,10 @@ WITH (
 
 ### Expected result
 
-(246048 rows affected)
-Completion time: 2026-05-24T17:13:16.8534671-05:00
+(246048 rows affected)   
+Completion time: 2026-05-24T17:13:16.8534671-05:00   
+
+---
 
 ## 1.9 Post‑Import Validations
 
