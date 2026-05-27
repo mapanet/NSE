@@ -10,9 +10,7 @@ This dataset contains **Census 2020 population and dwelling data at the block le
 - We create a **Census 2020 block-level dataset** to obtain **Population**, **Dwellings**, and **Occupied_Dwellings** at the **Manzana (Block)** level.
 - This dataset is used in **NSE Step 5.9** to update **Population** and **Dwellings** at the **Neighborhood (Colonia)** level using weighted aggregation.
 - It can also be aggregated to obtain totals at the **AGEB**, **City**, **Municipality**, and **State** levels.
-- Later we compute:
-
-Unoccupied_Dwellings = Dwellings – Occupied_Dwellings
+- Later we can compute: Unoccupied_Dwellings = Dwellings – Occupied_Dwellings
 
 ### Terminology
 
@@ -23,7 +21,7 @@ Unoccupied_Dwellings = Dwellings – Occupied_Dwellings
 
 ---
 
-## 📄 Resulting Table: `INEGI_Censo_2020_AGEB`
+## Resulting Table: `INEGI_Censo_2020_AGEB`
 
 | Column | Type | Notes |
 |--------|------|--------|
@@ -54,7 +52,7 @@ https://www.inegi.org.mx/app/scitel/Default?ev=10
 
 ---
 
-### ⚠️ IMPORTANT — Do NOT use the gray CSV or XLSX buttons
+### IMPORTANT — Do NOT use the gray CSV or XLSX buttons
 
 In the **left panel**, you will see **gray CSV and XLSX** buttons.  
 These export the **full dataset**, which contains to many fields we do not need.
