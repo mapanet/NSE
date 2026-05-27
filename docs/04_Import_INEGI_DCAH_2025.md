@@ -132,10 +132,120 @@ Save file, making sure is **UTF-8** and **No BOM**
 
 # 4.4 Upload CSV geometries to SQL
 
+```sql
+----------------------------
+-- 4.4 — Upload Upload CSV geometries to SQL
+----------------------------
 
+-----------------------------
+-- 4.4.1 Create staging table
+-----------------------------
+DROP TABLE IF EXISTS INEGI_DCAH_Staging;
+GO
 
+CREATE TABLE INEGI_DCAH_Staging (
+    WKT varchar(MAX) NOT NULL,
+    GVEGEO varchar(16) NOT NULL,
+    CVE_ENT varchar(2) NULL,
+    CVE_MUN varchar(3) NOT NULL,
+    CVE_LOC varchar(4) NOT NULL,
+    CVE_ASEN varchar(4) NOT NULL,
+    CP varchar(5) NOT NULL,
+    FECHA_ACT nvarchar(10) NULL,
+    INSTITICIO nvarchar(500) NULL,
+    NOM_ASEN nvarchar(115) NOT NULL,
+    TIPO nvarchar(100) NOT NULL
+);
+GO
 
+--------------------
+-- 4.4.2 Bulk Insert
+--------------------
+BULK INSERT INEGI_DCAH_Staging
+FROM 'D:\AXSI\INEGI\DCAH_2025\Boundaries_INEGI_DCAH_2025.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = '\t',
+    ROWTERMINATOR = '\n',
+    CODEPAGE = '65001',  -- UTF-8
+    TABLOCK
+);
+GO
+```
 
+### Results
+
+```sql
+
+```
+
+# 4.6 Create Boundaries table
+
+``sql
+CREATE TABLE [dbo].[Boundaries](
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[CVEGEO] [nvarchar](20) NULL,
+	[Layer] [int] NOT NULL,
+	[ISO] [nvarchar](2) NULL,
+	[Country] [nvarchar](25) NULL,
+	[State] [nvarchar](85) NULL,
+	[Municipality] [nvarchar](85) NULL,
+	[City] [nvarchar](110) NULL,
+	[Neighborhood] [nvarchar](115) NULL,
+	[Category] [nvarchar](85) NULL,
+	[PostalCode] [varchar](5) NULL,
+	[Population] [int] NULL,
+	[Dwelings] [int] NULL,
+   [Occopied_Dwelings] [int] NULL,
+	[Type] [varchar](10) NULL,
+	[AreaM2] [float] NULL,
+	[geog] [geography] NULL,
+	[geom] [geometry] NULL,
+	[minLat] [decimal](12, 6) NULL,
+	[maxLat] [decimal](12, 6) NULL,
+	[minLon] [decimal](12, 6) NULL,
+	[maxLon] [decimal](12, 6) NULL,
+	[IDS_PROM] [numeric](6, 3) NULL,
+	[NSE] [varchar](5) NULL,
+	[NSE_LABEL] [varchar](15) NULL,
+	[NSE_AB_PCT] [numeric](5, 2) NULL,
+	[NSE_CPLUS_PCT] [numeric](5, 2) NULL,
+	[NSE_C_PCT] [numeric](5, 2) NULL,
+	[NSE_CMINUS_PCT] [numeric](5, 2) NULL,
+	[NSE_DPLUS_PCT] [numeric](5, 2) NULL,
+	[NSE_D_PCT] [numeric](5, 2) NULL,
+	[NSE_E_PCT] [numeric](5, 2) NULL,
+	[NSE_AB] [int] NULL,
+	[NSE_CPLUS] [int] NULL,
+	[NSE_C] [int] NULL,
+	[NSE_CMINUS] [int] NULL,
+	[NSE_DPLUS] [int] NULL,
+	[NSE_D] [int] NULL,
+	[NSE_E] [int] NULL,
+	[NSE_TOTAL] [int] NULL,
+	[NSE_SCORE] [numeric](6, 3) NULL,
+	[LastUpdate] [varchar](10) NULL,
+	[Source] [nvarchar](400) NULL,
+	[OfficialSource] [varchar](10) NULL
+ CONSTRAINT [PK_Boundaries] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Boundaries] ADD  CONSTRAINT [DF_Boundaries_Layer]  DEFAULT ((6)) FOR [Layer]
+GO
+
+ALTER TABLE [dbo].[Boundaries] ADD  CONSTRAINT [DF_Boundaries_ISO]  DEFAULT ('MX') FOR [ISO]
+GO
+
+ALTER TABLE [dbo].[Boundaries] ADD  CONSTRAINT [DF_Boundaries_Country]  DEFAULT ('México') FOR [Country]
+GO
+
+ALTER TABLE [dbo].[Boundaries] ADD  CONSTRAINT [DF_Boundaries_Coincidence]  DEFAULT ((0)) FOR [Coincidence]
+GO
+``
 
 
 ## Next Steps
