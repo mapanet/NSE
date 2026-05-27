@@ -54,22 +54,18 @@ Original columns:
 
 ### Save file as D:\AXSI\AMAI\NSE_AMAI_2024_AGEB_IMPORT.xlsx
 
-Original files has some merged columns:
-
-| TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO |
-|  AB  |  C+  |  C  |  C-  |  D+  |  D  |  E  |
-
-We need to fix the headers, get rid of columns we don't need, and calcualte concatenaded CVEGEO.
-
 ## 1.3 Edit NSE_AMAI_2024_AGEB_IMPORT.xlsx to format columns as we need
 
 ### Columns to Discard and Data Corrections
 
 File has merged cells as below, plus header names need to be standarized so lets define new headers:
 
-| TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO |
-|---------------------------------------------|
-|  AB  |  C+  |  C  |  C-  |  D+  |  D  |  E  |
+Original files has some merged columns:
+
+TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO
+AB     C+    C     C-     D+     D     E  
+
+#### Fix the headers, get rid of columns we don't need, and calcualte concatenaded CVEGEO
 
 Delete Rows:
 
