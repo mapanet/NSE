@@ -112,7 +112,7 @@ Edit Boundaries_INEGI_DCAH_2025.CSV with NotePad Pro or Notepad+
 
 Replace all " created in the geometries "MULTIPOLYGON ((( ... )))"
 
-Save file, making sure is **UTF-8*** and **No BOM**
+Save file, making sure is **UTF-8** and **No BOM**
 
 ### Result file
 
