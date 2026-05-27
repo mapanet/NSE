@@ -60,16 +60,7 @@ NSE_AMAI_2024_AGEB_IMPORT.xlsx
 
 ## 1.3 Edit Excel to format columns as we need
 
-### Columns to Discard and Data Corrections
-
-File has merged cells as below, plus need to standarize headers:
-
-Original files has some merged columns:
-
-TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
-AB     C+    C     C-     D+     D     E   
-
-#### Fix the headers, get rid of columns we don't need, and calcualte concatenaded CVEGEO
+#### Fix the headers, get rid of columns we don't need
 
 Delete Rows:
 
@@ -80,6 +71,11 @@ Delete Rows:
 
 [<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
 
+File has merged cells as below, and we need to standarize headers:
+
+TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
+AB     C+    C     C-     D+     D     E   
+
 Create a new header below:  
 
 [<img src="/docs/images/NSE_2.png" width="1000">](/docs/images/NSE_2.png)
@@ -89,7 +85,6 @@ Delete rows 1 and 2
 [<img src="/docs/images/NSE_3.png" width="1000">](/docs/images/NSE_3.png)
 
 ---
-
 
 ## 1.4 Create CVEGEO by concatenating codes
 
