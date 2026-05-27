@@ -68,6 +68,7 @@ We need to fix the headers, get rid of columns we don't need, and calcualte conc
 File has merged cells as below, plus header names need to be standarized so lets define new headers:
 
 | TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO |
+|---------------------------------------------|
 |  AB  |  C+  |  C  |  C-  |  D+  |  D  |  E  |
 
 Delete Rows:
