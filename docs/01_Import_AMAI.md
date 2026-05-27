@@ -80,8 +80,20 @@ Delete Rows:
 
 Create a new header at row 3
 
-| ENTIDAD |	MUNICIPIO | LOCALIDAD | AGEB | AB |	C+ | C |	C- | D+ | D | E |	NIVEL PREDOMINANTE | VIVIENDAS |
-| ENTIDAD |	MUNICIPIO | LOCALIDAD | AGEB | AB |	CPLUS | C |	CMINUS | DPLUS | D | E | NSE | TOTAL |
+| Field | New name  |
+|-------|-----------|
+| ENTIDAD |	ENTIDAD |
+| MUNICIPIO | MUNICIPIO |
+| LOCALIDAD | LOCALIDAD |
+| AGEB | AGEB |
+| AB | AB |
+| C+ | CPLUS |
+| C |	CMINUS |
+| D+ | DPLUS |
+| D | D |
+|E | E |
+| NIVEL PREDOMINANTE | NSE |
+| VIVIENDAS | TOTAL |
 
 Delete row 1 and 2
 
