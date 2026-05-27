@@ -293,7 +293,7 @@ WHERE NSE_TOTAL <> (NSE_AB + NSE_CPLUS + NSE_C + NSE_CMINUS + NSE_DPLUS + NSE_D 
 
 #### Exprected result
 
-CVEGEO	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS NSE_DPLUS NSE_D NSE_E NSE_NSE_LABEL NSE_TOTAL
+CVEGEO	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS NSE_DPLUS NSE_D NSE_E NSE NSE_TOTAL
 None
 (this means there is no difference between total vs sum of components)
 
@@ -322,7 +322,7 @@ Your final table IN SQL should look like this:
 -------------------
 -- Show top 20 rows
 -------------------
-SELECT TOP (20) CVEGEO, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE_LABEL, TOTAL FROM dbo.NSE_AMAI_2024_AGEB
+SELECT TOP (20) CVEGEO, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, TOTAL FROM dbo.NSE_AMAI_2024_AGEB
 ```
 
 | CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
