@@ -294,7 +294,8 @@ WHERE LEN(CVEGEO) <> 13;
 #### Exprected result
 
 | CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
-|---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|
+|---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|  
+
 None  
 (this means all CVEGEO are 13 characters: EEMMMLLLLAAAA)  
 
