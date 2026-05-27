@@ -87,7 +87,7 @@ File name: Boundaries_INEGI_DCAH_2025.shp
 CRS: **ESPG:4023**
 Encoding: **UTF-8**
 
-- Delete source 00as.shp in QGIS
+- Delete source 00as.shp layer in QGIS
 
 ---
 
@@ -101,13 +101,35 @@ CRS: **ESPG:4023**
 Encoding: **UTF-8**
 Geomtry: **As WKT**
 Delimirer: **TAB**
-String quting: **If_Ambigous**
+String quting: **IF_NEEDED**
 Write BOM: **NO**
 Add saved file to MAP: **Uncheck**
 
 Save "OK"
 
 ----
+
+Edit Boundaries_INEGI_DCAH_2025.CSV with NotePad Pro or Notepad+
+
+Replace all " created in the geometries "MULTIPOLYGON ((( ... )))"
+
+Save file, making sure is **UTF-8*** and **No BOM**
+
+### Result file
+
+| Field | Description |
+|-------|--------------|
+| **WTK** | Neighborhood boundary polygon |
+| **CVEGEO** | cvegeo code 13 digits
+| **CVE_ENT** | State code |
+| **CVE_MUN** | Municipality code |
+| **CVE_LOC** | Locality code |
+| **CVE_ASEN** | Locality code |
+| **CP** | Postal code |
+| **FECHA_ACT** | Last Update MM/YYYY |
+| **INSTITUCIO** | Source name |
+| **NOM_ASEN** | Neighborhood name |
+| **TIPO** | Category name (Fraccionamiento, Colonia, etc. (Urbanization type) |
 
 # 4.4 Upload CSV geometries to SQL
 
