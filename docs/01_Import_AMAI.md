@@ -117,11 +117,10 @@ Example:
 - Copy formula to all records
 - Copy calculated CVEGEO as Values 
 - Delete individual codes columns, we will use only CVEGEO:
-
-- ENTIDAD
-- MUNICIPIO
-- LOCALIDAD
-- AGEB
+  - ENTIDAD
+  - MUNICIPIO
+  - LOCALIDAD
+  - AGEB
 
 #### You Excel must look like this:
 
