@@ -307,7 +307,8 @@ Your final table IN SQL should look like this:
 -------------------
 -- Show top 20 rows
 -------------------
-SELECT TOP (20) CVEGEO, NSE_AB, NSE_CPLUS, NSE_C, NSE_CMINUS, NSE_DPLUS, NSE_D, NSE_E, NSE, NSE_TOTAL FROM dbo.NSE_AMAI_2024_AGEB
+SELECT TOP (20) CVEGEO, NSE_AB, NSE_CPLUS, NSE_C, NSE_CMINUS, NSE_DPLUS, NSE_D, NSE_E, NSE, NSE_TOTAL   
+FROM dbo.NSE_AMAI_2024_AGEB
 ```
 
 | CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
