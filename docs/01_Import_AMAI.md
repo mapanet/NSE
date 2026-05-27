@@ -80,13 +80,9 @@ Delete Rows:
 
 [<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
 
----
-
 Create a new header below:  
 
 [<img src="/docs/images/NSE_2.png" width="1000">](/docs/images/NSE_2.png)
-
-----
 
 Delete rows 1 and 2
 
