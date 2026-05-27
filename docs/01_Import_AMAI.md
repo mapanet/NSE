@@ -52,7 +52,9 @@ Original columns:
 | VIVIENDAS | Total occupied private dwellings |
 | TAMAÑO_DE_LOCALIDAD | Locality population range |
 
-#### Save file as D:\AXSI\AMAI\NSE_AMAI_2024_AGEB_IMPORT.xlsx
+#### Save file as 
+
+D:\AXSI\AMAI\**NSE_AMAI_2024_AGEB_IMPORT.xlsx**
 
 ---
 
