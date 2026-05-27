@@ -54,7 +54,7 @@ Original columns:
 
 #### Save file as 
 
-D:\AXSI\AMAI\**NSE_AMAI_2024_AGEB_IMPORT.xlsx**
+NSE_AMAI_2024_AGEB_IMPORT.xlsx
 
 ---
 
