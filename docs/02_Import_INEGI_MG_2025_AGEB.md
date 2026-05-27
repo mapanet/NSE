@@ -7,7 +7,7 @@ This table will be used for:
 - Calculating area proportions
 - Weighting AMAI population by colonia
 
-## Work directories
+## Suggested work directories
 
 - D:\AXSI\INEGI\MG_2025 (work files)
 - D:\AXSI\INEGI\MG_2025\Download (downloaded file and unzipped content to load into QGIS)
