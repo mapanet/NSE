@@ -115,7 +115,7 @@ Example:
 =TEXT(B2,"00") & TEXT(C2,"000") & TEXT(D2,"0000") & TEXT(E2,"0000")   
 
 - Copy formula to all records
-- **Copy calculated CVEGEO as Values***  
+- **Copy calculated CVEGEO as Values**  
 - Delete individual codes columns, we will use only CVEGEO:
   - ENTIDAD
   - MUNICIPIO
