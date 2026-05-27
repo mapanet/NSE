@@ -58,11 +58,11 @@ NSE_AMAI_2024_AGEB_IMPORT.xlsx
 
 ---
 
-## 1.3 Edit NSE_AMAI_2024_AGEB_IMPORT.xlsx to format columns as we need
+## 1.3 Edit Excel to format columns as we need
 
 ### Columns to Discard and Data Corrections
 
-File has merged cells as below, plus header names need to be standarized so lets define new headers:
+File has merged cells as below, plus need to standarize headers:
 
 Original files has some merged columns:
 
@@ -95,7 +95,6 @@ Create a new header at row 3 and delete rows 1 and 2
 | NIVEL PREDOMINANTE | NSE |
 | VIVIENDAS | TOTAL |
 
-Delete row 1 and 2
 
 ## 1.4 Create CVEGEO by concatenating codes
 
