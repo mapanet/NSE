@@ -23,6 +23,10 @@ The downloaded file is:
 
 **794551163061_s.zip**
 
+Screen looks like this:
+
+[<img src="/docs/images/MG_2025.png" width="1000">](/docs/images/MG_2025.png)
+
 ### Save as
 
 D:\AXSI\INEGI\MG_2025\Download\794551163061_s.zip
