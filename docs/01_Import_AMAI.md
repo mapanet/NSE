@@ -102,11 +102,11 @@ INEGI defines CVEGEO as the concatenation of:
 - LOCALIDAD (4 digits)
 - AGEB (4 digits)
 
-EE + MMM + LLLL + AAAA   with leading zeros
+EE + MMM + LLLL + AAAA   with leading zeros  
 
-Example:
+Example:  
 
-01 + 001 + 0001 + 0163 = 0100100010163
+01 + 001 + 0001 + 0163 = 0100100010163  
 
 ### Formula
 
