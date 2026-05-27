@@ -87,7 +87,7 @@ D:\INEGI\Censo_2020\
 
 5. Click the browser **Back** button and select the next state.
 
-Example result:
+Example results:
 
 [<img src="/docs/images/Censo_2020_3.png" width="1000">](/docs/images/Censo_2020_3.png)
 
@@ -238,9 +238,9 @@ We first import the raw CSV into a **staging table**.
 This table mirrors the structure of the SCITEL export.
 
 ```sql
----------------------------------
+----------------------------
 -- 3.3 — Import CSV into SQL
----------------------------------
+----------------------------
 
 -----------------------------
 -- 3.3.1 Create staging table
