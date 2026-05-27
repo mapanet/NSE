@@ -76,16 +76,15 @@ Dataset include:
 
 ## 4.2 Load the 00as.shp into QGIS
 
-
 Verify NOM_ASEN is legible (data originally is Windows-1252 but file is load as UTF-8)
 (if needed, use layer Properties > Source > Windows-1252 to set encoding, check accents in Attributes table)
 
-Export it as:
+### Export it as
 
-Directory: D:\AXSI\INEGI\DCAH_2025
-File name: Boundaries_INEGI_DCAH_2025.shp
-CRS: **ESPG:4023**
-Encoding: **UTF-8**
+Directory: D:\AXSI\INEGI\DCAH_2025  
+File name: Boundaries_INEGI_DCAH_2025.shp  
+CRS: **ESPG:4023**  
+Encoding: **UTF-8**  
 
 - Delete source 00as.shp layer in QGIS
 
