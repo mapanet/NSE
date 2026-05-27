@@ -106,7 +106,7 @@ INEGI defines CVEGEO as the concatenation of:
 - LOCALIDAD (4 digits)
 - AGEB (4 digits)
 
-EE + MMM + LLLL + AAAA   with leading zeros  
+EE + MMM + LLLL + AAAA   with leading zeroes  
 
 Example:  
 
