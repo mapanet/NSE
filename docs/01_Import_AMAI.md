@@ -88,22 +88,7 @@ Delete Rows:
 
 [<img src="/docs/images/NSE_3.png" width="1000">](/docs/images/NSE_3.png)
 
-###  
-
-| Field | New name  |
-|-------|-----------|
-| ENTIDAD |	ENTIDAD |
-| MUNICIPIO | MUNICIPIO |
-| LOCALIDAD | LOCALIDAD |
-| AGEB | AGEB |
-| AB | NSE_AB |
-| C+ | NSE_CPLUS |
-| C |	NSE_CMINUS |
-| D+ | NSE_DPLUS |
-| D | NSE D |
-|E | NSE_E |
-| NIVEL PREDOMINANTE | NSE |
-| VIVIENDAS | NSE_TOTAL |
+---
 
 
 ## 1.4 Create CVEGEO by concatenating codes
