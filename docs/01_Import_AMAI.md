@@ -227,7 +227,6 @@ GO
 ### Expected result
 
 Commands completed successfully.   
-Completion time: 2026-05-24T17:09:53.0742807-05:00   
 
 ---
 
@@ -252,7 +251,6 @@ WITH (
 ### Expected result
 
 (246048 rows affected)   
-Completion time: 2026-05-24T17:13:16.8534671-05:00   
 
 ---
 
@@ -295,7 +293,7 @@ WHERE LEN(CVEGEO) <> 13;
 
 #### Exprected result
 
-CVEGEO	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE	NSE_TOTAL  
+|CVEGEO|NSE_AB|NSE_CPLUS|NSE_C|NSE_CMINUS|NSE_DPLUS|NSE_D|NSE_E|NSE|NSE_TOTAL|  
 None  
 (this means all CVEGEO are 13 characters: EEMMMLLLLAAAA)  
 
