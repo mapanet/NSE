@@ -78,7 +78,7 @@ Delete Rows:
 - NOMBRE LOCALIDAD
 - TAMAÑO DE LOCALIDAD
 
-Create a new header at row 3
+Create a new header at row 3 and delete rows 1 and 2
 
 | Field | New name  |
 |-------|-----------|
