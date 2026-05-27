@@ -95,6 +95,8 @@ Delete Rows:
 
 Add a new column to the left and name it **CVEGEO**
 
+[<img src="/docs/images/NSE_4.png" width="1000">](/docs/images/NSE_4.png)
+
 INEGI defines CVEGEO as the concatenation of:
 
 - ENTIDAD (2 digits)
@@ -122,8 +124,6 @@ Excel formula:
 - MUNICIPIO
 - LOCALIDAD
 - AGEB
-
-[<img src="/docs/images/NSE_4.png" width="1000">](/docs/images/NSE_4.png)
 
 ---
 
