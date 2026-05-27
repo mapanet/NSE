@@ -73,7 +73,7 @@ The dataset includes:
 
 ---
 
-## ⚙️ Purpose in the NSE Pipeline
+## Purpose in the NSE Pipeline
 
 This dataset is used to:
 
