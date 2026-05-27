@@ -256,13 +256,6 @@ WITH (
 
 ## 1.9 Post‑Import Validations
 
-### Validate duplicate CVEGEO values
-
-```sql
--------------------------------
--- 1.10 Post‑Import Validations
--------------------------------
-
 ### Validate that TOTAL = sum of socioeconomic levels
 
 ```sql
