@@ -2,6 +2,11 @@
 
 Objective: Convert the official AMAI file `NSE_por_AGEB_AMAI.xlsx` into a normalized SQL table ready for the NSE pipeline.
 
+## Suggested work directories
+
+- D:\AXSI\AMAI (work files)
+- D:\AXSI\AMAI\Download (download files)
+
 ---
 
 ## 1.1 Official Source File
@@ -18,7 +23,6 @@ Important characteristics of the file:
 
 - It does not include a year in the filename.
 - It corresponds to the NSE 2024 methodology.
-- It is the valid version for 2024–2027.
 
 ---
 
@@ -48,43 +52,50 @@ Original columns:
 | VIVIENDAS | Total occupied private dwellings |
 | TAMAÑO_DE_LOCALIDAD | Locality population range |
 
----
+### Save file as D:\AXSI\AMAI\NSE_AMAI_2024_AGEB_IMPORT.xlsx
 
-## 1.4 Header Normalization (Renaming)
+Original files has some merged columns:
 
-To standardize column names using INEGI conventions and prepare the file for SQL import, headers were renamed and saved as:
+| TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO |
+|  AB  |  C+  |  C  |  C-  |  D+  |  D  |  E  |
 
-**`NSE_AMAI_2024_AGEB_IMPORT.xlsx`**
+We need to fix the headers, get rid of columns we don't need, and calcualte concatenaded CVEGEO.
 
-| Original | New |
-|----------|-----|
-| ENTIDAD | CVE_ENT |
-| NOMBRE ENTIDAD | NOM_ENT |
-| MUNICIPIO | CVE_MUN |
-| NOMBRE MUNICIPIO | NOM_MUN |
-| LOCALIDAD | CVE_LOC |
-| NOMBRE LOCALIDAD | NOM_LOC |
-| AGEB | CVE_AGEB |
-| AB | AB |
-| C+ | CPLUS |
-| C | C |
-| C- | CMINUS |
-| D+ | DPLUS |
-| D | D |
-| E | E |
-| NIVEL PREDOMINANTE | NSE_LABEL |
-| VIVIENDAS | TOTAL |
-| TAMAÑO DE LOCALIDAD | (discarded, not used in any calculation) |
+## 1.3 Edit NSE_AMAI_2024_AGEB_IMPORT.xlsx to format columns as we need
 
+### Columns to Discard and Data Corrections
 
-## 1.5 Construction of the Geographic Key (CVEGEO)
+File has merged cells as below, plus header names need to be standarized so lets define new headers:
+
+| TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO |
+|  AB  |  C+  |  C  |  C-  |  D+  |  D  |  E  |
+
+Delete Rows:
+
+- NOMBRE ENTIDAD
+- NOMBRE MUNICIPIO
+- NOMBRE LOCALIDAD
+- TAMAÑO DE LOCALIDAD
+
+Create a new header at row 3
+
+| ENTIDAD |	MUNICIPIO | LOCALIDAD | AGEB | AB |	C+ | C |	C- | D+ | D | E |	NIVEL PREDOMINANTE | VIVIENDAS |
+| ENTIDAD |	MUNICIPIO | LOCALIDAD | AGEB | AB |	CPLUS | C |	CMINUS | DPLUS | D | E | NSE | TOTAL |
+
+Delete row 1 and 2
+
+## 1.4 Create CVEGEO by concatenating codes
+
+Add a new column to the left and name it **CVEGEO**
 
 INEGI defines CVEGEO as the concatenation of:
 
-- CVE_ENT (2 digits)
-- CVE_MUN (3 digits)
-- CVE_LOC (4 digits)
-- CVE_AGEB (4 digits)
+- ENTIDAD (2 digits)
+- MUNICIPIO (3 digits)
+- LOCALIDAD (4 digits)
+- AGEB (4 digits)
+
+EE + MMM + LLLL + AAAA
 
 Example:
 
@@ -92,28 +103,28 @@ Example:
 
 Excel formula:
 
-=CVE_ENT & CVE_MUN & CVE_LOC & CVE_AGEB
+= ENTIDAD & MUNICIPIO & LOCALIDAD & AGEB
+
+=TEXT(B2,"00") & TEXT(C2,"000") & TEXT(D2,"0000") & TEXT(E2,"0000")
+
+- Copy formula to all records
+- Copy calculated CVEGEO as Values 
+- Delete individual codes columns, we will use only CVEGEO:
+
+- ENTIDAD
+- MUNICIPIO
+- LOCALIDAD
+- AGEB
 
 ---
 
-## 1.6 Columns to Discard and Data Corrections
-
-The following columns do not participate in the NSE pipeline and are discarded:
-
-- CVE_ENT, NOM_ENT
-- CVE_MUN, NOM_MUN
-- CVE_LOC, NOM_LOC
-- TAMAÑO_DE_LOCALIDAD
-
-Reason: they do not participate in joins, do not intervene in calculations, do not add analytical value, and introduce noise.
-
-### Correction of “N/D” values
+## 1.5 Correction of “N/D” values
 
 1. Numeric columns  
-   AB, C+, C, C–, D+, D, E → AMAI uses “N/D” when there is insufficient information.
+   AB, CPLUS, C, CMUNIS, DPLUS, D, E → AMAI uses “N/D” when there is insufficient information.
 
 2. Categorical column  
-   NIVEL_PREDOMINANTE → “N/D” when no dominant socioeconomic level exists.
+   NSE (NIVEL_PREDOMINANTE) → “N/D” when no dominant socioeconomic level exists.
 
 To ensure the pipeline works correctly, we use:
 
@@ -132,7 +143,7 @@ This prevents errors in:
 
 ---
 
-## 1.7 Export from Excel to CSV (TSV)
+## 1.6 Export from Excel to CSV (TSV)
 
 The CSV file should look like this (TAB‑delimited):
 
@@ -167,11 +178,11 @@ If necessary, edit the CSV with EditPad Pro or Notepad++ to verify:
 Note: I use TAB for my personal convenience, you can comma delimiter, just correct BULK INSERT to the appropriate FIELDTERMINATOR = ','.
 (the reason always I use TAB since some Mexican data come with " in names, some also may have only one " so with with TAB is easy to debug).
 
-## 1.8 Create Final AMAI SQL Table in MS SQL Server 2022
+## 1.7 Create Final AMAI SQL Table in MS SQL Server 2022
 
 ```sql
 --------------------------------------------------------
--- 1.8 Create Final AMAI SQL Table in MS SQL Server 2022
+-- 1.7 Create Final AMAI SQL Table in MS SQL Server 2022
 --------------------------------------------------------
 SET ANSI_NULLS ON
 GO
@@ -187,7 +198,7 @@ CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
     [DPLUS] [int] NULL,
     [D] [int] NULL,
     [E] [int] NULL,
-    [NSE_LABEL] [nvarchar](10) NULL,
+    [NSE] [nvarchar](10) NULL,
     [TOTAL] [int] NULL,
  CONSTRAINT [PK_NSE_AMAI_2024_AGEB] PRIMARY KEY CLUSTERED 
 (
@@ -209,7 +220,7 @@ GO
 Commands completed successfully.
 Completion time: 2026-05-24T17:09:53.0742807-05:00
 
-## 1.9 Import CSV into MS SQL Server 2022
+## 1.8 Import CSV into MS SQL Server 2022
 
 Make sure the directory path matches where you saved the AMAI CSV file.
 
@@ -232,7 +243,7 @@ WITH (
 (246048 rows affected)
 Completion time: 2026-05-24T17:13:16.8534671-05:00
 
-## 1.10 Post‑Import Validations
+## 1.9 Post‑Import Validations
 
 ### Validate duplicate CVEGEO values
 
@@ -289,7 +300,7 @@ CVEGEO	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE_LABEL	TOTAL
 None
 (this means all CVEGEO are 13 characters: EEMMMLLLLAAAA)
 
-## 1.11 Final Result
+## 1.10 Final Result
 
 Your final table IN SQL should look like this:
 
@@ -300,7 +311,7 @@ Your final table IN SQL should look like this:
 SELECT TOP (20) CVEGEO, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE_LABEL, TOTAL FROM dbo.NSE_AMAI_2024_AGEB
 ```
 
-| CVEGEO        | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E   | NSE_LABEL | TOTAL |
+| CVEGEO        | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E   | NSE | TOTAL |
 |---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|
 | 0100100010017 | 0   | 12     | 39  | 111     | 153    | 331 |     | D         | 648    |
 | 010010001006A | 178 | 124    | 60  | 24      | 9      | 4   | 0   | A/B       | 399    |
