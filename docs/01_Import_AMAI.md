@@ -93,7 +93,7 @@ Delete Rows:
 
 ## 1.4 Create CVEGEO by concatenating codes
 
-Add a new column to the left and name it **CVEGEO**
+### Add a new column to the left and name it **CVEGEO**
 
 INEGI defines CVEGEO as the concatenation of:
 
@@ -115,14 +115,14 @@ Example:
 =TEXT(B2,"00") & TEXT(C2,"000") & TEXT(D2,"0000") & TEXT(E2,"0000")   
 
 - Copy formula to all records
-- Copy calculated CVEGEO as Values 
+- **Copy calculated CVEGEO as Values***  
 - Delete individual codes columns, we will use only CVEGEO:
   - ENTIDAD
   - MUNICIPIO
   - LOCALIDAD
   - AGEB
 
-#### You Excel must look like this:
+#### You Excel must look like this
 
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/images/NSE_4.png)
 
