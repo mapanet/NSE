@@ -266,20 +266,6 @@ Completion time: 2026-05-24T17:13:16.8534671-05:00
 -- 1.10 Post‑Import Validations
 -------------------------------
 
------------------------------------
--- Validate duplicate CVEGEO values
------------------------------------
-SELECT CVEGEO, COUNT(*) As Duplicate_CVEGEO
-FROM NSE_AMAI_2024_AGEB
-GROUP BY CVEGEO
-HAVING COUNT(*) > 1;
-```
-
-#### Exprected result
-
-CVEGEO Duplicate_CVEGEO
-None
-
 ### Validate that TOTAL = sum of socioeconomic levels
 
 ```sql
