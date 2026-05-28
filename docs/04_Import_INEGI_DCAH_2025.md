@@ -318,9 +318,9 @@ WHERE geom.STIsValid() = 0;
 
 ### Expected result
 
-ID CVEGEO  
-None 
-If other than None, run next process, otherwise run next step 4.9
+ID CVEGEO   
+None  
+If other than None, run next process, otherwise run next step 4.9  
 
 ```sql
 
