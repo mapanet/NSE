@@ -3,10 +3,10 @@
 This document describes the process to import the **INEGI DCAH 2025** dataset, which contains the official polygon boundaries of neighborhoods (*colonias*) and other human settlements in Mexico.  
 These geometries are used to build **Boundaries Layer 6**, where the AMAI Socioeconomic Level (NSE) is calculated for each neighborhood.
 
-33 Suggested working directories
+33 Suggested working directories  
 
-Working directory: D:\INEGI\DCAH_2025
-Download directory: D:\INEGI\DCAH_2025\Download
+Working directory: D:\INEGI\DCAH_2025  
+Download directory: D:\INEGI\DCAH_2025\Download  
 
 ---
 
