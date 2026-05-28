@@ -5,8 +5,8 @@ These geometries are used to build **Boundaries Layer 6**, where the AMAI Socioe
 
 Suggested working directories  
 
-Working : D:\INEGI\DCAH_2025  
-Download: D:\INEGI\DCAH_2025\Download  
+Working : D:\AXSI\INEGI\DCAH_2025  
+Download: D:\AXSI\INEGI\DCAH_2025\Download  
 
 ---
 
@@ -94,15 +94,15 @@ Encoding: **UTF-8**
 
 Export Boundaries_INEGI_DCAH_2025 layer to CSV with WKT geometries
 
-Directory: D:\AXSI\INEGI\DCAH_2025
-File name: Boundaries_INEGI_DCAH_2025.CSV
-CRS: **ESPG:4023**
-Encoding: **UTF-8**
-Geometry: **As WKT**
-Delimiter: **TAB**
-String quting: **IF_NEEDED**
-Write BOM: **NO**
-Add saved file to MAP: **Uncheck**
+- Directory: D:\AXSI\INEGI\DCAH_2025
+- File name: Boundaries_INEGI_DCAH_2025.CSV
+- CRS: **ESPG:4023**
+- Encoding: **UTF-8**
+- Geometry: **As WKT**
+- Delimiter: **TAB**
+- String quting: **IF_NEEDED**
+- Write BOM: **NO**
+- Add saved file to MAP: **Uncheck**
 
 Save "OK"
 
