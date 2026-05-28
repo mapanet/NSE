@@ -108,7 +108,7 @@ Save "OK"
 
 ----
 
-Edit Boundaries_INEGI_DCAH_2025.CSV with NotePad Pro or Notepad+
+Edit Boundaries_INEGI_DCAH_2025.CSV with EditPad Pro or Notepad+
 
 Replace all doune quotes (") created in the geometries "MULTIPOLYGON ((( ... )))"
 
