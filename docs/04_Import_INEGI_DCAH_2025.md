@@ -172,11 +172,11 @@ WITH (
 );
 GO
 ```
-### Expcetd results
+### Expected results
 
 (79775 rows affected)
 
-### Results
+### Check results on INEGI_DCAH_Staging
 
 ```sql
 SELECT TOP (5) WKT, GVEGEO, CVE_ENT, CVE_MUN, CVE_LOC, CVE_ASEN, CP, FECHA_ACT, INSTITICIO, NOM_ASEN, TIPO
@@ -191,8 +191,7 @@ MULTIPOLYGON ((( ... )))|0503300010079|05|033|0001|0079|00000|11/2022|AYUNTAMIEN
 MULTIPOLYGON ((( ... )))|0503300010081|05|033|0001|0081|00000|11/2022|AYUNTAMIENTO DE SAN PEDRO|SAN JOSÉ|COLONIA|
 MULTIPOLYGON ((( ... )))|0503300010084|05|033|0001|0084|00000|11/2022|AYUNTAMIENTO DE SAN PEDRO|EJIDAL VALPARAISO|COLONIA|
 
-
-# 4.6 Create Boundaries table
+# 4.5 Create Boundaries table
 
 ``sql
 CREATE TABLE [dbo].[Boundaries](
@@ -258,8 +257,37 @@ GO
 
 ALTER TABLE [dbo].[Boundaries] ADD  CONSTRAINT [DF_Boundaries_Coincidence]  DEFAULT ((0)) FOR [Coincidence]
 GO
-``
+```
 
+## 4.6 Copy DCAH Staging Data into Boundaries (Layer = 6)
+
+``sql
+------------------------------------------------------------
+-- 4.6 — Copy DCAH Staging Data into Boundaries (Layer = 6)
+------------------------------------------------------------
+
+INSERT INTO dbo.Boundaries (
+    CVEGEO,
+    Layer,
+    Neighborhood,
+    Category,
+    PostalCode,
+    geom,
+    LastUpdate,
+    Source
+)
+SELECT
+    CVEGEO,                              -- Unique geographic key
+    6 AS Layer,                          -- Neighborhood layer
+    NOM_ASEN AS Neighborhood,            -- Neigbohood name (Colonia)
+    TIPO AS Category,                    -- Neigbohood or Settlement type ("Fraccionaminto", "Colonia", etc.)
+    CP AS PostalCode,                    -- Postal code
+    geometry::STGeomFromText(WKT, 4326), -- Convert WKT to geometry (EPSG:4326)
+    FORMAT(CONVERT(date, FECHA_ACT, 103), 'yyyy-MM') AS LastUpdate, -- Transform date to YYYY-MM
+    INSTITICIO AS Source                 -- Data source
+FROM dbo.Boundaries_DCAH_Staging;
+GO
+```
 
 ## Next Steps
 
