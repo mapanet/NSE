@@ -257,6 +257,8 @@ ALTER TABLE [dbo].[Boundaries] ADD  CONSTRAINT [DF_Boundaries_Country]  DEFAULT 
 GO
 ```
 
+--- 
+
 ## 4.6 Copy DCAH Staging Data into Boundaries (Layer = 6)
 
 ```sql
