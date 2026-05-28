@@ -293,7 +293,7 @@ GO
 
 (79775 rows affected)
 
-### Delete staging if copy ws sucessfull
+### Delete staging if copy was sucessfull
 
 ```sql
 DROP TABLE IF EXISTS dbo.INEGI_DCAH_Staging;
