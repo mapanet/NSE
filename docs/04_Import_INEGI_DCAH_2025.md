@@ -191,6 +191,8 @@ MULTIPOLYGON|0503300010079|05|033|0001|0079|00000|11/2022|AYUNTAMIENTO|LOS NOGAL
 MULTIPOLYGON|0503300010081|05|033|0001|0081|00000|11/2022|AYUNTAMIENTO|SAN JOSÉ|COLONIA|
 MULTIPOLYGON|0503300010084|05|033|0001|0084|00000|11/2022|AYUNTAMIENTO|EJIDAL VALPARAISO|COLONIA|
 
+---
+
 # 4.5 Create Boundaries table
 
 ```sql
@@ -257,7 +259,7 @@ GO
 
 ## 4.6 Copy DCAH Staging Data into Boundaries (Layer = 6)
 
-``sql
+```sql
 ------------------------------------------------------------
 -- 4.6 — Copy DCAH Staging Data into Boundaries (Layer = 6)
 ------------------------------------------------------------
