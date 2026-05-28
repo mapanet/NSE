@@ -145,13 +145,13 @@ GO
 
 CREATE TABLE INEGI_DCAH_Staging (
     WKT varchar(MAX) NOT NULL,
-    GVEGEO varchar(16) NOT NULL,
+    CVEGEO varchar(16) NOT NULL,
     CVE_ENT varchar(2) NULL,
     CVE_MUN varchar(3) NOT NULL,
     CVE_LOC varchar(4) NOT NULL,
     CVE_ASEN varchar(4) NOT NULL,
     CP varchar(5) NOT NULL,
-    FECHA_ACT nvarchar(10) NULL,
+    FECHA_ACT varchar(10) NULL,
     INSTITICIO nvarchar(500) NULL,
     NOM_ASEN nvarchar(115) NOT NULL,
     TIPO nvarchar(100) NOT NULL
@@ -193,10 +193,10 @@ MULTIPOLYGON|0503300010084|05|033|0001|0084|00000|11/2022|AYUNTAMIENTO|EJIDAL VA
 
 # 4.5 Create Boundaries table
 
-``sql
+```sql
 CREATE TABLE [dbo].[Boundaries](
 	[ID] [bigint] IDENTITY(1,1) NOT NULL,
-	[CVEGEO] [nvarchar](20) NULL,
+	[CVEGEO] [varchar](16) NULL,
 	[Layer] [int] NOT NULL,
 	[ISO] [nvarchar](2) NULL,
 	[Country] [nvarchar](25) NULL,
@@ -237,8 +237,7 @@ CREATE TABLE [dbo].[Boundaries](
 	[NSE_TOTAL] [int] NULL,
 	[NSE_SCORE] [numeric](6, 3) NULL,
 	[LastUpdate] [varchar](10) NULL,
-	[Source] [nvarchar](400) NULL,
-	[OfficialSource] [varchar](10) NULL
+	[Source] [nvarchar](400) NULL
  CONSTRAINT [PK_Boundaries] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
@@ -253,9 +252,6 @@ ALTER TABLE [dbo].[Boundaries] ADD  CONSTRAINT [DF_Boundaries_ISO]  DEFAULT ('MX
 GO
 
 ALTER TABLE [dbo].[Boundaries] ADD  CONSTRAINT [DF_Boundaries_Country]  DEFAULT ('México') FOR [Country]
-GO
-
-ALTER TABLE [dbo].[Boundaries] ADD  CONSTRAINT [DF_Boundaries_Coincidence]  DEFAULT ((0)) FOR [Coincidence]
 GO
 ```
 
@@ -279,15 +275,161 @@ INSERT INTO dbo.Boundaries (
 SELECT
     CVEGEO,                              -- Unique geographic key
     6 AS Layer,                          -- Neighborhood layer
-    NOM_ASEN AS Neighborhood,            -- Neigbohood name (Colonia)
-    TIPO AS Category,                    -- Neigbohood or Settlement type ("Fraccionaminto", "Colonia", etc.)
+    NOM_ASEN AS Neighborhood,            -- Neighborhood name (Colonia)
+    TIPO AS Category,                    -- Settlement type
     CP AS PostalCode,                    -- Postal code
     geometry::STGeomFromText(WKT, 4326), -- Convert WKT to geometry (EPSG:4326)
-    FORMAT(CONVERT(date, FECHA_ACT, 103), 'yyyy-MM') AS LastUpdate, -- Transform date to YYYY-MM
+    RIGHT(FECHA_ACT, 4) + '-' + LEFT(FECHA_ACT, 2) AS LastUpdate, -- Convert MM/YYYY → YYYY-MM
     INSTITICIO AS Source                 -- Data source
-FROM dbo.Boundaries_DCAH_Staging;
+FROM dbo.INEGI_DCAH_Staging;
 GO
 ```
+
+### Expected result
+
+(79775 rows affected)
+
+### Delete staging if copy ws sucessfull
+
+```sql
+DROP TABLE IF EXISTS dbo.INEGI_DCAH_Staging;
+```
+
+---
+
+## 4.8 Validate geomtery (geom)
+
+The imported WKT geometries must be checked for validity.  
+Invalid geometries are repaired using `MakeValid()`.
+
+```sql
+----------------------------------
+-- 4.8.0 Detect invalid geometries
+----------------------------------
+
+SELECT ID, CVEGEO
+FROM dbo.Boundaries
+WHERE geom.STIsValid() = 0;
+```
+
+### Expected result
+
+ID CVEGEO  
+None 
+If other than None, run next process, otherwise run next step 4.9
+
+```sql
+
+-------------------------------------------
+-- 4.8.1 Fix invalid geometries (MakeValid)
+-------------------------------------------
+
+UPDATE dbo.Boundaries
+SET geom = geom.MakeValid()
+WHERE geom.STIsValid() = 0;
+```
+
+----
+
+## 4.9 Generate Geography (geog) from Geometry
+
+The geog column stores the same geometry in SQL Server’s geography type (EPSG:4326).  
+This enables distance calculations and geodesic operations.  
+
+```sql
+UPDATE dbo.Boundaries
+SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
+```
+
+### Excepcted result
+
+(79775 rows affected)
+
+Validation:
+
+```sql
+SELECT ID, CVEGEO
+FROM dbo.Boundaries
+WHERE geog IS NULL;
+```
+
+### Excepcted result
+
+IS CVEGEO
+None
+
+
+## 4.10 Compute Bounding Box Fields
+
+Bounding box values are derived from the geom envelope:  
+
+- minLat
+- maxLat
+- minLon
+- maxLon
+
+```sql
+UPDATE dbo.Boundaries
+SET 
+    minLat = geom.STEnvelope().STPointN(1).STY,
+    minLon = geom.STEnvelope().STPointN(1).STX,
+    maxLat = geom.STEnvelope().STPointN(3).STY,
+    maxLon = geom.STEnvelope().STPointN(3).STX;
+```
+
+### Excpected result
+
+(79775 rows affected)
+
+Validation:
+
+```sql
+SELECT TOP 20 CVEGEO, minLat, maxLat, minLon, maxLon
+FROM dbo.Boundaries;
+```
+
+You should see valid numeric values.
+
+---
+
+## 4.11 Create Spatial Indexes
+
+Spatial indexes significantly improve performance for intersection, containment, and proximity queries.
+
+```sql
+------------------------------------------
+-- 4.11.1 Spatial Index for geom (geometry)
+------------------------------------------
+CREATE SPATIAL INDEX SIDX_Boundaries_TEMP_geom
+ON dbo.Boundaries_TEMP(geom)
+WITH (BOUNDING_BOX = (-180, -90, 180, 90));
+```
+
+### Excpected result
+
+Commands completed successfully.
+
+```sql
+--------------------------------------------
+-- 4.11.2 Spatial Index for geog (geography)
+--------------------------------------------
+
+CREATE SPATIAL INDEX SIDX_Boundaries_TEMP_geog
+ON dbo.Boundaries_TEMP(geog);
+```
+
+### Excpected result
+
+Commands completed successfully.
+
+---
+
+## 4.12
+
+
+
+
+
 
 ## Next Steps
 
