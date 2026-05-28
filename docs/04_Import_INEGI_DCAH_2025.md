@@ -60,7 +60,7 @@ Dataset include:
 
 | Field | Description |
 |-------|--------------|
-| **CVEGEO** | cvegeo code 13 digits EEMMMLLLLAAAA (EE state, MMM municipality LLLL City AAAA Neighborhood |
+| **CVEGEO** | cvegeo code 13 digits EEMMMLLLLAAAA (EE state, MMM municipality, LLLL City, AAAA Neighborhood |
 | **CVE_ENT** | State code |
 | **CVE_MUN** | Municipality code |
 | **CVE_LOC** | Locality code |
@@ -76,7 +76,7 @@ Dataset include:
 
 ## 4.2 Load the 00as.shp into QGIS
 
-Verify NOM_ASEN is legible (data originally is Windows-1252 but file is load as UTF-8)
+Verify NOM_ASEN is legible (accents) data originally is Windows-1252 but file may be loaded as UTF-8)
 (if needed, use layer Properties > Source > Windows-1252 to set encoding, check accents in Attributes table)
 
 ### Export it as
@@ -98,8 +98,8 @@ Directory: D:\AXSI\INEGI\DCAH_2025
 File name: Boundaries_INEGI_DCAH_2025.CSV
 CRS: **ESPG:4023**
 Encoding: **UTF-8**
-Geomtry: **As WKT**
-Delimirer: **TAB**
+Geometry: **As WKT**
+Delimiter: **TAB**
 String quting: **IF_NEEDED**
 Write BOM: **NO**
 Add saved file to MAP: **Uncheck**
@@ -110,7 +110,7 @@ Save "OK"
 
 Edit Boundaries_INEGI_DCAH_2025.CSV with NotePad Pro or Notepad+
 
-Replace all " created in the geometries "MULTIPOLYGON ((( ... )))"
+Replace all doune quotes (") created in the geometries "MULTIPOLYGON ((( ... )))"
 
 Save file, making sure is **UTF-8** and **No BOM**
 
@@ -133,9 +133,9 @@ Save file, making sure is **UTF-8** and **No BOM**
 # 4.4 Upload CSV geometries to SQL
 
 ```sql
-----------------------------
+--------------------------------------------
 -- 4.4 — Upload Upload CSV geometries to SQL
-----------------------------
+--------------------------------------------
 
 -----------------------------
 -- 4.4.1 Create staging table
