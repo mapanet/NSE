@@ -1,4 +1,4 @@
-# 5.1 INEGI DCAH 2025 (Neighborhood Polygons)
+# 4.1 INEGI DCAH 2025 (Neighborhood Polygons)
 
 This document describes the process to import the **INEGI DCAH 2025** dataset, which contains the official polygon boundaries of neighborhoods (*colonias*) and other human settlements in Mexico.  
 These geometries are used to build **Boundaries Layer 6**, where the AMAI Socioeconomic Level (NSE) is calculated for each neighborhood.
@@ -21,7 +21,7 @@ Download: D:\AXSI\INEGI\DCAH_2025\Download
 
 ---
 
-## 5.1 Download data
+## 4.1 Download data
 
 1. Open the INEGI DCAH download page:  
    [https://www.inegi.org.mx/programas/dcah/#descargas](https://www.inegi.org.mx/programas/dcah/#descargas)
@@ -74,7 +74,7 @@ Dataset include:
 
 ---
 
-## 5.2 Load the 00as.shp into QGIS
+## 4.2 Load the 00as.shp into QGIS
 
 Verify NOM_ASEN is legible (accents) data originally is Windows-1252 but file may be loaded as UTF-8)
 (if needed, use layer Properties > Source > Windows-1252 to set encoding, check accents in Attributes table)
@@ -90,7 +90,7 @@ Encoding: **UTF-8**
 
 ---
 
-# 5.3 Save as CSV with WKT geometries
+# 4.3 Save as CSV with WKT geometries
 
 Export Boundaries_INEGI_DCAH_2025 layer to CSV with WKT geometries
 
@@ -130,15 +130,15 @@ Save file, making sure is **UTF-8** and **No BOM**
 | **NOM_ASEN** | Neighborhood name |
 | **TIPO** | Category name (Fraccionamiento, Colonia, etc. (Urbanization type) |
 
-# 5.4 Upload CSV geometries to SQL
+# 4.4 Upload CSV geometries to SQL
 
 ```sql
 --------------------------------------------
--- 5.4 — Upload Upload CSV geometries to SQL
+-- 4.4 — Upload Upload CSV geometries to SQL
 --------------------------------------------
 
 -----------------------------
--- 5.4.1 Create staging table
+-- 4.4.1 Create staging table
 -----------------------------
 DROP TABLE IF EXISTS INEGI_DCAH_Staging;
 GO
@@ -159,7 +159,7 @@ CREATE TABLE INEGI_DCAH_Staging (
 GO
 
 --------------------
--- 5.4.2 Bulk Insert
+-- 4.4.2 Bulk Insert
 --------------------
 BULK INSERT INEGI_DCAH_Staging
 FROM 'D:\AXSI\INEGI\DCAH_2025\Boundaries_INEGI_DCAH_2025.csv'
@@ -193,7 +193,7 @@ MULTIPOLYGON|0503300010084|05|033|0001|0084|00000|11/2022|AYUNTAMIENTO|EJIDAL VA
 
 ---
 
-# 5.5 Create Boundaries table
+# 4.5 Create Boundaries table
 
 ```sql
 CREATE TABLE [dbo].[Boundaries](
@@ -259,11 +259,11 @@ GO
 
 --- 
 
-## 5.6 Copy DCAH Staging Data into Boundaries (Layer = 6)
+## 4.6 Copy DCAH Staging Data into Boundaries (Layer = 6)
 
 ```sql
 ------------------------------------------------------------
--- 5.6 — Copy DCAH Staging Data into Boundaries (Layer = 6)
+-- 4.6 — Copy DCAH Staging Data into Boundaries (Layer = 6)
 ------------------------------------------------------------
 
 INSERT INTO dbo.Boundaries (
@@ -301,14 +301,14 @@ DROP TABLE IF EXISTS dbo.INEGI_DCAH_Staging;
 
 ---
 
-## 5.8 Validate geomtery (geom)
+## 4.8 Validate geomtery (geom)
 
 The imported WKT geometries must be checked for validity.  
 Invalid geometries are repaired using `MakeValid()`.
 
 ```sql
 ----------------------------------
--- 5.8.0 Detect invalid geometries
+-- 4.8.0 Detect invalid geometries
 ----------------------------------
 
 SELECT ID, CVEGEO
@@ -325,7 +325,7 @@ If other than None, run next process, otherwise run next step 8.9
 ```sql
 
 -------------------------------------------
--- 5.8.1 Fix invalid geometries (MakeValid)
+-- 4.8.1 Fix invalid geometries (MakeValid)
 -------------------------------------------
 
 UPDATE dbo.Boundaries
@@ -335,7 +335,7 @@ WHERE geom.STIsValid() = 0;
 
 ----
 
-## 5.9 Generate Geography (geog) from Geometry
+## 4.9 Generate Geography (geog) from Geometry
 
 The geog column stores the same geometry in SQL Server’s geography type (EPSG:4326).  
 This enables distance calculations and geodesic operations.  
@@ -364,7 +364,7 @@ None
 
 ---
 
-## 5.10 Compute Bounding Box Fields
+## 4.10 Compute Bounding Box Fields
 
 Bounding box values are derived from the geom envelope:  
 
@@ -397,13 +397,13 @@ You should see valid numeric values.
 
 ---
 
-## 5.11 Create Spatial Indexes
+## 4.11 Create Spatial Indexes
 
 Spatial indexes significantly improve performance for intersection, containment, and proximity queries.
 
 ```sql
 ------------------------------------------
--- 5.11.1 Spatial Index for geom (geometry)
+-- 4.11.1 Spatial Index for geom (geometry)
 ------------------------------------------
 CREATE SPATIAL INDEX SIDX_Boundaries_TEMP_geom
 ON dbo.Boundaries_TEMP(geom)
@@ -416,7 +416,7 @@ Commands completed successfully.
 
 ```sql
 --------------------------------------------
--- 5.11.2 Spatial Index for geog (geography)
+-- 4.11.2 Spatial Index for geog (geography)
 --------------------------------------------
 
 CREATE SPATIAL INDEX SIDX_Boundaries_TEMP_geog
@@ -429,7 +429,7 @@ Commands completed successfully.
 
 ---
 
-## 5.12
+## 4.12
 
 
 
