@@ -359,9 +359,10 @@ WHERE geog IS NULL;
 
 ### Excepcted result
 
-IS CVEGEO
-None
+IS CVEGEO   
+None  
 
+---
 
 ## 4.10 Compute Bounding Box Fields
 
@@ -381,7 +382,7 @@ SET
     maxLon = geom.STEnvelope().STPointN(3).STX;
 ```
 
-### Excpected result
+### Excepcted result
 
 (79775 rows affected)
 
@@ -422,7 +423,7 @@ CREATE SPATIAL INDEX SIDX_Boundaries_TEMP_geog
 ON dbo.Boundaries_TEMP(geog);
 ```
 
-### Excpected result
+### Excepcted result
 
 Commands completed successfully.
 
