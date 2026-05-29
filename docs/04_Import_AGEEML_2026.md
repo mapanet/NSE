@@ -173,18 +173,17 @@ Example rows:
 
 # 4.3 — Import CSV into SQL Server
 
-We first import the raw CSV into a **staging table**.  
-This table mirrors the structure of the SCITEL export.
+Create final **INEGI_AGEML_2026_loc**.  
 
 ```sql
-----------------------------
--- 3.3 — Import CSV into SQL
-----------------------------
+-----------------------------------
+-- 4.3 — Import CSV into SQL Server
+-----------------------------------
 
------------------------------
--- 3.3.1 Create staging table
------------------------------
-DROP TABLE IF EXISTS sbo.INEGI_AGEML_2026_loc_BAK;
+------------------------------------------
+-- 4.3.1 Create table INEGI_AGEML_2026_loc
+------------------------------------------
+DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026_loc;
 GO
 
 SET ANSI_NULLS ON
@@ -193,7 +192,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[INEGI_AGEML_2026_loc_BAK](
+CREATE TABLE [dbo].[INEGI_AGEML_2026_loc](
 	[CVEGEO] [nvarchar](20) NOT NULL,
 	[Status] [nvarchar](20) NULL,
 	[ISO] [varchar](2) NULL,
@@ -219,10 +218,10 @@ CREATE TABLE [dbo].[INEGI_AGEML_2026_loc_BAK](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[INEGI_AGEML_2026_loc_BAK] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_loc_ISO]  DEFAULT (N'MX') FOR [ISO]
+ALTER TABLE [dbo].[INEGI_AGEML_2026_loc] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_loc_ISO]  DEFAULT (N'MX') FOR [ISO]
 GO
 
-ALTER TABLE [dbo].[INEGI_AGEML_2026_loc_BAK] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_loc_Country]  DEFAULT (N'México') FOR [Country]
+ALTER TABLE [dbo].[INEGI_AGEML_2026_loc] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_loc_Country]  DEFAULT (N'México') FOR [Country]
 GO
 
 --------------------
