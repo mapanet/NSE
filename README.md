@@ -23,15 +23,15 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 
 ## 📘 Documentation Index
 
-0. [Data Requirements](docs/00_Data_Requirements.md)
-1. [Import AMAI data](docs/01_Import_AMAI.md)
-2. [Import AGEB 2025 geometries data](docs/02_Import_Boundaries_AGEB_2025.md)
-3. [Import INEGI Census 2020 data](docs/03_Import_INEGI_Census_2020_AGEB.md)
-4. [Import INEGI AGEEML_2026 data](docs/04_Import_AGEEML_2026.md)
-5. [Import INEGI DCAH Neighborhoods 2025 data](docs/04_Import_INEGI_DCAH_2025.md)
-8 [Neighboods (Colonias) × AGEB spatial intersection](docs/05_Intersections.md)
-9 [AMAI Households Weighting by Neighborhood](docs/06_Weighting_by_Neighborhood.md)
-10 [Final validations](docs/07_Validations.md)
+0. [Data Requirements](docs/00_Data_Requirements.md)   
+1. [Import AMAI data](docs/01_Import_AMAI.md)   
+2. [Import AGEB 2025 geometries data](docs/02_Import_Boundaries_AGEB_2025.md)   
+3. [Import INEGI Census 2020 data](docs/03_Import_INEGI_Census_2020_AGEB.md)   
+4. [Import INEGI AGEEML_2026 data](docs/04_Import_AGEEML_2026.md)   
+5. [Import INEGI DCAH Neighborhoods 2025 data](docs/04_Import_INEGI_DCAH_2025.md)   
+8 [Neighboods (Colonias) × AGEB spatial intersection](docs/05_Intersections.md)   
+9 [AMAI Households Weighting by Neighborhood](docs/06_Weighting_by_Neighborhood.md)   
+10 [Final validations](docs/07_Validations.md)   
 
 ---
 
