@@ -66,7 +66,7 @@ Convert to TAB delimited, rename fields, replace - and * to null and get rid of 
 
 The full script used to concatenate all 32 state files into a single clean CVS (TSV) is available here:
 
-[Convert_to_CSV_TSV.ps1](../scripts/04_AGEEML_2026/Convert_to_CSV_TSV.ps1)
+[Convert_to_CSV_TSV.ps1](../scripts/Convert_to_CSV_TSV.ps1)
 
 
 ```powershell
