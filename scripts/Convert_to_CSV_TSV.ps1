@@ -1,6 +1,6 @@
 # Input and output paths
 $inputFile  = "D:\AXSI\INEGI\AGEEML_2026\AGEEML_202651313653_utf.csv"
-$outputFile = "D:\AXSI\INEGI\AGEEML_2026\INEGI_AGEEML_2026.csv"
+$outputFile = "D:\AXSI\INEGI\AGEEML_2026\AGEML_2026.csv"
 
 # Detect encoding
 try {
