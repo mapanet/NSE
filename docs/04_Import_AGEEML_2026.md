@@ -22,9 +22,9 @@ Is used on some processes where the data comes with without names.
 | geog | geography | Point ESPG:4023 |
 | Population | int ||
 | Dwellings | int |
-| CVE_ENT | varchar](2) | State code |
-| CVE_MUN | varchar](3) | Municipality code |
-| CVE_LOC | varchar](4) | Locality code (city) |
+| CVE_ENT | varchar(2) | State code |
+| CVE_MUN | varchar(3) | Municipality code |
+| CVE_LOC | varchar(4) | Locality code (city) |
 
 Working folders:
 
