@@ -73,6 +73,7 @@ Delete columns:
 Insert a row after thye header rename headers and have a more consistent names
 
 |CVEGEO|Estatus|CVE_ENT|NOM_ENT|CVE_MUN|NOM_MUN|CVE_LOC|NOM_LOC|AMBITO|LAT_DECIMAL|LON_DECIMAL|ALTITUD|POB_TOTAL|POB_MASCULINA|POB_FEMENINA|TOTAL DE VIVIENDAS HABITADAS|
+|------|-------|-------|-------|-------|-------|-------|-------|------|-----------|-----------|-------|---------|-------------|------------|----------------------------|
 |CVEGEO|Status|CVE_ENT|State|CVE_MUN|Municipality|CVE_LOC|City|Type|Latitude|Longitude|Altitude|Population|Population_M|Population_F|Occupied_Dwellings|
 
 ### Output File
