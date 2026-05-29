@@ -14,7 +14,7 @@ Is used on some processes where the data comes with without names.
 | State | nvarchar(85) ||
 | Municipality | nvarchar(85) ||
 | City | nvarchar(110) | Locality |
-| Type [ varchar](1) | 'U' or 'R' (Urban o Rural |
+| Type | varchar](1) | 'U' or 'R' (Urban o Rural |
 | Latitude | decimal](15, 6) |  ESPG:4023 |
 | Longitude | decimal](15, 6) | ESPG:4023 |
 | Altitude | int ||
