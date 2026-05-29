@@ -51,18 +51,20 @@ Download file will be:
 
 Extract from ZIP to working directory:   
 
-AGEML_202651313653_utf.csv
+AGEEML_202651313653_utf.csv
 
 ---
 # 4.2 — Convert the file before the import to SQL 
 
 ### Purpose
-Convert to TAB delimited, rename fields, replace - and * to null and get rid of fields we dont need:  
+Convert to TAB delimited, rename fields for clarity, replace - and * to null as they are "N/A" and get rid of fields we dont need.
 
 - NOM_ABR (Abbreviated stat name )
 - LATITUD (HH MM SS)
 - LONGITUDE  (HH MM SS)
 - CVE_CARTA (INEGI map reference)
+
+Cleaning process take 15 minutes as it will process 360000+ records, long time but produce a clean file to import.  
 
 ### PowerShell Script
 
@@ -73,7 +75,7 @@ The full script used to produce clean CVS (TSV) is available here:
 
 ```powershell
 # Input and output paths
-$inputFile  = "D:\AXSI\INEGI\AGEML_2026\AGEML_202651313653_utf.csv"
+$inputFile  = "D:\AXSI\INEGI\AGEML_2026\AGEEML_202651313653_utf.csv"
 $outputFile = "D:\AXSI\INEGI\AGEML_2026\INEGI_AGEML_2026.csv"
 
 # Detect encoding
