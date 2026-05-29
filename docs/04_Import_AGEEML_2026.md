@@ -8,15 +8,15 @@ Is used on some processes where the data comes with without names.
 | Column | Type | Notes |
 |--------|------|--------|
 | CVEGEO | varchar(16) | **Primary Key** |
-| Status | nvarchar](20) | null or Baja (deleted) |
-| ISO | [varchar](2) | 'MX' (ISO country code) |
+| Status | nvarchar(20) | null or Baja (deleted) |
+| ISO | varchar(2) | 'MX' (ISO country code) |
 | Country | nvarchar](20) | 'Mexico'
 | State | nvarchar(85) ||
 | Municipality | nvarchar(85) ||
 | City | nvarchar(110) | Locality |
 | Type | varchar](1) | 'U' or 'R' (Urban o Rural |
-| Latitude | decimal](15, 6) |  ESPG:4023 |
-| Longitude | decimal](15, 6) | ESPG:4023 |
+| Latitude | decimal(15, 6) |  ESPG:4023 |
+| Longitude | decimal(15, 6) | ESPG:4023 |
 | Altitude | int ||
 | geom | geometry | Point ESPG:4023 |
 | geog | geography | Point ESPG:4023 |
