@@ -27,10 +27,11 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 1. [Import AMAI data](docs/01_Import_AMAI.md)
 2. [Import AGEB 2025 geometries data](docs/02_Import_Boundaries_AGEB_2025.md)
 3. [Import INEGI Census 2020 data](docs/03_Import_INEGI_Census_2020_AGEB.md)
-4. [Import INEGI DCAH Neighborhoods 2025 data](docs/04_Import_INEGI_DCAH_2025.md)
-5. [Neighboods (Colonias) × AGEB spatial intersection](docs/05_Intersections.md)
-6. [AMAI Households Weighting by Neighborhood](docs/06_Weighting_by_Neighborhood.md)
-7. [Final validations](docs/07_Validations.md)
+4. [Import INEGI AGEEML_2026 data](docs/04_Import_AGEEML_2026.md)
+5. [Import INEGI DCAH Neighborhoods 2025 data](docs/04_Import_INEGI_DCAH_2025.md)
+8.0 [Neighboods (Colonias) × AGEB spatial intersection](docs/05_Intersections.md)
+8.1 [AMAI Households Weighting by Neighborhood](docs/06_Weighting_by_Neighborhood.md)
+8.2 [Final validations](docs/07_Validations.md)
 
 ---
 
