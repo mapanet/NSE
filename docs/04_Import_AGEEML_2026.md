@@ -152,92 +152,26 @@ Write-Host "DONE $($lines.Count-1) records written to $outputFile (Encoding: UTF
 
 INEGI_AGEEML_2026.csv
 
+Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
+
 - Encoding: **UTF‑8 no BOM**  
 - Separator: **TAB**  
 - Replaced all `*` with empty string (NULL in SQL)
 - Replaced all `-` with empty string (NULL in SQL)
-
-### PowerShell Script
-
-```powershell
-# Force the script to run in its own directory
-Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
-
-# Path where the 32 "RESAGEBURB2020 - **NN** Name .csv" files are located
-$inputFolder = "D:\INEGI\Censo_2020"
-
-# Final combined output file CSV
-$outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL_TAB.csv"
-
-# Get all files that start with RESAGEBURB2020
-$files = Get-ChildItem -Path $inputFolder -Filter "RESAGEBURB2020 - *.csv"
-
-# Validation
-if ($files.Count -eq 0) {
-    Write-Host "No RESAGEBURB2020*.csv files were found"
-    exit
-}
-
-# Read header from first file and convert commas → tabs
-$header = (Get-Content -Path $files[0].FullName -First 1) `
-            -replace ",","`t"
-
-# Create output file with header
-Set-Content -Path $outputFile -Value $header
-
-# Process each file
-foreach ($file in $files) {
-    Write-Host "Processing: $($file.Name)"
-
-    # Read all lines except header
-    $content = Get-Content -Path $file.FullName | Select-Object -Skip 1
-
-    # Convert commas → tabs AND replace "*" with empty string
-    $converted = $content | ForEach-Object {
-        $_ -replace "\*", "" -replace ",","`t"
-    }
-
-    # Append to final CSV
-    Add-Content -Path $outputFile -Value $converted
-}
-
-Write-Host "Done. Combined CSV created at:"
-Write-Host $outputFile
-```
-
----
-
-
-
-### Expected Output File
-
-After running the script, you should have:
-
-RESAGEBURB2020_ALL_TAB.csv
-
-Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
-
-- Encoding: **UTF‑8 (No BOM)**
-- Separator: **TAB**
-- No asterisks (`*`)
 - All rows aligned and complete
 
 Example rows:
 
-| ENTIDAD | NOM_ENT        | CVE_MUN | NOM_MUN                          | CVE_LOC | NOM_LOC                        | AGEB | MZA | POBTOT | VIVTOT | TVIVHAB |
-|---------|----------------|---------|-----------------------------------|---------|---------------------------------|------|-----|--------|--------|---------|
-| 01      | Aguascalientes | 000     | Total de la entidad Aguascalientes | 0000 | Total de la entidad            | 0000 | 000 | 1425607 | 463972 | 386671 |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0000 | Total del municipio             | 0000 | 000 | 948990  | 313256 | 266942 |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Total de la localidad urbana    | 0000 | 000 | 863893  | 286646 | 246259 |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Total AGEB urbana               | 0017 | 000 | 2237    | 1288   | 648     |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 011 | 115     | 80     | 33      |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 012 | 39      | 23     | 10      |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 018 | 0       | 80     |         |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 019 | 0       | 39     |         |
+| CVEGEO  | Status | CVE_ENT | NOM_ENT | CVE_MUN | NOM_MUN | CVE_LOC | NOM_LOC | Type | Latitude | Longitude   | Altitude | Population | Population_M | Population_F |Occupied_Dwellings |
+|---------|--------|---------|---------|---------|---------|---------|---------|------|----------|  -----------|----------|------------|--------------|--------------|-------------------|
+|010010001|        |       01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|U|21.87982200|-102.29604600|1878|863893|419168|444725|246259|
+|010010094|        |       01|Aguascalientes|001|Aguascalientes|0094|Granja Adelita|R|21.87187400|-102.37353000|1901|      |      |     5|     2|
+|010010096|        |       01|Aguascalientes|001|Aguascalientes|0096|Agua Azul     |R|21.88375600|-102.35712200|1861|    41|    24|    17|    12|
+|010010100|        |       01|Aguascalientes|001|Aguascalientes|0100|Rancho Alegre |R|21.85468300|-102.37273100|1879|     0|     0|     0|     0|
 
 ---
 
-# 3.3 — Import CSV into SQL Server
+# 4.3 — Import CSV into SQL Server
 
 We first import the raw CSV into a **staging table**.  
 This table mirrors the structure of the SCITEL export.
