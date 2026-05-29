@@ -101,10 +101,10 @@ Provides demographic and housing data at the AGEB level:
 
 ---
 
-## 5. INEGI AGEEML 2026 (Catalogs)
+## 4. INEGI AGEEML 2026 (Catalogs)
 
 **Source:** INEGI AGEEML
-**Import process:** [05_Import_INEGI_AGEEML_2025](05_Import_INEGI_AGEEML_2026.md)
+**Import process:** [04_Import_INEGI_AGEEML_2025](04_Import_INEGI_AGEEML_2026.md)
 
 Provides the official states, municipalities and localities codes and names, including:
 
@@ -124,10 +124,10 @@ Provides the official states, municipalities and localities codes and names, inc
 
 ---
 
-## 6. INEGI DCAH 2025 (Neighborhood Polygons)
+## 5. INEGI DCAH 2025 (Neighborhood Polygons)
 
 **Source:** INEGI DCAH  
-**Import process:** [04_Import_INEGI_DCAH_2025](04_Import_INEGI_DCAH_2025.md)
+**Import process:** [05_Import_INEGI_DCAH_2025](05_Import_INEGI_DCAH_2025.md)
 
 Provides the official neighborhood (colonia) boundaries, including:
 
