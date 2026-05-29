@@ -64,7 +64,8 @@ Convert to TAB delimited, rename fields for clarity, replace - and * to null as 
 - LONGITUDE  (HH MM SS)
 - CVE_CARTA (INEGI map reference)
 
-Cleaning process take 15 minutes as it will process 360000+ records, long time but produce a clean file to import.  
+Cleaning process take 30 minutes as it will process 360000+ records, long time but produce a clean file to import.  
+(we can process faster importing in staging table but cleaning in SQL is more complicated as there several steps to do too, so we won't save time)
 
 ### PowerShell Script
 
@@ -175,15 +176,49 @@ Example rows:
 
 ---
 
-# 4.3 — Import CSV into SQL Server
-
-Create final **INEGI_AGEML_2026**.  
+# 4.3 Create **INEGI_AGEML_2026_staging**.  
 
 ```sql
------------------------------------
--- 4.3 — Import CSV into SQL Server
------------------------------------
+----------------------------------------------
+-- 4.3.1 Create table INEGI_AGEML_2026_staging
+----------------------------------------------
+DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026_staging;
+GO
 
+CREATE TABLE [dbo].[INEGI_AGEML_2026_staging](
+    [CVEGEO] [nvarchar](16) NOT NULL,
+    [Status] [nvarchar](20) NULL,
+    [State] [nvarchar](85) NOT NULL,
+    [Municipality] [nvarchar](85) NOT NULL,
+    [City] [nvarchar](110) NOT NULL,
+    [Type] [nvarchar](1) NOT NULL,
+    [Latitude] [decimal](15, 6) NOT NULL,
+    [Longitude] [decimal](15, 6) NOT NULL,
+    [Altitude] [int] NOT NULL,
+    [Population] [int] NULL,
+    [Occupied_Dwellings] [int] NULL,
+    [CVE_ENT] [varchar](2) NULL,
+    [CVE_MUN] [varchar](3) NULL,
+    [CVE_LOC] [varchar](4) NULL,
+    CONSTRAINT [PK_INEGI_AGEML_2026_staging] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
+) ON [PRIMARY];
+GO
+
+BULK INSERT INEGI_AGEML_2026_staging
+FROM 'D:\AXSI\INEGI\AGEEML_2026\INEGI_AGEML_2026.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = '\t',
+    ROWTERMINATOR = '\n',
+    CODEPAGE = '65001',  -- UTF-8
+    TABLOCK
+);
+GO
+```
+
+# 4.4 Create final **INEGI_AGEML_2026**.  
+
+```sql
 ------------------------------------------
 -- 4.3.1 Create table INEGI_AGEML_2026
 ------------------------------------------
@@ -232,97 +267,7 @@ ALTER TABLE [dbo].[INEGI_AGEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_Countr
 GO
 ```
 
-Create staging **INEGI_AGEML_2026_staging** to import data.  
-
-------------------------------------------
--- 4.3.2 Create table INEGI_AGEML_2026_staging
-------------------------------------------
-DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026_staging;
-GO
-
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[INEGI_AGEML_2026_staging](
-    [CVEGEO] [nvarchar](16) NOT NULL,
-    [Status] [nvarchar](20) NULL,
-    [State] [nvarchar](85) NOT NULL,
-    [Municipality] [nvarchar](85) NOT NULL,
-    [City] [nvarchar](110) NOT NULL,
-    [Type] [nvarchar](1) NOT NULL,
-    [Latitude] [decimal](15, 6) NOT NULL,
-    [Longitude] [decimal](15, 6) NOT NULL,
-    [Altitude] [int] NOT NULL,
-    [Population] [int] NULL,
-    [Occupied_Dwellings] [int] NULL,
-    [CVE_ENT] [varchar](2) NULL,
-    [CVE_MUN] [varchar](3) NULL,
-    [CVE_LOC] [varchar](4) NULL,
-    CONSTRAINT [PK_INEGI_AGEML_2026_staging] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
-) ON [PRIMARY];
-GO
-
-
---------------------
--- 4.3.3 Bulk Insert
---------------------
-BULK INSERT INEGI_AGEML_2026_staging
-FROM 'D:\AXSI\INEGI\AGEML_2026\INEGI_AGEML_2026.csv'
-WITH (
-    FIRSTROW = 2,
-    FIELDTERMINATOR = '\t',
-    ROWTERMINATOR = '\n',
-    CODEPAGE = '65001',  -- UTF-8
-    TABLOCK
-);
-GO
-```
-
-#### Expected results
-
-(863069 rows affected)      
-Completion time: 2026-05-24T22:07:26.4095744-05:00   
-
-
-## 3.4 — Create Final Table and Copy Data
-
-We now create the final table INEGI_Censo_2020_AGEB, where:
-
-- CVEGEO is a 16‑digit unique identifier: **CVEGEO** = ENTIDAD + MUN + LOC + AGEB + MZA
-- Field names are converted to EN‑US
-- Population and dwelling fields are standardized
-
-- NOM_ENT → State
-- NOM_MUN → Municipality
-- NOM_LOC → City
-- POBTOT → Population
-- VIVTOT → Dwellings
-- TVIVHAB → Occupied_Dwellings
-
-## 3.4.1 — Create Final Table
-
-```sql
----------------------------------------------------------------------------
--- 3.4.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Block)
----------------------------------------------------------------------------
-DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
-GO
-CREATE TABLE INEGI_Censo_2020_AGEB (
-    CVEGEO varchar(16) PRIMARY KEY, -- 16 digit full block code (ENTIDAD + MUN + LOC + AGEB + MZA)
-    State nvarchar(85) NULL,
-    Municipality nvarchar(85) NULL,
-    City nvarchar(110) NULL,
-    Population int NULL,
-    Dwellings int NULL,
-    Occupied_Dwellings int NULL,
-);
-GO
-```
-
-## 3.4.2 — Copy Data from Staging
+## 3.5 — Copy Data from Staging
 
 ```sql
 ----------------------------------------------
