@@ -28,8 +28,8 @@ Is used on some processes where the data comes with without names.
 
 Working folders:
 
-D:\INEGI\AGEEML_2026
-D:\INEGI\AGEEML_2026\Download
+D:\INEGI\AGEEML_2026   
+D:\INEGI\AGEEML_2026\Download   
 
 ---
 
