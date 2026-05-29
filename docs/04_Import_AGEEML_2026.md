@@ -1,134 +1,60 @@
-# 3 — INEGI Census 2020 (Block-Level Data)
+# 4 — INEGI AGEEML 2026
 
-This dataset contains **Census 2020 population and dwelling data at the block level**  
-(AGEB + Manzana). It is a core input for the NSE pipeline.
+This dataset contains Catalogs of codes and names of State, Municipalty, Locality
+Is used on some processes where the data comes with without names.
 
----
-
-## 📌 Important Clarifications
-
-- We create a **Census 2020 block-level dataset** to obtain **Population**, **Dwellings**, and **Occupied_Dwellings** at the **Manzana (Block)** level.
-- This dataset is used in **NSE Step 5.9** to update **Population** and **Dwellings** at the **Neighborhood (Colonia)** level using weighted aggregation.
-- It can also be aggregated to obtain totals at the **AGEB**, **City**, **Municipality**, and **State** levels.
-- Later we can compute: Unoccupied_Dwellings = Dwellings – Occupied_Dwellings
-
-### Terminology
-
-| Spanish | English | Meaning |
-|---------|---------|---------|
-| AGEB | Basic Geo‑Statistical Area | INEGI statistical unit |
-| Manzana | Block | Smallest urban unit |
-
----
-
-## Resulting Table: `INEGI_Censo_2020_AGEB`
+## Resulting Table: `INEGI_AGEEML_2026-loc`
 
 | Column | Type | Notes |
 |--------|------|--------|
 | CVEGEO | varchar(16) | **Primary Key** |
-| State | nvarchar(85) |
-| Municipality | nvarchar(85) |
-| City | nvarchar(110) |
-| Population | int |
+| Status | nvarchar](20) | null or Baja (deleted) |
+| ISO | [varchar](2) | 'MX' (ISO country code) |
+| Country | nvarchar](20) | 'Mexico'
+| State | nvarchar(85) ||
+| Municipality | nvarchar(85) ||
+| City | nvarchar(110) | Locality |
+| Type [ varchar](1) | 'U' or 'R' (Urban o Rural |
+| Latitude | decimal](15, 6) |  ESPG:4023 |
+| Longitude | decimal](15, 6) | ESPG:4023 |
+| Altitude | int ||
+| geom | geometry | Point ESPG:4023 |
+| geog | geography | Point ESPG:4023 |
+| Population | int ||
 | Dwellings | int |
-| Occupied_Dwellings | int |
+| CVE_ENT | varchar](2) | State code |
+| CVE_MUN | varchar](3) | Municipality code |
+| CVE_LOC | varchar](4) | Locality code (city) |
 
-Working folder:
+Working folders:
 
-D:\INEGI\
-
+D:\INEGI\AGEEML_2026
+D:\INEGI\AGEEML_2026\Download
 
 ---
 
-# 3.1 — Download Census 2020 Data (SCITEL)
+# 3.1 — Download AGEEML 2026 Catalogs
 
-We download Census 2020 block-level data from **INEGI SCITEL**:
 
 **URL:**  
-https://www.inegi.org.mx/app/scitel/Default?ev=10  
-**Section:** *Resultados por AGEB y Manzana Urbana*
+[https://www.inegi.org.mx/app/scitel/Default?ev=10  ](https://www.inegi.org.mx/app/ageeml/#)
+**Section:** Catalogos completos (complete catalogs)
+**Catalog:** Catálogo de Localidades Nacional ( 296704 Localidades) Fecha de corte: 2026/04
+**Detail:** Minúscula con acento, incluye bajas (ProperCase wi accents, included old deleted
 
-[<img src="/docs/images/Censo_2020_1.png" width="1000">](/docs/images/Censo_2020_1.png)
+[<img src="/docs/images/INEGI_AGEEEML.png" width="1000">](/docs/images/INEGI_AGEEEML.png)
+
+Download file will be: 
+
+**Directory:** D:\INEGI\AGEEML_2026\Download\   
+**File name:** min_con_acento_baja.zip  
+
 
 ---
 
-### IMPORTANT — Do NOT use the gray CSV or XLSX buttons
 
-In the **left panel**, you will see **gray CSV and XLSX** buttons.  
-These export the **full dataset**, which contains to many fields we do not need.
-
-We only want:
-
-- **Population Total**  
-- **Total Dwellings**  
-- **Occupied Dwellings**  
 
 ---
-
-## ✔ Download Procedure (Repeat for All 32 States)
-
-In the **right panel**, select:
-
-1. **Identificación geográfica** → all checked  
-2. **Población** → *Población total*  
-3. **Vivienda** → *Total de viviendas*  
-4. **Vivienda** → *Total de viviendas habitadas*  
-
-Then repeat the following steps for each state:
-
-1. In the **left panel**, select a state (example: *Aguascalientes*).  
-2. Bottom‑right → click **Generar Consulta** (Generate Query).  
-3. Bottom‑center → click **Exportar a → CSV**.  
-4. Save the file into:
-
-D:\INEGI\Censo_2020\
-
-
-
-5. Click the browser **Back** button and select the next state.
-
-Example results:
-
-[<img src="/docs/images/Censo_2020_3.png" width="1000">](/docs/images/Censo_2020_3.png)
-
----
-
-## ✔ Verify All 32 Files Are Downloaded
-
-| File Name |
-|-----------|
-| RESAGEBURB2020 - 01 Aguascalientes.csv |
-| RESAGEBURB2020 - 02 Baja California.csv |
-| RESAGEBURB2020 - 03 Baja California Sur.csv |
-| RESAGEBURB2020 - 04 Campeche.csv |
-| RESAGEBURB2020 - 05 Coahuila de Zaragoza.csv |
-| RESAGEBURB2020 - 06 Colima.csv |
-| RESAGEBURB2020 - 07 Chiapas.csv |
-| RESAGEBURB2020 - 08 Chihuahua.csv |
-| RESAGEBURB2020 - 09 Ciudad de México.csv |
-| RESAGEBURB2020 - 10 Durango.csv |
-| RESAGEBURB2020 - 11 Guanajuato.csv |
-| RESAGEBURB2020 - 12 Guerrero.csv |
-| RESAGEBURB2020 - 13 Hidalgo.csv |
-| RESAGEBURB2020 - 14 Jalisco.csv |
-| RESAGEBURB2020 - 15 México.csv |
-| RESAGEBURB2020 - 16 Michoacán de Ocampo.csv |
-| RESAGEBURB2020 - 17 Morelos.csv |
-| RESAGEBURB2020 - 18 Nayarit.csv |
-| RESAGEBURB2020 - 19 Nuevo León.csv |
-| RESAGEBURB2020 - 20 Oaxaca.csv |
-| RESAGEBURB2020 - 21 Puebla.csv |
-| RESAGEBURB2020 - 22 Querétaro.csv |
-| RESAGEBURB2020 - 23 Quintana Roo.csv |
-| RESAGEBURB2020 - 24 San Luis Potosí.csv |
-| RESAGEBURB2020 - 25 Sinaloa.csv |
-| RESAGEBURB2020 - 26 Sonora.csv |
-| RESAGEBURB2020 - 27 Tabasco.csv |
-| RESAGEBURB2020 - 28 Tamaulipas.csv |
-| RESAGEBURB2020 - 29 Tlaxcala.csv |
-| RESAGEBURB2020 - 30 Veracruz.csv |
-| RESAGEBURB2020 - 31 Yucatán.csv |
-| RESAGEBURB2020 - 32 Zacatecas.csv |
 
 ---
 
@@ -245,22 +171,45 @@ This table mirrors the structure of the SCITEL export.
 -----------------------------
 -- 3.3.1 Create staging table
 -----------------------------
-DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
+DROP TABLE IF EXISTS sbo.INEGI_AGEML_2026_loc_BAK;
 GO
 
-CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
-    ENTIDAD varchar(2) NOT NULL,
-    NOM_ENT nvarchar(100) NULL,
-    MUN varchar(3) NOT NULL,
-    NOM_MUN nvarchar(100) NULL,
-    LOC varchar(4) NOT NULL,
-    NOM_LOC nvarchar(150) NULL,
-    AGEB varchar(4) NOT NULL,
-    MZA varchar(3) NOT NULL,
-    POBTOT int NULL,
-    VIVTOT int NULL,
-    TVIVHAB int NULL
-);
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[INEGI_AGEML_2026_loc_BAK](
+	[CVEGEO] [nvarchar](20) NOT NULL,
+	[Status] [nvarchar](20) NULL,
+	[ISO] [nvarchar](2) NULL,
+	[Country] [nvarchar](20) NULL,
+	[State] [nvarchar](85) NOT NULL,
+	[Municipality] [nvarchar](85) NOT NULL,
+	[City] [nvarchar](110) NOT NULL,
+	[Type] [nvarchar](1) NOT NULL,
+	[Latitude] [decimal](15, 6) NOT NULL,
+	[Longitude] [decimal](15, 6) NOT NULL,
+	[Altitude] [int] NOT NULL,
+	[geom] [geometry] NULL,
+	[geog] [geography] NULL,
+	[Population] [int] NULL,
+	[Occupied_Dwellings] [int] NULL,
+	[CVE_ENT] [varchar](2) NULL,
+	[CVE_MUN] [varchar](3) NULL,
+	[CVE_LOC] [varchar](4) NULL
+ CONSTRAINT [PK_INEGI_AGEML_2026] PRIMARY KEY CLUSTERED 
+(
+	[CVEGEO] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[INEGI_AGEML_2026_loc_BAK] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_loc_ISO]  DEFAULT (N'MX') FOR [ISO]
+GO
+
+ALTER TABLE [dbo].[INEGI_AGEML_2026_loc_BAK] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_loc_Country]  DEFAULT (N'México') FOR [Country]
 GO
 
 --------------------
