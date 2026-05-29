@@ -64,7 +64,7 @@ Convert to TAB delimited, rename fields, replace - and * to null and get rid of 
 
 ### PowerShell Script
 
-The full script used to concatenate all 32 state files into a single clean CVS (TSV) is available here:
+The full script used to produce clean CVS (TSV) is available here:
 
 [Convert_to_CSV_TSV.ps1](../scripts/Convert_to_CSV_TSV.ps1)
 
@@ -225,10 +225,10 @@ ALTER TABLE [dbo].[INEGI_AGEML_2026_loc] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_lo
 GO
 
 --------------------
--- 3.3.2 Bulk Insert
+-- 4.3.2 Bulk Insert
 --------------------
-BULK INSERT INEGI_Censo_2020_AGEB_Staging
-FROM 'D:\INEGI\Censo_2020\RESAGEBURB2020_ALL_TAB.csv'
+BULK INSERTINEGI_AGEML_2026_lo
+FROM 'D:\AXSI\INEGI\AGEEML_2026\INEGI_AGEEML_2026.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
