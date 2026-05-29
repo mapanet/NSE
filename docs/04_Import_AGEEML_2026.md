@@ -52,16 +52,22 @@ Extract from ZIP to working directory:
 AGEEML_202651313653_utf.csv
 
 ---
-# 4.2 — Concatenate All Files into One Clean CSV (TSV)
+# 4.2 — Convert the file before the import to SQL 
 
 ### Purpose
-Create a CSV file ready for SQL Server bulk import.
-This will get rid of some fields we dont need as:  
+Convert to TAB delimited, rename fields, replace - and * to null and get rid of fields we dont need:  
 
 - NOM_ABR (Abbreviated stat name )
 - LATITUD (HH MM SS)
 - LONGITUDE  (HH MM SS)
 - CVE_CARTA (INEGI map reference)
+
+### PowerShell Script
+
+The full script used to concatenate all 32 state files into a single clean CVS (TSV) is available here:
+
+[Convert_to_CSV_TSV.ps1](../scripts/04_AGEEML_2026/Convert_to_CSV_TSV.ps1)
+
 
 ```powershell
 # Input and output paths
@@ -146,10 +152,10 @@ Write-Host "DONE $($lines.Count-1) records written to $outputFile (Encoding: UTF
 
 INEGI_AGEEML_2026.csv
 
-
 - Encoding: **UTF‑8 no BOM**  
 - Separator: **TAB**  
-- Replace all `*` with empty string (NULL in SQL)
+- Replaced all `*` with empty string (NULL in SQL)
+- Replaced all `-` with empty string (NULL in SQL)
 
 ### PowerShell Script
 
@@ -201,13 +207,7 @@ Write-Host $outputFile
 
 ---
 
-### Full PowerShell Script
 
-The full script used to concatenate all 32 state files into a single clean CVS (TSV) is available here:
-
-[Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/03_Censo_2020/Concatenate_RESAGEBURB2020_TAB.ps1)
-
----
 
 ### Expected Output File
 
