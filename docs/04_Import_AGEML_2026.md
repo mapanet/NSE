@@ -102,6 +102,7 @@ Replace TAB + dash (-) to one TAB only (this create a empty values as when a val
 Example rows:
 
 |CVEGEO|Status|CVE_ENT|State|CVE_MUN|Municipality|CVE_LOC|City|Type|Latitude|Longitude|Altitude|Population|Population_M|Population_F|Occupied_Dwellings|
+|------|------|-------|-----|-------|------------|-------|----|----|--------|---------|--------|----------|------------|------------|------------------|
 |010010001||01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|U|21.879822|102.296046|1878|863893|419168|444725|246259|
 |010010094||01|Aguascalientes|001|Aguascalientes|0094|Granja Adelita|R|21.871874|102.37353|1901|5|||2|
 |010010096||01|Aguascalientes|001|Aguascalientes|0096|Agua Azul|R|21.883756|102.357122|1861|41|24|17|12|
