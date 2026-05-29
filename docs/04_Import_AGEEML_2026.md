@@ -26,18 +26,17 @@ Is used on some processes where the data comes with without names.
 | CVE_MUN | varchar(3) | Municipality code |
 | CVE_LOC | varchar(4) | Locality code (city) |
 
-Working folders:
+## Working folders:
 
 D:\INEGI\AGEEML_2026   
 D:\INEGI\AGEEML_2026\Download   
 
 ---
 
-# 3.1 — Download AGEEML 2026 Catalogs
-
+# 4.1 — Download AGEEML 2026 Catalogs
 
 **URL:**  
-[https://www.inegi.org.mx/app/scitel/Default?ev=10  ](https://www.inegi.org.mx/app/ageeml/#)
+[https://www.inegi.org.mx/app/ageeml/#](https://www.inegi.org.mx/app/ageeml/#)
 **Section:** Catalogos completos (complete catalogs)
 **Catalog:** Catálogo de Localidades Nacional ( 296704 Localidades) Fecha de corte: 2026/04
 **Detail:** Minúscula con acento, incluye bajas (ProperCase wi accents, included old deleted
