@@ -51,113 +51,45 @@ Download file will be:
 
 Extract from ZIP to working directory:   
 
-AGEEML_202651313653_utf.csv
+AGEEML_20265131154522.xlsx
 
 ---
-# 4.2 — Convert the file before the import to SQL 
+# 4.2 — Convert to CSV before the import to SQL 
 
 ### Purpose
 Convert to TAB delimited, rename fields for clarity, replace - and * to null as they are "N/A" and get rid of fields we dont need.
+
+Open AGEEML_20265131154522.xlsx in Excel
+
+Delete First 3 rows of titles like "Instituto Nacional de Estadística y Geografía.", etc.
+
+Delete columns:
 
 - NOM_ABR (Abbreviated stat name )
 - LATITUD (HH MM SS)
 - LONGITUDE  (HH MM SS)
 - CVE_CARTA (INEGI map reference)
 
-Cleaning process take 30 minutes as it will process 360000+ records, long time but produce a clean file to import.  
-(we can process faster importing in staging table but cleaning in SQL is more complicated as there several steps to do too, so we won't save time)
+Insert a row after thye header rename headers and have a more consistent names
 
-### PowerShell Script
-
-The full script used to produce clean CVS (TSV) is available here:
-
-[Convert_to_CSV_TSV.ps1](../scripts/Convert_to_CSV_TSV.ps1)
-
-
-```powershell
-# Input and output paths
-$inputFile  = "D:\AXSI\INEGI\AGEML_2026\AGEEML_202651313653_utf.csv"
-$outputFile = "D:\AXSI\INEGI\AGEML_2026\INEGI_AGEML_2026.csv"
-
-# Detect encoding
-try {
-    $raw = Get-Content -Path $inputFile -Encoding UTF8 -ErrorAction Stop
-    $encoding = "UTF-8"
-} catch {
-    $raw = Get-Content -Path $inputFile -Encoding Default
-    $encoding = "Windows-1252"
-    Write-Host "WARNING: Input file appears to be Windows-1252. Converting to UTF-8..."
-}
-
-# Parse header
-$header = $raw[0].Split(',')
-
-# Mapping dictionary for normalization
-$map = @{
-    "CVEGEO" = "CVEGEO"
-    "Estatus" = "Status"
-    "CVE_ENT" = "CVE_ENT"
-    "NOM_ENT" = "NOM_ENT"
-    "NOM_ABR" = "NOM_ABR"
-    "CVE_MUN" = "CVE_MUN"
-    "NOM_MUN" = "NOM_MUN"
-    "CVE_LOC" = "CVE_LOC"
-    "NOM_LOC" = "NOM_LOC"
-    "AMBITO" = "Type"
-    "LATITUD" = "LATITUD"
-    "LONGITUD" = "LONGITUD"
-    "LAT_DECIMAL" = "Latitude"
-    "LON_DECIMAL" = "Longitude"
-    "ALTITUD" = "Altitude"
-    "CVE_CARTA" = "CVE_CARTA"
-    "POB_TOTAL" = "Population"
-    "POB_MASCULINA" = "Population_M"
-    "POB_FEMENINA" = "Population_F"
-    "TOTAL DE VIVIENDAS HABITADAS" = "Occupied_Dwellings"
-}
-
-# Exclude list
-$exclude = @("NOM_ABR","LATITUD","LONGITUD","CVE_CARTA")
-
-# Keep only mapped headers not in exclude
-$keepIdx = for ($i=0; $i -lt $header.Length; $i++) {
-    $h = $header[$i].Trim()
-    if ($exclude -notcontains $h) { $i }
-}
-
-# Build normalized header
-$newHeader = ($keepIdx | ForEach-Object { $map[$header[$_].Trim()] }) -join "`t"
-
-# Process rows
-$lines = @($newHeader)
-for ($r=1; $r -lt $raw.Count; $r++) {
-    $cols = $raw[$r].Split(',')
-    $vals = foreach ($i in $keepIdx) {
-        $val = $cols[$i].Trim()
-
-        # Remove quotes first
-        $val = $val -replace '"',''
-
-        # Replace dash or asterisk-only values with empty string
-        if ($val -eq '-' -or $val -eq '*') { $val = '' }
-
-        $val
-    }
-    $lines += ($vals -join "`t")
-}
-
-# Write UTF-8 output
-[System.IO.File]::WriteAllLines($outputFile, $lines, [System.Text.Encoding]::UTF8)
-
-# DONE message
-Write-Host "DONE $($lines.Count-1) records written to $outputFile (Encoding: UTF-8)"
-```
+|CVEGEO|Estatus|CVE_ENT|NOM_ENT|CVE_MUN|NOM_MUN|CVE_LOC|NOM_LOC|AMBITO|LAT_DECIMAL|LON_DECIMAL|ALTITUD|POB_TOTAL|POB_MASCULINA|POB_FEMENINA|TOTAL DE VIVIENDAS HABITADAS|
+|CVEGEO|Status|CVE_ENT|State|CVE_MUN|Municipality|CVE_LOC|City|Type|Latitude|Longitude|Altitude|Population|Population_M|Population_F|Occupied_Dwellings|
 
 ### Output File
 
-INEGI_AGEML_2026.csv
+- Delete first row
+- Save as type as **CSV UTF-8 comma delimited**
+- Save it as **AGEEML_2026.csv**
 
-Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
+### Edit CSV to clean it from dash and asterisks (N/A values)
+
+AGEEML_2026.csv
+
+Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and:
+
+Replace coma , by TAB
+Replace TAB + asterisk (*) values to one TAB (this create a empty values when a value is dash (-) so when imported it become NULL
+Replace TAB + dash (-) to one TAB only (this create a empty values as when a value is dash (-) so when imported it become NULL
 
 - Encoding: **UTF‑8 no BOM**  
 - Separator: **TAB**  
@@ -165,47 +97,57 @@ Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
 - Replaced all `-` with empty string (NULL in SQL)
 - All rows aligned and complete
 
+#### Save
+
 Example rows:
 
-| CVEGEO  | Status | CVE_ENT | NOM_ENT | CVE_MUN | NOM_MUN | CVE_LOC | NOM_LOC | Type | Latitude | Longitude   | Altitude | Population | Population_M | Population_F |Occupied_Dwellings |
-|---------|--------|---------|---------|---------|---------|---------|---------|------|----------|  -----------|----------|------------|--------------|--------------|-------------------|
-|010010001|        |       01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|U|21.87982200|-102.29604600|1878|863893|419168|444725|246259|
-|010010094|        |       01|Aguascalientes|001|Aguascalientes|0094|Granja Adelita|R|21.87187400|-102.37353000|1901|      |      |     5|     2|
-|010010096|        |       01|Aguascalientes|001|Aguascalientes|0096|Agua Azul     |R|21.88375600|-102.35712200|1861|    41|    24|    17|    12|
-|010010100|        |       01|Aguascalientes|001|Aguascalientes|0100|Rancho Alegre |R|21.85468300|-102.37273100|1879|     0|     0|     0|     0|
-
+|CVEGEO|Status|CVE_ENT|State|CVE_MUN|Municipality|CVE_LOC|City|Type|Latitude|Longitude|Altitude|Population|Population_M|Population_F|Occupied_Dwellings|
+|010010001||01|Aguascalientes|001|Aguascalientes|0001|Aguascalientes|U|21.879822|102.296046|1878|863893|419168|444725|246259|
+|010010094||01|Aguascalientes|001|Aguascalientes|0094|Granja Adelita|R|21.871874|102.37353|1901|5|||2|
+|010010096||01|Aguascalientes|001|Aguascalientes|0096|Agua Azul|R|21.883756|102.357122|1861|41|24|17|12|
+|010010100||01|Aguascalientes|001|Aguascalientes|0100|Rancho Alegre|R|21.854683|102.372731|1879|0|0|0|0|
+|010010102||01|Aguascalientes|001|Aguascalientes|0102|Los Arbolitos [Rancho]|R|21.78018|102.357295|1861|8|||2|
+|010010104||01|Aguascalientes|001|Aguascalientes|0104|Ardillas de Abajo (Las Ardillas)|R|21.945067|102.19192|1994|1|||1|
+|010010106||01|Aguascalientes|001|Aguascalientes|0106|Arellano|R|21.801773|102.273954|1891|1169|613|556|281|
+|010010112||01|Aguascalientes|001|Aguascalientes|0112|Bajío los Vázquez|R|21.747494|102.124816|1971|41|20|21|9|
+|010010113||01|Aguascalientes|001|Aguascalientes|0113|Bajío de Montoro|R|21.757883|102.290131|1871|0|0|0|0|
+|010010114|Baja|01|Aguascalientes|001|Aguascalientes|0114|Residencial San Nicolás [Baños la Cantera]|R|21.849498|102.355422|1859|||||
+|010010120||01|Aguascalientes|001|Aguascalientes|0120|Buenavista de Peñuelas|R|21.719147|102.293195|1871|1054|542|512|255|
+|010010121||01|Aguascalientes|001|Aguascalientes|0121|Cabecita 3 Marías (Rancho Nuevo)|R|21.774682|102.412992|1905|192|92|100|47|
 ---
 
-# 4.3 Create **INEGI_AGEML_2026_staging**.  
+# 4.3 Create **INEGI_AGEML_2026_Staging**.  
 
 ```sql
 ----------------------------------------------
--- 4.3.1 Create table INEGI_AGEML_2026_staging
+-- 4.3.1 Create table INEGI_AGEML_2026_Staging
 ----------------------------------------------
-DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026_staging;
+DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026_Staging;
 GO
 
 CREATE TABLE [dbo].[INEGI_AGEML_2026_staging](
     [CVEGEO] [nvarchar](16) NOT NULL,
     [Status] [nvarchar](20) NULL,
+    [CVE_ENT] [varchar](2) NULL,
     [State] [nvarchar](85) NOT NULL,
+    [CVE_MUN] [varchar](3) NULL,
     [Municipality] [nvarchar](85) NOT NULL,
+	[CVE_LOC] [varchar](4) NULL,
     [City] [nvarchar](110) NOT NULL,
-    [Type] [nvarchar](1) NOT NULL,
+    [Type] [varchar](1) NOT NULL,
     [Latitude] [decimal](15, 6) NOT NULL,
     [Longitude] [decimal](15, 6) NOT NULL,
     [Altitude] [int] NOT NULL,
     [Population] [int] NULL,
-    [Occupied_Dwellings] [int] NULL,
-    [CVE_ENT] [varchar](2) NULL,
-    [CVE_MUN] [varchar](3) NULL,
-    [CVE_LOC] [varchar](4) NULL,
-    CONSTRAINT [PK_INEGI_AGEML_2026_staging] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
+    [Population_M] [int] NULL,
+    [Population_F] [int] NULL,
+    [Occupied_Dwellings] [int] NULL
+    CONSTRAINT [PK_INEGI_AGEML_2026_Staging] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
 ) ON [PRIMARY];
 GO
 
 BULK INSERT INEGI_AGEML_2026_staging
-FROM 'D:\AXSI\INEGI\AGEEML_2026\INEGI_AGEML_2026.csv'
+FROM 'D:\AXSI\INEGI\AGEEML_2026\AGEML_2026.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
