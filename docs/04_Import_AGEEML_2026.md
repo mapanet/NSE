@@ -36,10 +36,10 @@ D:\INEGI\AGEEML_2026\Download
 # 4.1 — Download AGEEML 2026 Catalogs
 
 **URL:**  
-[https://www.inegi.org.mx/app/ageeml/#](https://www.inegi.org.mx/app/ageeml/#)
-**Section:** Catalogos completos (complete catalogs)
-**Catalog:** Catálogo de Localidades Nacional ( 296704 Localidades) Fecha de corte: 2026/04
-**Detail:** Minúscula con acento, incluye bajas (ProperCase wi accents, included old deleted
+[https://www.inegi.org.mx/app/ageeml/#](https://www.inegi.org.mx/app/ageeml/#)   
+**Section:** Catalogos completos (complete catalogs)   
+**Catalog:** Catálogo de Localidades Nacional ( 296704 Localidades) Fecha de corte: 2026/04   
+**Detail:** Minúscula con acento, incluye bajas (ProperCase wi accents, included old deleted   
 
 [<img src="/docs/images/INEGI_AGEEEML.png" width="1000">](/docs/images/INEGI_AGEEEML.png)
 
