@@ -1,9 +1,9 @@
-# 4 — INEGI AGEEML 2026
+# 4 — INEGI AGEML 2026
 
 This dataset contains Catalogs of codes and names of State, Municipalty, Locality
 Is used on some processes where the data comes with without names.
 
-## Resulting Table: `INEGI_AGEEML_2026-loc`
+## Resulting Table: `INEGI_AGEML_2026`
 
 | Column | Type | Notes |
 |--------|------|--------|
@@ -25,15 +25,17 @@ Is used on some processes where the data comes with without names.
 | CVE_ENT | varchar(2) | State code |
 | CVE_MUN | varchar(3) | Municipality code |
 | CVE_LOC | varchar(4) | Locality code (city) |
-
+| State_Ant	| nvarchar(85) | original State name (will rename some state names with short names ) |
+| Municipality_Ant | nvarchar(85) | original Municipality name |
+| City_Ant | nvarchar(110) | original City name |
 ## Working folders:
 
-D:\INEGI\AGEEML_2026   
-D:\INEGI\AGEEML_2026\Download   
+D:\INEGI\AGEML_2026   
+D:\INEGI\AGEML_2026\Download   
 
 ---
 
-# 4.1 — Download AGEEML 2026 Catalogs
+# 4.1 — Download AGEML 2026 Catalogs
 
 - **URL:**  [https://www.inegi.org.mx/app/ageeml/#](https://www.inegi.org.mx/app/ageeml/#)   
 - **Section:** Catalogos completos (complete catalogs)   
@@ -44,12 +46,12 @@ D:\INEGI\AGEEML_2026\Download
 
 Download file will be: 
 
-**Directory:** D:\INEGI\AGEEML_2026\Download\   
+**Directory:** D:\INEGI\AGEML_2026\Download\   
 **File name:** min_con_acento_baja.zip
 
 Extract from ZIP to working directory:   
 
-AGEEML_202651313653_utf.csv
+AGEML_202651313653_utf.csv
 
 ---
 # 4.2 — Convert the file before the import to SQL 
@@ -71,8 +73,8 @@ The full script used to produce clean CVS (TSV) is available here:
 
 ```powershell
 # Input and output paths
-$inputFile  = "D:\AXSI\INEGI\AGEEML_2026\AGEEML_202651313653_utf.csv"
-$outputFile = "D:\AXSI\INEGI\AGEEML_2026\INEGI_AGEEML_2026.csv"
+$inputFile  = "D:\AXSI\INEGI\AGEML_2026\AGEML_202651313653_utf.csv"
+$outputFile = "D:\AXSI\INEGI\AGEML_2026\INEGI_AGEML_2026.csv"
 
 # Detect encoding
 try {
@@ -150,7 +152,7 @@ Write-Host "DONE $($lines.Count-1) records written to $outputFile (Encoding: UTF
 
 ### Output File
 
-INEGI_AGEEML_2026.csv
+INEGI_AGEML_2026.csv
 
 Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
 
@@ -173,7 +175,7 @@ Example rows:
 
 # 4.3 — Import CSV into SQL Server
 
-Create final **INEGI_AGEML_2026_loc**.  
+Create final **INEGI_AGEML_2026**.  
 
 ```sql
 -----------------------------------
@@ -181,9 +183,9 @@ Create final **INEGI_AGEML_2026_loc**.
 -----------------------------------
 
 ------------------------------------------
--- 4.3.1 Create table INEGI_AGEML_2026_loc
+-- 4.3.1 Create table INEGI_AGEML_2026
 ------------------------------------------
-DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026_loc;
+DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026;
 GO
 
 SET ANSI_NULLS ON
@@ -192,8 +194,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[INEGI_AGEML_2026_loc](
-	[CVEGEO] [nvarchar](20) NOT NULL,
+CREATE TABLE [dbo].[INEGI_AGEML_2026](
+	[CVEGEO] [nvarchar](16) NOT NULL,
 	[Status] [nvarchar](20) NULL,
 	[ISO] [varchar](2) NULL,
 	[Country] [nvarchar](20) NULL,
@@ -210,7 +212,10 @@ CREATE TABLE [dbo].[INEGI_AGEML_2026_loc](
 	[Occupied_Dwellings] [int] NULL,
 	[CVE_ENT] [varchar](2) NULL,
 	[CVE_MUN] [varchar](3) NULL,
-	[CVE_LOC] [varchar](4) NULL
+	[CVE_LOC] [varchar](4) NULL,
+	[State_Ant] [nvarchar](85) NOT NULL,
+	[Municipality_Ant] [nvarchar](85) NOT NULL,
+	[City_Ant] [nvarchar](110) NOT NULL
  CONSTRAINT [PK_INEGI_AGEML_2026] PRIMARY KEY CLUSTERED 
 (
 	[CVEGEO] ASC
@@ -218,17 +223,52 @@ CREATE TABLE [dbo].[INEGI_AGEML_2026_loc](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[INEGI_AGEML_2026_loc] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_loc_ISO]  DEFAULT (N'MX') FOR [ISO]
+ALTER TABLE [dbo].[INEGI_AGEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_ISO]  DEFAULT (N'MX') FOR [ISO]
 GO
 
-ALTER TABLE [dbo].[INEGI_AGEML_2026_loc] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_loc_Country]  DEFAULT (N'México') FOR [Country]
+ALTER TABLE [dbo].[INEGI_AGEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_Country]  DEFAULT (N'México') FOR [Country]
+GO
+```
+
+Create staging **INEGI_AGEML_2026_staging** to import data.  
+
+------------------------------------------
+-- 4.3.2 Create table INEGI_AGEML_2026_staging
+------------------------------------------
+DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026_staging;
 GO
 
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[INEGI_AGEML_2026_staging](
+    [CVEGEO] [nvarchar](16) NOT NULL,
+    [Status] [nvarchar](20) NULL,
+    [State] [nvarchar](85) NOT NULL,
+    [Municipality] [nvarchar](85) NOT NULL,
+    [City] [nvarchar](110) NOT NULL,
+    [Type] [nvarchar](1) NOT NULL,
+    [Latitude] [decimal](15, 6) NOT NULL,
+    [Longitude] [decimal](15, 6) NOT NULL,
+    [Altitude] [int] NOT NULL,
+    [Population] [int] NULL,
+    [Occupied_Dwellings] [int] NULL,
+    [CVE_ENT] [varchar](2) NULL,
+    [CVE_MUN] [varchar](3) NULL,
+    [CVE_LOC] [varchar](4) NULL,
+    CONSTRAINT [PK_INEGI_AGEML_2026_staging] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
+) ON [PRIMARY];
+GO
+
+
 --------------------
--- 4.3.2 Bulk Insert
+-- 4.3.3 Bulk Insert
 --------------------
-BULK INSERTINEGI_AGEML_2026_lo
-FROM 'D:\AXSI\INEGI\AGEEML_2026\INEGI_AGEEML_2026.csv'
+BULK INSERT INEGI_AGEML_2026_staging
+FROM 'D:\AXSI\INEGI\AGEML_2026\INEGI_AGEML_2026.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
