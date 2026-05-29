@@ -101,10 +101,10 @@ Provides demographic and housing data at the AGEB level:
 
 ---
 
-## 4. INEGI AGEEML 2026 (Catalogs)
+## 4. INEGI AGEML 2026 (Catalogs)
 
 **Source:** INEGI AGEEML
-**Import process:** [04_Import_AGEEML_2026](04_Import_AGEEML_2026.md)
+**Import process:** [04_Import_AGEML_2026](04_Import_AGEML_2026.md)
 
 Provides the official states, municipalities and localities codes and names, including:
 
