@@ -326,15 +326,17 @@ FROM INEGI_AGEEML_2026
 WHERE geom.STIsValid() = 0;
 ```
 
+### Copy geom (geometry) to geog (geography)
+
 ```sql
 ----------------------------------------------------------------------------------------
--- 4.6.5 — Copy geom (geometries) to geog (geography)
+-- 4.6.6 — Copy geom (geometries) to geog (geography)
 ----------------------------------------------------------------------------------------
 UPDATE INEGI_AGEEML_2026
 SET geog = geography::Point(Latitude, Longitude, 4326);
 
 ------------------------
--- 4.6.6 — Validate geog
+-- 4.6.7 — Validate geog
 ------------------------
 SELECT CVEGEO As CVEGEO_Invalid
 FROM INEGI_AGEEML_2026
