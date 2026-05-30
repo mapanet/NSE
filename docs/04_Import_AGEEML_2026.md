@@ -1,9 +1,9 @@
-# 4 — INEGI AGEML 2026
+# 4 — INEGI AGEEML 2026
 
 This dataset contains Catalogs of codes and names of State, Municipalty, Locality
 Is used on some processes where the data comes with without names.
 
-## Resulting Table: `INEGI_AGEML_2026`
+## Resulting Table: `INEGI_AGEEML_2026`
 
 | Column | Type | Notes |
 |--------|------|--------|
@@ -30,12 +30,12 @@ Is used on some processes where the data comes with without names.
 | City_Ant | nvarchar(110) | original City name |
 ## Working folders:
 
-D:\INEGI\AGEML_2026   
-D:\INEGI\AGEML_2026\Download   
+D:\INEGI\AGEEML_2026   
+D:\INEGI\AGEEML_2026\Download   
 
 ---
 
-# 4.1 — Download AGEML 2026 Catalogs
+# 4.1 — Download AGEEML 2026 Catalogs
 
 - **URL:**  [https://www.inegi.org.mx/app/ageeml/#](https://www.inegi.org.mx/app/ageeml/#)   
 - **Section:** Catalogos completos (complete catalogs)   
@@ -46,7 +46,7 @@ D:\INEGI\AGEML_2026\Download
 
 Download file will be: 
 
-**Directory:** D:\INEGI\AGEML_2026\Download\   
+**Directory:** D:\INEGI\AGEEML_2026\Download\   
 **File name:** min_con_acento_baja.zip
 
 Extract from ZIP to working directory:   
@@ -141,16 +141,16 @@ While AGEEML_2026.csv is open in EditPad Pro, Open a new Excel sheet, format all
 
 ---
 
-# 4.3 Create **INEGI_AGEML_2026_Staging**.  
+# 4.3 Create **INEGI_AGEEML_2026_Staging**.  
 
 ```sql
 ----------------------------------------------
--- 4.3.1 Create table INEGI_AGEML_2026_Staging
+-- 4.3.1 Create table INEGI_AGEEML_2026_Staging
 ----------------------------------------------
-DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026_Staging;
+DROP TABLE IF EXISTS dbo.INEGI_AGEEML_2026_Staging;
 GO
 
-CREATE TABLE [dbo].[INEGI_AGEML_2026_Staging](
+CREATE TABLE [dbo].[INEGI_AGEEML_2026_Staging](
     [CVEGEO] [nvarchar](16) NOT NULL,
     [Status] [nvarchar](20) NULL,
     [CVE_ENT] [varchar](2) NULL,
@@ -167,11 +167,11 @@ CREATE TABLE [dbo].[INEGI_AGEML_2026_Staging](
     [Population_M] [int] NULL,
     [Population_F] [int] NULL,
     [Occupied_Dwellings] [int] NULL
-    CONSTRAINT [PK_INEGI_AGEML_2026_Staging] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
+    CONSTRAINT [PK_INEGI_AGEEML_2026_Staging] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
 ) ON [PRIMARY];
 GO
 
-BULK INSERT INEGI_AGEML_2026_staging
+BULK INSERT INEGI_AGEEML_2026_staging
 FROM 'D:\AXSI\INEGI\AGEEML_2026\AGEEML_2026.csv'
 WITH (
     FIRSTROW = 2,
@@ -183,13 +183,13 @@ WITH (
 GO
 ```
 
-# 4.4 Create final **INEGI_AGEML_2026**.  
+# 4.4 Create final **INEGI_AGEEML_2026**.  
 
 ```sql
 ------------------------------------------
--- 4.3.1 Create table INEGI_AGEML_2026
+-- 4.3.1 Create table INEGI_AGEEML_2026
 ------------------------------------------
-DROP TABLE IF EXISTS dbo.INEGI_AGEML_2026;
+DROP TABLE IF EXISTS dbo.INEGI_AGEEML_2026;
 GO
 
 SET ANSI_NULLS ON
@@ -198,7 +198,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[INEGI_AGEML_2026](
+CREATE TABLE [dbo].[INEGI_AGEEML_2026](
 	[CVEGEO] [nvarchar](16) NOT NULL,
 	[Status] [nvarchar](20) NULL,
 	[ISO] [varchar](2) NULL,
@@ -220,17 +220,17 @@ CREATE TABLE [dbo].[INEGI_AGEML_2026](
 	[State_Ant] [nvarchar](85) NOT NULL,
 	[Municipality_Ant] [nvarchar](85) NOT NULL,
 	[City_Ant] [nvarchar](110) NOT NULL
- CONSTRAINT [PK_INEGI_AGEML_2026] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_INEGI_AGEEML_2026] PRIMARY KEY CLUSTERED 
 (
 	[CVEGEO] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[INEGI_AGEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_ISO]  DEFAULT (N'MX') FOR [ISO]
+ALTER TABLE [dbo].[INEGI_AGEEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEEML_2026_ISO]  DEFAULT (N'MX') FOR [ISO]
 GO
 
-ALTER TABLE [dbo].[INEGI_AGEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEML_2026_Country]  DEFAULT (N'México') FOR [Country]
+ALTER TABLE [dbo].[INEGI_AGEEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEEML_2026_Country]  DEFAULT (N'México') FOR [Country]
 GO
 ```
 
