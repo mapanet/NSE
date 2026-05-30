@@ -278,9 +278,7 @@ Update INEGI_AGEEML_2026 set
   State_Ant = State,
   Municipality_Ant = Municipality,
   City_Ant = City
-```
 
-```sql
 ----------------------------------------------
 -- 4.6.2 — Update state names to short version
 ----------------------------------------------
