@@ -51,7 +51,7 @@ Download file will be:
 
 Extract from ZIP to working directory:   
 
-AGEEML_20265131154522.xlsx
+AGEEML_202651313653_utf.csv
 
 ---
 # 4.2 — Convert to CSV before the import to SQL 
@@ -59,39 +59,19 @@ AGEEML_20265131154522.xlsx
 ### Purpose
 Convert to TAB delimited, rename fields for clarity, replace - and * to null as they are "N/A" and get rid of fields we dont need.
 
-Open AGEEML_20265131154522.xlsx in Excel
-
-Delete First 3 rows of titles like "Instituto Nacional de Estadística y Geografía.", etc.
-
-Delete columns:
+We will use a Power Shell script to generates a clean CSV (TSV) as we need to delete columns like:
 
 - NOM_ABR (Abbreviated stat name )
 - LATITUD (HH MM SS)
 - LONGITUDE  (HH MM SS)
 - CVE_CARTA (INEGI map reference)
 
-Insert a row after thye header rename headers and have a more consistent names
+AGGEEML Catalogs use asterisk (*) and dash (-) in Population and Dwelings when there is no info ("N/A") so we will rbeplace then by NOTHING so when we import they become NULL
 
-| Original | New header name |
-|----------|-----------------|
-|CVEGEO|CVEGEO|
-|Estatus|Status|
-|CVE_ENT|CVE_ENT|
-|NOM_ENT|State|
-|CVE_MUN|CVE_MUN|
-|NOM_MUN|Municipality|
-|CVE_LOC|CVE_LOC|
-|NOM_LOC|City|
-|AMBITO|Type|
-|LAT_DECIMAL|Latitude|
-|LON_DECIMAL|Longitude|
-|ALTITUD|Altitude|
-|POB_TOTAL|Population|
-|POB_MASCULINA|Population_M|
-|POB_FEMENINA|Population_F|
-|TOTAL DE VIVIENDAS HABITADAS|Occupied_Dwellings|
+### Script
 
-Delete old header row
+
+
 
 ### Output File
 
