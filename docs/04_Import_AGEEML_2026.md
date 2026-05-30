@@ -127,6 +127,9 @@ CREATE TABLE [dbo].[INEGI_AGEEML_2026_Staging](
 ) ON [PRIMARY];
 GO
 
+--------------------
+-- 4.3.2 Bulk insert
+--------------------
 BULK INSERT INEGI_AGEEML_2026_staging
 FROM 'D:\AXSI\INEGI\AGEEML_2026\AGEEML_2026.tsv'
 WITH (
@@ -139,19 +142,28 @@ WITH (
 GO
 ```
 
+### Expected reult
+
+(361168 rows affected)   
+All records uploaded
+
+---
+
 # 4.4 Create final **INEGI_AGEEML_2026**.  
 
+We will include in the final table some extra fields to save original names since we wil normalize some of them:  
+
+- State_Ant
+- Municipality_Ant
+- City_Ant
+
+Will include the geom (geometry) and geog (geography) to store Latitude and Longitude for spatial needs.
+	
 ```sql
 ------------------------------------------
--- 4.3.1 Create table INEGI_AGEEML_2026
+-- 4.4.1 Create table INEGI_AGEEML_2026
 ------------------------------------------
 DROP TABLE IF EXISTS dbo.INEGI_AGEEML_2026;
-GO
-
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[INEGI_AGEEML_2026](
@@ -169,13 +181,15 @@ CREATE TABLE [dbo].[INEGI_AGEEML_2026](
 	[geom] [geometry] NULL,
 	[geog] [geography] NULL,
 	[Population] [int] NULL,
+	[Population_M] [int] NULL,
+    [Population_F] [int] NULL,
 	[Occupied_Dwellings] [int] NULL,
 	[CVE_ENT] [varchar](2) NULL,
 	[CVE_MUN] [varchar](3) NULL,
 	[CVE_LOC] [varchar](4) NULL,
-	[State_Ant] [nvarchar](85) NOT NULL,
-	[Municipality_Ant] [nvarchar](85) NOT NULL,
-	[City_Ant] [nvarchar](110) NOT NULL
+	[State_Ant] [nvarchar](85) NULL,
+	[Municipality_Ant] [nvarchar](85) NULL,
+	[City_Ant] [nvarchar](110) NULL
  CONSTRAINT [PK_INEGI_AGEEML_2026] PRIMARY KEY CLUSTERED 
 (
 	[CVEGEO] ASC
@@ -190,73 +204,153 @@ ALTER TABLE [dbo].[INEGI_AGEEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEEML_2026_Coun
 GO
 ```
 
-## 3.5 — Copy Data from Staging
+## 4.5 — Copy Data from Staging table
 
 ```sql
 ----------------------------------------------
--- 3.4.2 Copy staging to INEGI_Censo_2020_AGEB
+-- 4.5 Copy staging table to INEGI_AGEEML_2026
 ----------------------------------------------
-INSERT INTO INEGI_Censo_2020_AGEB (
-    CVEGEO, -- CVEGEO de 16 digits (Full AGEB Area) concatening codes: ENTIDAD + MUN + LOC + AGEB + MZA
-    State, 
-    Municipality, 
-    City, 
-    Population, 
-    Dwellings, 
+INSERT INTO INEGI_AGEEML_2026 (
+    CVEGEO,
+    Status,
+    CVE_ENT,
+    State,
+    CVE_MUN,
+    Municipality,
+    CVE_LOC,
+    City,
+    Type,
+    Latitude,
+    Longitude,
+    Altitude,
+    Population,
+    Population_M,
+    Population_F,
     Occupied_Dwellings
 )
 SELECT
-    ENTIDAD + MUN + LOC + AGEB + MZA As CVEGEO, 
-    NOM_ENT, 
-    NOM_MUN, 
-    NOM_LOC,
-    POBTOT, 
-    VIVTOT, 
-    TVIVHAB
-FROM INEGI_Censo_2020_AGEB_Staging;
-GO
+    CVEGEO,
+    Status,
+    CVE_ENT,
+    State,
+    CVE_MUN,
+    Municipality,
+    CVE_LOC,
+    City,
+    Type,
+    Latitude,
+    Longitude,
+    Altitude,
+    Population,
+    Population_M,
+    Population_F,
+    Occupied_Dwellings
+FROM INEGI_AGEEML_2026_Staging;
 ```
 
 #### Expected results
 
-The final table should contain:
+(361168 rows affected)   
+All records copied
 
-- 863069 records
-- CVEGEO unique for every block
-
-Test query:
+### Finally drop staging table
 
 ```sql
-------------------------
--- List first 10 records
-------------------------
-SELECT TOP (10) CVEGEO, State, Municipality, City, Population, Dwellings, Occupied_Dwellings FROM dbo.INEGI_Censo_2020_AGEB
+DROP TABLE IF EXISTS dbo.INEGI_AGEEML_2026_Staging;
+GO
 ```
 
-|      CVEGEO    |    State     | Municipality                     | City                       |Population| Dwellings | Occupied_Dwellings |
-|----------------|--------------|----------------------------------|----------------------------|----------|-----------|--------------------|
-|0100000000000000|Aguascalientes|Total de la entidad Aguascalientes|Total de la entidad         |   1425607|	 463972|386671|
-|0100100000000000|Aguascalientes|Aguascalientes                    |Total del municipio         |    948990|	 313256|266942|
-|0100100010000000|Aguascalientes|Aguascalientes                    |Total de la localidad urbana|    863893|     286646|246259|
-|0100100010017000|Aguascalientes|Aguascalientes                    |Total AGEB urbana	        |      2237|       1288|   648|
-|0100100010017001|Aguascalientes|Aguascalientes                    |Aguascalientes              |       170|         82|    54|
-|0100100010017002|Aguascalientes|Aguascalientes                    |Aguascalientes	            |       198|         83|    52|
-|0100100010017003|Aguascalientes|Aguascalientes                    |Aguascalientes              |       198|         84|    55|
-|0100100010017004|Aguascalientes|Aguascalientes                    |Aguascalientes              |       202|         84|    57|
-|0100100010017005|Aguascalientes|Aguascalientes                    |Aguascalientes              |       157|         68|    48|
-|0100100010017006|Aguascalientes|Aguascalientes                    |Aguascalientes               |      167|         82|    50|
+---
 
+# 4.6 — Updates to final table
 
+```sql
+-------------------------------
+-- 4.6 — Updates to final table
+-------------------------------
 
-# 3.5 — Final Validations
+-----------------------------------------------
+-- 4.6.1 — Copy original names to _Ant
+-- Because we will modify some to shor versions
+-----------------------------------------------
 
-After loading the final table, we run a set of validation queries to confirm:
+Update INEGI_AGEEML_2026 set 
+  State_Ant = State,
+  Municipality_Ant = Municipality,
+  City_Ant = City
+```
 
-- The expected number of records was written
-- All CVEGEO codes are correctly generated with 16 digits
-- The staging table can be safely removed
+```sql
+----------------------------------------------
+-- 4.6.2 — Update state names to short version
+----------------------------------------------
+
+Update INEGI_AGEEML_2026 set State = 'Coahuila' WHERE State = 'Coahuila de Zaragoza' AND CVE_ENT = '05'
+Update INEGI_AGEEML_2026 set State = 'Michoacán' WHERE State = 'Michoacán de Ocampo' AND CVE_ENT = '16'
+Update INEGI_AGEEML_2026 set State = 'Veracruz' WHERE State = 'Veracruz de Ignacio de la Llave' AND CVE_ENT = '30'
+```
+
+#### Expect results
+
+(12492 rows affected)   
+(14318 rows affected)   
+(28958 rows affected)  
+
+```sql
+----------------------------------------------------------------------------------------
+-- 4.6.3 — Create geom as POINT (geometry, SRID 4326) from Latitude and Longitude values
+-- geometry::Point(X,Y,4326) → X = Lon, Y = Lat
+----------------------------------------------------------------------------------------
+UPDATE INEGI_AGEEML_2026
+SET geom = geometry::Point(Longitude, Latitude, 4326);
+
+------------------------
+-- 4.6.4 — Validate geom
+------------------------
+SELECT CVEGEO as CVGGEO_Invalid
+FROM INEGI_AGEEML_2026
+WHERE geom.STIsValid() = 0;
+```
+
+#### Expect results
+
+361168 geom (geometries) created   
+No CVEGEO_Invalid   
+
+If any invalid, check why:
+
+```sql
+-----------------------------------
+-- 4.6.5 — If any invalid, show why
+-----------------------------------
+SELECT CVEGEO, geom.STIsValid(), geom.IsValidDetailed()
+FROM INEGI_AGEEML_2026
+WHERE geom.STIsValid() = 0;
+```
+
+```sql
+----------------------------------------------------------------------------------------
+-- 4.6.5 — Copy geom (geometries) to geog (geography)
+----------------------------------------------------------------------------------------
+UPDATE INEGI_AGEEML_2026
+SET geog = geography::Point(Latitude, Longitude, 4326);
+
+------------------------
+-- 4.6.6 — Validate geog
+------------------------
+SELECT CVEGEO As CVEGEO_Invalid
+FROM INEGI_AGEEML_2026
+WHERE geog.STIsValid() = 0;
+```
+
+#### Expect results
+
+361168 geog (geography geometries) created   
+No CVEGEO_Invalid   
 
 ---
+
+# 4.7 — Final Validations
 
 ✔ Validate Record Count
 
@@ -265,57 +359,40 @@ After loading the final table, we run a set of validation queries to confirm:
 -- Count records
 ----------------
 SELECT COUNT(*) AS Records_Written
-FROM INEGI_Censo_2020_AGEB;
+FROM INEGI_AGEEML_2026;
 ```
 
 #### Expected results
 
-Records_Written: 863069
-This confirms that all block‑level rows from the 32 states were successfully imported (same count as in the CSV).
+Records_Written: 361168
+This confirms that all were successfully imported (same count as in the CSV).
 
-### ✔ Validate CVEGEO Format (16 Digits)
-
-```sql
-----------------------
--- CVEGEO is correct ?
-----------------------
-SELECT TOP 10
-    CVEGEO,
-    LEN(CVEGEO) AS Len
-FROM INEGI_Censo_2020_AGEB;
-```
-
-#### Expected Output
-
-|CVEGEO|Len|
-|---------------|-----|
-|2402800014141040|	16|
-|2402800014141043|	16|
-|2402800014141044|	16|
-|2402800014141045|	16|
-|2402800014141046|	16|
-|2402800014141047|	16|
-|2402800014141048|	16|
-|2402800014141049|	16|
-|2402800014141050|	16|
-|2402800014141051|	16|
-
-This confirms that:
-
-- All codes were concatenated correctly
-- No missing digits
-- No malformed CVEGEO values
-
----
-
-### Remove Staging Table
-
-Once validation is complete, the staging table is no longer needed.
+### ✔ Visualize the data
 
 ```sql
------------------
--- Delete staging
------------------
-DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
-GO
+SELECT TOP 20 
+CVEGEO, 
+Status, 
+ISO, 
+Country, 
+State, 
+Municipality, 
+City, 
+Type, 
+Latitude, 
+Longitude, 
+Altitude, 
+geom, 
+geog, 
+Population, 
+Population_M, 
+Population_F, 
+Occupied_Dwellings, 
+CVE_ENT, 
+CVE_MUN, 
+CVE_LOC, 
+State_Ant, 
+Municipality_Ant, 
+City_Ant
+FROM dbo.INEGI_AGEEML_2026
 ```
