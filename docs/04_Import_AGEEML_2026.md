@@ -51,7 +51,7 @@ Download file will be:
 
 Extract from ZIP to working directory:   
 
-AGEEML_202651313653_utf.csv
+D:\INEGI\AGEEML_2026\AGEEML_202651313653_utf.csv
 
 ---
 # 4.2 — Convert to CSV before the import to SQL 
@@ -70,33 +70,13 @@ AGGEEML Catalogs use asterisk (*) and dash (-) in Population and Dwelings when t
 
 ### Script
 
+The full script used to generate a single clean CVS (TSV) is available here:
 
+[Convert_to_CSV_TSV.ps1](../scripts/Convert_to_CSV_TSV.ps1)
 
+Process is slow (about 1 hour) but will save a clean file ready to import: 
 
-### Output File
-
-- Delete first row
-- Save as type as **CSV UTF-8 comma delimited**
-- Save it as **AGEEML_2026.csv**
-
-### Edit CSV to clean it from dash and asterisks (N/A values)
-
-AGEEML_2026.csv
-
-Edit the file using **EditPad Pro**, **Notepad++**, or **VS Code** and:
-
-Replace coma , by TAB
-Replace TAB + asterisk (*) values to one TAB (this create a empty values when a value is dash (-) so when imported it become NULL
-Replace TAB + dash (-) to one TAB only (this create a empty values as when a value is dash (-) so when imported it become NULL
-
-- Encoding: **UTF‑8**
-- BOM: **no BOM**  
-- Separator: **TAB**  
-- Replaced all `*` with empty string (NULL in SQL)
-- Replaced all `-` with empty string (NULL in SQL)
-- All rows aligned and complete
-
-#### Save
+**D:\INEGI\AGEEML_2026\AGEEML_2026.tsv**
 
 Example rows:
 
@@ -114,10 +94,6 @@ Example rows:
 |010010114|Baja|01|Aguascalientes|001|Aguascalientes|0114|Residencial San Nicolás [Baños la Cantera]|R|21.849498|102.355422|1859|||||
 |010010120||01|Aguascalientes|001|Aguascalientes|0120|Buenavista de Peñuelas|R|21.719147|102.293195|1871|1054|542|512|255|
 |010010121||01|Aguascalientes|001|Aguascalientes|0121|Cabecita 3 Marías (Rancho Nuevo)|R|21.774682|102.412992|1905|192|92|100|47|
-
-### Verify
-
-While AGEEML_2026.csv is open in EditPad Pro, Open a new Excel sheet, format all cellts as text, copy CSV data into it, you should the data aligned.
 
 ---
 
@@ -147,12 +123,12 @@ CREATE TABLE [dbo].[INEGI_AGEEML_2026_Staging](
     [Population_M] [int] NULL,
     [Population_F] [int] NULL,
     [Occupied_Dwellings] [int] NULL
-    CONSTRAINT [PK_INEGI_AGEEML_2026_Staging] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
+    CONSTRAINT [PK_INEGI_AGEML_2026_Staging] PRIMARY KEY CLUSTERED ([CVEGEO] ASC)
 ) ON [PRIMARY];
 GO
 
 BULK INSERT INEGI_AGEEML_2026_staging
-FROM 'D:\AXSI\INEGI\AGEEML_2026\AGEEML_2026.csv'
+FROM 'D:\AXSI\INEGI\AGEEML_2026\AGEEML_2026.tsv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
