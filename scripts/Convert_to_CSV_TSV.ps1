@@ -1,76 +1,56 @@
 # Input and output paths
 $inputFile  = "D:\AXSI\INEGI\AGEEML_2026\AGEEML_202651313653_utf.csv"
-$outputFile = "D:\AXSI\INEGI\AGEEML_2026\AGEML_2026.csv"
+$outputFile = "D:\AXSI\INEGI\AGEEML_2026\AGEEML_2026.tsv"
 
-# Detect encoding
-try {
-    $raw = Get-Content -Path $inputFile -Encoding UTF8 -ErrorAction Stop
-    $encoding = "UTF-8"
-} catch {
-    $raw = Get-Content -Path $inputFile -Encoding Default
-    $encoding = "Windows-1252"
-    Write-Host "WARNING: Input file appears to be Windows-1252. Converting to UTF-8..."
+# Load CSV using real CSV parser (handles quotes, commas, escapes)
+$rows = Import-Csv -Path $inputFile
+
+# Explicit column mapping: InputHeader -> OutputHeader
+$map = [ordered]@{
+    "CVEGEO"                         = "CVEGEO"
+    "Estatus"                        = "Status"
+    "CVE_ENT"                        = "CVE_ENT"
+    "NOM_ENT"                        = "State"
+    "CVE_MUN"                        = "CVE_MUN"
+    "NOM_MUN"                        = "Municipality"
+    "CVE_LOC"                        = "CVE_LOC"
+    "NOM_LOC"                        = "City"
+    "AMBITO"                         = "Type"
+    "LAT_DECIMAL"                    = "Latitude"
+    "LON_DECIMAL"                    = "Longitude"
+    "ALTITUD"                        = "Altitude"
+    "POB_TOTAL"                      = "Population"
+    "POB_MASCULINA"                  = "Population_M"
+    "POB_FEMENINA"                   = "Population_F"
+    "TOTAL DE VIVIENDAS HABITADAS"   = "Occupied_Dwellings"
 }
 
-# Parse header
-$header = $raw[0].Split(',')
+# Build header in the exact desired order
+$inputCols  = $map.Keys
+$outputCols = $map.Values
+$headerLine = $outputCols -join "`t"
 
-# Mapping dictionary for normalization
-$map = @{
-    "CVEGEO" = "CVEGEO"
-    "Estatus" = "Status"
-    "CVE_ENT" = "CVE_ENT"
-    "NOM_ENT" = "NOM_ENT"
-    "NOM_ABR" = "NOM_ABR"
-    "CVE_MUN" = "CVE_MUN"
-    "NOM_MUN" = "NOM_MUN"
-    "CVE_LOC" = "CVE_LOC"
-    "NOM_LOC" = "NOM_LOC"
-    "AMBITO" = "Type"
-    "LATITUD" = "LATITUD"
-    "LONGITUD" = "LONGITUD"
-    "LAT_DECIMAL" = "Latitude"
-    "LON_DECIMAL" = "Longitude"
-    "ALTITUD" = "Altitude"
-    "CVE_CARTA" = "CVE_CARTA"
-    "POB_TOTAL" = "Population"
-    "POB_MASCULINA" = "Population_M"
-    "POB_FEMENINA" = "Population_F"
-    "TOTAL DE VIVIENDAS HABITADAS" = "Occupied_Dwellings"
-}
+$lines = @($headerLine)
 
-# Exclude list
-$exclude = @("NOM_ABR","LATITUD","LONGITUD","CVE_CARTA")
+foreach ($row in $rows) {
+    $vals = foreach ($inCol in $inputCols) {
+        $val = $row.$inCol
 
-# Keep only mapped headers not in exclude
-$keepIdx = for ($i=0; $i -lt $header.Length; $i++) {
-    $h = $header[$i].Trim()
-    if ($exclude -notcontains $h) { $i }
-}
+        # Normalize NULL-like values
+        if ($val -eq '-' -or $val -eq '*' -or $val -eq $null) {
+            $val = ''
+        }
 
-# Build normalized header
-$newHeader = ($keepIdx | ForEach-Object { $map[$header[$_].Trim()] }) -join "`t"
-
-# Process rows
-$lines = @($newHeader)
-for ($r=1; $r -lt $raw.Count; $r++) {
-    $cols = $raw[$r].Split(',')
-    $vals = foreach ($i in $keepIdx) {
-        $val = $cols[$i].Trim()
-
-        # Remove quotes first
-        $val = $val -replace '"',''
-
-        # Replace dash or asterisk-only values with empty string
-        if ($val -eq '-' -or $val -eq '*') { $val = '' }
+        # Replace internal double quotes with two single quotes
+        $val = $val -replace '"', "''"
 
         $val
     }
+
     $lines += ($vals -join "`t")
 }
 
 # Write UTF-8 output
 [System.IO.File]::WriteAllLines($outputFile, $lines, [System.Text.Encoding]::UTF8)
 
-# DONE message
-Write-Host "DONE $($lines.Count-1) records written to $outputFile (Encoding: UTF-8)"
+Write-Host "DONE: $($lines.Count-1) records written to $outputFile"
