@@ -29,7 +29,7 @@ Each dataset has its own ingestion and processing guide:
 - **Step 1 — AMAI NSE 2024**
 - **Step 2 — INEGI Marco Geoestadístico 2025 (AGEB Geometries)**  
 - **Step 3 — INEGI Census 2020 (AGEB Block-Level Data)**  
-- **Step 4 — INEGI AGEML 2026 (State, Municipality, Locality catalogs of codes and names)**  
+- **Step 4 — INEGI AGEEML 2026 (State, Municipality, Locality catalogs of codes and names)**  
 - **Step 5 — INEGI DCAH 2025 (Neighborhood Polygons)**  
 
 ---
@@ -101,10 +101,10 @@ Provides demographic and housing data at the AGEB level:
 
 ---
 
-## 4. INEGI AGEML 2026 (Catalogs)
+## 4. INEGI AGEEML 2026 (Catalogs)
 
 **Source:** INEGI AGEEML
-**Import process:** [04_Import_AGEML_2026](04_Import_AGEML_2026.md)
+**Import process:** [04_Import_AGEEML_2026](04_Import_AGEEML_2026.md)
 
 Provides the official states, municipalities and localities codes and names, including:
 
