@@ -26,6 +26,8 @@ Download: D:\AXSI\INEGI\DCAH_2025\Download
 1. Open the INEGI DCAH download page:  
    [https://www.inegi.org.mx/programas/dcah/#descargas](https://www.inegi.org.mx/programas/dcah/#descargas)
 
+https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=794551131954
+
 2. In the **Filters** section, leave all options as default:
    - **Entity:** Estados Unidos Mexicanos  
    - **Scale:** Sin escala  
