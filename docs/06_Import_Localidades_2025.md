@@ -47,9 +47,9 @@ D:\AXSI\INEGI\TOPO_2025
 
 
 (
-Cartografía geoestadística histórica de México
-=> https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=794551131954
-
-Información Topográfica a escala 1:50,000 y sus actualizaciones
-=> https://www.inegi.org.mx/programas/topografia/50000/#descargas
-)
+Cartografía geoestadística histórica de México  
+=> https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=794551131954 
+   
+Información Topográfica a escala 1:50,000 y sus actualizaciones  
+=> https://www.inegi.org.mx/programas/topografia/50000/#descargas  
+)   
