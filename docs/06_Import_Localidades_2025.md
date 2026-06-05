@@ -26,7 +26,8 @@ Download: D:\AXSI\INEGI\TOPO_2025\Download
 1. Open the "INEGI Información Geográfica, Medio Ambiente, Ordenamiento Territorial y Urbano" download page:  
    [https://www.inegi.org.mx/programas/topografia/50000/#descargas](https://www.inegi.org.mx/programas/topografia/50000/#descargas)
 
-Conjunto de datos vectoriales de la serie topográfica. Escala 1:1 000 000. Localidad urbana
+
+Chek also: Conjunto de datos vectoriales de la serie topográfica. Escala 1:1 000 000. Localidad urbana
 ==> https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=702825267759
 
 File: 94551163047_s.zip
