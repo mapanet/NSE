@@ -16,7 +16,7 @@ Download: D:\AXSI\INEGI\TOPO_2025\Download
 **Edition (edicion):** 2025  
 **Coverage (cobertura):** 2025‑12‑31  
 **Datum:** ITRF2008, Ellipsoid GRS80  
-**File type (tipo de archivo):** SHP (530.26 MB)  
+**File type (tipo de archivo):** SHP (389.68 MB)  
 **Download URL:** [https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=702825267759](https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=702825267759)
 
 ---
