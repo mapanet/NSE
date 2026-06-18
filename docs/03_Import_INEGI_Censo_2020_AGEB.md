@@ -219,16 +219,16 @@ Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
 
 Example rows:
 
-| ENTIDAD | NOM_ENT        | CVE_MUN | NOM_MUN                            | CVE_LOC | NOM_LOC                        | AGEB | MZA | POBTOT | VIVTOT | TVIVHAB |
-|---------|----------------|---------|------------------------------------|---------|---------------------------------|------|-----|--------|--------|---------|
-| 01      | Aguascalientes | 000     | Total de la entidad Aguascalientes | 0000 | Total de la entidad            | 0000 | 000 | 1425607 | 463972 | 386671 |
-| 01      | Aguascalientes | 001     | Aguascalientes                     | 0000 | Total del municipio             | 0000 | 000 | 948990  | 313256 | 266942 |
-| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Total de la localidad urbana    | 0000 | 000 | 863893  | 286646 | 246259 |
-| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Total AGEB urbana               | 0017 | 000 | 2237    | 1288   | 648     |
-| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Aguascalientes                  | 0017 | 011 | 115     | 80     | 33      |
-| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Aguascalientes                  | 0017 | 012 | 39      | 23     | 10      |
-| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Aguascalientes                  | 0017 | 018 | 0       | 80     |         |
-| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Aguascalientes                  | 0017 | 019 | 0       | 39     |         |
+| ENTIDAD | NOM_ENT        | CVE_MUN | NOM_MUN                            | CVE_LOC | NOM_LOC                      | AGEB | MZA | POBTOT | VIVTOT | TVIVHAB |
+|---------|----------------|---------|------------------------------------|---------|------------------------------|------|-----|--------|--------|---------|
+| 01      | Aguascalientes | 000     | Total de la entidad Aguascalientes | 0000    | Total de la entidad          | 0000 | 000 | 1425607 | 463972 | 386671 |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0000    | Total del municipio          | 0000 | 000 | 948990  | 313256 | 266942 |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Total de la localidad urbana | 0000 | 000 | 863893  | 286646 | 246259 |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Total AGEB urbana            | 0017 | 000 | 2237    | 1288   | 648    |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 011 | 115     | 80     | 33     |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 012 | 39      | 23     | 10     |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 018 | 0       | 80     |        |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 019 | 0       | 39     |        |
 
 ---
 
@@ -293,18 +293,18 @@ Test query:
 SELECT TOP (10) ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC, AGEB, MZA, POBTOT, VIVTOT, TVIVHAB FROM dbo.INEGI_Censo_2020_AGEB;
 ```
 
-| ENTITDAD |    NOM_ENT (state)     | MUN | MUN_NOM (municipality) | LOC | NOM_LOC (locality)         |AGEB|MZA| POBTOT (Population) | VIVTOT (Dwellings) | TVIVHAB (Occupied_Dwellings) |
-| --|---------------|-------|--------------------------------------|-----|----------------------------|------------------------------|--------------------|------------------------------|
-|01	|Aguascalientes	|000	|Total de la entidad Aguascalientes	   |0000 |Total de la entidad	      |0000|000|              1425607|              463972|386671|
-|01	|Aguascalientes	|001	|Aguascalientes	                       |0000 |Total del municipio	      |0000|000|               948990|              313256|266942|
-|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Total de la localidad urbana|0000|000|               863893|              286646|246259|
-|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Total AGEB urbana	          |0017|000|                 2237|                1288|648|
-|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|001|	              170|                  82|54|
-|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|002|	              198|                  83|52|
-|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|003|	              198|                  84|55|
-|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|004|	              202|                  84|57|
-|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|005|	              157|                  68|48|
-|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|006|	              167|                  82|50|
+| ENTITDAD |NOM_ENT (state)| MUN | MUN_NOM (municipality)           | LOC | NOM_LOC (locality)         |AGEB|MZA| POBTOT (Population) | VIVTOT (Dwellings) | TVIVHAB (Occupied_Dwellings) |
+|----------|---------------|-----|----------------------------------|-----|----------------------------|------------------------------|--------------------|------------------------------|
+|01	       |Aguascalientes |000	 |Total de la entidad Aguascalientes|0000 |Total de la entidad	       |0000|000|              1425607|              463972|386671|
+|01	       |Aguascalientes |001	 |Aguascalientes	                |0000 |Total del municipio	       |0000|000|               948990|              313256|266942|
+|01	       |Aguascalientes |001	 |Aguascalientes	                |0001 |Total de la localidad urbana|0000|000|               863893|              286646|246259|
+|01        |Aguascalientes |001	 |Aguascalientes	                |0001 |Total AGEB urbana	       |0017|000|                 2237|                1288|648|
+|01        |Aguascalientes |001	 |Aguascalientes	                |0001 |Aguascalientes	           |0017|001|	               170|                  82|54|
+|01        |Aguascalientes |001	 |Aguascalientes	                |0001 |Aguascalientes	           |0017|002|	               198|                  83|52|
+|01        |Aguascalientes |001	 |Aguascalientes	                |0001 |Aguascalientes	           |0017|003|	               198|                  84|55|
+|01        |Aguascalientes |001	 |Aguascalientes	                |0001 |Aguascalientes	           |0017|004|	               202|                  84|57|
+|01        |Aguascalientes |001	 |Aguascalientes	                |0001 |Aguascalientes	           |0017|005|	               157|                  68|48|
+|01        |Aguascalientes |001	 |Aguascalientes	                |0001 |Aguascalientes	           |0017|006|	               167|                  82|50|
 
 
 
