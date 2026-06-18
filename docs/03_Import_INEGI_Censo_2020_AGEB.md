@@ -293,8 +293,7 @@ Test query:
 SELECT TOP (10) ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC, AGEB, MZA, POBTOT, VIVTOT, TVIVHAB FROM dbo.INEGI_Censo_2020_AGEB;
 ```
 
-
-| ENTIDAD | NOM_ENT (state)|     MUN | NOM_MUN (municipality)             |     LOC | NOM_LOC (locality)           | AGEB | MZA | POBTOT (population) | VIVTOT (swellings) | TVIVHAB (occuppied dwellings) |
+| ENTIDAD | NOM_ENT (state)|     MUN | NOM_MUN (municipality)             |     LOC | NOM_LOC (locality)           | AGEB | MZA | POBTOT (population) | VIVTOT (dwellings) | TVIVHAB (occupied dwellings) |
 |---------|----------------|---------|------------------------------------|---------|------------------------------|------|-----|--------|--------|---------|
 | 01      | Aguascalientes | 000     | Total de la entidad Aguascalientes | 0000    | Total de la entidad          | 0000 | 000 | 1425607 | 463972 | 386671 |
 | 01      | Aguascalientes | 001     | Aguascalientes                     | 0000    | Total del municipio          | 0000 | 000 | 948990  | 313256 | 266942 |
@@ -359,7 +358,7 @@ FROM INEGI_Censo_2020_AGEB;
 
 This confirms that:
 
-- All codes were concatenated correctly
+- All codes concatenated correctly give 16 characters
 - No missing digits
 - No malformed CVEGEO values
 
