@@ -289,12 +289,14 @@ Completion time: 2026-05-24T22:07:26.4095744-05:00
 We now create the final table INEGI_Censo_2020_AGEB, where:
 
 - CVEGEO is a 16‑digit unique identifier: **CVEGEO** = ENTIDAD + MUN + LOC + AGEB + MZA
-- Field names are converted to EN‑US
-- Population and dwelling fields are standardized
-
-- NOM_ENT → State
-- NOM_MUN → Municipality
-- NOM_LOC → City
+- ENTIDAD → State code
+- NOM_ENT → State name
+- MUN → Municipality code
+- NOM_MUN → Municipality name
+- LOC → Locality code
+- NOM_LOC → Locality name
+- AGEB → Area code
+- MZA → Manzana code (block)
 - POBTOT → Population
 - VIVTOT → Dwellings
 - TVIVHAB → Occupied_Dwellings
@@ -309,12 +311,17 @@ DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
 CREATE TABLE INEGI_Censo_2020_AGEB (
     CVEGEO varchar(16) PRIMARY KEY, -- 16 digit full block code (ENTIDAD + MUN + LOC + AGEB + MZA)
-    State nvarchar(85) NULL,
-    Municipality nvarchar(85) NULL,
-    City nvarchar(110) NULL,
-    Population int NULL,
-    Dwellings int NULL,
-    Occupied_Dwellings int NULL,
+    ENTIDAD varchar(2),
+    NOM_ENT nvarchar(85) NULL,
+    MUN varchar(3),
+    NOM_MUN nvarchar(85) NULL,
+    LOC varchar(3),
+    NOM_LOC nvarchar(110) NULL,
+    AGEB varchar(4),
+    MZA varchar(3),
+    POBTOT int NULL,
+    VIVTOT int NULL,
+    TVIVHAB int NULL,
 );
 GO
 ```
@@ -327,17 +334,25 @@ GO
 ----------------------------------------------
 INSERT INTO INEGI_Censo_2020_AGEB (
     CVEGEO, -- CVEGEO de 16 digits (Full AGEB Area) concatening codes: ENTIDAD + MUN + LOC + AGEB + MZA
-    State, 
-    Municipality, 
-    City, 
-    Population, 
-    Dwellings, 
-    Occupied_Dwellings
+    ENTIDAD,
+    NOM_ENT,
+    MUN,
+    NOM_MUN, 
+    LOC,
+    NOM_LOC,
+    AGEB,
+    MZA,
+    POBTOT, 
+    VIVTOT, 
+    TVIVHAB
 )
 SELECT
     ENTIDAD + MUN + LOC + AGEB + MZA As CVEGEO, 
-    NOM_ENT, 
+    ENTIDAD, 
+    NOM_ENT,
+    MUN,
     NOM_MUN, 
+    LOC,
     NOM_LOC,
     POBTOT, 
     VIVTOT, 
@@ -362,7 +377,7 @@ Test query:
 SELECT TOP (10) CVEGEO, State, Municipality, City, Population, Dwellings, Occupied_Dwellings FROM dbo.INEGI_Censo_2020_AGEB
 ```
 
-|      CVEGEO    |    State     | Municipality                     | City                       |Population| Dwellings | Occupied_Dwellings |
+|      CVEGEO    |    State     | Municipality                     | Locality                       |Population| Dwellings | Occupied_Dwellings |
 |----------------|--------------|----------------------------------|----------------------------|----------|-----------|--------------------|
 |0100000000000000|Aguascalientes|Total de la entidad Aguascalientes|Total de la entidad         |   1425607|	 463972|386671|
 |0100100000000000|Aguascalientes|Aguascalientes                    |Total del municipio         |    948990|	 313256|266942|
