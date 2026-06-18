@@ -219,36 +219,36 @@ Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
 
 Example rows:
 
-| ENTIDAD | NOM_ENT        | CVE_MUN | NOM_MUN                          | CVE_LOC | NOM_LOC                        | AGEB | MZA | POBTOT | VIVTOT | TVIVHAB |
-|---------|----------------|---------|-----------------------------------|---------|---------------------------------|------|-----|--------|--------|---------|
+| ENTIDAD | NOM_ENT        | CVE_MUN | NOM_MUN                            | CVE_LOC | NOM_LOC                        | AGEB | MZA | POBTOT | VIVTOT | TVIVHAB |
+|---------|----------------|---------|------------------------------------|---------|---------------------------------|------|-----|--------|--------|---------|
 | 01      | Aguascalientes | 000     | Total de la entidad Aguascalientes | 0000 | Total de la entidad            | 0000 | 000 | 1425607 | 463972 | 386671 |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0000 | Total del municipio             | 0000 | 000 | 948990  | 313256 | 266942 |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Total de la localidad urbana    | 0000 | 000 | 863893  | 286646 | 246259 |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Total AGEB urbana               | 0017 | 000 | 2237    | 1288   | 648     |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 011 | 115     | 80     | 33      |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 012 | 39      | 23     | 10      |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 018 | 0       | 80     |         |
-| 01      | Aguascalientes | 001     | Aguascalientes                    | 0001 | Aguascalientes                  | 0017 | 019 | 0       | 39     |         |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0000 | Total del municipio             | 0000 | 000 | 948990  | 313256 | 266942 |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Total de la localidad urbana    | 0000 | 000 | 863893  | 286646 | 246259 |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Total AGEB urbana               | 0017 | 000 | 2237    | 1288   | 648     |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Aguascalientes                  | 0017 | 011 | 115     | 80     | 33      |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Aguascalientes                  | 0017 | 012 | 39      | 23     | 10      |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Aguascalientes                  | 0017 | 018 | 0       | 80     |         |
+| 01      | Aguascalientes | 001     | Aguascalientes                     | 0001 | Aguascalientes                  | 0017 | 019 | 0       | 39     |         |
 
 ---
 
 # 3.3 — Import CSV into SQL Server
 
-We first import the raw CSV into a **staging table**.  
-This table mirrors the structure of the SCITEL export.
+We first import the raw CSV into  INEGI_Censo_2020_AGEB.    
+This table mirrors the structure of the SCITEL export. 
 
 ```sql
 ----------------------------
 -- 3.3 — Import CSV into SQL
 ----------------------------
 
------------------------------
--- 3.3.1 Create staging table
------------------------------
-DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_Staging;
+---------------------------------------------------------------------------
+-- 3.3.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Block)
+---------------------------------------------------------------------------
+DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
 
-CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
+CREATE TABLE INEGI_Censo_2020_AGEB (
     ENTIDAD varchar(2) NOT NULL,
     NOM_ENT nvarchar(100) NULL,
     MUN varchar(3) NOT NULL,
@@ -259,7 +259,7 @@ CREATE TABLE INEGI_Censo_2020_AGEB_Staging (
     MZA varchar(3) NOT NULL,
     POBTOT int NULL,
     VIVTOT int NULL,
-    TVIVHAB int NULL
+    TVIVHAB int NULL, 
 );
 GO
 
@@ -284,111 +284,27 @@ GO
 Completion time: 2026-05-24T22:07:26.4095744-05:00   
 
 
-## 3.4 — Create Final Table and Copy Data
-
-We now create the final table INEGI_Censo_2020_AGEB, where:
-
-- CVEGEO is a 16‑digit unique identifier: **CVEGEO** = ENTIDAD + MUN + LOC + AGEB + MZA
-- ENTIDAD → State code
-- NOM_ENT → State name
-- MUN → Municipality code
-- NOM_MUN → Municipality name
-- LOC → Locality code
-- NOM_LOC → Locality name
-- AGEB → Area code
-- MZA → Manzana code (block)
-- POBTOT → Population
-- VIVTOT → Dwellings
-- TVIVHAB → Occupied_Dwellings
-
-## 3.4.1 — Create Final Table
-
-```sql
----------------------------------------------------------------------------
--- 3.4.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Block)
----------------------------------------------------------------------------
-DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
-GO
-CREATE TABLE INEGI_Censo_2020_AGEB (
-    CVEGEO varchar(16) PRIMARY KEY, -- 16 digit full block code (ENTIDAD + MUN + LOC + AGEB + MZA)
-    ENTIDAD varchar(2),
-    NOM_ENT nvarchar(85) NULL,
-    MUN varchar(3),
-    NOM_MUN nvarchar(85) NULL,
-    LOC varchar(3),
-    NOM_LOC nvarchar(110) NULL,
-    AGEB varchar(4),
-    MZA varchar(3),
-    POBTOT int NULL,
-    VIVTOT int NULL,
-    TVIVHAB int NULL,
-);
-GO
-```
-
-## 3.4.2 — Copy Data from Staging
-
-```sql
-----------------------------------------------
--- 3.4.2 Copy staging to INEGI_Censo_2020_AGEB
-----------------------------------------------
-INSERT INTO INEGI_Censo_2020_AGEB (
-    CVEGEO, -- CVEGEO de 16 digits (Full AGEB Area) concatening codes: ENTIDAD + MUN + LOC + AGEB + MZA
-    ENTIDAD,
-    NOM_ENT,
-    MUN,
-    NOM_MUN, 
-    LOC,
-    NOM_LOC,
-    AGEB,
-    MZA,
-    POBTOT, 
-    VIVTOT, 
-    TVIVHAB
-)
-SELECT
-    ENTIDAD + MUN + LOC + AGEB + MZA As CVEGEO, 
-    ENTIDAD, 
-    NOM_ENT,
-    MUN,
-    NOM_MUN, 
-    LOC,
-    NOM_LOC,
-    POBTOT, 
-    VIVTOT, 
-    TVIVHAB
-FROM INEGI_Censo_2020_AGEB_Staging;
-GO
-```
-
-#### Expected results
-
-The final table should contain:
-
-- 863069 records
-- CVEGEO unique for every block
-
 Test query:
 
 ```sql
 ------------------------
 -- List first 10 records
 ------------------------
-SELECT TOP (10) CVEGEO, State, Municipality, City, Population, Dwellings, Occupied_Dwellings FROM dbo.INEGI_Censo_2020_AGEB
+SELECT TOP (10) ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC, AGEB, MZA, POBTOT, VIVTOT, TVIVHAB FROM dbo.INEGI_Censo_2020_AGEB;
 ```
 
-|      CVEGEO    |    State     | Municipality                     | Locality                       |Population| Dwellings | Occupied_Dwellings |
-|----------------|--------------|----------------------------------|----------------------------|----------|-----------|--------------------|
-|0100000000000000|Aguascalientes|Total de la entidad Aguascalientes|Total de la entidad         |   1425607|	 463972|386671|
-|0100100000000000|Aguascalientes|Aguascalientes                    |Total del municipio         |    948990|	 313256|266942|
-|0100100010000000|Aguascalientes|Aguascalientes                    |Total de la localidad urbana|    863893|     286646|246259|
-|0100100010017000|Aguascalientes|Aguascalientes                    |Total AGEB urbana	        |      2237|       1288|   648|
-|0100100010017001|Aguascalientes|Aguascalientes                    |Aguascalientes              |       170|         82|    54|
-|0100100010017002|Aguascalientes|Aguascalientes                    |Aguascalientes	            |       198|         83|    52|
-|0100100010017003|Aguascalientes|Aguascalientes                    |Aguascalientes              |       198|         84|    55|
-|0100100010017004|Aguascalientes|Aguascalientes                    |Aguascalientes              |       202|         84|    57|
-|0100100010017005|Aguascalientes|Aguascalientes                    |Aguascalientes              |       157|         68|    48|
-|0100100010017006|Aguascalientes|Aguascalientes                    |Aguascalientes               |      167|         82|    50|
+| ENTITDAD |    NOM_ENT (state)     | MUN | MUN_NOM (municipality) | LOC | NOM_LOC (locality)         |AGEB|MZA| POBTOT (Population) | VIVTOT (Dwellings) | TVIVHAB (Occupied_Dwellings) |
+| --|---------------|-------|--------------------------------------|-----|----------------------------|------------------------------|
+|01	|Aguascalientes	|000	|Total de la entidad Aguascalientes	   |0000 |Total de la entidad	      |0000|000|              1425607|463972	386671
+|01	|Aguascalientes	|001	|Aguascalientes	                       |0000 |Total del municipio	      |0000|000|               948990|313256	266942
+|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Total de la localidad urbana|0000|000|               863893|286646	246259
+|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Total AGEB urbana	          |0017|000|   2237|1288	648
+|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|001|	170|82	54
+|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|002|	198|83	52
+|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|003|	198|84	55
+|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|004|	202|84	57
+|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|005|	157|68	48
+|01	|Aguascalientes	|001	|Aguascalientes	                       |0001 |Aguascalientes	          |0017|006|	167|82	50
 
 
 
