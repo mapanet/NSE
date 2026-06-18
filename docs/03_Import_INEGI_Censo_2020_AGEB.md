@@ -267,7 +267,7 @@ GO
 -- 3.3.2 Bulk Insert
 --------------------
 BULK INSERT INEGI_Censo_2020_AGEB_Staging
-FROM 'D:\INEGI\Censo_2020\RESAGEBURB2020_ALL_TAB.csv'
+FROM 'D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana\RESAGEBURB2020_ALL_TAB.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
