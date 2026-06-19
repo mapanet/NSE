@@ -162,6 +162,7 @@ CREATE TABLE Boundaries_AGEB_2025 (
     geog        geography,     -- EPSG:4326
     Population  int NULL,      -- will be filled later
     Dwellings   int NULL       -- will be filled later
+    Occupied_Dwellings   int NULL  -- will be filled later
 );
 ```
 
