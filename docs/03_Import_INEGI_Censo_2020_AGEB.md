@@ -25,17 +25,17 @@ This dataset contains **Census 2020 population and dwelling data at the block le
 
 | Column | Type | Notes |
 |--------|------|--------|
-| ENTIDAD | varchar(2) |
-| NOM_ENT | nvarchar(85) |
-| MUN | varchar(3) |
-| NOM_MUN | nvarchar(85) |
-| LOC | varchar(4) |
-| NOM_LOC | nvarchar(110) |
-| AGEB | varchar(4) |
-| MZA | varchar(4) |
-| POBTOT | int |
-| VIVTOT | int |
-| TVIVHAB | int |
+| ENTIDAD | varchar(2) | State code |
+| NOM_ENT | nvarchar(85) | State name |
+| MUN | varchar(3) | Municipality code |
+| NOM_MUN | nvarchar(85) | Municipality name |
+| LOC | varchar(4) | Locality code |
+| NOM_LOC | nvarchar(110) | Locality name |
+| AGEB | varchar(4) | Area code |
+| MZA | varchar(4) | Block code |
+| POBTOT | int | Population |
+| VIVTOT | int | Dwelings |
+| TVIVHAB | int | Occupied Dwelings |
 
 Working folder:
 
