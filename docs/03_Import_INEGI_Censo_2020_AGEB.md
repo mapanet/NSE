@@ -195,7 +195,7 @@ After running the script, you should have:
 
 RESAGEBURB2020_ALL_TAB.csv
 
-Open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
+You can open the file using **EditPad Pro**, **Notepad++**, or **VS Code** and verify:
 
 - Encoding: **UTF‑8 (No BOM)**
 - Separator: **TAB**
