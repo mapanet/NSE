@@ -25,17 +25,21 @@ This dataset contains **Census 2020 population and dwelling data at the block le
 
 | Column | Type | Notes |
 |--------|------|--------|
-| CVEGEO | varchar(16) | **Primary Key** |
-| State | nvarchar(85) |
-| Municipality | nvarchar(85) |
-| City | nvarchar(110) |
-| Population | int |
-| Dwellings | int |
-| Occupied_Dwellings | int |
+| ENTIDAD | varchar(2) |
+| NOM_ENT | nvarchar(85) |
+| MUN | varchar(3) |
+| NOM_MUN | nvarchar(85) |
+| LOC | varchar(4) |
+| NOM_LOC | nvarchar(110) |
+| AGEB | varchar(4) |
+| MZA | varchar(4) |
+| POBTOT | int |
+| VIVTOT | int |
+| TVIVHAB | int |
 
 Working folder:
 
-D:\INEGI\
+D:\AXSI\INEGI\Censo_2020\Download
 
 
 ---
