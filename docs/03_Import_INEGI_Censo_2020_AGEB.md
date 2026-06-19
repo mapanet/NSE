@@ -145,57 +145,38 @@ Combine all 32 state CSV files into a single **UTF‑8 (no BOM)**, **TAB‑separ
 
 RESAGEBURB2020_ALL_TAB.csv
 
-
 - Encoding: **UTF‑8 no BOM**  
 - Separator: **TAB**  
 - Replace all `*` with empty string (NULL in SQL)
 
-### PowerShell Script
+### Python Script
 
-```powershell
-# Force the script to run in its own directory
-Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
+```python
+import pandas as pd
+import glob
 
-# Path where the 32 "RESAGEBURB2020 - **NN** Name .csv" files are located
-$inputFolder = "D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana"
+# List all CSV files
+csv_files = glob.glob(r"D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana\RESAGEBURB2020 - *.csv")
 
-# Final combined output file CSV
-$outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL_TAB.csv"
+dfs = []
+for i, f in enumerate(csv_files):
+    print("Reading:", f)
+    # Force codes to be strings
+    df = pd.read_csv(f, dtype={
+        "ENTIDAD": str,
+        "MUN": str,
+        "LOC": str,
+        "AGEB": str,
+        "MZA": str
+    })
+    dfs.append(df)
 
-# Get all files that start with RESAGEBURB2020
-$files = Get-ChildItem -Path $inputFolder -Filter "RESAGEBURB2020 - *.csv"
+merged = pd.concat(dfs, ignore_index=True)
 
-# Validation
-if ($files.Count -eq 0) {
-    Write-Host "No RESAGEBURB2020*.csv files were found"
-    exit
-}
-
-# Read header from first file and convert commas → tabs
-$header = (Get-Content -Path $files[0].FullName -First 1) `
-            -replace ",","`t"
-
-# Create output file with header
-Set-Content -Path $outputFile -Value $header
-
-# Process each file
-foreach ($file in $files) {
-    Write-Host "Processing: $($file.Name)"
-
-    # Read all lines except header
-    $content = Get-Content -Path $file.FullName | Select-Object -Skip 1
-
-    # Convert commas → tabs AND replace "*" with empty string
-    $converted = $content | ForEach-Object {
-        $_ -replace "\*", "" -replace ",","`t"
-    }
-
-    # Append to final CSV
-    Add-Content -Path $outputFile -Value $converted
-}
-
-Write-Host "Done. Combined CSV created at:"
-Write-Host $outputFile
+# Save as comma-separated
+# merged.to_csv(r"D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana\RESAGEBURB2020_ALL_COMA.csv", index=False)
+# Save tab separated
+merged.to_csv(r"D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana\RESAGEBURB2020_ALL_TAB.csv", index=False, sep="\t")
 ```
 
 ---
