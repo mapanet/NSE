@@ -85,7 +85,7 @@ Then repeat the following steps for each state:
 3. Bottom‑center → click **Exportar a → CSV**.  
 4. Save the file into:
 
-D:\INEGI\Censo_2020\
+D:\INEGI\Censo_2020\Dwonload
 
 
 
