@@ -85,7 +85,7 @@ Then repeat the following steps for each state:
 3. Bottom‑center → click **Exportar a → CSV**.  
 4. Save the file into:
 
-D:\INEGI\Censo_2020\Dwonload
+D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana
 
 
 
@@ -157,7 +157,7 @@ RESAGEBURB2020_ALL_TAB.csv
 Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
 
 # Path where the 32 "RESAGEBURB2020 - **NN** Name .csv" files are located
-$inputFolder = "D:\INEGI\Censo_2020"
+$inputFolder = "D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana"
 
 # Final combined output file CSV
 $outputFile = Join-Path $inputFolder "RESAGEBURB2020_ALL_TAB.csv"
