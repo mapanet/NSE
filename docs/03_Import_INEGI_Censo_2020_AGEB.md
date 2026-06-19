@@ -185,7 +185,7 @@ merged.to_csv(r"D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana\RESAGEBURB2020_A
 
 The full script used to concatenate all 32 state files into a single clean CVS (TSV) is available here:
 
-[Concatenate_RESAGEBURB2020_TAB.ps1](../scripts/Concatenate_RESAGEBURB2020_TAB.ps1)
+[Concatenate_ALL_RESAGEBURB2020.py](../scripts/Concatenate_ALL_RESAGEBURB2020.py)
 
 ---
 
