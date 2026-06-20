@@ -60,7 +60,7 @@ We only want:
 
 ---
 
-## ✔ Download Procedure (Repeat for All 32 States)
+## ✔ Download Procedure
 
 In the **right panel**, select:
 
@@ -69,7 +69,7 @@ In the **right panel**, select:
 3. **Vivienda** → *Total de viviendas*  
 4. **Vivienda** → *Total de viviendas habitadas*  
 
-Then repeat the following steps for each state:
+Repeat for All 32 States:
 
 1. In the **left panel**, select a state (example: *Aguascalientes*).  
 2. Bottom‑right → click **Generar Consulta** (Generate Query).  
