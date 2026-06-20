@@ -176,7 +176,7 @@ print("Merged file saved to:", output_path)
 
 ---
 
-### 2.3.1 Convert Latutude HHMMSS to decimal, add CVEGEO
+## 2.3.1 Convert Latutude HHMMSS to decimal, add CVEGEO
 
 ### Output File
 
