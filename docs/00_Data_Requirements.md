@@ -30,7 +30,8 @@ Each dataset has its own ingestion and processing guide:
 - **Step 2 — INEGI Marco Geoestadístico 2025 (AGEB Geometries)**  
 - **Step 3 — INEGI Census 2020 (AGEB Block-Level Data)**  
 - **Step 4 — INEGI AGEEML 2026 (State, Municipality, Locality catalogs of codes and names)**  
-- **Step 5 — INEGI DCAH 2025 (Neighborhood Polygons)**  
+- **Step 5 — INEGI DCAH 2025 (Neighborhood Polygons)**
+- **Step 6 — INEGI Localidades 2025 (Localities Polygons "City")**  
 
 ---
 
