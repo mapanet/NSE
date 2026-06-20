@@ -251,7 +251,60 @@ Completion time: 2026-05-24T18:21:38.1908732-05:00
 DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 ```
 
-## 2.7 Geometry Validation and Correction
+## 2.7 – Update Boundaries_AGEB_2025 with NSE
+
+```sql
+-- MG 2025 STEP 2.7 – Update Boundaries_AGEB_2025 with NSE
+-- Update Boundaries_AGEB_2025 with all AMAI + Calculate Percentages _PCT
+
+UPDATE b
+SET
+    -- Conteos (copiados directamente de AMAI)
+    b.NSE_AB        = ISNULL(a.NSE_AB,0),
+    b.NSE_CPLUS     = ISNULL(a.NSE_CPLUS,0),
+    b.NSE_C         = ISNULL(a.NSE_C,0),
+    b.NSE_CMINUS    = ISNULL(a.NSE_CMINUS,0),
+    b.NSE_DPLUS     = ISNULL(a.NSE_DPLUS,0),
+    b.NSE_D         = ISNULL(a.NSE_D,0),
+    b.NSE_E         = ISNULL(a.NSE_E,0),
+
+    -- Totales y etiqueta
+    b.NSE_TOTAL     = ISNULL(a.NSE_TOTAL,0),
+    b.NSE_LABEL     = a.NSE_LABEL,
+
+    -- Porcentajes calculados sobre el total
+    b.NSE_AB_PCT     = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_AB,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
+    b.NSE_CPLUS_PCT  = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_CPLUS,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
+    b.NSE_C_PCT      = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_C,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
+    b.NSE_CMINUS_PCT = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_CMINUS,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
+    b.NSE_DPLUS_PCT  = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_DPLUS,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
+    b.NSE_D_PCT      = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_D,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
+    b.NSE_E_PCT      = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_E,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END
+FROM dbo.Boundaries_AGEB_2025 b
+INNER JOIN dbo.NSE_AMAI_2025_AGEB a
+    ON b.CVEGEO = a.CVEGEO;
+
+
+-- Verify 100 records so the summ of _PCT give s ~100%
+
+SELECT TOP 100
+    CVEGEO,
+    NSE_TOTAL,
+    NSE_AB_PCT,
+    NSE_CPLUS_PCT,
+    NSE_C_PCT,
+    NSE_CMINUS_PCT,
+    NSE_DPLUS_PCT,
+    NSE_D_PCT,
+    NSE_E_PCT,
+    (ISNULL(NSE_AB_PCT,0) + ISNULL(NSE_CPLUS_PCT,0) + ISNULL(NSE_C_PCT,0) 
+     + ISNULL(NSE_CMINUS_PCT,0) + ISNULL(NSE_DPLUS_PCT,0) 
+     + ISNULL(NSE_D_PCT,0) + ISNULL(NSE_E_PCT,0)) AS SumPercentages
+FROM dbo.Boundaries_AGEB_2025
+ORDER BY CVEGEO;
+```
+
+## 2.8 Geometry Validation and Correction
 
 ### Validate invalid geometries
 
@@ -259,7 +312,7 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 
 ```sql
 -----------------------------------------
--- 2.7 Geometry Validation and Correction
+-- 2.8 Geometry Validation and Correction
 -----------------------------------------
 SELECT ID, CVEGEO
 FROM Boundaries_AGEB_2025
@@ -294,11 +347,11 @@ WHERE geom.STIsValid() = 0;
 Completion time: 2026-05-24T18:32:20.6926452-05:00   
 
 
-## 2.8 Copy geometry: geom column to geography: geog column
+## 2.9 Copy geometry: geom column to geography: geog column
 
 ```sql
 -----------------------------------------------------------
--- 2.8 Copy geometry: geom column to geography: geog column
+-- 2.9 Copy geometry: geom column to geography: geog column
 -----------------------------------------------------------
 UPDATE Boundaries_AGEB_2025
 SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
@@ -333,7 +386,7 @@ None
 
 ```sql
 -----------------------------
--- 2.9 Create Spatial Indexes
+-- 3.0 Create Spatial Indexes
 ----------------------------
 CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geom
 ON dbo.Boundaries_AGEB_2025(geom)
@@ -351,7 +404,7 @@ Commands completed successfully.
 Completion time: 2026-05-24T18:47:16.7518921-05:00   
 
 
-## 2.10 Final Result
+## Final Result
 
 The table `Boundaries_AGEB_2025` now contains:
 
