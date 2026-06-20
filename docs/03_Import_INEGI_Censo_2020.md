@@ -40,10 +40,10 @@ D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Localidad
 We download Census 2020 block-level data from **INEGI SCITEL**:
 
 **URL:**  
-https://www.inegi.org.mx/app/scitel/Default?ev=8  
+https://www.inegi.org.mx/app/scitel/Default?ev=9  
 **Section:** *Resultados por loccalidad (ITER) 2020*
 
-[<img src="/docs/images/Censo_2020_1.png" width="1000">](/docs/images/Censo_2020_1.png)
+[<img src="/docs/images/Censo_2020_ITER_localidad.png" width="1000">](/docsCenso_2020_ITER_localidad.png)
 
 ---
 
