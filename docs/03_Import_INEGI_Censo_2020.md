@@ -8,7 +8,7 @@ It is a enrichment input for the Boundaries layer 6 Population, Dwellings, Occup
 ## 📌 Important Clarifications
 
 - We create a **Census 2020 locality-level dataset** to obtain **Population**, **Dwellings**, and **Occupied_Dwellings** at the **LOCALITY** level.
-- This dataset is used in **NSE Step 5.9.1** to update **Population** and **Dwellings** at the **Neighborhood (Colonia)** to boundaries layer 6 (DCAH Neighborhoods).
+- This dataset is used in **NSE Step 5.9.1** to update **Population, Dwellings, Occupied_Dwellings in boundaries layer 6 (DCAH Neighborhoods).
 - Later we can compute: Unoccupied_Dwellings = Dwellings – Occupied_Dwellings
 
 ## Resulting Table: `INEGI_Censo_2020_AGEB`
