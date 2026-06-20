@@ -172,10 +172,9 @@ print("Merged file saved to:", output_path)
 
 ### Full Phyton Script
 
-The full script used to concatenate all 32 state files into a single clean CVS (TSV) is available here:
-
 [Concatenate_ALL_ITER2020.py](../scripts/Concatenate_ALL_ITER2020.py)
 
+---
 
 ### 2.3.1 Convert Latutude HHMMSS to decimal, add CVEGEO
 
@@ -185,7 +184,9 @@ ITER2020_ALL_COORDS_TAB.csv
 
 - Encoding: **UTF‑8 no BOM**  
 - Separator: **TAB**  
-- Replace all `*` with empty string (NULL in SQL)
+- Replace any `*` with empty string (NULL in SQL)
+- Converts Latitude and Longitude from HHMMSS to decinal ESPG:4326
+- Checks Altitude to be integer (some fields have dash like "00-2"
 
 ### Python Script
 
