@@ -4,9 +4,9 @@ Objective: Build table `Boundaries_AGEB_2025` with the official AGEB geometries 
 
 This table will be used for:  
 
-- Intersecting colonias with AGEB
+- Intersecting neighborhoods (colonias) with AGEB area geometries
 - Calculating area proportions
-- Weighting AMAI population by colonia
+- Weighting AMAI population by neighborhood (colonia)
 
 ## Suggested work directories
 
