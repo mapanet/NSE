@@ -367,6 +367,7 @@ ORDER BY CVEGEO;
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_SUMMARY;
 GO
 ```
+---
 
 # 3.5 — Final Validations
 
@@ -376,9 +377,7 @@ After loading the final table, we run a set of validation queries to confirm:
 - All CVEGEO codes are correctly generated with 16 digits
 - The staging table can be safely removed
 
----
-
-✔ Validate Record Count
+### ✔ Validate Record Count
 
 ```sql
 ----------------
