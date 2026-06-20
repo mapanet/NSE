@@ -1,6 +1,6 @@
 # STEP 2 — Marco Geoestadístico 2025
 
-Objective: Build the table `Boundaries_AGEB_2025` using the official AGEB geometries from INEGI MG 2025.  
+Objective: Build table `Boundaries_AGEB_2025` with the official AGEB geometries from INEGI MG 2025.  
 This table will be used for:
 
 - Intersecting colonias with AGEB
@@ -23,7 +23,7 @@ The download file is:
 
 **794551163061_s.zip**
 
-Screen looks like this:
+Screen:
 
 [<img src="/docs/images/MG_2025.png" width="1000">](/docs/images/MG_2025.png)
 
@@ -169,11 +169,6 @@ CREATE TABLE dbo.Boundaries_AGEB_2025
     -- Geometries
     geom          GEOMETRY NOT NULL,
     geog          GEOGRAPHY NULL,
-
-    -- Census 2020 (to be filled later)
-    Population    INT NULL,
-    Dwellings     INT NULL,
-    Occupied_Dwellings     INT NULL,
 
     -- AMAI data (economic level)
     -- NSE Percetages 
