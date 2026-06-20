@@ -181,7 +181,7 @@ merged.to_csv(r"D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana\RESAGEBURB2020_A
 
 ---
 
-### Full PowerShell Script
+### Full Phyton Script
 
 The full script used to concatenate all 32 state files into a single clean CVS (TSV) is available here:
 
