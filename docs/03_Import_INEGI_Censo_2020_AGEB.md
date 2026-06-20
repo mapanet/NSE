@@ -289,6 +289,85 @@ SELECT TOP (10) ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC, AGEB, MZA, POBTOT,
 | 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 018 | 0       | 80     |        |
 | 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 019 | 0       | 39     |        |
 
+---
+
+# 3.4 — Update Population y Dwellings in Boundaries_AGEB_2025
+
+```sql
+----------------------------------------------------------------------------------------------------------
+-- Censo 2020 Step 3.4 — Update Population y Dwellings in Boundaries_AGEB_2025
+--
+-- NOTE: AGEB polygons are 2025, Census 2020 is block level so just cover Urban areas (no Rural) 
+-- There is no Census at AGEB Level.
+-- Census at Locality level "9" does, however it may not match Boundaries Neighborhoods, but will see
+-- So we are updating poulation in AGEB 2025 to enrich the data and see if helps in the AMAI interpolation
+-- Number of record that will update with Population: 35668 or 85000+ Urban not unpdated: 29140
+--
+-- We will test Censo 2020 at locality level match Neighborhood or AGEMLL 2025 does
+----------------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_SUMMARY;
+GO
+
+SELECT
+    RIGHT('00' + ENTIDAD, 2) +
+    RIGHT('000' + MUN, 3) +
+    RIGHT('0000' + LOC, 4) +
+    RIGHT('0000' + AGEB, 4) AS CVEGEO,
+    SUM(VIVTOT) AS VIVTOT,
+    SUM(TVIVHAB) AS TVIVHAB,
+    SUM(POBTOT) AS POBTOT
+INTO INEGI_Censo_2020_AGEB_SUMMARY
+FROM INEGI_Censo_2020_AGEB
+WHERE LOC <> '0000'
+  AND AGEB <> '0000'
+  AND MZA <> '000'
+GROUP BY
+    RIGHT('00' + ENTIDAD, 2) +
+    RIGHT('000' + MUN, 3) +
+    RIGHT('0000' + LOC, 4) +
+    RIGHT('0000' + AGEB, 4);
+
+
+-- Update Population y Dwellings in Boundaries_AGEB_2025 from Census 2020
+
+UPDATE B
+SET 
+    B.Population = C.POBTOT,
+    B.Dwellings = C.VIVTOT,
+    B.Occupied_Dwellings = C.TVIVHAB
+FROM Boundaries_AGEB_2025 B
+LEFT JOIN INEGI_Censo_2020_AGEB_SUMMARY C
+    ON B.CVEGEO = C.CVEGEO;
+GO
+
+
+-- How many AGEB updated with data ?
+
+SELECT COUNT(*) AS AGEB_con_Population 
+FROM Boundaries_AGEB_2025
+WHERE Population IS NOT NULL;
+
+-- How namy AGENs left without data ?
+
+SELECT COUNT(*) AS AGEB_sin_Population 
+FROM Boundaries_AGEB_2025
+WHERE Population IS NULL;
+
+-- See some Urban AGEB without data
+
+SELECT CVEGEO, Type, Population, Dwellings, Occupied_Dwellings
+FROM Boundaries_AGEB_2025
+WHERE Population IS NULL
+AND Type = 'Urbana'
+ORDER BY CVEGEO;
+
+-- Delete Summary
+
+DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_SUMMARY;
+GO
+```
+
 # 3.5 — Final Validations
 
 After loading the final table, we run a set of validation queries to confirm:
