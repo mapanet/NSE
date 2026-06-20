@@ -156,7 +156,7 @@ Once all four datasets are loaded and validated, the system is ready for:
 - Final Layer 6 generation including:  
   - **NSE category**  
   - **NSE score** 
-  - **NSE dwellings and % per NSE** 
+  - **NSE dwellings and %** 
   - **Population**  
   - **Dwellings**  
   - **Occupied dwellings**  
