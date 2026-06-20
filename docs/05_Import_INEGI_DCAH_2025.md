@@ -412,13 +412,7 @@ Spatial indexes significantly improve performance for intersection, containment,
 CREATE SPATIAL INDEX SIDX_Boundaries_geom
 ON dbo.Boundaries_TEMP(geom)
 WITH (BOUNDING_BOX = (-180, -90, 180, 90));
-```
 
-### Excpected result
-
-Commands completed successfully.
-
-```sql
 --------------------------------------------
 -- 5.11.2 Spatial Index for geog (geography)
 --------------------------------------------
@@ -432,12 +426,6 @@ ON dbo.Boundaries_TEMP(geog);
 Commands completed successfully.
 
 ---
-
-## 5.12
-
-We will use the INEGI_AGEEML_2026 to create a Catalogs of codes and names of each level
-
-
 
 
 ## Next Steps
