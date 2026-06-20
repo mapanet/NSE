@@ -150,20 +150,66 @@ Completion time: 2026-05-24T18:16:03.7467723-05:00
 -----------------------------------------------
 -- 2.5 Create Final Table: Boundaries_AGEB_2025
 -----------------------------------------------
-CREATE TABLE Boundaries_AGEB_2025 (
-    ID          bigint IDENTITY(1,1) PRIMARY KEY,
-    CVEGEO      nvarchar(13) NOT NULL,
-    CVE_ENT     char(2),
-    CVE_MUN     char(3),
-    CVE_LOC     char(4),
-    CVE_AGEB    char(4),
-    Type        char(10),      -- Urban / Rural
-    geom        geometry,      -- EPSG:4326
-    geog        geography,     -- EPSG:4326
-    Population  int NULL,      -- will be filled later
-    Dwellings   int NULL       -- will be filled later
-    Occupied_Dwellings   int NULL  -- will be filled later
+DROP TABLE IF EXISTS dbo.Boundaries_AGEB_2025;
+
+CREATE TABLE dbo.Boundaries_AGEB_2025
+(
+    ID            BIGINT IDENTITY(1,1) PRIMARY KEY,
+    CVEGEO        NVARCHAR(13) NOT NULL UNIQUE,
+
+    -- Components of CVEGEO key
+    CVE_ENT       CHAR(2)  NULL,
+    CVE_MUN       CHAR(3)  NULL,
+    CVE_LOC       CHAR(4)  NULL,
+    CVE_AGEB      CHAR(4)  NULL,
+
+    -- Type (Ámbito): Urbano, Rural (urban or rural)
+    Type          CHAR(10)  NULL,
+
+    -- Geometries
+    geom          GEOMETRY NOT NULL,
+    geog          GEOGRAPHY NULL,
+
+    -- Census 2020 (to be filled later)
+    Population    INT NULL,
+    Dwellings     INT NULL,
+    Occupied_Dwellings     INT NULL,
+
+    -- AMAI data (economic level)
+    -- NSE Percetages 
+    NSE_AB_PCT        NUMERIC(5,2) NULL,
+    NSE_CPLUS_PCT     NUMERIC(5,2) NULL,
+    NSE_C_PCT         NUMERIC(5,2) NULL,
+    NSE_CMINUS_PCT    NUMERIC(5,2) NULL,
+    NSE_DPLUS_PCT     NUMERIC(5,2) NULL,
+    NSE_D_PCT         NUMERIC(5,2) NULL,
+    NSE_E_PCT         NUMERIC(5,2) NULL,
+
+    -- NSE Dwellings
+    NSE_AB            INT NULL,
+    NSE_CPLUS         INT NULL,
+    NSE_C             INT NULL,
+    NSE_CMINUS        INT NULL,
+    NSE_DPLUS         INT NULL,
+    NSE_D             INT NULL,
+    NSE_E             INT NULL,
+
+    -- Label and dweling total
+    NSE_LABEL         NVARCHAR(10) NULL,
+    NSE_TOTAL         INT NULL
 );
+
+-- Spatial indexes
+CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geog
+ON dbo.Boundaries_AGEB_2025(geog)
+USING GEOGRAPHY_AUTO_GRID;
+
+CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geom
+ON dbo.Boundaries_AGEB_2025(geom)
+WITH (BOUNDING_BOX = (-180, -90, 180, 90));
+
+-- Valite geometries
+UPDATE Boundaries_AGEB_2025 SET geom = geom.MakeValid() WHERE geom.STIsValid() = 0;
 ```
 
 #### Expect results
