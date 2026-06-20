@@ -155,7 +155,8 @@ Once all four datasets are loaded and validated, the system is ready for:
 - NSE calculation per neighborhood (colonia)  
 - Final Layer 6 generation including:  
   - **NSE category**  
-  - **NSE score**  
+  - **NSE score** 
+  - **NSE dwellings and % per NSE** 
   - **Population**  
   - **Dwellings**  
   - **Occupied dwellings**  
