@@ -75,7 +75,7 @@ Make sure select CRS: **EPSG:4326** (very important)
 
 From this new layer MG_AGEB_2025, export to CSV as:
 
-**D:\AXSI\INEGI\MG_2025\MG_AGEB_2025_WKT.csv**
+**D:\AXSI\INEGI\MG_2025\Boundaries_AGEB_2025_WKT.csv**
 
 - UTF‑8 encoding  
 - TAB delimiter
@@ -122,7 +122,7 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
 -- Import Boundaries_AGEB_2025_WKT.csv
 --------------------------------------
 BULK INSERT Boundaries_AGEB_2025_IMPORT 
-FROM 'D:\AXSI\INEGI\MG_2025\MG_AGEB_2025_WKT.csv' 
+FROM 'D:\AXSI\INEGI\MG_2025\Boundaries_AGEB_2025_WKT.csv' 
 WITH ( 
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t', 
