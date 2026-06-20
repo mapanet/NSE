@@ -99,6 +99,8 @@ If you edit the CSV you should see something like this:
 
 ## 2.4 Create the SQL Staging Table: Boundaries_AGEB_2025_IMPORT
 
+* check file path you used to store INEGI files
+
 ```sql
 ----------------------------------------------------------------
 -- 2.4 Create the SQL Staging Table: Boundaries_AGEB_2025_IMPORT
@@ -114,18 +116,7 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
     CVEGEO     nvarchar(13),
     AMBITO     char(10)
 );
-```
 
-#### Expected result
-
-Commands completed successfully.  
-Completion time: 2026-05-24T18:11:21.7628144-05:00   
-
-## Import MG_AGEB_2025_WKT.csv
-
-* check file path you used to store INEGI files
-
-```sql
 --------------------------------------
 -- Import Boundaries_AGEB_2025_WKT.csv
 --------------------------------------
@@ -210,7 +201,8 @@ UPDATE Boundaries_AGEB_2025 SET geom = geom.MakeValid() WHERE geom.STIsValid() =
 #### Expect results
 
 Commands completed successfully.   
-Completion time: 2026-05-24T18:18:21.1765627-05:00   
+
+---
 
 ## 2.6 Insert Data from the Staging Table
 
@@ -230,27 +222,25 @@ SELECT
     AMBITO,
     geometry::STGeomFromText(WKT, 4326)
 FROM Boundaries_AGEB_2025_IMPORT;
-```
 
-#### Expected results
-
-(82283 rows affected)   
-Completion time: 2026-05-24T18:21:38.1908732-05:00   
-
-## If all ok => Drop the staging table
-
-```sql
 -------------------------
 -- drop the staging table
 -------------------------
 DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 ```
 
+#### Expected results
+
+(82283 rows affected)   
+
+
 ## 2.7 – Update Boundaries_AGEB_2025 with NSE
 
 ```sql
--- MG 2025 STEP 2.7 – Update Boundaries_AGEB_2025 with NSE
+-------------------------------------------------------------------------
+-- MG 2025 STEP 2.7 – Update Boundaries_AGEB_2025 with AMAI NSE data
 -- Update Boundaries_AGEB_2025 with all AMAI + Calculate Percentages _PCT
+-------------------------------------------------------------------------
 
 UPDATE b
 SET
@@ -339,8 +329,8 @@ WHERE geom.STIsValid() = 0;
 #### Expected results
 
 (0 rows affected)   
-Completion time: 2026-05-24T18:32:20.6926452-05:00   
 
+---
 
 ## 2.9 Copy geometry: geom column to geography: geog column
 
@@ -355,9 +345,10 @@ SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 #### Expected results
 
 (82283 rows affected)   
-Completion time: 2026-05-24T18:38:41.5409824-05:00   
 
-### Validate geog:
+---
+
+### Validate geog (geography)
 
 2️⃣ Missing geography check
 This should also return zero rows:
@@ -376,6 +367,8 @@ WHERE geog IS NULL;
 ID  
 None  
 (all geography fields have a geometry)  
+
+---
 
 ## 2.9 Create Spatial Indexes
 
