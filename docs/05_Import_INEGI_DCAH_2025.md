@@ -409,7 +409,7 @@ Spatial indexes significantly improve performance for intersection, containment,
 ------------------------------------------
 -- 5.11.1 Spatial Index for geom (geometry)
 ------------------------------------------
-CREATE SPATIAL INDEX SIDX_Boundaries_TEMP_geom
+CREATE SPATIAL INDEX SIDX_Boundaries_geom
 ON dbo.Boundaries_TEMP(geom)
 WITH (BOUNDING_BOX = (-180, -90, 180, 90));
 ```
@@ -423,7 +423,7 @@ Commands completed successfully.
 -- 5.11.2 Spatial Index for geog (geography)
 --------------------------------------------
 
-CREATE SPATIAL INDEX SIDX_Boundaries_TEMP_geog
+CREATE SPATIAL INDEX SIDX_Boundaries_geog
 ON dbo.Boundaries_TEMP(geog);
 ```
 
