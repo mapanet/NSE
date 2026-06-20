@@ -1,7 +1,8 @@
 # STEP 2 — Marco Geoestadístico 2025 geometries
 
 Objective: Build table `Boundaries_AGEB_2025` with the official AGEB geometries from INEGI MG 2025.  
-This table will be used for:
+
+This table will be used for:  
 
 - Intersecting colonias with AGEB
 - Calculating area proportions
