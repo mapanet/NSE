@@ -9,10 +9,10 @@ This private repository documents the technical pipeline for calculating the AMA
 
 The objective is to generate a final, reproducible, auditable, and standardized NSE dataset at the colonia level (Layer 6).
 
-## Relation between AMAI, AGEB, MG2025 Polygons, and DCAH Boundaries
+## Relation between AMAI, MG 2025 AGEB geometries, and DCAH geometries
 
 AMAI’s socioeconomic index (NSE) is mapped onto INEGI’s statistical units (AGEBs/AGEEBs).  
-The MG2025 framework provides the official polygon boundaries.  
+The MG_2025 framework provides the official polygon boundaries of AGEBs.  
 We then interpolate these values to align with **DCAH neighborhood boundaries**, ensuring local-level socioeconomic classification.
 
 ### Diagram
