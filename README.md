@@ -9,6 +9,7 @@ This private repository documents the technical pipeline for calculating the AMA
 
 The objective is to generate a final, reproducible, auditable, and standardized NSE dataset at the colonia level (Layer 6).   
 This data can be me sumarized later to city layer 5, municipality layer 2, state layer 1.
+Resulting datasets will be used to real estate evaluation and analysys of property value.
 
 [<img src="/docs/images/NSEmap.png" width="1000">](/docs/images/NSEmap.png)
 
