@@ -98,9 +98,12 @@ If you edit the CSV you should see something like this:
 |MULTIPOLYGON (((-102.27 21.87, ... -102.27 21.87)))| 01 | 001 | 0001 | 216A | 010010001216A | Urbano |
 |MULTIPOLYGON (((-102.24 21.86, ... -102.24 21.86)))	| 01 | 001 | 0001 | 2649 | 0100100012649 | Urbano |
 
-## 2.4 Create the SQL Staging Table: Boundaries_AGEB_2025_IMPORT
+## 2.4 Create the MS SQL Staging table
 
-* check file path you used to store INEGI files
+We create a staging table to import the data as since QGIS creates the CSV with WKT geometry in 1st position.
+Then we will create and copy the imported data to the final table.
+
+* check file path you used to store CSV file
 
 ```sql
 ----------------------------------------------------------------
