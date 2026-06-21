@@ -198,6 +198,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+DROP TABLE IF EXISTS dbo.NSE_AMAI_2024_AGEB;
+
 CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
     [CVEGEO] [nvarchar](13) NOT NULL,
     [NSE_AB] [int] NULL,
@@ -222,21 +224,10 @@ CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
 ) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-```
 
-### Expected result
-
-Commands completed successfully.   
-
----
-
-## 1.8 Import CSV into MS SQL Server 2022
-
-Make sure the directory path matches where you saved the AMAI CSV file.
-
-```sql
 -----------------------------------------
--- 1.9 Import CSV into MS SQL Server 2022
+-- 1.8 Import CSV into MS SQL Server 2022
+-- Make sure the directory path matches where you saved the AMAI CSV file.
 -----------------------------------------
 BULK INSERT NSE_AMAI_2024_AGEB
 FROM 'D:\AXSI\AMAI\NSE_AMAI_2024_AGEB_IMPORT.csv'
