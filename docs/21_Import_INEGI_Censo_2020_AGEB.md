@@ -54,7 +54,6 @@ https://www.inegi.org.mx/app/scitel/Default?ev=10
 
 [<img src="/docs/images/Censo_2020_1.png" width="1000">](/docs/images/Censo_2020_1.png)
 
----
 
 ### IMPORTANT — Do NOT use the gray CSV or XLSX buttons
 
@@ -85,11 +84,9 @@ Then repeat the following steps for each state:
 3. Bottom‑center → click **Exportar a → CSV**.  
 4. Save the file into:
 
-D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana
+D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana   
 
-
-
-5. Click the browser **Back** button and select the next state.
+Click the browser **Back** button and select the next state.
 
 Example results:
 
