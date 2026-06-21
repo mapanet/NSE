@@ -96,7 +96,7 @@ Example rows:
 |010010120||01|Aguascalientes|001|Aguascalientes|0120|Buenavista de Peñuelas|R|21.719147|102.293195|1871|1054|542|512|255|
 |010010121||01|Aguascalientes|001|Aguascalientes|0121|Cabecita 3 Marías (Rancho Nuevo)|R|21.774682|102.412992|1905|192|92|100|47|
 
----
+
 
 # 3 — Create **INEGI_AGEEML_2026_Staging**.  
 
