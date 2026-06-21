@@ -263,8 +263,7 @@ WHERE NSE_TOTAL <> (NSE_AB + NSE_CPLUS + NSE_C + NSE_CMINUS + NSE_DPLUS + NSE_D 
 | CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
 |---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|  
 
-None  
-(this means there is no difference between total vs sum of components)  
+No records: This means there is no difference between total vs sum of components   
 
 ### Validate correct CVEGEO length (13 characters)
 
@@ -287,7 +286,7 @@ None
 
 ## 1.10 Final Result
 
-Your final table IN SQL should look like this:
+SQL to display top 6 records to verify data:
 
 ```sql
 -------------------
@@ -307,6 +306,8 @@ SELECT TOP (6)
 FROM dbo.NSE_AMAI_2024_AGEB
 ```
 
+Your final table in SQL should look like this:  
+
 | CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
 |---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|
 | 0100100010017 | 0   | 12     | 39  | 111     | 153    | 331 |     | D         | 648    |
@@ -318,6 +319,6 @@ FROM dbo.NSE_AMAI_2024_AGEB
 
 This table is the official AMAI source for the **NSE calculation steps**.  
 
-
+---
 
 
