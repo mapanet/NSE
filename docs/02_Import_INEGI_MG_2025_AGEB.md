@@ -172,7 +172,7 @@ CREATE TABLE dbo.Boundaries_AGEB_2025
     NSE_D_PCT         NUMERIC(5,2) NULL,
     NSE_E_PCT         NUMERIC(5,2) NULL,
 
-    -- NSE Dwellings
+    -- Dwellings per NSE
     NSE_AB            INT NULL,
     NSE_CPLUS         INT NULL,
     NSE_C             INT NULL,
@@ -181,7 +181,7 @@ CREATE TABLE dbo.Boundaries_AGEB_2025
     NSE_D             INT NULL,
     NSE_E             INT NULL,
 
-    -- Label and dweling total
+    -- Label and dwellings total
     NSE_LABEL         NVARCHAR(10) NULL,
     NSE_TOTAL         INT NULL
 );
