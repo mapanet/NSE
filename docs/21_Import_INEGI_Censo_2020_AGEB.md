@@ -66,7 +66,6 @@ We only want:
 - **Total Dwellings**  
 - **Occupied Dwellings**  
 
----
 
 ## ✔ Download Procedure (Repeat for All 32 States)
 
