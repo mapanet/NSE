@@ -1,4 +1,4 @@
-# 3 — INEGI Census 2020 (Block-Level Data)
+# 21 — INEGI Census 2020 (Block-Level Data)
 
 This dataset contains **Census 2020 population and dwelling data at the block level**  
 (AGEB + Manzana). It is a core input for the NSE pipeline.
@@ -44,7 +44,7 @@ D:\AXSI\INEGI\Censo_2020\Download
 
 ---
 
-# 3.1 — Download Census 2020 Data (SCITEL)
+# 1 — Download Census 2020 Data (SCITEL)
 
 We download Census 2020 block-level data from **INEGI SCITEL**:
 
@@ -136,7 +136,7 @@ Example results:
 
 ---
 
-# 3.2 — Concatenate All Files into One Clean CSV (TSV)
+# 2 — Concatenate All Files into One Clean CSV (TSV)
 
 ### Purpose
 Combine all 32 state CSV files into a single **UTF‑8 (no BOM)**, **TAB‑separated** file ready for SQL Server bulk import.
@@ -217,18 +217,16 @@ Example rows:
 
 ---
 
-# 3.3 — Import CSV into SQL Server
+# 3 — Import CSV into SQL Server
 
 We first import the raw CSV into  INEGI_Censo_2020_AGEB.    
 This table mirrors the structure of the SCITEL export. 
 
 ```sql
-----------------------------
--- 3.3 — Import CSV into SQL
-----------------------------
-
----------------------------------------------------------------------------
--- 3.3.1 Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Block)
+----------------------
+-- Import CSV into SQL
+--
+-- Create table INEGI_Censo_2020_AGEB (Census 2020 by AGEB and Block)
 ---------------------------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB;
 GO
@@ -248,9 +246,9 @@ CREATE TABLE INEGI_Censo_2020_AGEB (
 );
 GO
 
---------------------
--- 3.3.2 Bulk Insert
---------------------
+--------------
+-- Bulk Insert
+--------------
 BULK INSERT INEGI_Censo_2020_AGEB_Staging
 FROM 'D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana\RESAGEBURB2020_ALL_TAB.csv'
 WITH (
@@ -291,7 +289,7 @@ SELECT TOP (10) ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC, AGEB, MZA, POBTOT,
 
 ---
 
-# 3.4 — Update Population y Dwellings in Boundaries_AGEB_2025
+# 4 — Update Population y Dwellings in Boundaries_AGEB_2025
 
 ```sql
 ----------------------------------------------------------------------------------------------------------
@@ -369,7 +367,7 @@ GO
 ```
 ---
 
-# 3.5 — Final Validations
+# 5 — Final Validations
 
 After loading the final table, we run a set of validation queries to confirm:
 
