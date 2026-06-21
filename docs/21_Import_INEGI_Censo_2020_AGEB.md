@@ -92,7 +92,6 @@ Example results:
 
 [<img src="/docs/images/Censo_2020_3.png" width="1000">](/docs/images/Censo_2020_3.png)
 
----
 
 ## ✔ Verify All 32 Files Are Downloaded
 
@@ -131,7 +130,7 @@ Example results:
 | RESAGEBURB2020 - 31 Yucatán.csv |
 | RESAGEBURB2020 - 32 Zacatecas.csv |
 
----
+
 
 # 2 — Concatenate All Files into One Clean CSV (TSV)
 
@@ -176,7 +175,6 @@ merged = pd.concat(dfs, ignore_index=True)
 merged.to_csv(r"D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Manzana\RESAGEBURB2020_ALL_TAB.csv", index=False, sep="\t")
 ```
 
----
 
 ### Full Phyton Script
 
@@ -184,7 +182,6 @@ The full script used to concatenate all 32 state files into a single clean CVS (
 
 [Concatenate_ALL_RESAGEBURB2020.py](../scripts/Concatenate_ALL_RESAGEBURB2020.py)
 
----
 
 ### Expected Output File
 
@@ -212,7 +209,7 @@ Example rows:
 | 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 018 | 0       | 80     |        |
 | 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 019 | 0       | 39     |        |
 
----
+
 
 # 3 — Import CSV into SQL Server
 
@@ -284,7 +281,7 @@ SELECT TOP (10) ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC, AGEB, MZA, POBTOT,
 | 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 018 | 0       | 80     |        |
 | 01      | Aguascalientes | 001     | Aguascalientes                     | 0001    | Aguascalientes               | 0017 | 019 | 0       | 39     |        |
 
----
+
 
 # 4 — Update Population y Dwellings in Boundaries_AGEB_2025
 
@@ -362,7 +359,7 @@ ORDER BY CVEGEO;
 DROP TABLE IF EXISTS INEGI_Censo_2020_AGEB_SUMMARY;
 GO
 ```
----
+
 
 # 5 — Final Validations
 
@@ -420,7 +417,7 @@ This confirms that:
 - No missing digits
 - No malformed CVEGEO values
 
----
+
 
 
 
