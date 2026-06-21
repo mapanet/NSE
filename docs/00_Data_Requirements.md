@@ -67,7 +67,6 @@ Each record is associated with a **CVEGEO (13‑digit AGEB key)**.
 - Area‑weighted interpolation from AGEB → colonia  
 - Calculation of **NSE_SCORE** and **NSE_LABEL** for each neighborhood  
 
----
 
 ## 2. INEGI Marco Geoestadístico 2025 (AGEB Geometries)
 
@@ -87,7 +86,7 @@ Provides the official AGEB polygons for the entire country, including:
 - Area‑weighted distribution of AMAI dwellings  
 - Geometric foundation for Layer 6  
 
----
+
 
 ## 3. INEGI DCAH 2025 (Neighborhood Polygons)
 
@@ -107,7 +106,7 @@ Provides the official neighborhood (colonia) boundaries, including:
 - Area‑weighted NSE calculation  
 - Generating the final neighborhood‑level dataset  
 
----
+
 
 # Expected Output After Ingestion
 
