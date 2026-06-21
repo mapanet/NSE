@@ -34,7 +34,7 @@ To generate Layer 5 (city), the pipeline integrates **1 official dataset**, a sp
 
 - **Step 10 — INEGI Localidades 2025 (Localities Polygons "City")**
   
-For later data enrichment (not required):
+For later data enrichment (region names, poulation, dwellings):
 
 - **Step 20 — INEGI Census 2020 (AGEB Block-Level Data)**
 - **Step 21 — INEGI Census 2020 (Locality level)**  
