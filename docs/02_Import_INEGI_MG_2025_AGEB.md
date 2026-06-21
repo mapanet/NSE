@@ -318,7 +318,7 @@ None
 
 ### Correct invalid geometries using MakeValid
 
-If query returns results, it indicates a problem that must be fixed. Then use the next step to correct them.
+If query returns results, it indicates a problem that must be fixed, use the next step to correct them.
 
 1️⃣ Only if Invalid geometries run:
 This SQL should make all invalid to valid and return zero rows:
