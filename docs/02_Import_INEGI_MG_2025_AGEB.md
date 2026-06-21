@@ -371,28 +371,6 @@ None
 
 ---
 
-## 2.9 Create Spatial Indexes
-
-```sql
------------------------------
--- 3.0 Create Spatial Indexes
-----------------------------
-CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geom
-ON dbo.Boundaries_AGEB_2025(geom)
-WITH (
-    BOUNDING_BOX = (-180, -90, 180, 90)
-);
-
-CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geog
-ON Boundaries_AGEB_2025(geog);
-```
-
-#### Expected results
-
-Commands completed successfully.  
-Completion time: 2026-05-24T18:47:16.7518921-05:00   
-
-
 ## Final Result
 
 The table `Boundaries_AGEB_2025` now contains:
