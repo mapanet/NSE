@@ -1,7 +1,7 @@
 # 22 — INEGI AGEEML 2026
 
-This dataset contains Catalogs of codes and names of State, Municipalty, Locality
-Is used on some processes where the data comes with without names.
+This dataset contains the catalogs of codes and names of State, Municipalty and Locality and coordinates latitude, longitude.
+Is used on some processes where the data comes with without names and/or georeference.
 
 ## Resulting Table: `INEGI_AGEEML_2026`
 
