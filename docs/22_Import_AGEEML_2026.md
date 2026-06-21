@@ -98,6 +98,7 @@ Example rows:
 
 
 
+
 # 3 — Create **INEGI_AGEEML_2026_Staging**.  
 
 ```sql
