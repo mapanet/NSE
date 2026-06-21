@@ -53,7 +53,7 @@ Extract from ZIP to working directory:
 
 D:\INEGI\AGEEML_2026\AGEEML_202651313653_utf.csv
 
----
+
 
 # 2 — Convert to CSV before the import to SQL 
 
@@ -149,7 +149,6 @@ GO
 (361168 rows affected)   
 All records uploaded
 
----
 
 
 # 4 — Create final **INEGI_AGEEML_2026**.  
@@ -206,7 +205,7 @@ GO
 ALTER TABLE [dbo].[INEGI_AGEEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEEML_2026_Country]  DEFAULT (N'México') FOR [Country]
 GO
 ```
----
+
 
 # 5 — Copy Data from Staging table
 
@@ -264,7 +263,6 @@ DROP TABLE IF EXISTS dbo.INEGI_AGEEML_2026_Staging;
 GO
 ```
 
----
 
 # 6 — Updates to final table
 
@@ -293,7 +291,7 @@ Update INEGI_AGEEML_2026 set State = 'Veracruz' WHERE State = 'Veracruz de Ignac
 (14318 rows affected)   
 (28958 rows affected)  
 
----
+
 
 # 7 — Create geom (geometry) and geog (geography) from latitude, longitude
 
@@ -353,7 +351,7 @@ WHERE geog.STIsValid() = 0;
 361168 geog (geography geometries) created   
 No CVEGEO_Invalid   
 
----
+
 
 # 8 — Final Validations
 
