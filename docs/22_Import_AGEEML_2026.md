@@ -54,6 +54,7 @@ Extract from ZIP to working directory:
 D:\INEGI\AGEEML_2026\AGEEML_202651313653_utf.csv
 
 ---
+
 # 2 — Convert to CSV before the import to SQL 
 
 ### Purpose
@@ -204,8 +205,9 @@ GO
 ALTER TABLE [dbo].[INEGI_AGEEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEEML_2026_Country]  DEFAULT (N'México') FOR [Country]
 GO
 ```
+---
 
-## 5 — Copy Data from Staging table
+# 5 — Copy Data from Staging table
 
 ```sql
 ------------------------------------------
