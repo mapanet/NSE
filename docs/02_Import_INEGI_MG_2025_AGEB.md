@@ -20,7 +20,7 @@ The Marco Geoestadístico 2025 can be downloaded from INEGI:
 
 https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=889463807469
 
-The download file is:
+Download file:
 
 **794551163061_s.zip**
 
