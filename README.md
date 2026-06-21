@@ -9,7 +9,7 @@ This private repository documents the technical pipeline for calculating the AMA
 
 The objective is to generate a final, reproducible, auditable, and standardized NSE dataset at the colonia level (Layer 6).
 
-[<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
+[<img src="/docs/images/NSEmap.png" width="1000">](/docs/images/NSEmap.png)
 
 ## Relation between AMAI, MG 2025 AGEB geometries, and DCAH geometries
 
