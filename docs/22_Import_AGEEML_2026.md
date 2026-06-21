@@ -264,7 +264,7 @@ GO
 ```
 
 
-# 6 — Updates to final table
+# 6 — Normalize names in final table
 
 ```sql
 ---------------------------------------------------------------------------------
