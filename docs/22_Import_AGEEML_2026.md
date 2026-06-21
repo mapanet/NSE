@@ -99,7 +99,7 @@ Example rows:
 
 
 
-# 3 — Create **INEGI_AGEEML_2026_Staging**.  
+# 3 — Create **INEGI_AGEEML_2026_Staging**   
 
 ```sql
 -----------------------------------------
@@ -151,7 +151,7 @@ All records uploaded
 
 
 
-# 4 — Create final **INEGI_AGEEML_2026**.  
+# 4 — Create final **INEGI_AGEEML_2026**   
 
 We will include in the final table some extra fields to save original names since we wil normalize some of them:  
 
