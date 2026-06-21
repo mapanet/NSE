@@ -281,8 +281,9 @@ WHERE LEN(CVEGEO) <> 13;
 | CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
 |---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|  
 
-None  
-(this means all CVEGEO are 13 characters: EEMMMLLLLAAAA)  
+None: Tthis means all CVEGEO are 13 characters: EEMMMLLLLAAAA
+
+---
 
 ## 1.10 Final Result
 
@@ -319,6 +320,6 @@ Your final table in SQL should look like this:
 
 This table is the official AMAI source for the **NSE calculation steps**.  
 
----
+
 
 
