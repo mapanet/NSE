@@ -1,4 +1,4 @@
-# 10.1 INEGI Localidades 2025 (Localities Polygons)
+# 10 INEGI Localidades 2025 (Localities Polygons)
 
 This document describes the process to import the **INEGI Localidades 2025** dataset from **"Información Topográfica a escala 1:50,000 y sus actualizaciones"**, which contains the official polygon boundaries of localities (*cities*) and other human settlements in Mexico.  
 These geometries are used to build **Boundaries Layer 5**, where the AMAI Socioeconomic Level (NSE) is calculated for each locality.
@@ -21,7 +21,7 @@ Download: D:\AXSI\INEGI\TOPO_2025\Download
 
 ---
 
-## 10.1 Download data
+## 1 Download data
 
 1. Open the "INEGI Información Geográfica, Medio Ambiente, Ordenamiento Territorial y Urbano" download page:  
    [https://www.inegi.org.mx/programas/topografia/50000/#descargas](https://www.inegi.org.mx/programas/topografia/50000/#descargas)
