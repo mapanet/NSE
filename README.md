@@ -49,7 +49,7 @@ We then interpolate these values to align with **DCAH neighborhood boundaries**,
 
 0. [Data Requirements](docs/00_Data_Requirements.md)   
 1. [Import NSE_AMAI_AGEB_2024](docs/01_Import_AMAI.md)   
-2. [Import AGEB 2025 geometries](docs/02_Import_INEGI_MG_2025_AGEB.md)   
+2. [Import INEGI_MG 2025_AGEB geometries](docs/02_Import_INEGI_MG_2025_AGEB.md)   
 3. [Import INEGI DCAH Neighborhoods 2025 geometries](docs/03_Import_INEGI_DCAH_2025.md)   
 4. [Neighbood boundaries × AGEB spatial intersection](docs/05_Intersections.md)   
 5. [AMAI Households Weighting by Neighborhood](docs/06_Weighting_by_Neighborhood.md)   
