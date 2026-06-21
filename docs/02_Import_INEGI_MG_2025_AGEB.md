@@ -106,9 +106,9 @@ Then we will create and copy the imported data to the final table.
 * check file path you used to store CSV file
 
 ```sql
-----------------------------------------------------------------
--- 2.4 Create the SQL Staging Table: Boundaries_AGEB_2025_IMPORT
-----------------------------------------------------------------
+------------------------------
+-- 2.4 Create the taging Table
+------------------------------
 DROP TABLE IF EXISTS dbo.Boundaries_AGEB_2025_IMPORT;
 
 CREATE TABLE Boundaries_AGEB_2025_IMPORT (
@@ -121,9 +121,9 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
     AMBITO     char(10)
 );
 
---------------------------------------
--- Import Boundaries_AGEB_2025_WKT.csv
---------------------------------------
+------------------------
+-- Import CSV (TSV) file
+------------------------
 BULK INSERT Boundaries_AGEB_2025_IMPORT 
 FROM 'D:\AXSI\INEGI\MG_2025\Boundaries_AGEB_2025_WKT.csv' 
 WITH ( 
