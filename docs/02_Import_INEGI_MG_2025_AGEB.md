@@ -194,9 +194,6 @@ USING GEOGRAPHY_AUTO_GRID;
 CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geom
 ON dbo.Boundaries_AGEB_2025(geom)
 WITH (BOUNDING_BOX = (-180, -90, 180, 90));
-
--- Valite geometries
-UPDATE Boundaries_AGEB_2025 SET geom = geom.MakeValid() WHERE geom.STIsValid() = 0;
 ```
 
 #### Expect results
@@ -223,6 +220,11 @@ SELECT
     AMBITO,
     geometry::STGeomFromText(WKT, 4326)
 FROM Boundaries_AGEB_2025_IMPORT;
+
+--------------------
+-- Valite geometries
+--------------------
+UPDATE Boundaries_AGEB_2025 SET geom = geom.MakeValid() WHERE geom.STIsValid() = 0;
 
 -------------------------
 -- drop the staging table
