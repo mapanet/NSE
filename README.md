@@ -9,6 +9,12 @@ This private repository documents the technical pipeline for calculating the AMA
 
 The objective is to generate a final, reproducible, auditable, and standardized NSE dataset at the colonia level (Layer 6).
 
+Relation:
+
+**AMAI**’s socioeconomic classifications ((A/B, C+, C, C-, D+, D, E)) are mapped onto AGEBs to ensure that market data aligns with official census geography.
+**MG 2025** polygons provide the spatial layer that defines the exact boundaries of each AGEB
+This means AMAI’s indices can be georeferenced directly to MG 2025 polygons, allowing integration of market intelligence with census-based demographic and housing data.
+
 ---
 
 ## 📁 Repository Structure
