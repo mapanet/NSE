@@ -1,4 +1,4 @@
-# 20.0 — INEGI Census 2020 (Locality-Level Data)
+# 20 — INEGI Census 2020 (Locality-Level Data)
 
 This dataset contains **Census 2020 population and dwelling data at the LOCALITY level**  
 It is a enrichment input for the Boundaries layer 6 Population, Dwellings, Occupied_Dwellings.
@@ -35,7 +35,7 @@ D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Localidad
 
 ---
 
-# 20.1 — Download Census 2020 Data (SCITEL)
+# 1 — Download Census 2020 Data (SCITEL)
 
 We download Census 2020 block-level data from **INEGI SCITEL**:
 
@@ -125,7 +125,7 @@ Example results:
 
 ---
 
-# 20.2 — Concatenate All Files into One Clean CSV (TSV)
+# 2 — Concatenate All Files into One Clean CSV (TSV)
 
 ### Purpose
 Combine all 32 state CSV files into a single **UTF‑8 (no BOM)**, **TAB‑separated** file ready for SQL Server bulk import.
@@ -176,7 +176,7 @@ print("Merged file saved to:", output_path)
 
 ---
 
-## 20.3 Convert Latutude HHMMSS to decimal, add CVEGEO
+## Convert Latutude HHMMSS to decimal, add CVEGEO
 
 ### Output File
 
@@ -310,7 +310,7 @@ Example rows:
 
 ---
 
-# 20.4 — Import CSV into SQL Server
+# 4 — Import CSV into SQL Server
 
 Create table INEGI_Censo_2020 in MS SQL 2022.    
 
