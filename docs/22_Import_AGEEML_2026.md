@@ -1,4 +1,4 @@
-# 4 — INEGI AGEEML 2026
+# 22 — INEGI AGEEML 2026
 
 This dataset contains Catalogs of codes and names of State, Municipalty, Locality
 Is used on some processes where the data comes with without names.
@@ -35,7 +35,7 @@ D:\INEGI\AGEEML_2026\Download
 
 ---
 
-# 4.1 — Download AGEEML 2026 Catalogs
+# 1 — Download AGEEML 2026 Catalogs
 
 - **URL:**  [https://www.inegi.org.mx/app/ageeml/#](https://www.inegi.org.mx/app/ageeml/#)   
 - **Section:** Catalogos completos (complete catalogs)   
@@ -54,7 +54,7 @@ Extract from ZIP to working directory:
 D:\INEGI\AGEEML_2026\AGEEML_202651313653_utf.csv
 
 ---
-# 4.2 — Convert to CSV before the import to SQL 
+# 2 — Convert to CSV before the import to SQL 
 
 ### Purpose
 Convert to TAB delimited, rename fields for clarity, replace - and * to null as they are "N/A" and get rid of fields we dont need.
@@ -97,12 +97,12 @@ Example rows:
 
 ---
 
-# 4.3 Create **INEGI_AGEEML_2026_Staging**.  
+# 3 — Create **INEGI_AGEEML_2026_Staging**.  
 
 ```sql
-----------------------------------------------
--- 4.3.1 Create table INEGI_AGEEML_2026_Staging
-----------------------------------------------
+-----------------------------------------
+-- Create table INEGI_AGEEML_2026_Staging
+-----------------------------------------
 DROP TABLE IF EXISTS dbo.INEGI_AGEEML_2026_Staging;
 GO
 
@@ -127,9 +127,9 @@ CREATE TABLE [dbo].[INEGI_AGEEML_2026_Staging](
 ) ON [PRIMARY];
 GO
 
---------------------
--- 4.3.2 Bulk insert
---------------------
+--------------
+-- Bulk insert
+--------------
 BULK INSERT INEGI_AGEEML_2026_staging
 FROM 'D:\AXSI\INEGI\AGEEML_2026\AGEEML_2026.tsv'
 WITH (
@@ -149,7 +149,8 @@ All records uploaded
 
 ---
 
-# 4.4 Create final **INEGI_AGEEML_2026**.  
+
+# 4 — Create final **INEGI_AGEEML_2026**.  
 
 We will include in the final table some extra fields to save original names since we wil normalize some of them:  
 
@@ -160,9 +161,9 @@ We will include in the final table some extra fields to save original names sinc
 Will include the geom (geometry) and geog (geography) to store Latitude and Longitude for spatial needs.
 	
 ```sql
-------------------------------------------
--- 4.4.1 Create table INEGI_AGEEML_2026
-------------------------------------------
+---------------------------------
+-- Create table INEGI_AGEEML_2026
+---------------------------------
 DROP TABLE IF EXISTS dbo.INEGI_AGEEML_2026;
 GO
 
@@ -204,12 +205,12 @@ ALTER TABLE [dbo].[INEGI_AGEEML_2026] ADD  CONSTRAINT [DF_INEGI_AGEEML_2026_Coun
 GO
 ```
 
-## 4.5 — Copy Data from Staging table
+## 5 — Copy Data from Staging table
 
 ```sql
-----------------------------------------------
--- 4.5 Copy staging table to INEGI_AGEEML_2026
-----------------------------------------------
+------------------------------------------
+-- Copy staging table to INEGI_AGEEML_2026
+------------------------------------------
 INSERT INTO INEGI_AGEEML_2026 (
     CVEGEO,
     Status,
@@ -262,26 +263,21 @@ GO
 
 ---
 
-# 4.6 — Updates to final table
+# 6 — Updates to final table
 
 ```sql
--------------------------------
--- 4.6 — Updates to final table
--------------------------------
-
------------------------------------------------
--- 4.6.1 — Copy original names to _Ant
--- Because we will modify some to shor versions
------------------------------------------------
+---------------------------------------------------------------------------------
+-- Copy original names to _Ant to keep original naemes as we will use short names
+---------------------------------------------------------------------------------
 
 Update INEGI_AGEEML_2026 set 
   State_Ant = State,
   Municipality_Ant = Municipality,
   City_Ant = City
 
-----------------------------------------------
--- 4.6.2 — Update state names to short version
-----------------------------------------------
+--------------------------------------
+-- Update state names to short version
+--------------------------------------
 
 Update INEGI_AGEEML_2026 set State = 'Coahuila' WHERE State = 'Coahuila de Zaragoza' AND CVE_ENT = '05'
 Update INEGI_AGEEML_2026 set State = 'Michoacán' WHERE State = 'Michoacán de Ocampo' AND CVE_ENT = '16'
@@ -294,17 +290,23 @@ Update INEGI_AGEEML_2026 set State = 'Veracruz' WHERE State = 'Veracruz de Ignac
 (14318 rows affected)   
 (28958 rows affected)  
 
+---
+
+# 7 — Create geom (geometry) and geog (geography) from latitude, longitude
+
+We will use spatial intersections later so and have spatial index
+
 ```sql
-----------------------------------------------------------------------------------------
--- 4.6.3 — Create geom as POINT (geometry, SRID 4326) from Latitude and Longitude values
+--------------------------------------------------------------------------------
+-- Create geom as POINT (geometry, SRID 4326) from Latitude and Longitude values
 -- geometry::Point(X,Y,4326) → X = Lon, Y = Lat
-----------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 UPDATE INEGI_AGEEML_2026
 SET geom = geometry::Point(Longitude, Latitude, 4326);
 
-------------------------
--- 4.6.4 — Validate geom
-------------------------
+----------------
+-- Validate geom
+----------------
 SELECT CVEGEO as CVGGEO_Invalid
 FROM INEGI_AGEEML_2026
 WHERE geom.STIsValid() = 0;
@@ -318,9 +320,9 @@ No CVEGEO_Invalid
 If any invalid, check why:
 
 ```sql
------------------------------------
--- 4.6.5 — If any invalid, show why
------------------------------------
+---------------------------
+-- If any invalid, show why
+---------------------------
 SELECT CVEGEO, geom.STIsValid(), geom.IsValidDetailed()
 FROM INEGI_AGEEML_2026
 WHERE geom.STIsValid() = 0;
@@ -329,15 +331,15 @@ WHERE geom.STIsValid() = 0;
 ### Copy geom (geometry) to geog (geography)
 
 ```sql
-----------------------------------------------------------------------------------------
--- 4.6.6 — Copy geom (geometries) to geog (geography)
-----------------------------------------------------------------------------------------
+---------------------------------------------
+-- Copy geom (geometries) to geog (geography)
+---------------------------------------------
 UPDATE INEGI_AGEEML_2026
 SET geog = geography::Point(Latitude, Longitude, 4326);
 
-------------------------
--- 4.6.7 — Validate geog
-------------------------
+----------------
+-- Validate geog
+----------------
 SELECT CVEGEO As CVEGEO_Invalid
 FROM INEGI_AGEEML_2026
 WHERE geog.STIsValid() = 0;
@@ -350,7 +352,7 @@ No CVEGEO_Invalid
 
 ---
 
-# 4.7 — Final Validations
+# 8 — Final Validations
 
 ✔ Validate Record Count
 
