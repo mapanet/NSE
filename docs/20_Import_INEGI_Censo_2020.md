@@ -1,4 +1,4 @@
-# 10 — INEGI Census 2020 (Locality-Level Data)
+# 20.0 — INEGI Census 2020 (Locality-Level Data)
 
 This dataset contains **Census 2020 population and dwelling data at the LOCALITY level**  
 It is a enrichment input for the Boundaries layer 6 Population, Dwellings, Occupied_Dwellings.
@@ -35,7 +35,7 @@ D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Localidad
 
 ---
 
-# 10.1 — Download Census 2020 Data (SCITEL)
+# 20.1 — Download Census 2020 Data (SCITEL)
 
 We download Census 2020 block-level data from **INEGI SCITEL**:
 
@@ -125,7 +125,7 @@ Example results:
 
 ---
 
-# 10.2 — Concatenate All Files into One Clean CSV (TSV)
+# 20.2 — Concatenate All Files into One Clean CSV (TSV)
 
 ### Purpose
 Combine all 32 state CSV files into a single **UTF‑8 (no BOM)**, **TAB‑separated** file ready for SQL Server bulk import.
@@ -176,7 +176,7 @@ print("Merged file saved to:", output_path)
 
 ---
 
-## 10.3 Convert Latutude HHMMSS to decimal, add CVEGEO
+## 20.3 Convert Latutude HHMMSS to decimal, add CVEGEO
 
 ### Output File
 
@@ -310,18 +310,16 @@ Example rows:
 
 ---
 
-# 10.3 — Import CSV into SQL Server
+# 20.4 — Import CSV into SQL Server
 
 Create table INEGI_Censo_2020 in MS SQL 2022.    
 
 ```sql
-----------------------------
--- 10.3 — Import CSV into SQL
-----------------------------
-
-----------------------------------------------------------------
--- 10.3.1 Create table INEGI_Censo_2020 (Census 2020 by Locality)
-----------------------------------------------------------------
+----------------------------------------------------------
+-- 20.4 — Import CSV into SQL
+--
+-- Create table INEGI_Censo_2020 (Census 2020 by Locality)
+----------------------------------------------------------
 DROP TABLE IF EXISTS INEGI_Censo_2020;
 GO
 
@@ -346,9 +344,9 @@ CREATE TABLE [dbo].[INEGI_Censo_2020](
 ) ON [PRIMARY]
 GO
 
---------------------
--- 10.3.2 Bulk Insert
---------------------
+--------------
+-- Bulk Insert
+--------------
 BULK INSERT INEGI_Censo_2020
 FROM 'D:\AXSI\INEGI\Censo_2020\Tabulados_AGEB_Localidad\ITER2020_ALL_COORDS_TAB.csv'
 WITH (
@@ -389,6 +387,3 @@ SELECT        TOP (10) CVEGEO, ENTIDAD, NOM_ENT, MUN, NOM_MUN, LOC, NOM_LOC, LAT
 
 ---
 
-
-
----
