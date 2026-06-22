@@ -733,6 +733,7 @@ WHERE Layer = 6
   AND NSE_SCORE IS NULL;
 
 -- Colonias with no population should not have NSE assigned
+-- Must return ~13859 that didn't have NSE_TOTAL and NSE values
 SELECT 
  State, 
  Municipality, 
