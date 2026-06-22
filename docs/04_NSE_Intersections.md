@@ -202,7 +202,7 @@ WHERE B.layer = 6
 
 # 3 Create COLONIA_NSE (weighted population)
 
-``sql
+```sql
 -- NSE Step 4.3 — Create COLONIA_NSE (weighted population)
 -- Corrected version: excludes AGEBs without AMAI population
 
