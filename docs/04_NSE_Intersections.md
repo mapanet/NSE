@@ -278,4 +278,171 @@ FROM COLONIA_NSE
 WHERE CVE_COLONIA = '2300800010017';
 ``
 
-# 4 
+# 4 Calculate percentages by neighborhood (colonia)
+
+This generates percentages per level and prepares everything for NSE_SCORE, dominant NSE, and NSE_LABEL:
+
+NSE_AB_PCT
+NSE_CPLUS_PCT
+NSE_C_PCT   (C + C-)
+NSE_DPLUS_PCT
+NSE_DE_PCT  (D + E)
+
+```sql
+-- NSE Step 4.4 — Calculate percentages by neighborhood (colonia)
+
+-- This generates:
+-- NSE_AB_PCT
+-- NSE_CPLUS_PCT
+-- NSE_C_PCT   (C + C-)
+-- NSE_DPLUS_PCT
+-- NSE_DE_PCT  (D + E)
+-- Prepares everything for NSE_SCORE, dominant NSE, and NSE_LABEL
+
+-- We already have:
+-- Boundaries ✔
+-- COLONIA_AGEB_INTERSECT ✔
+-- COLONIA_NSE ✔ (79,775 colonias with weighted population)
+
+-- This step is critical because it converts weighted population into percentages,
+-- which then feed into NSE_SCORE, dominant NSE, and NSE_LABEL.
+
+--------------------------------------------
+-- 1 Add the percentage columns to the table
+--------------------------------------------
+
+ALTER TABLE COLONIA_NSE
+ADD NSE_AB_PCT      numeric(5,2),
+    NSE_CPLUS_PCT   numeric(5,2),
+    NSE_C_PCT       numeric(5,2),
+    NSE_DPLUS_PCT   numeric(5,2),
+    NSE_DE_PCT      numeric(5,2);
+GO
+
+--------------------------
+-- 2 Calculate percentages
+--------------------------
+
+UPDATE COLONIA_NSE
+SET
+    NSE_AB_PCT      = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_AB     * 100.0 / NSE_TOTAL, 2) END,
+    NSE_CPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_CPLUS  * 100.0 / NSE_TOTAL, 2) END,
+    NSE_C_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_C      * 100.0 / NSE_TOTAL, 2) END,
+    NSE_DPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_DPLUS  * 100.0 / NSE_TOTAL, 2) END,
+    NSE_DE_PCT      = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_DE     * 100.0 / NSE_TOTAL, 2) END;
+GO
+
+----------------------------------------------------------------------
+-- Validation 1: Check that no percentages are NULL when NSE_TOTAL > 0
+----------------------------------------------------------------------
+
+SELECT *
+FROM COLONIA_NSE
+WHERE NSE_TOTAL > 0
+  AND (NSE_AB_PCT IS NULL OR NSE_CPLUS_PCT IS NULL OR NSE_C_PCT IS NULL OR NSE_DPLUS_PCT IS NULL OR NSE_DE_PCT IS NULL);
+
+----------------------------------------------------
+-- Validation 2: Check that percentages sum to ~100%
+----------------------------------------------------
+
+SELECT TOP 20
+    CVE_COLONIA,
+    NSE_AB_PCT + NSE_CPLUS_PCT + NSE_C_PCT + NSE_DPLUS_PCT + NSE_DE_PCT AS SUM_PCT
+FROM COLONIA_NSE;
+
+---------------------------------------------------------------------------------
+-- Validation 3: Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL
+---------------------------------------------------------------------------------
+
+SELECT *
+FROM COLONIA_NSE
+WHERE NSE_TOTAL > 0
+  AND NSE_AB_PCT IS NULL
+  AND NSE_CPLUS_PCT IS NULL
+  AND NSE_C_PCT IS NULL
+  AND NSE_DPLUS_PCT IS NULL
+  AND NSE_DE_PCT IS NULL;
+```
+
+# 5 
+
+```sql
+---------------------------------------------------------
+-- NSE Step 4.5 — Calculate IDS_PROM and NSE_SCORE
+-- IDS_PROM  = weighted raw index (0–700)
+-- NSE_SCORE = normalized index (1–7 scale)
+---------------------------------------------------------
+
+-- This is the weighted AMAI index, using simplified categories:
+--
+-- IDS_PROM:
+-- Category   Weight
+-- A/B        7
+-- C+         6
+-- C          5   (C + C-)
+-- D+         3
+-- D/E        1   (D + E)
+--
+-- NSE_SCORE = IDS_PROM / 100 (scale 1–7)
+
+-----------------------------------------
+-- 1. Drop previous columns if they exist
+-----------------------------------------
+
+IF EXISTS (SELECT 1 FROM sys.columns 
+           WHERE Name = N'IDS_PROM' AND Object_ID = Object_ID(N'COLONIA_NSE'))
+BEGIN
+    ALTER TABLE COLONIA_NSE DROP COLUMN IDS_PROM;
+END;
+
+IF EXISTS (SELECT 1 FROM sys.columns 
+           WHERE Name = N'NSE_SCORE' AND Object_ID = Object_ID(N'COLONIA_NSE'))
+BEGIN
+    ALTER TABLE COLONIA_NSE DROP COLUMN NSE_SCORE;
+END;
+GO
+
+-----------------------
+-- 2. Add clean columns
+-----------------------
+ALTER TABLE COLONIA_NSE
+ADD IDS_PROM  numeric(10,4),
+    NSE_SCORE numeric(10,4);
+GO
+
+---------------------------------------------------------------
+-- 3. Calculate IDS_PROM (raw index) and NSE_SCORE (normalized)
+---------------------------------------------------------------
+UPDATE COLONIA_NSE
+SET 
+    IDS_PROM =
+          ISNULL(NSE_AB_PCT,0)     * 7
+        + ISNULL(NSE_CPLUS_PCT,0)  * 6
+        + ISNULL(NSE_C_PCT,0)      * 5
+        + ISNULL(NSE_DPLUS_PCT,0)  * 3
+        + ISNULL(NSE_DE_PCT,0)     * 1,
+
+    NSE_SCORE =
+    (
+          ISNULL(NSE_AB_PCT,0)     * 7
+        + ISNULL(NSE_CPLUS_PCT,0)  * 6
+        + ISNULL(NSE_C_PCT,0)      * 5
+        + ISNULL(NSE_DPLUS_PCT,0)  * 3
+        + ISNULL(NSE_DE_PCT,0)     * 1
+    ) / 100.0;
+GO
+
+---------------------------------------------------------
+-- Validation
+---------------------------------------------------------
+
+-- 1. Verify NSE_SCORE is not NULL when NSE_TOTAL > 0
+SELECT *
+FROM COLONIA_NSE
+WHERE NSE_TOTAL > 0 AND NSE_SCORE IS NULL;
+
+-- 2. Inspect typical values
+SELECT TOP 20 CVE_COLONIA, IDS_PROM, NSE_SCORE
+FROM COLONIA_NSE
+ORDER BY NSE_SCORE DESC;
+```
