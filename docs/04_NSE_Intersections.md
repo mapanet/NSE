@@ -30,7 +30,7 @@ This ensures that the NSE assigned to each neighborhood accurately reflects the 
 
 --
 
-# 1 Check geometries of Boundaries layer 6
+# 1 Check geometries
 
 ```sql
 ------------------------------------------------------
