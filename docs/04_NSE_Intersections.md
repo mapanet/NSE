@@ -364,7 +364,7 @@ WHERE NSE_TOTAL > 0
   AND NSE_DE_PCT IS NULL;
 ```
 
-# 5 
+# 5 Calculate IDS_PROM and NSE_SCORE
 
 ```sql
 ---------------------------------------------------------
@@ -446,3 +446,159 @@ SELECT TOP 20 CVE_COLONIA, IDS_PROM, NSE_SCORE
 FROM COLONIA_NSE
 ORDER BY NSE_SCORE DESC;
 ```
+
+# 6 Calculate dominant NSE (A/B, C+, C, D+, DE)
+
+```sql
+USE INMO;
+GO
+
+---------------------------------------------------------
+-- NSE Step 4.6 — Calculate dominant NSE (A/B, C+, C, D+, D/E)
+-- Select the category with the highest percentage
+---------------------------------------------------------
+
+-- 1. Drop NSE column if it exists
+IF EXISTS (SELECT 1 FROM sys.columns 
+           WHERE Name = N'NSE' AND Object_ID = Object_ID(N'COLONIA_NSE'))
+BEGIN
+    ALTER TABLE COLONIA_NSE DROP COLUMN NSE;
+END;
+GO
+
+-- 2. Add clean NSE column
+ALTER TABLE COLONIA_NSE
+ADD NSE varchar(5);
+GO
+
+-- 3. Calculate dominant NSE using VALUES()
+UPDATE COLONIA_NSE
+SET NSE =
+(
+    SELECT TOP 1 Nivel
+    FROM
+    (
+        VALUES
+            ('A/B', NSE_AB_PCT),
+            ('C+',  NSE_CPLUS_PCT),
+            ('C',   NSE_C_PCT),
+            ('D+',  NSE_DPLUS_PCT),
+            ('D/E', NSE_DE_PCT)
+    ) AS X(Nivel, Valor)
+    WHERE Valor IS NOT NULL
+    ORDER BY Valor DESC
+)
+WHERE NSE_TOTAL > 0;
+GO
+
+-- 4. Colonias with no population → NSE = 'N/A'
+UPDATE COLONIA_NSE
+SET NSE = 'N/A'
+WHERE NSE_TOTAL = 0;
+GO
+
+---------------------------------------------------------
+-- Validation
+---------------------------------------------------------
+
+-- 1. No colonias with NSE_TOTAL > 0 should have NSE = NULL
+
+SELECT *
+FROM COLONIA_NSE
+WHERE NSE_TOTAL > 0 AND NSE IS NULL;
+
+-- 2. General distribution
+-- Should return
+
+-- NSE Colonias
+-- A/B	5342
+-- C+	2940
+-- C	31781
+-- D+	361
+-- D/E	26643
+-- N/A	12708
+
+SELECT NSE, COUNT(*) AS Colonias
+FROM COLONIA_NSE
+GROUP BY NSE
+ORDER BY Colonias DESC;
+GO
+```
+
+# 7 Create NSE_LABEL
+
+```sql
+---------------------------------------------------------
+-- NSE Step 4.7 — Create NSE_LABEL
+---------------------------------------------------------
+
+-- Logic:
+-- Add a column NSE_LABEL
+-- Build a string with the dominant NSE + rounded percentage
+-- Example: "A/B (47%)", "C+ (32%)", "N/A (0%)"
+
+-- 1. Add NSE_LABEL column
+ALTER TABLE COLONIA_NSE
+ADD NSE_LABEL varchar(15);
+GO
+
+-- 2. Generate NSE_LABEL text
+UPDATE COLONIA_NSE
+SET NSE_LABEL = 
+    CASE 
+        WHEN NSE = 'A/B' THEN CONCAT('A/B (', CAST(ROUND(NSE_AB_PCT,0) AS INT), '%)')
+        WHEN NSE = 'C+'  THEN CONCAT('C+ (',  CAST(ROUND(NSE_CPLUS_PCT,0) AS INT), '%)')
+        WHEN NSE = 'C'   THEN CONCAT('C (',   CAST(ROUND(NSE_C_PCT,0) AS INT), '%)')
+        WHEN NSE = 'D+'  THEN CONCAT('D+ (',  CAST(ROUND(NSE_DPLUS_PCT,0) AS INT), '%)')
+        WHEN NSE = 'D/E' THEN CONCAT('D/E (', CAST(ROUND(NSE_DE_PCT,0) AS INT), '%)')
+        WHEN NSE = 'N/A' THEN 'N/A (0%)'
+    END
+WHERE NSE IS NOT NULL;
+GO
+
+---------------------------------------------------------
+-- Validation
+---------------------------------------------------------
+
+-- 1. Sample results
+
+SELECT TOP 20 CVE_COLONIA, NSE, NSE_LABEL
+FROM COLONIA_NSE;
+
+-- 2. Count colonias with NSE_LABEL
+-- Expected: 79,775 total colonias
+-- Minus ~12,708 with NSE_TOTAL = 0
+-- ≈ 67,067 with valid NSE_LABEL
+
+SELECT COUNT(*) AS Colonias_With_Label
+FROM COLONIA_NSE
+WHERE NSE_LABEL IS NOT NULL;
+```
+
+## Expected reults
+
+|CVE_COLONIA |NSE|NSE_LABEL|
+|------------|---|---------|
+1608201500001|N/A|N/A (0%)|
+0200400010117|C|C (44%)|
+1304800010166|C|C (36%)|
+1306500010003|D/E|D/E (44%)|
+1303700010009|C|C (32%)|
+1610801940001|N/A|N/A (0%)|
+1304800010106|C|C (32%)|
+1202900010156|C|C (32%)|
+1609100010012|D/E|D/E (38%)|
+2500900010048|D/E|D/E (34%)|
+1410100010033|C|C (36%)|
+2601700010009|C|C (37%)|
+1410100090055|C|C (48%)|
+1409701800015|A/B|A/B (46%)|
+1410300010007|D/E|D/E (39%)|
+3019300010102|C|C (31%)|
+1410100010006|C|C (38%)|
+2048200010025|D/E|D/E (55%)|
+0801900010128|C|C (37%)|
+3203600010706|D/E|D/E (51%)|
+
+# 8
+
