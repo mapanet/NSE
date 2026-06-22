@@ -33,60 +33,121 @@ This ensures that the NSE assigned to each neighborhood accurately reflects the 
 # 1 Check geometries of Boundaries layer 6
 
 ```sql
-USE INMO
-GO
+------------------------------------------------------
+-- NSE Step 4.0 — Validate geometries
+-- Boundaries layer 6 (neighborhoods) and MG 2025 AGEB
+-- Neighborhoods: Boundaries Layer = 6
+-- AGEB:          Boundaries_AGEB_2025
+------------------------------------------------------
 
--------------------------------------------------------------------
--- NSE Step 4.0 Check if geomatries of Boundaries layer 6 are valid 
--- All queries must return Nothing
--------------------------------------------------------------------
+-------------------------------------
+-- Boundaries Layer 6 (neighborhoods)
+-- Expected: Nothing = OK
+-------------------------------------
 
---------
--- Valid
---------
+-------------------------
+-- Invalidd Geometries
+-------------------------
 
 SELECT ID, CVEGEO 
 FROM Boundaries
 WHERE Layer = 6
   AND geom.STIsValid() = 0;
 
---------------------------
--- Empty or null Geometres
--- Expected: Nada OK
---------------------------
+---------------------------
+-- Empty or null Geometries
+---------------------------
 
 SELECT ID, CVEGEO 
 FROM Boundaries
 WHERE Layer = 6
   AND (geom IS NULL OR geom.STIsEmpty() = 1);
 
---------------------
+-----------
 -- Area = 0
--- Expected: Nada OK
---------------------
+-----------
 
 SELECT ID, CVEGEO 
 FROM Boundaries
 WHERE Layer = 6
   AND geom.STArea() = 0;
 
----------------------------
--- Incorrect geometric type
--- Expected: Nada OK
----------------------------
+--------------------------
+-- Incorrect geometry type
+--------------------------
 
 SELECT ID, CVEGEO, geom.STGeometryType()
 FROM Boundaries
 WHERE Layer = 6
   AND geom.STGeometryType() NOT IN ('Polygon','MultiPolygon');
 
------------------------
--- Bounding box invalid
--- Expected: Nada OK
------------------------
+----------------------------------------------
+-- Bounding box suspicious (weird coordinates)
+----------------------------------------------
 
 SELECT ID, CVEGEO 
 FROM Boundaries
 WHERE Layer = 6
   AND (geom.STEnvelope().ToString() LIKE '%E+%' OR geom.STEnvelope().ToString() LIKE '%E-%');
+
+----------------------------------------
+-- Inconsitent SRID (must be EPSG: 4326)
+----------------------------------------
+
+SELECT DISTINCT geom.STSrid AS SRID
+FROM Boundaries
+WHERE Layer = 6;
+
+
+------------------------------
+-- AGEB (Boundaries_AGEB_2025)
+------------------------------
+
+---------------------
+-- Invalid Geometries
+---------------------
+
+SELECT ID, CVEGEO 
+FROM Boundaries_AGEB_2025
+WHERE geom.STIsValid() = 0;
+
+---------------------------
+-- Empty or null Geometries
+---------------------------
+
+SELECT ID, CVEGEO 
+FROM Boundaries_AGEB_2025
+WHERE geom IS NULL OR geom.STIsEmpty() = 1;
+
+-----------
+-- Area = 0
+-----------
+
+SELECT ID, CVEGEO 
+FROM Boundaries_AGEB_2025
+WHERE geom.STArea() = 0;
+
+--------------------------
+-- Incorrect geometry type
+--------------------------
+
+SELECT ID, CVEGEO, geom.STGeometryType()
+FROM Boundaries_AGEB_2025
+WHERE geom.STGeometryType() NOT IN ('Polygon','MultiPolygon');
+
+-----------------------------------
+-- Suspicious Bounding box E+ or E-
+-----------------------------------
+
+SELECT ID, CVEGEO 
+FROM Boundaries_AGEB_2025
+WHERE geom.STEnvelope().ToString() LIKE '%E+%' 
+   OR geom.STEnvelope().ToString() LIKE '%E-%';
+
+------------------------------------
+-- SRID inconsistente (must be 4326)
+------------------------------------
+
+SELECT DISTINCT geom.STSrid AS SRID
+FROM Boundaries_AGEB_2025;
 ```
