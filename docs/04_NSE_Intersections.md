@@ -579,26 +579,169 @@ WHERE NSE_LABEL IS NOT NULL;
 
 |CVE_COLONIA |NSE|NSE_LABEL|
 |------------|---|---------|
-1608201500001|N/A|N/A (0%)|
-0200400010117|C|C (44%)|
-1304800010166|C|C (36%)|
-1306500010003|D/E|D/E (44%)|
-1303700010009|C|C (32%)|
-1610801940001|N/A|N/A (0%)|
-1304800010106|C|C (32%)|
-1202900010156|C|C (32%)|
-1609100010012|D/E|D/E (38%)|
-2500900010048|D/E|D/E (34%)|
-1410100010033|C|C (36%)|
-2601700010009|C|C (37%)|
-1410100090055|C|C (48%)|
-1409701800015|A/B|A/B (46%)|
-1410300010007|D/E|D/E (39%)|
-3019300010102|C|C (31%)|
-1410100010006|C|C (38%)|
-2048200010025|D/E|D/E (55%)|
-0801900010128|C|C (37%)|
-3203600010706|D/E|D/E (51%)|
+|1608201500001|N/A|N/A (0%)|
+|0200400010117|C|C (44%)|
+|1304800010166|C|C (36%)|
+|1306500010003|D/E|D/E (44%)|
+|1303700010009|C|C (32%)|
+|1610801940001|N/A|N/A (0%)|
+|1304800010106|C|C (32%)|
+|1202900010156|C|C (32%)|
+|1609100010012|D/E|D/E (38%)|
+|2500900010048|D/E|D/E (34%)|
+|1410100010033|C|C (36%)|
+|2601700010009|C|C (37%)|
+|1410100090055|C|C (48%)|
+|1409701800015|A/B|A/B (46%)|
+|1410300010007|D/E|D/E (39%)|
+|3019300010102|C|C (31%)|
+|1410100010006|C|C (38%)|
+|2048200010025|D/E|D/E (55%)|
+|0801900010128|C|C (37%)|
+|3203600010706|D/E|D/E (51%)|
+```
 
-# 8
+# 8 Copy COLONIAS_NSE calculations to Boundaries layer = 6
 
+```sql
+USE INMO;
+GO
+
+---------------------------------------------------------
+-- NSE Step 4.8 — Update Boundaries Layer 6 with final values
+-- Requires that Steps 4.5, 4.6, and 4.7 have already been executed
+---------------------------------------------------------
+
+-- 1. Validate that required columns exist in COLONIA_NSE
+--    If any are missing → ABORT
+IF NOT EXISTS (SELECT 1 FROM sys.columns 
+               WHERE Name = 'NSE' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
+BEGIN
+    RAISERROR('ERROR: Missing column NSE. Step 4.6 not executed.', 16, 1);
+    RETURN;
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.columns 
+               WHERE Name = 'NSE_LABEL' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
+BEGIN
+    RAISERROR('ERROR: Missing column NSE_LABEL. Step 4.7 not executed.', 16, 1);
+    RETURN;
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.columns 
+               WHERE Name = 'NSE_SCORE' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
+BEGIN
+    RAISERROR('ERROR: Missing column NSE_SCORE. Step 4.5 not executed.', 16, 1);
+    RETURN;
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.columns 
+               WHERE Name = 'IDS_PROM' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
+BEGIN
+    RAISERROR('ERROR: Missing column IDS_PROM. Step 4.5 not executed.', 16, 1);
+    RETURN;
+END;
+
+PRINT 'Validation OK: All required columns exist.';
+GO
+
+---------------------------------------------------------
+-- 2. Clear previous values in Boundaries Layer 6
+---------------------------------------------------------
+UPDATE Boundaries
+SET 
+    NSE        = NULL,
+    NSE_LABEL  = NULL,
+    NSE_SCORE  = NULL,
+    IDS_PROM   = NULL,
+    NSE_TOTAL  = NULL,
+
+    NSE_AB     = NULL,
+    NSE_CPLUS  = NULL,
+    NSE_C      = NULL,
+    NSE_DPLUS  = NULL,
+    NSE_DE     = NULL,
+
+    NSE_AB_PCT     = NULL,
+    NSE_CPLUS_PCT  = NULL,
+    NSE_C_PCT      = NULL,
+    NSE_DPLUS_PCT  = NULL,
+    NSE_DE_PCT     = NULL
+WHERE Layer = 6;
+GO
+
+PRINT 'Previous values cleared successfully.';
+GO
+
+---------------------------------------------------------
+-- 3. Copy final data from COLONIA_NSE into Boundaries Layer 6
+---------------------------------------------------------
+UPDATE B
+SET
+    B.NSE            = C.NSE,
+    B.NSE_LABEL      = C.NSE_LABEL,
+    B.NSE_SCORE      = C.NSE_SCORE,
+    B.IDS_PROM       = C.IDS_PROM,
+
+    B.NSE_TOTAL      = C.NSE_TOTAL,
+
+    B.NSE_AB         = C.NSE_AB,
+    B.NSE_CPLUS      = C.NSE_CPLUS,
+    B.NSE_C          = C.NSE_C,
+    B.NSE_DPLUS      = C.NSE_DPLUS,
+    B.NSE_DE         = C.NSE_DE,
+
+    B.NSE_AB_PCT     = C.NSE_AB_PCT,
+    B.NSE_CPLUS_PCT  = C.NSE_CPLUS_PCT,
+    B.NSE_C_PCT      = C.NSE_C_PCT,
+    B.NSE_DPLUS_PCT  = C.NSE_DPLUS_PCT,
+    B.NSE_DE_PCT     = C.NSE_DE_PCT
+FROM Boundaries B
+JOIN COLONIA_NSE C
+    ON B.CVEGEO = C.CVE_COLONIA
+WHERE B.Layer = 6;
+GO
+
+PRINT 'Boundaries Layer 6 updated successfully.';
+GO
+
+---------------------------------------------------------
+-- 4. Final validations
+---------------------------------------------------------
+-- Should return:
+
+-- A/B	5342
+-- C	31781
+-- C+	2940
+-- D+	361
+-- D/E	26643
+-- N/A	12708
+
+-- Distribution of NSE categories
+SELECT NSE, COUNT(*) AS Records
+FROM Boundaries
+WHERE Layer = 6
+GROUP BY NSE
+ORDER BY NSE ASC, COUNT(*) DESC;
+
+-- Colonias with population > 0 should not have NSE_SCORE = NULL
+-- Should retun NONE
+SELECT *
+FROM Boundaries
+WHERE Layer = 6
+  AND NSE_TOTAL > 0
+  AND NSE_SCORE IS NULL;
+
+-- Colonias with no population should not have NSE assigned
+SELECT *
+FROM Boundaries
+WHERE Layer = 6
+  AND NSE_TOTAL = 0
+  AND NSE IS NOT NULL;
+
+-- Sample results
+SELECT TOP 20 CVEGEO, NSE, NSE_LABEL, NSE_SCORE, NSE_TOTAL
+FROM Boundaries
+WHERE Layer = 6;
+GO
+```
