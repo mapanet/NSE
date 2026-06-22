@@ -733,7 +733,26 @@ WHERE Layer = 6
   AND NSE_SCORE IS NULL;
 
 -- Colonias with no population should not have NSE assigned
-SELECT *
+SELECT 
+ State, 
+ Municipality, 
+ City, 
+ Neighborhood, 
+ NSE, 
+ NSE_LABEL, 
+ NSE_SCORE,
+ IDS_PROM,
+ NSE_TOTAL,
+ NSE_AB,
+ NSE_CPLUS,
+ NSE_C,
+ NSE_DPLUS,
+ NSE_DE,
+ NSE_AB_PCT,
+ NSE_CPLUS_PCT,
+ NSE_C_PCT,
+ NSE_DPLUS_PCT,
+ NSE_DE_PCT
 FROM Boundaries
 WHERE Layer = 6
   AND NSE_TOTAL = 0
