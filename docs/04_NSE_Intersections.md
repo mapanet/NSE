@@ -525,7 +525,9 @@ ORDER BY Colonias DESC;
 GO
 ```
 
-# 7 Create NSE_LABEL
+# 7 Create NSE_LABEL 
+
+Create NSE_LABEL with letter and percentage, example "A/B (57%)"
 
 ```sql
 ---------------------------------------------------------
