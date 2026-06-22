@@ -1,4 +1,4 @@
-# 4.0 NSE calculation fro Boundaries layer = 6 (Neighborhoods)
+# 4 NSE calculation fro Boundaries layer = 6 (Neighborhoods)
 
 ## Purpose in the NSE Pipeline
 
@@ -8,7 +8,6 @@ This dataset is used to:
 - Perform **spatial intersection** with AGEB polygons  
 - Calculate **area‑weighted NSE** values per neighborhood  
 
----
 
 ## Why Area Weighting Is Required
 
@@ -28,3 +27,66 @@ C+ = 0.7 × 40 + 0.3 × 10
 C  = 0.7 × 30 + 0.3 × 20
 
 This ensures that the NSE assigned to each neighborhood accurately reflects the socioeconomic composition of the AGEBs it overlaps.
+
+--
+
+# 1 Check geometries of Boundaries layer 6
+
+```sql
+USE INMO
+GO
+
+-------------------------------------------------------------------
+-- NSE Step 4.0 Check if geomatries of Boundaries layer 6 are valid 
+-- All queries must return Nothing
+-------------------------------------------------------------------
+
+--------
+-- Valid
+--------
+
+SELECT ID, CVEGEO 
+FROM Boundaries
+WHERE Layer = 6
+  AND geom.STIsValid() = 0;
+
+--------------------------
+-- Empty or null Geometres
+-- Expected: Nada OK
+--------------------------
+
+SELECT ID, CVEGEO 
+FROM Boundaries
+WHERE Layer = 6
+  AND (geom IS NULL OR geom.STIsEmpty() = 1);
+
+--------------------
+-- Area = 0
+-- Expected: Nada OK
+--------------------
+
+SELECT ID, CVEGEO 
+FROM Boundaries
+WHERE Layer = 6
+  AND geom.STArea() = 0;
+
+---------------------------
+-- Incorrect geometric type
+-- Expected: Nada OK
+---------------------------
+
+SELECT ID, CVEGEO, geom.STGeometryType()
+FROM Boundaries
+WHERE Layer = 6
+  AND geom.STGeometryType() NOT IN ('Polygon','MultiPolygon');
+
+-----------------------
+-- Bounding box invalid
+-- Expected: Nada OK
+-----------------------
+
+SELECT ID, CVEGEO 
+FROM Boundaries
+WHERE Layer = 6
+  AND (geom.STEnvelope().ToString() LIKE '%E+%' OR geom.STEnvelope().ToString() LIKE '%E-%');
+```
