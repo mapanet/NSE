@@ -577,7 +577,7 @@ FROM COLONIA_NSE
 WHERE NSE_LABEL IS NOT NULL;
 ```
 
-## Expected reults
+## Expected results
 
 |CVE_COLONIA |NSE|NSE_LABEL|
 |------------|---|---------|
@@ -601,7 +601,7 @@ WHERE NSE_LABEL IS NOT NULL;
 |2048200010025|D/E|D/E (55%)|
 |0801900010128|C|C (37%)|
 |3203600010706|D/E|D/E (51%)|
-```
+
 
 # 8 Copy COLONIAS_NSE calculations to Boundaries layer = 6
 
