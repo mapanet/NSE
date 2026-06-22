@@ -9,7 +9,7 @@ Objective: Convert the official AMAI file `NSE_por_AGEB_AMAI.xlsx` into a normal
 
 ---
 
-## 1.1 Official Source File
+## 1 Official Source File
 
 AMAI publishes the dataset in its downloads section:
 
@@ -26,7 +26,7 @@ Important characteristics of the file:
 
 ---
 
-## 1.2 Original File Contents
+## 2 Original File Contents
 
 The file contains one row per urban AGEB from Census 2020.
 
@@ -59,7 +59,7 @@ File name: NSE_AMAI_2024_AGEB_IMPORT.xlsx
 
 ---
 
-## 1.3 Edit Excel to format columns as we need
+## 3 Edit Excel to format columns as we need
 
 #### Fix the headers, get rid of columns we don't need
 
@@ -87,7 +87,7 @@ Delete rows 1 and 2
 
 ---
 
-## 1.4 Create CVEGEO by concatenating codes
+## 4 Create CVEGEO by concatenating codes
 
 ### Add a new column to the left and name it **CVEGEO**
 
@@ -124,7 +124,7 @@ Example:
 
 ---
 
-## 1.5 Correction of “N/D” values
+## 5 Correction of “N/D” values
 
 1. Numeric columns  
    AB, CPLUS, C, CMUNIS, DPLUS, D, E → AMAI uses “N/D” when there is insufficient information.
@@ -149,7 +149,7 @@ This prevents errors in:
 
 ---
 
-## 1.6 Export from Excel to CSV (TSV)
+## 6 Export from Excel to CSV (TSV)
 
 The CSV file should look like this (TAB‑delimited):
 
@@ -187,48 +187,43 @@ Note: I use TAB for my personal convenience, you can comma delimiter, just corre
 
 ---
 
-## 1.7 Create Final AMAI SQL Table in MS SQL Server 2022
+## 7 Create Final AMAI table in MS SQL Server 2022
 
 ```sql
---------------------------------------------------------
--- 1.7 Create Final AMAI SQL Table in MS SQL Server 2022
---------------------------------------------------------
+------------------------------------------
+-- Create table in SQL: NSE_AMAI_2024_AGEB
+------------------------------------------
+
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 
-DROP TABLE IF EXISTS dbo.NSE_AMAI_2024_AGEB;
-
 CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
-    [CVEGEO] [nvarchar](13) NOT NULL,
-    [NSE_AB] [int] NULL,
-    [NSE_CPLUS] [int] NULL,
-    [NSE_C] [int] NULL,
-    [NSE_CMINUS] [int] NULL,
-    [NSE_DPLUS] [int] NULL,
-    [NSE_D] [int] NULL,
-    [NSE_E] [int] NULL,
-    [NSE] [nvarchar](10) NULL,
-    [NSE_TOTAL] [int] NULL,
+	[CVEGEO] [nvarchar](20) NOT NULL,
+	[NSE_AB] [int] NULL,
+	[NSE_CPLUS] [int] NULL,
+	[NSE_C] [int] NULL,
+	[NSE_CMINUS] [int] NULL,
+	[NSE_DPLUS] [int] NULL,
+	[NSE_D] [int] NULL,
+	[NSE_E] [int] NULL,
+	[NSE_LABEL] [nvarchar](10) NULL,
+	[NSE_TOTAL] [int] NULL,
  CONSTRAINT [PK_NSE_AMAI_2024_AGEB] PRIMARY KEY CLUSTERED 
 (
-    [CVEGEO] ASC
-) WITH (
-    PAD_INDEX = OFF,
-    STATISTICS_NORECOMPUTE = OFF,
-    IGNORE_DUP_KEY = OFF,
-    ALLOW_ROW_LOCKS = ON,
-    ALLOW_PAGE_LOCKS = ON,
-    OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF
-) ON [PRIMARY]
+	[CVEGEO] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
------------------------------------------
--- 1.8 Import CSV into MS SQL Server 2022
+------------------------------------------------
+-- Import CSV: NSE_por_AGEB_AMAI_2024_IMPORT.csv
+-- Asumes: CSV is TAB
+-- File is UTF-8 NO BOM
 -- Make sure the directory path matches where you saved the AMAI CSV file.
------------------------------------------
+------------------------------------------------
 BULK INSERT NSE_AMAI_2024_AGEB
 FROM 'D:\AXSI\AMAI\NSE_AMAI_2024_AGEB_IMPORT.csv'
 WITH (
@@ -245,7 +240,7 @@ WITH (
 
 ---
 
-## 1.9 Post‑Import Validations
+## 9 Post‑Import Validations
 
 ### Validate that TOTAL = sum of socioeconomic levels
 
@@ -285,7 +280,7 @@ None: Tthis means all CVEGEO are 13 characters: EEMMMLLLLAAAA
 
 ---
 
-## 1.10 Final Result
+## 10 Final Result
 
 SQL to display top 6 records to verify data:
 
