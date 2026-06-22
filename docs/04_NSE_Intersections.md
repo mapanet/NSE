@@ -151,3 +151,51 @@ WHERE geom.STEnvelope().ToString() LIKE '%E+%'
 SELECT DISTINCT geom.STSrid AS SRID
 FROM Boundaries_AGEB_2025;
 ```
+
+# 2 Create Intersection Boundaries (layer=6) ↔ AGEB
+
+This will create a table of Neighborhoods that instersect AGEB units and cross reference **CVE_COLONIA** (Neighborhood) to **CVE_AGEB** and area where Neighborrhood is within an AGEB.
+
+```sql
+----------------------------------------------------------
+-- NSE Step 4.2 — Intersection Boundaries (layer=6) ↔ AGEB
+----------------------------------------------------------
+
+-- Creates COLONIA_AGEB_INTERSECT
+-- Expected result: ~267,718 records
+
+DROP TABLE IF EXISTS COLONIA_AGEB_INTERSECT;
+GO
+
+SELECT 
+    B.ID AS ID_COLONIA,
+    B.CVEGEO AS CVE_COLONIA,
+    A.CVEGEO AS CVE_AGEB,
+    B.geom.STIntersection(A.geom) AS geom_inter,
+    B.geom.STIntersection(A.geom).STArea() / B.geom.STArea() AS pct_area
+INTO COLONIA_AGEB_INTERSECT
+FROM Boundaries B
+JOIN Boundaries_AGEB_2025 A
+    ON B.geom.STIntersects(A.geom) = 1
+WHERE B.layer = 6;
+GO
+
+------------------------------------------------------------------------
+-- Validation: How many records were generated in COLONIA_AGEB_INTERSECT
+-- Expected result: ~267,718 records
+-------------------------------------------------------------------------
+
+SELECT COUNT(*) AS Records FROM COLONIA_AGEB_INTERSECT;
+
+---------------------------------------------------------------------------
+-- Validation: Check that no neighborhoods exist without AGEB intersections
+-- Expected result: 0
+---------------------------------------------------------------------------
+
+SELECT COUNT(*) 
+FROM Boundaries B
+LEFT JOIN COLONIA_AGEB_INTERSECT I
+    ON B.CVEGEO = I.CVE_COLONIA
+WHERE B.layer = 6
+  AND I.CVE_COLONIA IS NULL;
+```
