@@ -407,14 +407,14 @@ GROUP BY NSE_LABEL
 ORDER BY NSE_LABEL ASC;
 ```
 
-## Expected results
+### Expected results
 
-### Validation 1:
+#### Validation 1
 
 Displays a table with percentages, check visually not all percentages _PCT fields are NULL when NSE_TOTAL > 0
 If NSE_TOTAL > 0, at least one _PCT must have a value, but typically several must have a value.
 
-### Validation 2:
+#### Validation 2
 
 |CVE_COLONIA  |SUM_PCT|
 |-------------|-------|
@@ -439,11 +439,11 @@ If NSE_TOTAL > 0, at least one _PCT must have a value, but typically several mus
 |1607700670001|99.99|
 |0400200010041|100.01|
 
-### Validation 3:
+#### Validation 3
 
 NONE (Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL)
 
-### Validation 4:
+#### Validation 4
 
 |NSE_LABEL|Neighborhoods|
 |--------|-------------|
