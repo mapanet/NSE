@@ -30,40 +30,6 @@ This ensures that the NSE assigned to each neighborhood accurately reflects the 
 
 ---
 
-# Step Schema for NSE Construction
-
-**1. Prepare Input Data**   
-- Load NSE_AMAI_2024_AGEB (socioeconomic data at AGEB level).  
-- Load Boundaries_AGEB_2025 (AGEB polygons).  
-- Load Boundaries layer (Neighborhood polygons, level 6).  
-
-**2. Spatial Overlay**   
-- Perform a spatial join between AGEB polygons and Neighborhood polygons.  
-- Ensure each neighborhood polygon is linked to the AGEBs it overlaps.  
-
-**3. Attribute Join**   
-- Attach NSE_AMAI_2024_AGEB attributes to the AGEB polygons.
-- This gives socioeconomic values per AGEB with spatial reference.
-
-**4. Aggregation to Neighborhoods**   
-- Aggregate AGEB‑level NSE data into Neighborhood polygons.   
-- Use weighted averages (population or households as weights) to avoid bias from polygon size.  
-
-**5. Classification**   
-- Map aggregated values into the NSE categories you defined:  
-  - NSE_AB, NSE_CPLUS, NSE_C, NSE_CMINUS, NSE_DPLUS, NSE_D, NSE_E.
-- Apply thresholds or AMAI classification rules consistently.
-
-**6. Validation**
-- Check totals against known AMAI distributions.   
-- Spot‑check neighborhoods to confirm logical consistency.   
-
-**7. Final Output**   
-- Store results in a new table, e.g., NSE_2025_Neighborhoods.
-- Include geometry + NSE category fields for mapping and analysis.
-
----
-
 # 1 Check geometries
 
 ```sql
