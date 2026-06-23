@@ -218,7 +218,7 @@ CREATE TABLE [dbo].[Boundaries](
 	[PostalCode] [varchar](5) NULL,
 	[Population] [int] NULL,
 	[Dwelings] [int] NULL,
-    [Occopied_Dwelings] [int] NULL,
+    [Occupied_Dwelings] [int] NULL,
 	[Type] [varchar](10) NULL,
 	[AreaM2] [float] NULL,
 	[geog] [geography] NULL,
