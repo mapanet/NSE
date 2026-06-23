@@ -290,11 +290,13 @@ WHERE CVE_COLONIA = '2300800010017';
 
 This generates percentages per level and prepares everything for NSE_SCORE, dominant NSE, and NSE_LABEL:
 
-NSE_AB_PCT
-NSE_CPLUS_PCT
-NSE_C_PCT   (C + C-)
-NSE_DPLUS_PCT
-NSE_DE_PCT  (D + E)
+- NSE_AB_PCT   
+- NSE_CPLUS_PCT   
+- NSE_C_PCT   
+- NSE_CMINUS_PCT   
+- NSE_DPLUS_PCT   
+- NSE_D_PCT   
+- NSE_E_PCT   
 
 ```sql
 USE INMO;
