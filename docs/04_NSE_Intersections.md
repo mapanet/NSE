@@ -191,6 +191,7 @@ GO
 ------------------------------------------------------------------------
 -- Validation: How many records were generated in COLONIA_AGEB_INTERSECT
 -- Expected result: ~267,718 records
+-- Time to run: ~3 minutes
 -------------------------------------------------------------------------
 
 SELECT COUNT(*) AS Records FROM COLONIA_AGEB_INTERSECT;
@@ -210,7 +211,9 @@ WHERE B.layer = 6
 
 # 3 Create COLONIA_NSE (weighted population)
 
-```sql
+USE INMO;
+GO
+
 -- NSE Step 4.3 — Create COLONIA_NSE (weighted population)
 -- Corrected version: excludes AGEBs without AMAI population
 
@@ -219,24 +222,18 @@ WHERE B.layer = 6
 -- Each AGEB has different AMAI population values
 -- Each neighborhood covers a different percentage of each AGEB
 -- We need to weight population by intersection area
--- Then sum by neighborhood
--- Then calculate percentages
--- Then calculate NSE_SCORE
--- Then determine dominant NSE
--- Then assign NSE_LABEL
--- Boundaries layer 6 cannot do this directly
 
--- IMPORTANT:
--- We will collapse some AMAI levels to simplity for real estate:
--- NSE_AB
--- NSE_CPLUS
--- NSE_C = NSE_C + NSE_MINUS
--- NSE_PLUS
--- NSE_DE = NSE_D + NSE_E
+-- This is required to next steps:
+-- Sum by neighborhood
+-- Calculate percentages
+-- Calculate NSE_SCORE
+-- Determine dominant NSE
+-- Assign NSE_LABEL
+-- Copy COLONIA_NSE results to Boundaries layer 6
 
 -- Exclusions:
 -- ✔ AGEBs without population
--- ✔ Prevents one intersection with TOTAL_POP = 0 from breaking the whole neighborhood
+-- ✔ Prevents one intersection with NSE_TOTAL = 0 from breaking the whole neighborhood
 -- ✔ AMAI-compatible
 -- ✔ 100% robust
 
@@ -247,9 +244,11 @@ SELECT
     I.CVE_COLONIA,
     SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_AB     ELSE 0 END) AS NSE_AB,
     SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_CPLUS  ELSE 0 END) AS NSE_CPLUS,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * (A.NSE_C + A.NSE_CMINUS) ELSE 0 END) AS NSE_C,
+    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_C      ELSE 0 END) AS NSE_C,
+    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_CMINUS ELSE 0 END) AS NSE_CMINUS,
     SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_DPLUS  ELSE 0 END) AS NSE_DPLUS,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * (A.NSE_D + A.NSE_E) ELSE 0 END) AS NSE_DE,
+    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_D      ELSE 0 END) AS NSE_D,
+    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_E      ELSE 0 END) AS NSE_E,
     SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_TOTAL  ELSE 0 END) AS NSE_TOTAL
 INTO COLONIA_NSE
 FROM COLONIA_AGEB_INTERSECT I
