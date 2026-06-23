@@ -28,7 +28,7 @@ C  = 0.7 × 30 + 0.3 × 20
 
 This ensures that the NSE assigned to each neighborhood accurately reflects the socioeconomic composition of the AGEBs it overlaps.
 
---
+---
 
 # Step Schema for NSE Construction
 
