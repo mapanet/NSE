@@ -38,7 +38,7 @@ We then interpolate these values to align with **DCAH neighborhood boundaries**,
    NSE Assigned to DCAH Neighborhoods
 ```
 
----
+
 
 ## 📁 Repository Structure
 
@@ -47,7 +47,6 @@ We then interpolate these values to align with **DCAH neighborhood boundaries**,
 - `/scripts` — SQL scripts, PowerShell utilities, Python scripts, automation
 - `/images` — Diagrams, maps, and reference figures
 
----
 
 ## Documentation Index
 
