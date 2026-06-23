@@ -211,6 +211,7 @@ WHERE B.layer = 6
 
 # 3 Create COLONIA_NSE (weighted population)
 
+```sql
 USE INMO;
 GO
 
@@ -283,7 +284,7 @@ WHERE NSE_TOTAL = 0;
 SELECT *
 FROM COLONIA_NSE
 WHERE CVE_COLONIA = '2300800010017';
-``
+```
 
 # 4 Calculate percentages by neighborhood (colonia)
 
