@@ -162,6 +162,9 @@ Overlay AGEB polygons with neighborhood polygons to establish spatial relationsh
 - Store results in COLONIA_AGEB_INTERSECT
 
 ```sql
+USE INMO;
+GO
+
 ----------------------------------------------------------
 -- NSE Step 4.2 — Intersection Boundaries (layer=6) ↔ AGEB
 ----------------------------------------------------------
