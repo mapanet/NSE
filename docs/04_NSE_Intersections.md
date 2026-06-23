@@ -154,7 +154,12 @@ FROM Boundaries_AGEB_2025;
 
 # 2 Create Intersection Boundaries (layer=6) ↔ AGEB
 
-This will create a table of Neighborhoods that instersect AGEB units and cross reference **CVE_COLONIA** (Neighborhood) to **CVE_AGEB** and area where Neighborrhood is within an AGEB.
+Overlay AGEB polygons with neighborhood polygons to establish spatial relationships.
+
+- Use Boundaries_AGEB_2025 (AGEB polygons)
+- Use Boundaries with Layer = 6 (Neighborhoods)
+- Apply ST_Intersects or ST_Intersection to generate overlaps
+- Store results in COLONIA_AGEB_INTERSECT
 
 ```sql
 ----------------------------------------------------------
