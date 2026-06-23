@@ -14,7 +14,7 @@ This table will be used for:
 - D:\AXSI\INEGI\MG_2025\Download (downloaded file and unzipped content to load into QGIS)
 - D:\AXSI\INEGI\MG_2025\AGEB (save the processed AGEB shape MG_AGEB_2025.SHP as EPSG:4023)
 
-## 2.1 Official Download of Marco Geoestadístico 2025
+## 1 Official Download of Marco Geoestadístico 2025
 
 The Marco Geoestadístico 2025 can be downloaded from INEGI:
 
@@ -46,7 +46,7 @@ Files inside the dataset:
 - 00_lpr = Locality (point)  
 - 00_l = Locality Urban and Rural (polygons)  
 
-## 2.2 Contents of the file 00a.shp
+## 2 Contents of the file 00a.shp
 
 Load `00a.shp` in QGIS, ch eck the layer contains the following fields:
 
@@ -66,7 +66,7 @@ Original CRS: **MEXICO_IRF‑2008_LLC**
 
 ---
 
-## 2.3 Export from QGIS to CRS EPSG:4326)
+## 3 Export from QGIS to CRS EPSG:4326)
 
 Export the layer `00a.shp` as:
 
@@ -98,7 +98,7 @@ If you edit the CSV you should see something like this:
 |MULTIPOLYGON (((-102.27 21.87, ... -102.27 21.87)))| 01 | 001 | 0001 | 216A | 010010001216A | Urbano |
 |MULTIPOLYGON (((-102.24 21.86, ... -102.24 21.86)))	| 01 | 001 | 0001 | 2649 | 0100100012649 | Urbano |
 
-## 2.4 Create the MS SQL Staging table
+## 4 Create the MS SQL Staging table
 
 We create a staging table to import the data as since QGIS creates the CSV with WKT geometry in 1st position.
 Then we will create and copy the imported data to the final table.
@@ -107,7 +107,7 @@ Then we will create and copy the imported data to the final table.
 
 ```sql
 ------------------------------
--- 2.4 Create the taging Table
+-- 4 Create the taging Table
 ------------------------------
 DROP TABLE IF EXISTS dbo.Boundaries_AGEB_2025_IMPORT;
 
@@ -139,11 +139,11 @@ WITH (
 (82283 rows affected)   
 Completion time: 2026-05-24T18:16:03.7467723-05:00   
 
-## 2.5 Create Final Table: Boundaries_AGEB_2025
+## 5 Create Final Table: Boundaries_AGEB_2025
 
 ```sql
 -----------------------------------------------
--- 2.5 Create Final Table: Boundaries_AGEB_2025
+-- 5 Create Final Table: Boundaries_AGEB_2025
 -----------------------------------------------
 DROP TABLE IF EXISTS dbo.Boundaries_AGEB_2025;
 
@@ -165,28 +165,9 @@ CREATE TABLE dbo.Boundaries_AGEB_2025
     geom          GEOMETRY NOT NULL,
     geog          GEOGRAPHY NULL,
 
-    -- AMAI data (economic level)
-    -- NSE Percetages 
-    NSE_AB_PCT        NUMERIC(5,2) NULL,
-    NSE_CPLUS_PCT     NUMERIC(5,2) NULL,
-    NSE_C_PCT         NUMERIC(5,2) NULL,
-    NSE_CMINUS_PCT    NUMERIC(5,2) NULL,
-    NSE_DPLUS_PCT     NUMERIC(5,2) NULL,
-    NSE_D_PCT         NUMERIC(5,2) NULL,
-    NSE_E_PCT         NUMERIC(5,2) NULL,
-
-    -- Dwellings per NSE
-    NSE_AB            INT NULL,
-    NSE_CPLUS         INT NULL,
-    NSE_C             INT NULL,
-    NSE_CMINUS        INT NULL,
-    NSE_DPLUS         INT NULL,
-    NSE_D             INT NULL,
-    NSE_E             INT NULL,
-
-    -- Label and dwellings total
-    NSE_LABEL         NVARCHAR(10) NULL,
-    NSE_TOTAL         INT NULL
+   Population	int	NULL,
+   Dwellings	int	NULL,
+   Occupied_Dwellings	int	NULL
 );
 
 -- Spatial indexes
@@ -205,11 +186,11 @@ Commands completed successfully.
 
 ---
 
-## 2.6 Insert Data from the Staging Table
+## 6 Insert Data from the Staging Table
 
 ```sql
 -----------------------------------------
--- 2.6 Insert Data from the Staging Table
+-- 6 Insert Data from the Staging Table
 -----------------------------------------
 INSERT INTO Boundaries_AGEB_2025 (
     CVEGEO, CVE_ENT, CVE_MUN, CVE_LOC, CVE_AGEB, Type, geom
@@ -240,62 +221,9 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 (82283 rows affected)   
 
 
-## 2.7 – Update Boundaries_AGEB_2025 with NSE
-
-```sql
--------------------------------------------------------------------------
--- MG 2025 STEP 2.7 – Update Boundaries_AGEB_2025 with AMAI NSE data
--- Update Boundaries_AGEB_2025 with all AMAI + Calculate Percentages _PCT
--------------------------------------------------------------------------
-
-UPDATE b
-SET
-    -- Conteos (copiados directamente de AMAI)
-    b.NSE_AB        = ISNULL(a.NSE_AB,0),
-    b.NSE_CPLUS     = ISNULL(a.NSE_CPLUS,0),
-    b.NSE_C         = ISNULL(a.NSE_C,0),
-    b.NSE_CMINUS    = ISNULL(a.NSE_CMINUS,0),
-    b.NSE_DPLUS     = ISNULL(a.NSE_DPLUS,0),
-    b.NSE_D         = ISNULL(a.NSE_D,0),
-    b.NSE_E         = ISNULL(a.NSE_E,0),
-
-    -- Totales y etiqueta
-    b.NSE_TOTAL     = ISNULL(a.NSE_TOTAL,0),
-    b.NSE_LABEL     = a.NSE_LABEL,
-
-    -- Porcentajes calculados sobre el total
-    b.NSE_AB_PCT     = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_AB,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
-    b.NSE_CPLUS_PCT  = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_CPLUS,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
-    b.NSE_C_PCT      = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_C,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
-    b.NSE_CMINUS_PCT = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_CMINUS,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
-    b.NSE_DPLUS_PCT  = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_DPLUS,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
-    b.NSE_D_PCT      = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_D,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END,
-    b.NSE_E_PCT      = CASE WHEN a.NSE_TOTAL > 0 THEN (ISNULL(a.NSE_E,0) * 100.0 / a.NSE_TOTAL) ELSE 0 END
-FROM dbo.Boundaries_AGEB_2025 b
-INNER JOIN dbo.NSE_AMAI_2024_AGEB a
-    ON b.CVEGEO = a.CVEGEO;
 
 
--- Verify 100 records so the summ of _PCT give s ~100%
-
-SELECT TOP 100
-    CVEGEO,
-    NSE_TOTAL,
-    NSE_AB_PCT,
-    NSE_CPLUS_PCT,
-    NSE_C_PCT,
-    NSE_CMINUS_PCT,
-    NSE_DPLUS_PCT,
-    NSE_D_PCT,
-    NSE_E_PCT,
-    (ISNULL(NSE_AB_PCT,0) + ISNULL(NSE_CPLUS_PCT,0) + ISNULL(NSE_C_PCT,0) 
-     + ISNULL(NSE_CMINUS_PCT,0) + ISNULL(NSE_DPLUS_PCT,0) 
-     + ISNULL(NSE_D_PCT,0) + ISNULL(NSE_E_PCT,0)) AS SumPercentages
-FROM dbo.Boundaries_AGEB_2025
-ORDER BY CVEGEO;
-```
-
-## 2.8 Geometry Validation and Correction
+## 8 Geometry Validation and Correction
 
 ### Validate invalid geometries
 
@@ -338,11 +266,11 @@ WHERE geom.STIsValid() = 0;
 
 ---
 
-## 2.9 Copy geometry: geom column to geography: geog column
+## 9 Copy geometry: geom column to geography: geog column
 
 ```sql
 -----------------------------------------------------------
--- 2.9 Copy geometry: geom column to geography: geog column
+-- 9 Copy geometry: geom column to geography: geog column
 -----------------------------------------------------------
 UPDATE Boundaries_AGEB_2025
 SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
