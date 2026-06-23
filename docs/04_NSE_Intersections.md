@@ -267,10 +267,10 @@ SELECT COUNT(*) AS Records_NSE_COLONIA FROM COLONIA_NSE;
 
 -----------------------------------------------
 -- Validation: Neighborhoods with NSE_TOTAL = 0
--- Must return ~12708 where AMAI NSE_TOTAL = 0
+-- Must return ~12708 Colonias_No_Pop 
 -----------------------------------------------
 
-SELECT COUNT(*) AS Colonias_No_Pop
+SELECT COUNT(*) AS Neighborhood_No_Pop
 FROM COLONIA_NSE
 WHERE NSE_TOTAL = 0;
 
@@ -297,6 +297,9 @@ NSE_DPLUS_PCT
 NSE_DE_PCT  (D + E)
 
 ```sql
+USE INMO;
+GO
+
 -- NSE Step 4.4 — Calculate percentages by neighborhood (colonia)
 
 -- This generates:
@@ -322,9 +325,11 @@ NSE_DE_PCT  (D + E)
 ALTER TABLE COLONIA_NSE
 ADD NSE_AB_PCT      numeric(5,2),
     NSE_CPLUS_PCT   numeric(5,2),
+    NSE_CMINUS_PCT  numeric(5,2),
     NSE_C_PCT       numeric(5,2),
     NSE_DPLUS_PCT   numeric(5,2),
-    NSE_DE_PCT      numeric(5,2);
+    NSE_D_PCT       numeric(5,2),
+    NSE_E_PCT       numeric(5,2);
 GO
 
 --------------------------
@@ -336,8 +341,10 @@ SET
     NSE_AB_PCT      = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_AB     * 100.0 / NSE_TOTAL, 2) END,
     NSE_CPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_CPLUS  * 100.0 / NSE_TOTAL, 2) END,
     NSE_C_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_C      * 100.0 / NSE_TOTAL, 2) END,
+    NSE_CMINUS_PCT  = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_CMINUS * 100.0 / NSE_TOTAL, 2) END,
     NSE_DPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_DPLUS  * 100.0 / NSE_TOTAL, 2) END,
-    NSE_DE_PCT      = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_DE     * 100.0 / NSE_TOTAL, 2) END;
+    NSE_D_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_D      * 100.0 / NSE_TOTAL, 2) END,
+    NSE_E_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_E      * 100.0 / NSE_TOTAL, 2) END;
 GO
 
 ----------------------------------------------------------------------
@@ -347,7 +354,7 @@ GO
 SELECT *
 FROM COLONIA_NSE
 WHERE NSE_TOTAL > 0
-  AND (NSE_AB_PCT IS NULL OR NSE_CPLUS_PCT IS NULL OR NSE_C_PCT IS NULL OR NSE_DPLUS_PCT IS NULL OR NSE_DE_PCT IS NULL);
+  AND (NSE_AB_PCT IS NULL OR NSE_CPLUS_PCT IS NULL OR NSE_C_PCT IS NULL OR NSE_CMINUS_PCT IS NULL OR NSE_DPLUS_PCT IS NULL OR NSE_D_PCT IS NULL OR NSE_E_PCT IS NULL);
 
 ----------------------------------------------------
 -- Validation 2: Check that percentages sum to ~100%
@@ -355,12 +362,13 @@ WHERE NSE_TOTAL > 0
 
 SELECT TOP 20
     CVE_COLONIA,
-    NSE_AB_PCT + NSE_CPLUS_PCT + NSE_C_PCT + NSE_DPLUS_PCT + NSE_DE_PCT AS SUM_PCT
+    NSE_AB_PCT + NSE_CPLUS_PCT + NSE_C_PCT  + NSE_CMINUS_PCT + NSE_DPLUS_PCT + NSE_D_PCT + NSE_E_PCT AS SUM_PCT
 FROM COLONIA_NSE;
 
 ---------------------------------------------------------------------------------
 -- Validation 3: Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL
 ---------------------------------------------------------------------------------
+-- Must return: NONE
 
 SELECT *
 FROM COLONIA_NSE
@@ -368,9 +376,82 @@ WHERE NSE_TOTAL > 0
   AND NSE_AB_PCT IS NULL
   AND NSE_CPLUS_PCT IS NULL
   AND NSE_C_PCT IS NULL
+  AND NSE_CMINUS_PCT IS NULL
   AND NSE_DPLUS_PCT IS NULL
-  AND NSE_DE_PCT IS NULL;
+  AND NSE_D_PCT IS NULL
+  AND NSE_E_PCT IS NULL;
+
+----------------------------------------------------
+-- Validation 4: Distribution of neighborhoods by NSE
+----------------------------------------------------
+
+SELECT NSE_LABEL, COUNT(*) AS Neighborhoods
+FROM (
+    SELECT 
+        CVE_COLONIA,
+        CASE 
+            WHEN NSE_AB_PCT     = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'AB'
+            WHEN NSE_CPLUS_PCT  = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'C+'
+            WHEN NSE_C_PCT      = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'C'
+            WHEN NSE_CMINUS_PCT = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'C-'
+            WHEN NSE_DPLUS_PCT  = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'D+'
+            WHEN NSE_D_PCT      = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'D'
+            WHEN NSE_E_PCT      = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'E'
+        END AS NSE_LABEL
+    FROM COLONIA_NSE
+    WHERE NSE_TOTAL > 0
+) AS Labels
+GROUP BY NSE_LABEL
+ORDER BY NSE_LABEL ASC;
 ```
+
+## Expected results
+
+### Validation 1:
+
+Displays a table with percentages, check visually not all percentages _PCT fields are NULL when NSE_TOTAL > 0
+If NSE_TOTAL > 0, at least one _PCT must have a value, but typically several must have a value.
+
+### Validation 2:
+
+|CVE_COLONIA  |SUM_PCT|
+|-------------|-------|
+|1307400010027|100.00|
+|1205000010002|100.00|
+|1000500010024|100.01|
+|1400800010079|100.00|
+|1305600010031|99.99|
+|1205000010030|94.23|
+|1202900010201|99.95|
+|1305100260003|99.99|
+|1200100010246|99.97|
+|1000500010698|99.90|
+|1304800010046|100.01|
+|0710100010324|100.01|
+|1403900010192|99.95|
+|1412002310013|100.00|
+|1902900010002|100.00|
+|2107100010033|100.01|
+|2111400011362|NULL|
+|1605300010760|100.00|
+|1607700670001|99.99|
+|0400200010041|100.01|
+
+### Validation 3:
+
+NONE (Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL)
+
+### Validation 4:
+
+|NSE_LABEL|Neighborhoods|
+|--------|-------------|
+|AB      |6317|
+|C+      |11569|
+|C       |7240|
+|C-      |3073|
+|D+      |756|
+|D       |37718|
+|E       |394|
 
 # 5 Calculate IDS_PROM and NSE_SCORE
 
