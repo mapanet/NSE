@@ -161,13 +161,14 @@ CREATE TABLE dbo.Boundaries_AGEB_2025
     -- Type (Ámbito): Urbano, Rural (urban or rural)
     Type          CHAR(10)  NULL,
 
+    -- Population and Dwellings (will be filled with Census 2020)
+    Population	int	NULL,
+    Dwellings	int	NULL,
+    Occupied_Dwellings	int	NULL
+
     -- Geometries
     geom          GEOMETRY NOT NULL,
     geog          GEOGRAPHY NULL,
-
-   Population	int	NULL,
-   Dwellings	int	NULL,
-   Occupied_Dwellings	int	NULL
 );
 
 -- Spatial indexes
