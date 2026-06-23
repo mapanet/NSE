@@ -428,15 +428,13 @@ Commands completed successfully.
 ---
 
 
-## Next Steps
+## Next Steps to calculate NSE (socioeconomic levels)
 
-After importing the DCAH polygons:
-
-1. Validate geometry integrity (no empty or self‑intersecting polygons).  
-2. Normalize keys **CVEGEO** = CVE_ENT + CVE_MUN + CVE_LOC + CVE_ASEN  
-3. Intersect with AGEB geometries from **INEGI MG 2025**.  
+1. Validate geometries integrity of **Boundaries_AGEB_2025** and **Boundaries** layer 6 (no empty or self‑intersecting polygons).  
+2. Check and normalize Boundaries_AGEB_2025 keys **CVEGEO** = CVE_ENT + CVE_MUN + CVE_LOC + CVE_ASEN  
+3. Intersect with AGEB geometries from **Boundaries_AGEB_2025** (INEGI MG 2025).  
 4. Apply area‑weighted NSE aggregation using **AMAI 2024** and **Census 2020** data.  
-5. Generate the final **Layer 6 NSE dataset**.
+5. Enrich **Boundaries Layer 6 NSE dataset** with NSE calculations.
 
 ---
 
