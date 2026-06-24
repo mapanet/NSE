@@ -19,6 +19,10 @@ Depending on the browser, it may download directly as XLSX or open in the Office
 
 https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.amai.org%2Fdescargas%2FNSE_por_AGEB_AMAI.xlsx&wdOrigin=BROWSELINK
 
+or
+
+https://www.amai.org/NSE/index.php?queVeo=NSEDES&Logeado=s (download NSE por AGEB)
+
 Important characteristics of the file:
 
 - It does not include a year in the filename.
