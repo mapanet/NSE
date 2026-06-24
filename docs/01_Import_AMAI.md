@@ -94,7 +94,10 @@ AB     C+    C     C-     D+     D     E
 
 ### Add a new column to the left and name it **CVEGEO**
 
-INEGI defines CVEGEO as the concatenation of:
+INEGI and AMAI use Administrative division codes as integers as it is faster in database queries.  
+We need the standarize codes with leading zeroes before we concate.   
+
+INEGI defines CVEGEO as the concatenation of:  
 
 - ENTIDAD (2 digits)
 - MUNICIPIO (3 digits)
@@ -106,6 +109,9 @@ EE + MMM + LLLL + AAAA   with leading zeroes
 Example:  
 
 01 + 001 + 0001 + 0163 = 0100100010163  
+
+- Create a new column CVEGEO in 1st column where we will concatenate CVEGEO = ENTIDAD + MUNICIPIO + LOCALIDAD + AGEB
+
 
 ### Formula
 
