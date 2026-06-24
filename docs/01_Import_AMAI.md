@@ -28,7 +28,6 @@ Important characteristics of the file:
 - It does not include a year in the filename.
 - It corresponds to the NSE 2024 methodology.
 
----
 
 ## 2 Original File Contents
 
@@ -61,7 +60,7 @@ Original columns:
 Directory: D:\AXSI\AMAI   
 File name: NSE_AMAI_2024_AGEB_IMPORT.xlsx   
 
----
+
 
 ## 3 Edit Excel to format columns as we need
 
@@ -97,7 +96,7 @@ AGEB as 0000
 
 [<img src="/docs/images/NSE_3.png" width="1000">](/docs/images/NSE_3.png)
 
----
+
 
 ## 4 Create CVEGEO by concatenating codes
 
@@ -125,7 +124,7 @@ Example:
 
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/images/NSE_4.png)
 
----
+
 
 ## 5 Correction of “N/D” values
 
@@ -192,7 +191,7 @@ If necessary, edit the CSV with EditPad Pro or Notepad++ to verify:
 Note: I use TAB for my personal convenience, you can comma delimiter, just correct BULK INSERT to the appropriate FIELDTERMINATOR = ','.
 (the reason always I use TAB since some Mexican data come with " in names, some also may have only one " so with with TAB is easy to debug).
 
----
+
 
 ## 7 Create Final AMAI table in MS SQL Server 2022
 
@@ -245,7 +244,7 @@ WITH (
 
 (246048 rows affected)   
 
----
+
 
 ## 9 Post‑Import Validations
 
