@@ -80,7 +80,12 @@ Create a new header below:
 
 [<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
 
-Delete rows 1 and 2
+Delete original headers rows 1 and 2 to end with
+
+|ENTIDAD|NOM_ENT|MUN|NOM_MUN|LOC|NOM_LOC|AGEB|NSE_AB|NSE_CPLUS|NSE_C|NSE_CMINUS|NSE_DPLUS|NSE_D|NSE_E|NSE|NSE_TOTAL|
+
+<img width="1189" height="21" alt="image" src="https://github.com/user-attachments/assets/338b054b-4086-4f37-b74a-6de47f46d0f1" />
+
 
 [<img src="/docs/images/NSE_3.png" width="1000">](/docs/images/NSE_3.png)
 
