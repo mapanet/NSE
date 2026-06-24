@@ -69,21 +69,16 @@ File name: NSE_AMAI_2024_AGEB_IMPORT.xlsx
 
 Delete Rows:
 
-- NOMBRE ENTIDAD
-- NOMBRE MUNICIPIO
-- NOMBRE LOCALIDAD
 - TAMAÑO DE LOCALIDAD
 
-[<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
-
-File has merged cells as below, and we need to standarize headers:
+- File has merged cells as below, and we need to standarize headers:
 
 TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
 AB     C+    C     C-     D+     D     E   
 
 Create a new header below:  
 
-[<img src="/docs/images/NSE_2.png" width="1000">](/docs/images/NSE_2.png)
+[<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
 
 Delete rows 1 and 2
 
