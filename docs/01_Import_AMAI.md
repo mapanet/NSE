@@ -155,18 +155,7 @@ You excel records no may looks with some AGEB areas with some or all values EMPT
 
 
 
-## 6 Export from Excel to CSV (TSV)
-
-The CSV file should look like this (TAB‑delimited):
-
-| CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
-|---------------|---------|-----------|-------|------------|-----------|---------|---------|-----|-----------|
-| 0100100010017 | 0   | 12     | 39  | 111     | 153    | 331 |     | D         | 648    |
-| 010010001006A | 178 | 124    | 60  | 24      | 9      | 4   | 0   | A/B       | 399    |
-| 0100100010106 | 183 | 375    | 247 | 128     | 62     | 32  |     | C+        | 1028   |
-| 0100100010163 | 35  | 157    | 228 | 167     | 124    | 78  | 0   | C         | 789    |
-| 0100100010182 | 345 | 187    | 63  | 46      | 13     | 6   | 0   | A/B       | 660    |
-| 0100100010229 | 25  | 36     | 14  | 20      | 9      | 7   | 0   | C+        | 111    |
+## 6 Export from Excel to CSV
 
 #### Save as
 
@@ -176,21 +165,33 @@ File name: NSE_AMAI_2024_AGEB_IMPORT.csv
 ### Export settings
 
 - Format: CSV  
-- Separator: TAB  
+- Separator: COMMA  
 - Encoding: UTF‑8  
 - Quotes: do not use quotes  
 - No BOM (Excel exports UTF‑8 without BOM)  
 - No empty rows at the end  
-- No hidden columns  
+- No hidden columns
+  
+This will create a comma separated values CSV.   
 
-If necessary, edit the CSV with EditPad Pro or Notepad++ to verify:
+* My personal choice is to edit the file with Notepad Pro to replace **comma** to **<tab>**, this gives me the opportunity check the data visually and make sure no region names have hidden double quotes.
+(Mexican data often come with " in names, some may have single " so with with TAB is easy to debug).
+
+### Edit the CSV with EditPad Pro or Notepad++ to replace , by <tab>:
 
 - UTF‑8 without BOM  
 - TAB delimiter  
 
-Note: I use TAB for my personal convenience, you can comma delimiter, just correct BULK INSERT to the appropriate FIELDTERMINATOR = ','.
-(the reason always I use TAB since some Mexican data come with " in names, some also may have only one " so with with TAB is easy to debug).
+The CSV file should look like this (TAB‑delimited):
 
+| CVEGEO        |ENTIDAD| NOM_ENT       |MUN| NOM_MUN      |LOC | NOM_LOC      |AGEB|NSE_AB|NSE_CPLUS|NSE_C|NSE_CMINUS| NSE_DPLUS |NSE_D|NSE_E|NSE|NSE_TOTAL|
+|---------------|-------|---------------|---|--------------|----|--------------|----|------|---------|-----|----------|-----------|-----|-----|---|---------|
+| 0100100010017 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0017|     0|       12|   39|       111|        153|  331|     | D |      648|
+| 010010001006A |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|006A|   178|      124|   60|        24|          9|    4|    0|A/B|      399|
+| 0100100010106 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0106|   183|      375|  247|       128|         62|   32|     |C+ |     1028|
+| 0100100010163 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0163|    35|      157| 228 |       167|        124|   78|    0|C  |      789|
+| 0100100010182 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0182|   345|      187|   63|        46|         13|    6|    0|A/B|      660|
+| 0100100010229 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0229|   25 |       36|   14|        20|          9|    7|    0|C+ |      111|
 
 
 ## 7 Create Final AMAI table in MS SQL Server 2022
@@ -208,6 +209,12 @@ GO
 
 CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
 	[CVEGEO] [nvarchar](20) NOT NULL,
+	[ENTIDAD] [varchar](2) NOT NULL,
+	[NOM_ENT] [nvarchar](85) NOT NULL,
+	[MUN] [varchar](3) NOT NULL,
+	[NOM_MUN] [nvarchar](85) NOT NULL,
+	[LOC] [varchar](4) NOT NULL,
+	[LOC_NOM] [nvarchar](110) NOT NULL,
 	[NSE_AB] [int] NULL,
 	[NSE_CPLUS] [int] NULL,
 	[NSE_C] [int] NULL,
