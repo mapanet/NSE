@@ -30,7 +30,7 @@ This ensures that the NSE assigned to each neighborhood accurately reflects the 
 
 ---
 
-# 1 Check geometries
+# 1 — Check geometries
 
 ```sql
 ------------------------------------------------------
@@ -152,7 +152,7 @@ SELECT DISTINCT geom.STSrid AS SRID
 FROM Boundaries_AGEB_2025;
 ```
 
-# 2 Create Intersection Boundaries (layer=6) ↔ AGEB
+# 2 — Create Intersection Boundaries (layer=6) ↔ AGEB
 
 Overlay AGEB polygons with neighborhood polygons to establish spatial relationships.
 
@@ -209,7 +209,7 @@ WHERE B.layer = 6
   AND I.CVE_COLONIA IS NULL;
 ```
 
-# 3 Create COLONIA_NSE (weighted population)
+# 3 — Create COLONIA_NSE (weighted population)
 
 ```sql
 USE INMO;
@@ -286,7 +286,7 @@ FROM COLONIA_NSE
 WHERE CVE_COLONIA = '2300800010017';
 ```
 
-# 4 Calculate percentages by neighborhood (colonia)
+# 4 — Calculate percentages by neighborhood (colonia)
 
 This generates percentages per level and prepares everything for NSE_SCORE, dominant NSE, and NSE_LABEL:
 
@@ -456,7 +456,7 @@ NONE (Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL)
 |D       |37718|
 |E       |394|
 
-# 5 Calculate IDS_PROM and NSE_SCORE
+# 5 — Calculate IDS_PROM and NSE_SCORE
 
 ```sql
 USE INMO;
@@ -572,16 +572,16 @@ ORDER BY NSE_SCORE DESC;
 |1901900010003|676.9513|6.7695|
 |1901900010435|676.8476|6.7685|
 
-# 6 Calculate dominant NSE (A/B, C+, C, D+, DE)
+# 6 — Calculate dominant NSE (A/B, C+, C, D+, DE)
 
 ```sql
 USE INMO;
 GO
 
----------------------------------------------------------
--- NSE Step 4.6 — Calculate dominant NSE (A/B, C+, C, D+, D/E)
+-------------------------------------------------------------------
+-- NSE Step 4.6 — Calculate dominant NSE (A/B, C+, C, C-, D+, D, E)
 -- Select the category with the highest percentage
----------------------------------------------------------
+-------------------------------------------------------------------
 
 -- 1. Drop NSE column if it exists
 IF EXISTS (SELECT 1 FROM sys.columns 
@@ -607,8 +607,10 @@ SET NSE =
             ('A/B', NSE_AB_PCT),
             ('C+',  NSE_CPLUS_PCT),
             ('C',   NSE_C_PCT),
+            ('C-',  NSE_CMINUS_PCT),
             ('D+',  NSE_DPLUS_PCT),
-            ('D/E', NSE_DE_PCT)
+            ('D',   NSE_D_PCT),
+            ('E',   NSE_E_PCT)
     ) AS X(Nivel, Valor)
     WHERE Valor IS NOT NULL
     ORDER BY Valor DESC
@@ -633,24 +635,36 @@ FROM COLONIA_NSE
 WHERE NSE_TOTAL > 0 AND NSE IS NULL;
 
 -- 2. General distribution
--- Should return
-
--- NSE Colonias
--- A/B	5342
--- C+	2940
--- C	31781
--- D+	361
--- D/E	26643
--- N/A	12708
 
 SELECT NSE, COUNT(*) AS Colonias
 FROM COLONIA_NSE
 GROUP BY NSE
-ORDER BY Colonias DESC;
+ORDER BY NSE ASC;
 GO
 ```
 
-# 7 Create NSE_LABEL 
+### Expected results
+
+#### Validation 1
+
+Just headers, no records if there is no NSE = NULL.   
+
+CVE_COLONIA	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE_TOTAL	NSE_AB_PCT	NSE_CPLUS_PCT	NSE_CMINUS_PCT	NSE_C_PCT	NSE_DPLUS_PCT	NSE_D_PCT	NSE_E_PCT	IDS_PROM	NSE_SCORE	NSE
+
+#### Validation 2
+
+|NSE|Colonias|
+|---|--------|
+|A/B|6087|
+|C+|11747|
+|C|7242|
+|C-|3069|
+|D+|758|
+|D|37770|
+|E|394|
+|N/A|12708|
+
+# 7 — Create NSE_LABEL 
 
 Create NSE_LABEL with letter and percentage, example "A/B (57%)"
 
@@ -728,7 +742,7 @@ WHERE NSE_LABEL IS NOT NULL;
 |3203600010706|D/E|D/E (51%)|
 
 
-# 8 Copy COLONIAS_NSE calculations to Boundaries layer = 6
+# 8 — Copy COLONIAS_NSE calculations to Boundaries layer = 6
 
 ```sql
 USE INMO;
