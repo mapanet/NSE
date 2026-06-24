@@ -719,16 +719,11 @@ FROM COLONIA_NSE;
 SELECT COUNT(*) AS Colonias_With_Label
 FROM COLONIA_NSE
 WHERE NSE_LABEL IS NOT NULL;
-
---
--- Expected results
-
--- CVE_COLONIA   NSE NSE_LABEL
--- 1608201500001 N/A N/A (0%)
--- 0200400010117 C   C (44%)
 ```
 
-## Expected results
+### Expected results
+
+#### Validation 1
 
 |CVE_COLONIA  |NSE|NSE_LABEL|
 |-------------|---|---------|
@@ -753,6 +748,11 @@ WHERE NSE_LABEL IS NOT NULL;
 |1607700670001|D|D (37%)|
 |0400200010041|D|D (33%)|
 
+#### Validation 2
+
+Colonias_With_Label  
+79775  
+This means all Neighborhoods have a NSE_LABEL
 
 # 8 — Copy COLONIAS_NSE calculations to Boundaries layer = 6
 
@@ -812,14 +812,18 @@ SET
     NSE_AB     = NULL,
     NSE_CPLUS  = NULL,
     NSE_C      = NULL,
+    NSE_CMINUS = NULL,
     NSE_DPLUS  = NULL,
-    NSE_DE     = NULL,
+    NSE_D      = NULL,
+    NSE_E      = NULL,
 
     NSE_AB_PCT     = NULL,
     NSE_CPLUS_PCT  = NULL,
     NSE_C_PCT      = NULL,
+    NSE_CMINUS_PCT = NULL,
     NSE_DPLUS_PCT  = NULL,
-    NSE_DE_PCT     = NULL
+    NSE_D_PCT      = NULL,
+    NSE_E_PCT      = NULL
 WHERE Layer = 6;
 GO
 
@@ -841,14 +845,18 @@ SET
     B.NSE_AB         = C.NSE_AB,
     B.NSE_CPLUS      = C.NSE_CPLUS,
     B.NSE_C          = C.NSE_C,
+    B.NSE_CMINUS     = C.NSE_CMINUS,
     B.NSE_DPLUS      = C.NSE_DPLUS,
-    B.NSE_DE         = C.NSE_DE,
+    B.NSE_D          = C.NSE_D,
+    B.NSE_E          = C.NSE_E,
 
     B.NSE_AB_PCT     = C.NSE_AB_PCT,
     B.NSE_CPLUS_PCT  = C.NSE_CPLUS_PCT,
     B.NSE_C_PCT      = C.NSE_C_PCT,
+    B.NSE_CMINUS_PCT = C.NSE_CMINUS_PCT,
     B.NSE_DPLUS_PCT  = C.NSE_DPLUS_PCT,
-    B.NSE_DE_PCT     = C.NSE_DE_PCT
+    B.NSE_D_PCT      = C.NSE_D_PCT,
+    B.NSE_E_PCT     = C.NSE_E_PCT
 FROM Boundaries B
 JOIN COLONIA_NSE C
     ON B.CVEGEO = C.CVE_COLONIA
@@ -861,14 +869,6 @@ GO
 ---------------------------------------------------------
 -- 4. Final validations
 ---------------------------------------------------------
--- Should return:
-
--- A/B	5342
--- C	31781
--- C+	2940
--- D+	361
--- D/E	26643
--- N/A	12708
 
 -- Distribution of NSE categories
 SELECT NSE, COUNT(*) AS Records
@@ -900,13 +900,17 @@ SELECT
  NSE_AB,
  NSE_CPLUS,
  NSE_C,
+ NSE_CMINUS,
  NSE_DPLUS,
- NSE_DE,
+ NSE_D,
+ NSE_E,
  NSE_AB_PCT,
  NSE_CPLUS_PCT,
  NSE_C_PCT,
+ NSE_CMINUS_PCT,
  NSE_DPLUS_PCT,
- NSE_DE_PCT
+ NSE_D_PCT,
+ NSE_E_PCT
 FROM Boundaries
 WHERE Layer = 6
   AND NSE_TOTAL = 0
@@ -918,3 +922,28 @@ FROM Boundaries
 WHERE Layer = 6;
 GO
 ```
+
+### Expected results
+
+#### Validation 1
+
+|NSE|Records|
+|---|-------|
+|A/B|   6087|
+|C  |   7242|
+|C+ |  11747|
+|C- |   3069|
+|D  |  37770|
+|D+ |    758|
+|E  |    394|
+|N/A|  12708|
+
+#### Validation 2
+
+None as if NSE_TOTAL > 0 AND NSE_SCORE IS NULL
+
+#### Validation 3
+
+14,162 records where NSE_TOTAL = 0 (as original file has no data for those)
+
+
