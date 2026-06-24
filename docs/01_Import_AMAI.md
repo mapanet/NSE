@@ -129,7 +129,7 @@ Example:
 ## 5 Correction of “N/D” values
 
 1. Numeric columns  
-   AB, CPLUS, C, CMUINS, DPLUS, D, E → AMAI uses “N/D” when there is insufficient information.
+   AB, CPLUS, C, CMINUS, DPLUS, D, E → AMAI uses “N/D” when there is insufficient information.
 
 2. Categorical column  
    NSE (NIVEL_PREDOMINANTE) → “N/D” when no dominant socioeconomic level exists.
