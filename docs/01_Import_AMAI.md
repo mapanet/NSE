@@ -103,17 +103,7 @@ AGEB as 0000
 
 ### Add a new column to the left and name it **CVEGEO**
 
-INEGI and AMAI use Administrative division codes as integers as it is faster in database queries.  
-We need the standarize codes with leading zeroes before we concate.   
-
 INEGI defines CVEGEO as the concatenation of:  
-
-- ENTIDAD (2 digits)
-- MUNICIPIO (3 digits)
-- LOCALIDAD (4 digits)
-- AGEB (4 digits)
-
-EE + MMM + LLLL + AAAA   with leading zeroes  
 
 Example:  
 
@@ -126,15 +116,10 @@ Example:
 
 = ENTIDAD & MUNICIPIO & LOCALIDAD & AGEB   
 
-=TEXT(B2,"00") & TEXT(C2,"000") & TEXT(D2,"0000") & TEXT(E2,"0000")   
+= TEXT(B2,"00") & TEXT(D2,"000") & TEXT(F2,"0000") & TEXT(H2,"0000")
 
 - Copy formula to all records
-- **Copy calculated CVEGEO as Values**  
-- Delete individual codes columns, we will use only CVEGEO:
-  - ENTIDAD
-  - MUNICIPIO
-  - LOCALIDAD
-  - AGEB
+- **Copy calculated CVEGEO colum as Values** to have the results as text  
 
 #### You Excel must look like this
 
