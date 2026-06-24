@@ -80,8 +80,8 @@ AB     C+    C     C-     D+     D     E
 
 [<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
 
-- 1. Delete original headers rows 1 and 2 to end with headers names we will use in MS SQL table.
-- 2. Region codes often come asi integers but INEGI defines codes alpha with leading zerores, so lets standarize codes
+- Delete original headers rows 1 and 2 to end with headers names we will use in MS SQL table.
+- Region codes often come as integers but INEGI defines codes alpha with leading zerores, so lets standarize codes
 
 ENTIDAD (2 digits)
 MUNICIPIO (3 digits)
@@ -93,7 +93,6 @@ ENTIDAD as 00
 MUNICIPIO as 000
 LOCALIDAD as 0000
 AGEB as 0000
-
 
 [<img src="/docs/images/NSE_3.png" width="1000">](/docs/images/NSE_3.png)
 
