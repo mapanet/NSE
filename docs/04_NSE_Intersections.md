@@ -325,13 +325,13 @@ GO
 --------------------------------------------
 
 ALTER TABLE COLONIA_NSE
-ADD NSE_AB_PCT      numeric(5,2),
-    NSE_CPLUS_PCT   numeric(5,2),
-    NSE_CMINUS_PCT  numeric(5,2),
-    NSE_C_PCT       numeric(5,2),
-    NSE_DPLUS_PCT   numeric(5,2),
-    NSE_D_PCT       numeric(5,2),
-    NSE_E_PCT       numeric(5,2);
+ADD NSE_AB_PCT      numeric(10,4),
+    NSE_CPLUS_PCT   numeric(10,4),
+    NSE_CMINUS_PCT  numeric(10,4),
+    NSE_C_PCT       numeric(10,4),
+    NSE_DPLUS_PCT   numeric(10,4),
+    NSE_D_PCT       numeric(10,4),
+    NSE_E_PCT       numeric(10,4);
 GO
 
 --------------------------
@@ -340,13 +340,13 @@ GO
 
 UPDATE COLONIA_NSE
 SET
-    NSE_AB_PCT      = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_AB     * 100.0 / NSE_TOTAL, 2) END,
-    NSE_CPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_CPLUS  * 100.0 / NSE_TOTAL, 2) END,
-    NSE_C_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_C      * 100.0 / NSE_TOTAL, 2) END,
-    NSE_CMINUS_PCT  = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_CMINUS * 100.0 / NSE_TOTAL, 2) END,
-    NSE_DPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_DPLUS  * 100.0 / NSE_TOTAL, 2) END,
-    NSE_D_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_D      * 100.0 / NSE_TOTAL, 2) END,
-    NSE_E_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_E      * 100.0 / NSE_TOTAL, 2) END;
+    NSE_AB_PCT      = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_AB     * 100.0 / NSE_TOTAL, 4) END,
+    NSE_CPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_CPLUS  * 100.0 / NSE_TOTAL, 4) END,
+    NSE_C_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_C      * 100.0 / NSE_TOTAL, 4) END,
+    NSE_CMINUS_PCT  = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_CMINUS * 100.0 / NSE_TOTAL, 4) END,
+    NSE_DPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_DPLUS  * 100.0 / NSE_TOTAL, 4) END,
+    NSE_D_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_D      * 100.0 / NSE_TOTAL, 4) END,
+    NSE_E_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_E      * 100.0 / NSE_TOTAL, 4) END;
 GO
 
 ----------------------------------------------------------------------
@@ -370,7 +370,6 @@ FROM COLONIA_NSE;
 ---------------------------------------------------------------------------------
 -- Validation 3: Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL
 ---------------------------------------------------------------------------------
--- Must return: NONE
 
 SELECT *
 FROM COLONIA_NSE
@@ -383,9 +382,11 @@ WHERE NSE_TOTAL > 0
   AND NSE_D_PCT IS NULL
   AND NSE_E_PCT IS NULL;
 
-----------------------------------------------------
+-----------------------------------------------------
 -- Validation 4: Distribution of neighborhoods by NSE
-----------------------------------------------------
+-----------------------------------------------------
+
+
 
 SELECT NSE_LABEL, COUNT(*) AS Neighborhoods
 FROM (
@@ -458,6 +459,9 @@ NONE (Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL)
 # 5 Calculate IDS_PROM and NSE_SCORE
 
 ```sql
+USE INMO;
+GO
+
 ---------------------------------------------------------
 -- NSE Step 4.5 — Calculate IDS_PROM and NSE_SCORE
 -- IDS_PROM  = weighted raw index (0–700)
@@ -470,9 +474,11 @@ NONE (Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL)
 -- Category   Weight
 -- A/B        7
 -- C+         6
--- C          5   (C + C-)
+-- C          5
+-- C-         4
 -- D+         3
--- D/E        1   (D + E)
+-- D          2
+-- E          1
 --
 -- NSE_SCORE = IDS_PROM / 100 (scale 1–7)
 
@@ -510,18 +516,22 @@ SET
           ISNULL(NSE_AB_PCT,0)     * 7
         + ISNULL(NSE_CPLUS_PCT,0)  * 6
         + ISNULL(NSE_C_PCT,0)      * 5
+        + ISNULL(NSE_CMINUS_PCT,0) * 4
         + ISNULL(NSE_DPLUS_PCT,0)  * 3
-        + ISNULL(NSE_DE_PCT,0)     * 1,
+        + ISNULL(NSE_D_PCT,0)      * 2
+        + ISNULL(NSE_E_PCT,0)      * 1,
 
     NSE_SCORE =
     (
           ISNULL(NSE_AB_PCT,0)     * 7
         + ISNULL(NSE_CPLUS_PCT,0)  * 6
         + ISNULL(NSE_C_PCT,0)      * 5
+        + ISNULL(NSE_CMINUS_PCT,0) * 4
         + ISNULL(NSE_DPLUS_PCT,0)  * 3
-        + ISNULL(NSE_DE_PCT,0)     * 1
+        + ISNULL(NSE_D_PCT,0)      * 2
+        + ISNULL(NSE_E_PCT,0)      * 1
     ) / 100.0;
-GO
+
 
 ---------------------------------------------------------
 -- Validation
@@ -533,10 +543,34 @@ FROM COLONIA_NSE
 WHERE NSE_TOTAL > 0 AND NSE_SCORE IS NULL;
 
 -- 2. Inspect typical values
-SELECT TOP 20 CVE_COLONIA, IDS_PROM, NSE_SCORE
+SELECT TOP 40 CVE_COLONIA, IDS_PROM, NSE_SCORE
 FROM COLONIA_NSE
 ORDER BY NSE_SCORE DESC;
 ```
+
+### Expected results
+
+#### Validation 1
+
+- No records should appear if NSE_TOTAL > 0 and NSE_SCORE is not null
+
+#### Validation 1
+
+- Typical values IDS_PROM: 677.3900 (means is almost 7, the highest) and NSE_SCORE represents that in % as 6.7776   
+- This query is NSE_SCORE Descending order so it is pislying the higuest ranked, you **ASC** to display the lower.  
+
+|CVE_COLONIA  |IDS_PROM|NSE_SCORE|
+|-------------|--------|---------|
+|3110200010059|699.9992|7.0000|
+|1904800010254|683.9540|6.8395|
+|1904800010273|677.7567|6.7776|
+|1903900011171|677.3900|6.7739|
+|1901900010234|676.9549|6.7695|
+|1901900010076|676.9533|6.7695|
+|1901900010075|676.9539|6.7695|
+|1901900010074|676.9531|6.7695|
+|1901900010003|676.9513|6.7695|
+|1901900010435|676.8476|6.7685|
 
 # 6 Calculate dominant NSE (A/B, C+, C, D+, DE)
 
