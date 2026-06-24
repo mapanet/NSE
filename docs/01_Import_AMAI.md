@@ -206,14 +206,14 @@ CREATE TABLE [dbo].[NSE_AMAI_2024_AGEB](
 	[NOM_MUN] [nvarchar](85) NOT NULL,
 	[LOC] [varchar](4) NOT NULL,
 	[LOC_NOM] [nvarchar](110) NOT NULL,
-	[NSE_AB] [int] NULL,
-	[NSE_CPLUS] [int] NULL,
-	[NSE_C] [int] NULL,
-	[NSE_CMINUS] [int] NULL,
-	[NSE_DPLUS] [int] NULL,
-	[NSE_D] [int] NULL,
-	[NSE_E] [int] NULL,
-	[NSE_LABEL] [nvarchar](10) NULL,
+	[AB] [int] NULL,
+	[CPLUS] [int] NULL,
+	[C] [int] NULL,
+	[CMINUS] [int] NULL,
+	[DPLUS] [int] NULL,
+	[D] [int] NULL,
+	[E] [int] NULL,
+	[NSE] [nvarchar](10) NULL,
 	[NSE_TOTAL] [int] NULL,
  CONSTRAINT [PK_NSE_AMAI_2024_AGEB] PRIMARY KEY CLUSTERED 
 (
@@ -254,13 +254,13 @@ WITH (
 ----------------------------------------------------
 SELECT *
 FROM NSE_AMAI_2024_AGEB
-WHERE NSE_TOTAL <> (NSE_AB + NSE_CPLUS + NSE_C + NSE_CMINUS + NSE_DPLUS + NSE_D + NSE_E);
+WHERE NSE_TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
 ```
 
 #### Exprected result
 
-| CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
-|---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|  
+| CVEGEO        | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E   | NSE | NSE_TOTAL |
+|---------------|-----|-------|-----|--------|-------|-----|-----|-----|-----------|  
 
 No records: This means there is no difference between total vs sum of components   
 
@@ -277,8 +277,8 @@ WHERE LEN(CVEGEO) <> 13;
 
 #### Exprected result
 
-| CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
-|---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|  
+| CVEGEO        | AB | CPLUS | C | CMINUS | DPLUS | D | E | NSE | NSE_TOTAL |
+|---------------|----|-------|---|--------|-------|---|---|-----|-----------|  
 
 None: Tthis means all CVEGEO are 13 characters: EEMMMLLLLAAAA
 
@@ -294,13 +294,13 @@ SQL to display top 6 records to verify data:
 -------------------
 SELECT TOP (6) 
   CVEGEO, 
-  NSE_AB, 
-  NSE_CPLUS, 
-  NSE_C, 
-  NSE_CMINUS, 
-  NSE_DPLUS, 
-  NSE_D, 
-  NSE_E, 
+  AB, 
+  CPLUS, 
+  C, 
+  CMINUS, 
+  DPLUS, 
+  D, 
+  E, 
   NSE, 
   NSE_TOTAL   
 FROM dbo.NSE_AMAI_2024_AGEB
@@ -308,14 +308,14 @@ FROM dbo.NSE_AMAI_2024_AGEB
 
 Your final table in SQL should look like this:  
 
-| CVEGEO        | NSE_AB  | NSE_CPLUS | NSE_C   | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E   | NSE | NSE_TOTAL |
-|---------------|-----|--------|-----|---------|--------|-----|-----|-----------|--------|
-| 0100100010017 | 0   | 12     | 39  | 111     | 153    | 331 |     | D         | 648    |
-| 010010001006A | 178 | 124    | 60  | 24      | 9      | 4   | 0   | A/B       | 399    |
-| 0100100010106 | 183 | 375    | 247 | 128     | 62     | 32  |     | C+        | 1028   |
-| 0100100010163 | 35  | 157    | 228 | 167     | 124    | 78  | 0   | C         | 789    |
-| 0100100010182 | 345 | 187    | 63  | 46      | 13     | 6   | 0   | A/B       | 660    |
-| 0100100010229 | 25  | 36     | 14  | 20      | 9      | 7   | 0   | C+        | 111    |
+| CVEGEO        | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E  | NSE | NSE_TOTAL |
+|---------------|-----|-------|-----|--------|-------|-----|----|-----|-----------|
+| 0100100010017 | 0   | 12    | 39  | 111    | 153   | 331 |    | D   |        648|
+| 010010001006A | 178 | 124   | 60  | 24     | 9     | 4   | 0  | A/B |        399|
+| 0100100010106 | 183 | 375   | 247 | 128    | 62    | 32  |    | C+  |       1028|
+| 0100100010163 | 35  | 157   | 228 | 167    | 124   | 78  | 0  | C   |        789|
+| 0100100010182 | 345 | 187   | 63  | 46     | 13    | 6   | 0  | A/B |        660|
+| 0100100010229 | 25  | 36    | 14  | 20     | 9     | 7   | 0  | C+  |        111|
 
 This table is the official AMAI source for the **NSE calculation steps**.  
 
