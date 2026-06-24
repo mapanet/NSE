@@ -177,12 +177,14 @@ This will create a comma separated values CSV.
 * My personal choice is to edit the file with Notepad Pro to replace **comma** to **<tab>**, this gives me the opportunity check the data visually and make sure no region names have hidden double quotes.
 (Mexican data often come with " in names, some may have single " so with with TAB is easy to debug).
 
-### Edit the CSV with EditPad Pro or Notepad++ to replace , by <tab>:
+### Edit the CSV with EditPad Pro or Notepad to replace comma by <tab>:
+
+Save it as:
 
 - UTF‑8 without BOM  
 - TAB delimiter  
 
-The CSV file should look like this (TAB‑delimited):
+The CSV file should look like this:
 
 | CVEGEO        |ENTIDAD| NOM_ENT       |MUN| NOM_MUN      |LOC | NOM_LOC      |AGEB|NSE_AB|NSE_CPLUS|NSE_C|NSE_CMINUS| NSE_DPLUS |NSE_D|NSE_E|NSE|NSE_TOTAL|
 |---------------|-------|---------------|---|--------------|----|--------------|----|------|---------|-----|----------|-----------|-----|-----|---|---------|
