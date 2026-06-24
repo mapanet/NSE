@@ -669,6 +669,9 @@ CVE_COLONIA	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE_TOTAL	NS
 Create NSE_LABEL with letter and percentage, example "A/B (57%)"
 
 ```sql
+USE INMO
+GO
+
 ---------------------------------------------------------
 -- NSE Step 4.7 — Create NSE_LABEL
 ---------------------------------------------------------
@@ -690,8 +693,10 @@ SET NSE_LABEL =
         WHEN NSE = 'A/B' THEN CONCAT('A/B (', CAST(ROUND(NSE_AB_PCT,0) AS INT), '%)')
         WHEN NSE = 'C+'  THEN CONCAT('C+ (',  CAST(ROUND(NSE_CPLUS_PCT,0) AS INT), '%)')
         WHEN NSE = 'C'   THEN CONCAT('C (',   CAST(ROUND(NSE_C_PCT,0) AS INT), '%)')
+        WHEN NSE = 'C-'  THEN CONCAT('C- (',  CAST(ROUND(NSE_CMINUS_PCT,0) AS INT), '%)')
         WHEN NSE = 'D+'  THEN CONCAT('D+ (',  CAST(ROUND(NSE_DPLUS_PCT,0) AS INT), '%)')
-        WHEN NSE = 'D/E' THEN CONCAT('D/E (', CAST(ROUND(NSE_DE_PCT,0) AS INT), '%)')
+        WHEN NSE = 'D'   THEN CONCAT('D (', CAST(ROUND(NSE_D_PCT,0) AS INT), '%)')
+        WHEN NSE = 'E'   THEN CONCAT('E (', CAST(ROUND(NSE_E_PCT,0) AS INT), '%)')
         WHEN NSE = 'N/A' THEN 'N/A (0%)'
     END
 WHERE NSE IS NOT NULL;
@@ -714,6 +719,13 @@ FROM COLONIA_NSE;
 SELECT COUNT(*) AS Colonias_With_Label
 FROM COLONIA_NSE
 WHERE NSE_LABEL IS NOT NULL;
+
+--
+-- Expected results
+
+-- CVE_COLONIA   NSE NSE_LABEL
+-- 1608201500001 N/A N/A (0%)
+-- 0200400010117 C   C (44%)
 ```
 
 ## Expected results
