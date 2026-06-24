@@ -97,7 +97,6 @@ AGEB as 0000
 [<img src="/docs/images/NSE_3.png" width="1000">](/docs/images/NSE_3.png)
 
 
-
 ## 4 Create CVEGEO by concatenating codes
 
 ### Add a new column to the left and name it **CVEGEO**
