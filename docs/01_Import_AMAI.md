@@ -130,7 +130,7 @@ Example:
 ## 5 Correction of “N/D” values
 
 1. Numeric columns  
-   AB, CPLUS, C, CMUNIS, DPLUS, D, E → AMAI uses “N/D” when there is insufficient information.
+   AB, CPLUS, C, CMUINS, DPLUS, D, E → AMAI uses “N/D” when there is insufficient information.
 
 2. Categorical column  
    NSE (NIVEL_PREDOMINANTE) → “N/D” when no dominant socioeconomic level exists.
@@ -150,7 +150,11 @@ This prevents errors in:
 - Validations
 - Pipeline consistency
 
----
+You excel records no may looks with some AGEB areas with some or all values EMPTY (this will be traduced in SQL as NULL)
+
+[<img src="/docs/images/NSE_5.png" width="1000">](/docs/images/NSE_5.png)
+
+
 
 ## 6 Export from Excel to CSV (TSV)
 
