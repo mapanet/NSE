@@ -74,7 +74,7 @@ Delete Rows:
 - NOMBRE LOCALIDAD
 - TAMAÑO DE LOCALIDAD
 
-[<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
+[<img src="/docs/images/NSE_1.png" width="1200">](/docs/images/NSE_1.png)
 
 File has merged cells as below, and we need to standarize headers:
 
