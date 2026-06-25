@@ -112,21 +112,41 @@ Formula for CVEGEO:
 ```excel
 =TEXT(B2, "00") & TEXT(D2, "000") & TEXT(F2, "0000") & TEXT(H2, "0000")
 ```
-
 This produces a valid INEGI CVEGEO:
 
 **ENTIDAD + MUNICIPIO + LOCALIDAD + AGEB**   
 Format: EEMMMLLLLAAAA
 
+#### 4. Replace N/D values
 
-- Replace N/D values by NOTHING so they become NULL when imported to MS SQL, this prevents errors in:
-  - SUM()
-  - Percentage calculations
-  - Validations
-  - Pipeline consistency
-- Excel save CSV files only UTF-8 comma separated, that creates some locality names with double quotes, 
-  the easier way to get clean file is copy the Excel data to Notepad Pro, you will get <tab> separated data.
-- Save the CSV **D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv** as UTF-8 No BOM.
+Replace all *N/D* values *with empty* cells so they import as *NULL* in SQL Server.
+
+This prevents errors in:
+
+- SUM()
+- Percentage calculations
+- Validation scripts
+- Pipeline consistency checks
+
+#### 5. Generate a clean CSV
+
+Excel exports CSV only as **UTF‑8 with commas**, which causes some locality names to include double quotes.  
+  
+The simplest way to obtain a clean, tab‑separated file:   
+
+1. Select all Excel data
+2. Paste into **Editpad Pro** (or similar)
+3. This produces a **TAB-separated** dataset without Excel quoting issues
+
+#### 6. Save the final CSV
+
+Save the cleaned file as:
+
+```code
+D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv
+```
+Encoding: UTF‑8 (No BOM)
+
 
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
 
