@@ -72,10 +72,10 @@ We will use a **PYTHON SCRIPT** in the next section to automate this process.
 
 The manual Excel preparation involves the following steps:
 
-1. Delete unnecessary column
+### 1. Delete unnecessary column
 - Remove the column TAMAÑO_DE_LOCALIDAD.
 
-2. Fix merged header rows
+### 2. Fix merged header rows
 
 - The file contains merged header cells:
   - TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
