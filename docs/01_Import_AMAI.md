@@ -72,11 +72,12 @@ We will use a ***phyton script below*** to automate this process to avoid thye m
 
 The process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AMAI_2024_IMPORT.csv** involves:   
 
-- Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
-- We need to standarize headers as file has merged cells in headers:
+- Delete column we don't need "TAMAÑO_DE_LOCALIDAD"
+- File has merged cells in headers, we need to standarize them:
   - TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
   - AB     C+    C     C-     D+     D     E
-  - Replace headers by CVEGEO, ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
+  - Add new headers in row 3: ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
+  - Delete row 1 and 2
 - Create a new column CVEGEO by concatenating
   - Region codes come as integers but INEGI codes alphanumeric with leading zerores, so will standarize codes:
     - ENTIDAD (2 digits) must format it as 00     
@@ -90,7 +91,7 @@ The process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AMAI_2024
   - Validations
   - Pipeline consistency
 - Excel save CSV files only UTF-8 comma separated, that creates some locality names with double quotes, 
-  the easier way to get clean file is copy the Excel data to Notepad Pro, you will get <tab> separated data
+  the easier way to get clean file is copy the Excel data to Notepad Pro, you will get <tab> separated data.
 - Save the CSV **NSE_por_AGEB_AMAI_2024_IMPORT.csv** 
 
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
