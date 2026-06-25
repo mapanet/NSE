@@ -68,8 +68,8 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 ## 3 Edit Excel file to produce a importable CSV
 
-This are the steps to process Excel.  
-You can edit the Excel file and do all this changes manually or use the phyton script below that returns file ready to import.
+This are the steps to process Excel.   
+You can edit the Excel file and do all this changes manually or ***use the phyton script*** below.
 
 - Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
 - We need to standarize headers as file has merged cells in headers:
