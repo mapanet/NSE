@@ -76,7 +76,8 @@ The manual process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AM
 - File has merged cells in headers, we need to standarize them:
   - TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
   - AB     C+    C     C-     D+     D     E
-  - Add new headers in row 3: ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
+  - Add new headers in row 3: 
+    - ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
   - Delete row 1 and 2
 - Create a new column CVEGEO by concatenating
   - Region codes come as integers but INEGI codes alphanumeric with leading zerores, so will standarize codes:
