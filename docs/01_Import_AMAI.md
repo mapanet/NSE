@@ -88,9 +88,8 @@ To standardize the structure:
 
 - Add the following headers in row 3:
 
-```text
-    ENTIDAD	ENT_NOM	MUN	MUN_NOM	LOC	LOC_NOM	AGEB	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE	NSE_TOTAL
-```
+|ENTIDAD|ENT_NOM|MUN|MUN_NOM|LOC|LOC_NOM|AGEB|AB|CPLUS|C|CMINUS|DPLUS|D|E|NSE|NSE_TOTAL|
+|-------|-------|---|-------|---|-------|----|--|-----|-|------|-----|-|-|---|---------|
 
 - Delete row 1 and 2
 
