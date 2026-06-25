@@ -85,11 +85,10 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
   - Validations
   - Pipeline consistency
 
-We can edit the Excel file and do all that changes manually or use the following script that will return:
+We can edit the Excel file and do all that changes manually or use the phyton script below that returns file ready to import.   
+Script will make the changes and save file as CSV (TSV) **NSE_por_AGEB_AMAI_2024_IMPORT.csv**   
 
-NSE_por_AGEB_AMAI_2024_IMPORT.csv
-
-## 4 Convert Excel to CSV (TSV)
+#### Convert_Excel_to_CSV.py
 
 This script require you install **pandas** and **openpyxl**, in CMD execute:  
 
