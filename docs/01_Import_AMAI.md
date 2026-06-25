@@ -68,16 +68,8 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 ## 3. Edit the Excel File to Produce an Importable CSV
 
-Although the next section provides a **PYTHON SCRIPT** that automates the entire process, 
+Although the next section provides a **PYTHON SCRIPT** that automates the entire process,   
 the manual steps are documented here for clarity, auditing, and reproducibility.
-
-### Manual processing steps:
-
-1. Delete column ...
-2. Fix merged headers ...
-3. Create CVEGEO ...
-4. Replace N/D ...
-5. Export clean CSV ...
 
 These steps define the exact transformations performed by the automation script.   
 
