@@ -97,14 +97,28 @@ ENTIDAD	ENT_NOM	MUN	MUN_NOM	LOC	LOC_NOM	AGEB	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE	NSE
 
 #### 3. Create the CVEGEO column
 
-- Create a new column in in column 1 with header "CVEGEO" to concatenate:
-  - Region codes come as integers but INEGI codes alphanumeric with leading zerores, so will standarize codes:
-    - ENTIDAD (2 digits) must format it as 00     
-    - MUNICIPIO (3 digits) must format it as 000   
-    - LOCALIDAD (4 digits) must format it as 0000      
-    - AGEB (4 digits)  
-  - Formula CVEGEO: =TEXT(B2, "00") & TEXT(D2,"000") & TEXT(F2, "0000") & TEXT(H2, "0000")   
-    This will result in an INEGI valid CVEGEO: ENTIDAD + MUN + LOC + AGEB (EEMMMLLLLAAAA)
+Insert a new column at position 1 with header **CVEGEO**. 
+
+AMAI provides region codes as integers, but INEGI uses **alphanumeric codes with leading zeros**.   
+Standardize the codes as follows: 
+
+- ENTIDAD → 2 digits (**00**)
+- MUNICIPIO → 3 digits (**000**)
+- LOCALIDAD → 4 digits (**0000**)
+- AGEB → 4 digits
+
+Formula for CVEGEO:
+
+```excel
+=TEXT(B2, "00") & TEXT(D2, "000") & TEXT(F2, "0000") & TEXT(H2, "0000")
+```
+
+This produces a valid INEGI CVEGEO:
+
+**ENTIDAD + MUNICIPIO + LOCALIDAD + AGEB**   
+Format: EEMMMLLLLAAAA
+
+
 - Replace N/D values by NOTHING so they become NULL when imported to MS SQL, this prevents errors in:
   - SUM()
   - Percentage calculations
