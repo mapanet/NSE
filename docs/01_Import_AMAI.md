@@ -66,9 +66,10 @@ Directory: D:\AXSI\AMAI\
 Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 
-## 3 We need to edit Excel file fix:
+## 3 Edit Excel file to produce a importable CSV
 
-This the process to clean Excel file to have a importable CSV just so you know
+This are the steps to process Excel.  
+You can edit the Excel file and do all this changes manually or use the phyton script below that returns file ready to import.
 
 - Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
 - We need to standarize headers as file has merged cells in headers:
@@ -89,9 +90,9 @@ This the process to clean Excel file to have a importable CSV just so you know
   - Pipeline consistency
 - Excel save CSV files only UTF-8 comma separated, that creates some locality names with double quotes, 
   the easier way to get clean file is copy the Excel data to Notepad Pro, you will get <tab> separated data
- 
-We can edit the Excel file and do all that changes manually or use the phyton script below that returns file ready to import.   
-Script will make the changes and save file as CSV (TSV) **NSE_por_AGEB_AMAI_2024_IMPORT.csv**   
+- Save the CSV **NSE_por_AGEB_AMAI_2024_IMPORT.csv** 
+   
+   
 
 #### Convert_Excel_to_CSV.py
 
