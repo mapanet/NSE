@@ -230,52 +230,32 @@ WITH (
 
 ## 5 Post‑Import Validations
 
-### Validate that TOTAL = sum of socioeconomic levels
-
 ```sql
 ----------------------------------------------------
 -- Validate that TOTAL = sum of socioeconomic levels
-----------------------------------------------------
+-- Exprected result
+-- CVEGEO | AB | CPLUS | C | CMINUS | DPLUS | D | E | NSE | NSE_TOTAL |
+-- No records: This means there is no difference between total vs sum of components   
+
 SELECT *
 FROM AMAI_AGEB_2024
 WHERE NSE_TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
-```
 
-#### Exprected result
-
-| CVEGEO        | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E   | NSE | NSE_TOTAL |
-|---------------|-----|-------|-----|--------|-------|-----|-----|-----|-----------|  
-
-No records: This means there is no difference between total vs sum of components   
-
-### Validate correct CVEGEO length (13 characters)
-
-```sql
--------------------------------------------------
+------------------------------------------------
 -- Validate correct CVEGEO length (13 characters)
--------------------------------------------------
+-- Exprected result
+-- CVEGEO | AB | CPLUS | C | CMINUS | DPLUS | D | E | NSE | NSE_TOTAL |
+-- No records: This means all CVEGEO are 13 characters: EEMMMLLLLAAAA
+
 SELECT *
 FROM AMAI_AGEB_2024
 WHERE LEN(CVEGEO) <> 13;
-```
 
-#### Exprected result
-
-| CVEGEO        | AB | CPLUS | C | CMINUS | DPLUS | D | E | NSE | NSE_TOTAL |
-|---------------|----|-------|---|--------|-------|---|---|-----|-----------|  
-
-None: This means all CVEGEO are 13 characters: EEMMMLLLLAAAA
-
----
-
-### Final Result
-
-SQL to display top 6 records to verify data:
-
-```sql
--------------------
+------------------------------------------------
+-- Final Result
+-- SQL to display top 6 records to verify data:
 -- Show top 6 rows
--------------------
+
 SELECT TOP (6) 
   CVEGEO, 
   AB, 
