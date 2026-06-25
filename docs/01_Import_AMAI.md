@@ -179,9 +179,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-DROP TABLE IF EXISTS dbo.AMAI_2024_AGEB;
+DROP TABLE IF EXISTS dbo.AMAI_AGEB_2024;
 
-CREATE TABLE [dbo].[AMAI_2024_AGEB](
+CREATE TABLE [dbo].[AMAI_AGEB_2024](
 	[CVEGEO] [nvarchar](20) NOT NULL,
 	[ENTIDAD] [varchar](2) NOT NULL,
 	[ENT_NOM] [nvarchar](85) NOT NULL,
@@ -199,7 +199,7 @@ CREATE TABLE [dbo].[AMAI_2024_AGEB](
 	[E] [int] NULL,
 	[NSE] [nvarchar](10) NULL,
 	[NSE_TOTAL] [int] NULL,
- CONSTRAINT [PK_AMAI_2024_AGEB] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_AMAI_AGEB_2024] PRIMARY KEY CLUSTERED 
 (
 	[CVEGEO] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -212,7 +212,7 @@ GO
 -- File is UTF-8 NO BOM
 -- Make sure the directory path matches where you saved the AMAI CSV file.
 ------------------------------------------------
-BULK INSERT AMAI_2024_AGEB
+BULK INSERT AMAI_AGEB_2024
 FROM 'D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv'
 WITH (
     FIRSTROW = 2,
@@ -237,7 +237,7 @@ WITH (
 -- Validate that TOTAL = sum of socioeconomic levels
 ----------------------------------------------------
 SELECT *
-FROM AMAI_2024_AGEB
+FROM AMAI_AGEB_2024
 WHERE NSE_TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
 ```
 
@@ -255,7 +255,7 @@ No records: This means there is no difference between total vs sum of components
 -- Validate correct CVEGEO length (13 characters)
 -------------------------------------------------
 SELECT *
-FROM AMAI_2024_AGEB
+FROM AMAI_AGEB_2024
 WHERE LEN(CVEGEO) <> 13;
 ```
 
@@ -287,7 +287,7 @@ SELECT TOP (6)
   E, 
   NSE, 
   NSE_TOTAL   
-FROM dbo.AMAI_2024_AGEB
+FROM dbo.AMAI_AGEB_2024
 ```
 
 Your final table in SQL should look like this:  
