@@ -128,6 +128,10 @@ This prevents errors in:
 - Validation scripts
 - Pipeline consistency checks
 
+Excel no should be like this:
+
+[<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
+
 #### 5. Generate a clean CSV
 
 Excel exports CSV only as **UTF‑8 with commas**, which causes some locality names to include double quotes.  
@@ -146,9 +150,6 @@ Save the cleaned file as:
 D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv
 ```
 Encoding: UTF‑8 (No BOM)
-
-
-[<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
 
 ---
 
