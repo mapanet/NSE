@@ -68,8 +68,10 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 ## 3 Edit Excel file to produce a importable CSV
 
-This are the steps to process Excel.   
-### Automated ***phyton script*** below.  
+This are the required process of Excel file to get a importable CSV so you know.
+We will use a phyton script below to automate this process.
+
+### ***phyton script*** below.  
 
 - Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
 - We need to standarize headers as file has merged cells in headers:
@@ -95,7 +97,7 @@ This are the steps to process Excel.
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
    
 
-### Convert_Excel_to_CSV.py
+### Phyton script: Convert_Excel_to_CSV.py
 
 This script require you install **pandas** and **openpyxl**, in windows CMD (with admin rights) execute:  
 
