@@ -101,15 +101,15 @@ The manual process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AM
 
 ## Phyton script
 
-**Save to:** D:\AXSI\AMAI\Convert_Excel_to_CSV.py
+Save to: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py**
 
 This script require you install **pandas** and **openpyxl**, in windows CMD (with admin rights) execute:  
 
 pip install pandas   
 pip install openpyxl   
 
-Copy the script into *Visual Studio Code* in the same working directory: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py** and run it.   
-(verify path and file name if you used different names)
+Open script in **Visual Studio Code** and run it.   
+(verify path and file names if you used different ones)  
 
 ```phyton
 import pandas as pd
