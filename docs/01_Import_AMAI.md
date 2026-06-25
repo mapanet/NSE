@@ -79,7 +79,7 @@ The manual Excel preparation involves the following steps:
 
 - The file contains merged header cells:
 
-```text
+```code
  TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
  AB     C+    C     C-     D+     D     E
  ```
