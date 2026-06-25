@@ -1,35 +1,35 @@
 # STEP 1 — AMAI 2024 Data Ingestion (NSE by AGEB)
 
-Objective: Convert the official AMAI file `NSE_por_AGEB_AMAI.xlsx` into a normalized SQL table ready for the NSE pipeline.
+Objective: Convert the official AMAI file NSE_por_AGEB_AMAI_2024.xlsx into a normalized SQL table ready for the NSE pipeline.
 
 ## Suggested work directories
 
-- D:\AXSI\AMAI (work files)
-- D:\AXSI\AMAI\Download (download files)
+- D:\AXSI\AMAI — working files
+- D:\AXSI\AMAI\Download  — downloaded source files
 
 ---
 
-## 1 Official Source File
+## 1. Official Source File
 
 AMAI publishes the dataset in its downloads section:
 
 https://www.amai.org/descargas/NSE_por_AGEB_AMAI.xlsx
 
-Depending on the browser, it may download directly as XLSX or open in the Office Online viewer:
+Depending on the browser, it may download directly as an XLSX file or open in the Office Online viewer:
 
 https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.amai.org%2Fdescargas%2FNSE_por_AGEB_AMAI.xlsx&wdOrigin=BROWSELINK
 
-or
+Alternatively, it can be accessed through the NSE portal:
 
 https://www.amai.org/NSE/index.php?queVeo=NSEDES&Logeado=s (download NSE por AGEB)
 
 Important characteristics of the file:
 
-- It does not include a year in the filename.
+- The filename does not include a year.
 - It corresponds to the NSE 2024 methodology.
 
 
-## 2 Original File Contents
+## 2. Original File Contents
 
 The file contains one row per urban AGEB from Census 2020.
 
@@ -55,27 +55,33 @@ Original columns:
 | VIVIENDAS | Total occupied private dwellings |
 | TAMAÑO_DE_LOCALIDAD | Locality population range |
 
-#### Save file as 
+#### Save the file
 
 Directory: D:\AXSI\AMAI\Download   
 File name: NSE_por_AGEB_AMAI_2024.xlsx   
 
-### Copy file to working directory
+### Copy the file to the working directory
 
 Directory: D:\AXSI\AMAI\
 Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 
-## 3 Edit Excel file to produce a importable CSV
+## 3. Edit the Excel File to Produce an Importable CSV
 
-We will use a **PHYTON SCRIPT** en next section to automate this process.   
+We will use a **PYTHON SCRIPT** in the next section to automate this process.   
 
-The manual process of Excel file involves:   
+The manual Excel preparation involves the following steps:
 
-- Delete column "TAMAÑO_DE_LOCALIDAD"
-- File has merged cells in headers:
+1. Delete unnecessary column
+- Remove the column TAMAÑO_DE_LOCALIDAD.
+
+2. Fix merged header rows
+
+- The file contains merged header cells:
   - TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
   - AB     C+    C     C-     D+     D     E
+  
+To standardize the structure:
   - To standarize headers Add this new headers in row 3: 
     - ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
   - Delete row 1 and 2
@@ -102,7 +108,7 @@ The manual process of Excel file involves:
 
 ## Phyton script
 
-Save the followin script to: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py**
+Save the following script to: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py**
 
 This script require you install **pandas** and **openpyxl**, in windows CMD (with admin rights) execute:  
 
