@@ -94,7 +94,8 @@ We will use a phyton script below to automate this process.
 - Save the CSV **NSE_por_AGEB_AMAI_2024_IMPORT.csv** 
    
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
-   
+
+---
 
 ### Phyton script: Convert_Excel_to_CSV.py
 
