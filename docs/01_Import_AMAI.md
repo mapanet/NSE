@@ -71,11 +71,11 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 Although the next section provides a **PYTHON SCRIPT** that automates the entire process,   
 the manual steps are documented here for clarity, auditing, and reproducibility.
 
-#### A) Delete unnecessary column
+#### 3.1 Delete unnecessary column
 
 - Remove the column TAMAÑO_DE_LOCALIDAD.
 
-#### B) Fix merged header rows
+#### 3.2 Fix merged header rows
 
 - The file contains merged header cells:
 
@@ -94,7 +94,7 @@ ENTIDAD	ENT_NOM	MUN	MUN_NOM	LOC	LOC_NOM	AGEB	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE	NSE
 
 - Delete row 1 and 2
 
-#### C) Create the CVEGEO column
+#### 3.3 Create the CVEGEO column
 
 Insert a new column at position 1 with header **CVEGEO**. 
 
@@ -116,7 +116,7 @@ This produces a valid INEGI CVEGEO:
 **ENTIDAD + MUNICIPIO + LOCALIDAD + AGEB**   
 Format: EEMMMLLLLAAAA
 
-#### D) Replace N/D values
+#### 3.4 Replace N/D values
 
 Replace all *N/D* values *with empty* cells so they import as *NULL* in SQL Server.
 
@@ -131,7 +131,7 @@ Excel now should look like this:
 
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
 
-#### E) Generate a clean CSV
+#### 3.5 Generate a clean CSV
 
 Excel exports CSV only as **UTF‑8 with commas**, which causes some locality names to include double quotes.  
   
@@ -141,7 +141,7 @@ The simplest way to obtain a clean, tab‑separated file:
 2. Paste into **Editpad Pro** (or similar)
 3. This produces a **TAB-separated** dataset without Excel quoting issues
 
-#### E) Save the final CSV
+#### 3.6 Save the final CSV
 
 Save the cleaned file as:
 
