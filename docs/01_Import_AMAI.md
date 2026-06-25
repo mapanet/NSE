@@ -57,125 +57,103 @@ Original columns:
 
 #### Save file as 
 
-Directory: D:\AXSI\AMAI   
-File name: NSE_AMAI_2024_AGEB_IMPORT.xlsx   
+Directory: D:\AXSI\AMAI\Download   
+File name: NSE_por_AGEB_AMAI_2024.xlsx   
+
+### Copy file to working directory
+
+Directory: D:\AXSI\AMAI\
+Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 
+## 3 We need to edit Excel file to:
 
-## 3 Edit Excel to format columns as we need
-
-#### Fix the headers, get rid of columns we don't need
-
-Delete Rows:
-
-- TAMAÑO DE LOCALIDAD
-
+- Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
 - File has merged cells as below, and we need to standarize headers:
+  - TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
+  - AB     C+    C     C-     D+     D     E
+  - Replace headers by CVEGEO, ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
+- Create a new column CVEGEO by concatenating
+  - Region codes come as integers but INEGI codes alphanumeric with leading zerores, so will standarize codes:
+    - ENTIDAD (2 digits) must format it as 00     
+    - MUNICIPIO (3 digits) must format it as 000   
+    - LOCALIDAD (4 digits) must format it as 0000      
+    - AGEB (4 digits)  
+- Replace N/D values by NOTHING so they become NULL when imported to MS SQL, this prevents errors in:
+  - SUM()
+  - Percentage calculations
+  - Validations
+  - Pipeline consistency
 
-TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
-AB     C+    C     C-     D+     D     E   
+We can edit the Excel file and do all that changes manually or use the following script that will return:
 
-- Create a new header below:  
+NSE_por_AGEB_AMAI_2024_IMPORT.csv
 
-[<img src="/docs/images/NSE_1.png" width="1000">](/docs/images/NSE_1.png)
+## 4 Convert Excel to CSV (TSV)
 
-- Delete original headers rows 1 and 2 to end with headers names we will use in MS SQL table.
-- Region codes often come as integers but INEGI defines codes alpha with leading zerores, so lets standarize codes
+This script require you install **pandas** and **openpyxl**
 
-ENTIDAD (2 digits)   
-MUNICIPIO (3 digits)   
-LOCALIDAD (4 digits)   
-AGEB (4 digits)  
+In CMD execute:  
 
-**Format:**   
+pip install pandas   
+pip install openpyxl   
 
-ENTIDAD as 00   
-MUNICIPIO as 000   
-LOCALIDAD as 0000   
-AGEB as 0000   
+```phyton
+import pandas as pd
 
-[<img src="/docs/images/NSE_3.png" width="1000">](/docs/images/NSE_3.png)
+# 1. Read Excel file without headers
+df = pd.read_excel(r"D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.xlsx", header=None)
 
+# 2. Drop the first two rows (original headers)
+df = df.drop([0, 1]).reset_index(drop=True)
 
-## 4 Create CVEGEO by concatenating codes
+# 3. Define new headers
+headers = [
+    "ENTIDAD","ENT_NOM","MUN","MUN_NOM","LOC","LOC_NOM","AGEB",
+    "AB","CPLUS","C","CMINUS","DPLUS","D","E","NSE","NSE_TOTAL","HABITANTES"
+]
+df.columns = headers
 
-- Add a new column to the left and name it **CVEGEO**
-- Concatenate CVEGEO = ENTIDAD + MUNICIPIO + LOCALIDAD + AGEB
+# 4. Drop HABITANTES column
+df = df.drop(columns=["HABITANTES"])
 
-### Formula
+# 5. Format ENTIDAD, MUN, LOC with leading zeros
+df["ENTIDAD"] = df["ENTIDAD"].astype(str).str.zfill(2)
+df["MUN"]     = df["MUN"].astype(str).str.zfill(3)
+df["LOC"]     = df["LOC"].astype(str).str.zfill(4)
 
-= ENTIDAD & MUNICIPIO & LOCALIDAD & AGEB   
+# 6. Insert CVEGEO column at position 0
+df.insert(0, "CVEGEO", "")
 
-= TEXT(B2,"00") & TEXT(D2,"000") & TEXT(F2,"0000") & TEXT(H2,"0000")
+# 7. Build CVEGEO = ENTIDAD + MUN + LOC + AGEB
+df["CVEGEO"] = (
+    df["ENTIDAD"].astype(str).str.zfill(2) +
+    df["MUN"].astype(str).str.zfill(3) +
+    df["LOC"].astype(str).str.zfill(4) +
+    df["AGEB"].astype(str).str.zfill(4)
+)
 
-- Copy formula to all records
-- **Copy calculated CVEGEO colum as Values** to have the results as text  
+# 8. Replace "N/D" with empty string
+df = df.replace("N/D", "")
 
-#### You Excel must look like this
+# 9. Remove all double quotes
+df = df.replace('"', '', regex=True)
 
-[<img src="/docs/images/NSE_4.png" width="1000">](/docs/images/NSE_4.png)
+# 10. Save as TSV (tab-separated), UTF-8 without BOM
+df.to_csv("NSE_por_AGEB_AMAI_2024_IMPORT.csv",
+    sep="\t",
+    index=False,
+    encoding="utf-8"
+)
+```
 
+### Expected result
 
-
-## 5 Correction of “N/D” values
-
-1. Numeric columns  
-   AB, CPLUS, C, CMINUS, DPLUS, D, E → AMAI uses “N/D” when there is insufficient information.
-
-2. Categorical column  
-   NSE (NIVEL_PREDOMINANTE) → “N/D” when no dominant socioeconomic level exists.
-
-To ensure the pipeline works correctly, we use: NULL as data not available "N/A"   
-
-### Normalization
-
-Replace "N/D" with an empty cell ("") so that when importing into SQL it becomes NULL.
-
-This prevents errors in:
-
-- SUM()
-- Percentage calculations
-- Validations
-- Pipeline consistency
-
-You excel records no may looks with some AGEB areas with some or all values EMPTY (this will be traduced in SQL as NULL)
-
-[<img src="/docs/images/NSE_5.png" width="1000">](/docs/images/NSE_5.png)
-
-
-
-## 6 Export from Excel to CSV
-
-#### Save as
-
-Directory: D:\AXSI\AMAI   
-File name: NSE_AMAI_2024_AGEB_IMPORT.csv   
-
-### Export settings
-
-- Format: CSV  
-- Separator: COMMA  
-- Encoding: UTF‑8  
-- Quotes: do not use quotes  
-- No BOM (Excel exports UTF‑8 without BOM)  
-- No empty rows at the end  
-- No hidden columns
-  
-This will create a comma separated values CSV.   
-
-* My personal choice is to edit the file with Notepad Pro to replace **comma** to **<tab>**, this gives me the opportunity check the data visually and make sure no region names have hidden double quotes.
-(Mexican data often come with " in names, some may have single " so with with TAB is easy to debug).
-
-### Edit the CSV with EditPad Pro or Notepad to replace comma by <tab>:
-
-Save it as:
-
-- UTF‑8 without BOM  
-- TAB delimiter  
+D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv
 
 The CSV file should look like this:
 
-| CVEGEO        |ENTIDAD| NOM_ENT       |MUN| NOM_MUN      |LOC | NOM_LOC      |AGEB|AB |CPLUS|C  |CMINUS|DPLUS|D  |E  |NSE|NSE_TOTAL|
+| CVEGEO        |ENTIDAD| ENT_NOM       |MUN| MUN_NOM      |LOC | LOC_NOM      |AGEB|AB |CPLUS|C  |CMINUS|DPLUS|D  |E  |NSE|NSE_TOTAL|
 |---------------|-------|---------------|---|--------------|----|--------------|----|---|-----|---|------|-----|---|---|---|---------|
 | 0100100010017 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0017|  0|   12| 39|   111|  153|331|   |D  |      648|
 | 010010001006A |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|006A|178|  124| 60|    24|    9|  4|  0|A/B|      399|
@@ -185,12 +163,15 @@ The CSV file should look like this:
 | 0100100010229 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0229|25 |   36| 14|    20|    9|  7|  0|C+ |      111|
 
 
-## 7 Create Final AMAI table in MS SQL Server 2022
+## 5 Create Final AMAI table in MS SQL Server 2022
 
 ```sql
 ------------------------------------------
 -- Create table in SQL: NSE_AMAI_2024_AGEB
 ------------------------------------------
+
+USE INMO
+GO
 
 SET ANSI_NULLS ON
 GO
@@ -203,11 +184,12 @@ DROP TABLE IF EXISTS dbo.AMAI_2024_AGEB;
 CREATE TABLE [dbo].[AMAI_2024_AGEB](
 	[CVEGEO] [nvarchar](20) NOT NULL,
 	[ENTIDAD] [varchar](2) NOT NULL,
-	[NOM_ENT] [nvarchar](85) NOT NULL,
+	[ENT_NOM] [nvarchar](85) NOT NULL,
 	[MUN] [varchar](3) NOT NULL,
-	[NOM_MUN] [nvarchar](85) NOT NULL,
+	[MUN_NOM] [nvarchar](85) NOT NULL,
 	[LOC] [varchar](4) NOT NULL,
 	[LOC_NOM] [nvarchar](110) NOT NULL,
+    [AGEB] [varchar](4) NOT NULL,
 	[AB] [int] NULL,
 	[CPLUS] [int] NULL,
 	[C] [int] NULL,
@@ -230,8 +212,8 @@ GO
 -- File is UTF-8 NO BOM
 -- Make sure the directory path matches where you saved the AMAI CSV file.
 ------------------------------------------------
-BULK INSERT NSE_AMAI_2024_AGEB
-FROM 'D:\AXSI\AMAI\NSE_AMAI_2024_AGEB_IMPORT.csv'
+BULK INSERT AMAI_2024_AGEB
+FROM 'D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
@@ -246,7 +228,7 @@ WITH (
 
 
 
-## 9 Post‑Import Validations
+## 5 Post‑Import Validations
 
 ### Validate that TOTAL = sum of socioeconomic levels
 
@@ -255,7 +237,7 @@ WITH (
 -- Validate that TOTAL = sum of socioeconomic levels
 ----------------------------------------------------
 SELECT *
-FROM NSE_AMAI_2024_AGEB
+FROM AMAI_2024_AGEB
 WHERE NSE_TOTAL <> (AB + CPLUS + C + CMINUS + DPLUS + D + E);
 ```
 
@@ -273,7 +255,7 @@ No records: This means there is no difference between total vs sum of components
 -- Validate correct CVEGEO length (13 characters)
 -------------------------------------------------
 SELECT *
-FROM NSE_AMAI_2024_AGEB
+FROM AMAI_2024_AGEB
 WHERE LEN(CVEGEO) <> 13;
 ```
 
@@ -282,11 +264,11 @@ WHERE LEN(CVEGEO) <> 13;
 | CVEGEO        | AB | CPLUS | C | CMINUS | DPLUS | D | E | NSE | NSE_TOTAL |
 |---------------|----|-------|---|--------|-------|---|---|-----|-----------|  
 
-None: Tthis means all CVEGEO are 13 characters: EEMMMLLLLAAAA
+None: This means all CVEGEO are 13 characters: EEMMMLLLLAAAA
 
 ---
 
-## 10 Final Result
+### Final Result
 
 SQL to display top 6 records to verify data:
 
@@ -305,7 +287,7 @@ SELECT TOP (6)
   E, 
   NSE, 
   NSE_TOTAL   
-FROM dbo.NSE_AMAI_2024_AGEB
+FROM dbo.AMAI_2024_AGEB
 ```
 
 Your final table in SQL should look like this:  
