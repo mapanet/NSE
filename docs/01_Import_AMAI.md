@@ -101,7 +101,7 @@ The manual process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AM
 
 ## Phyton script
 
-Save to: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py**
+Save the followin script to: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py**
 
 This script require you install **pandas** and **openpyxl**, in windows CMD (with admin rights) execute:  
 
