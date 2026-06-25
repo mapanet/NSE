@@ -70,8 +70,7 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 This are the required process of Excel file to get a importable CSV so you know.   
 We will use a phyton script below to automate this process.  
-
-### ***phyton script*** below.  
+### **Phyton script** below.  
 
 - Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
 - We need to standarize headers as file has merged cells in headers:
