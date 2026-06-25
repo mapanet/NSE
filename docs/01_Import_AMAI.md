@@ -97,7 +97,9 @@ We will use a ***phyton script below*** to automate this process.
 
 ---
 
-### Phyton script: Convert_Excel_to_CSV.py
+## Phyton script
+
+**Save to:** D:\AXSI\AMAI\Convert_Excel_to_CSV.py
 
 This script require you install **pandas** and **openpyxl**, in windows CMD (with admin rights) execute:  
 
