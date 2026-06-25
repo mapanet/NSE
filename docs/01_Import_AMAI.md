@@ -128,7 +128,7 @@ This prevents errors in:
 - Validation scripts
 - Pipeline consistency checks
 
-Excel no should be like this:
+Excel now should look like this:
 
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
 
