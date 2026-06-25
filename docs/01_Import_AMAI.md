@@ -68,6 +68,8 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 ## 3 We need to edit Excel file fix:
 
+This the process to clean Excel file to have a importable CSV just so you know
+
 - Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
 - We need to standarize headers as file has merged cells in headers:
   - TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
@@ -79,12 +81,15 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
     - MUNICIPIO (3 digits) must format it as 000   
     - LOCALIDAD (4 digits) must format it as 0000      
     - AGEB (4 digits)  
+  - Formula CVEGEO: =TEXT(B2, "00") & TEXT(D2,"000") & TEXT(F2, "0000") & TEXT(H2, "0000")
 - Replace N/D values by NOTHING so they become NULL when imported to MS SQL, this prevents errors in:
   - SUM()
   - Percentage calculations
   - Validations
   - Pipeline consistency
-
+- Excel save CSV files only UTF-8 comma separated, that creates some locality names with double quotes, 
+  the easier way to get clean file is copy the Excel data to Notepad Pro, you will get <tab> separated data
+ 
 We can edit the Excel file and do all that changes manually or use the phyton script below that returns file ready to import.   
 Script will make the changes and save file as CSV (TSV) **NSE_por_AGEB_AMAI_2024_IMPORT.csv**   
 
