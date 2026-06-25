@@ -68,7 +68,7 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 ## 3 Edit Excel file to produce a importable CSV
 
-We will use a ***PHYTON SCRIPT*** below to automate this process to avoid the manual process.   
+We will use a **PHYTON SCRIPT** below to automate this process to avoid the manual process.   
 
 The manual process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AMAI_2024_IMPORT.csv** involves:   
 
