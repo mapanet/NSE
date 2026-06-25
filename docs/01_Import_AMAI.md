@@ -92,7 +92,7 @@ You can edit the Excel file and do all this changes manually or use the phyton s
   the easier way to get clean file is copy the Excel data to Notepad Pro, you will get <tab> separated data
 - Save the CSV **NSE_por_AGEB_AMAI_2024_IMPORT.csv** 
    
-
+[<img src="/docs/images/Censo_2020_ITER_localidad.png" width="1000">](/docsCenso_2020_ITER_localidad.png)
    
 
 #### Convert_Excel_to_CSV.py
