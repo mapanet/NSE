@@ -113,7 +113,7 @@ Formula for CVEGEO:
 ```
 This produces a valid INEGI CVEGEO:
 
-**ENTIDAD + MUNICIPIO + LOCALIDAD + AGEB**   
+**CVEGEO** = ENTIDAD + MUNICIPIO + LOCALIDAD + AGEB  
 Format: EEMMMLLLLAAAA
 
 #### 3.4 — Replace N/D values
