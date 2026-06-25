@@ -156,13 +156,16 @@ Encoding: UTF‑8 (No BOM)
 
 Save the following script to: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py**
 
-This script require you install **pandas** and **openpyxl**, in windows CMD (with admin rights) execute:  
+This script requires **pandas** and **openpyxl**.  
+In Windows CMD (with administrator rights), run: 
 
+```code
 pip install pandas   
-pip install openpyxl   
+pip install openpyxl
+```
 
-Open script in **Visual Studio Code** and run it.   
-(verify path and file names if you used different ones)  
+Open the script in **Visual Studio Code** and run it.
+(Verify the path and filenames if you used different ones.)
 
 ```phyton
 import pandas as pd
@@ -215,9 +218,11 @@ df.to_csv("NSE_por_AGEB_AMAI_2024_IMPORT.csv",
 
 ### Expected result
 
+```code
 D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv
+```
 
-The CSV file should look like this:
+The CSV file should look like this:   
 
 | CVEGEO        |ENTIDAD| ENT_NOM       |MUN| MUN_NOM      |LOC | LOC_NOM      |AGEB|AB |CPLUS|C  |CMINUS|DPLUS|D  |E  |NSE|NSE_TOTAL|
 |---------------|-------|---------------|---|--------------|----|--------------|----|---|-----|---|------|-----|---|---|---|---------|
