@@ -85,7 +85,7 @@ The manual process of Excel file involves:
     - MUNICIPIO (3 digits) must format it as 000   
     - LOCALIDAD (4 digits) must format it as 0000      
     - AGEB (4 digits)  
-  - Formula CVEGEO: =TEXT(B2, "00") & TEXT(D2,"000") & TEXT(F2, "0000") & TEXT(H2, "0000")
+  - Formula CVEGEO: =TEXT(B2, "00") & TEXT(D2,"000") & TEXT(F2, "0000") & TEXT(H2, "0000")   
     This will result in an INEGI CVEGEO: ENTIDAD + MUN + LOC + AGEB (EEMMMLLLLAAAA)
 - Replace N/D values by NOTHING so they become NULL when imported to MS SQL, this prevents errors in:
   - SUM()
