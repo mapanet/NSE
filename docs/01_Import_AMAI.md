@@ -79,7 +79,7 @@ The manual Excel preparation involves the following steps:
 
 - The file contains merged header cells:
 
-```code
+```text
  TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
  AB     C+    C     C-     D+     D     E
  ```
@@ -88,8 +88,11 @@ To standardize the structure:
 
 - Add the following headers in row 3:
 
-|ENTIDAD|ENT_NOM|MUN|MUN_NOM|LOC|LOC_NOM|AGEB|AB|CPLUS|C|CMINUS|DPLUS|D|E|NSE|NSE_TOTAL|
-|-------|-------|---|-------|---|-------|----|--|-----|-|------|-----|-|-|---|---------|
+```code
+ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB,
+AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
+```
+
 
 - Delete row 1 and 2
 
