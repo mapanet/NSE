@@ -68,9 +68,9 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 ## 3 Edit Excel file to produce a importable CSV
 
-We will use a ***PHYTON SCRIPT BELOW*** to automate this process to avoid the manual process.   
+We will use a ***PHYTON SCRIPT*** below to automate this process to avoid the manual process.   
 
-The process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AMAI_2024_IMPORT.csv** involves:   
+The manual process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AMAI_2024_IMPORT.csv** involves:   
 
 - Delete column we don't need "TAMAÑO_DE_LOCALIDAD"
 - File has merged cells in headers, we need to standarize them:
