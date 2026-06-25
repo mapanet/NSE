@@ -72,19 +72,27 @@ We will use a **PYTHON SCRIPT** in the next section to automate this process.
 
 The manual Excel preparation involves the following steps:
 
-### 1. Delete unnecessary column
+#### 1. Delete unnecessary column
 - Remove the column TAMAÑO_DE_LOCALIDAD.
 
-### 2. Fix merged header rows
+#### 2. Fix merged header rows
 
 - The file contains merged header cells:
   - TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
   - AB     C+    C     C-     D+     D     E
-  
+
 To standardize the structure:
-  - To standarize headers Add this new headers in row 3: 
-    - ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
-  - Delete row 1 and 2
+
+- Add the following headers in row 3:
+
+```text
+    ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
+```
+
+- Delete row 1 and 2
+
+#### 3. Create the CVEGEO column
+
 - Create a new column in in column 1 with header "CVEGEO" to concatenate:
   - Region codes come as integers but INEGI codes alphanumeric with leading zerores, so will standarize codes:
     - ENTIDAD (2 digits) must format it as 00     
