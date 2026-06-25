@@ -91,12 +91,12 @@ NSE_por_AGEB_AMAI_2024_IMPORT.csv
 
 ## 4 Convert Excel to CSV (TSV)
 
-This script require you install **pandas** and **openpyxl**
-
-In CMD execute:  
+This script require you install **pandas** and **openpyxl**, in CMD execute:  
 
 pip install pandas   
 pip install openpyxl   
+
+You can save the script in same directory: D:\AXSI\AMAI\Convert_Excel_to_CSV.py
 
 ```phyton
 import pandas as pd
