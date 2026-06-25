@@ -68,8 +68,9 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 ## 3 Edit Excel file to produce a importable CSV
 
-This are the required process of Excel file to get a importable CSV so you know.   
-We will use a ***phyton script below*** to automate this process.   
+We will use a ***phyton script below*** to automate this process to avoid thye manual process.   
+
+The process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AMAI_2024_IMPORT.csv** involves:   
 
 - Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
 - We need to standarize headers as file has merged cells in headers:
@@ -91,7 +92,6 @@ We will use a ***phyton script below*** to automate this process.
 - Excel save CSV files only UTF-8 comma separated, that creates some locality names with double quotes, 
   the easier way to get clean file is copy the Excel data to Notepad Pro, you will get <tab> separated data
 - Save the CSV **NSE_por_AGEB_AMAI_2024_IMPORT.csv** 
-
 
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
 
