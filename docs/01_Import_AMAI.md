@@ -92,6 +92,7 @@ You can edit the Excel file and do all this changes manually or use the phyton s
   the easier way to get clean file is copy the Excel data to Notepad Pro, you will get <tab> separated data
 - Save the CSV **NSE_por_AGEB_AMAI_2024_IMPORT.csv** 
    
+
    
 
 #### Convert_Excel_to_CSV.py
