@@ -68,24 +68,25 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 ## 3 Edit Excel file to produce a importable CSV
 
-We will use a **PHYTON SCRIPT** below to automate this process to avoid the manual process.   
+We will use a **PHYTON SCRIPT** en next section to automate this process.   
 
-The manual process of Excel file to get a importable CSV (TSV) **NSE_por_AGEB_AMAI_2024_IMPORT.csv** involves:   
+The manual process of Excel file involves:   
 
-- Delete column we don't need "TAMAÑO_DE_LOCALIDAD"
-- File has merged cells in headers, we need to standarize them:
+- Delete column "TAMAÑO_DE_LOCALIDAD"
+- File has merged cells in headers:
   - TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
   - AB     C+    C     C-     D+     D     E
-  - Add new headers in row 3: 
+  - To standarize headers Add this new headers in row 3: 
     - ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
   - Delete row 1 and 2
-- Create a new column CVEGEO by concatenating
+- Create a new column in in column 1 with header "CVEGEO" to concatenate:
   - Region codes come as integers but INEGI codes alphanumeric with leading zerores, so will standarize codes:
     - ENTIDAD (2 digits) must format it as 00     
     - MUNICIPIO (3 digits) must format it as 000   
     - LOCALIDAD (4 digits) must format it as 0000      
     - AGEB (4 digits)  
   - Formula CVEGEO: =TEXT(B2, "00") & TEXT(D2,"000") & TEXT(F2, "0000") & TEXT(H2, "0000")
+    This will result in an INEGI CVEGEO: ENTIDAD + MUN + LOC + AGEB (EEMMMLLLLAAAA)
 - Replace N/D values by NOTHING so they become NULL when imported to MS SQL, this prevents errors in:
   - SUM()
   - Percentage calculations
