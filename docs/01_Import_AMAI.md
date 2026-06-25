@@ -68,9 +68,18 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 ## 3. Edit the Excel File to Produce an Importable CSV
 
-We will use a **PYTHON SCRIPT** in the next section to automate this process.   
+Although the next section provides a **PYTHON SCRIPT** that automates the entire process, 
+the manual steps are documented here for clarity, auditing, and reproducibility.
 
-The manual Excel preparation involves the following steps:
+### Manual processing steps:
+
+1. Delete column ...
+2. Fix merged headers ...
+3. Create CVEGEO ...
+4. Replace N/D ...
+5. Export clean CSV ...
+
+These steps define the exact transformations performed by the automation script.   
 
 #### 1. Delete unnecessary column
 - Remove the column TAMAÑO_DE_LOCALIDAD.
