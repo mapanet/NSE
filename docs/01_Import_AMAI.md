@@ -163,7 +163,7 @@ The CSV file should look like this:
 | 0100100010229 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0229|25 |   36| 14|    20|    9|  7|  0|C+ |      111|
 
 
-## 5 Create Final table in MS SQL Server: AMAI_AGEB_2024
+## 5 Create Final table in MS SQL Server
 
 ```sql
 ------------------------------------------
