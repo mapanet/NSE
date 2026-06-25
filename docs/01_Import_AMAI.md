@@ -66,7 +66,7 @@ Directory: D:\AXSI\AMAI\
 Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 
-## 3 We need to edit Excel file to:
+## 3 We need to edit Excel file fix:
 
 - Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
 - We need to standarize headers as file has merged cells in headers:
@@ -90,12 +90,13 @@ Script will make the changes and save file as CSV (TSV) **NSE_por_AGEB_AMAI_2024
 
 #### Convert_Excel_to_CSV.py
 
-This script require you install **pandas** and **openpyxl**, in CMD execute:  
+This script require you install **pandas** and **openpyxl**, in windows CMD (with admin rights) execute:  
 
 pip install pandas   
 pip install openpyxl   
 
-You can save the script in same directory: D:\AXSI\AMAI\Convert_Excel_to_CSV.py
+Copy the script into *Visual Studio Code* in the same working directory: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py** and run it.   
+(verify path and file name if you used different names)
 
 ```phyton
 import pandas as pd
@@ -162,7 +163,7 @@ The CSV file should look like this:
 | 0100100010229 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0229|25 |   36| 14|    20|    9|  7|  0|C+ |      111|
 
 
-## 5 Create Final table in MS SQL Server
+## 4 Create Final table in MS SQL Server
 
 ```sql
 ------------------------------------------
