@@ -69,7 +69,7 @@ Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 ## 3 We need to edit Excel file to:
 
 - Get rid of columns we don't need "TAMAÑO_DE_LOCALIDAD"
-- File has merged cells as below, and we need to standarize headers:
+- We need to standarize headers as file has merged cells in headers:
   - TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
   - AB     C+    C     C-     D+     D     E
   - Replace headers by CVEGEO, ENTIDAD, ENT_NOM, MUN, MUN_NOM, LOC, LOC_NOM, AGEB, AB, CPLUS, C, CMINUS, DPLUS, D, E, NSE, NSE_TOTAL
