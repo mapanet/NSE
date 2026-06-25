@@ -9,7 +9,7 @@ Objective: Convert the official AMAI file NSE_por_AGEB_AMAI_2024.xlsx into a nor
 
 ---
 
-## 1. Official Source File
+## 1. — Official Source File
 
 AMAI publishes the dataset in its downloads section:
 
@@ -29,7 +29,7 @@ Important characteristics of the file:
 - It corresponds to the NSE 2024 methodology.
 
 
-## 2. Original File Contents
+## 2. — Original File Contents
 
 The file contains one row per urban AGEB from Census 2020.
 
@@ -66,16 +66,16 @@ Directory: D:\AXSI\AMAI\
 Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
 
 
-## 3. Edit the Excel File to Produce an Importable CSV
+## 3. — Edit the Excel File to Produce an Importable CSV
 
 Although the next section provides a **PYTHON SCRIPT** that automates the entire process,   
 the manual steps are documented here for clarity, auditing, and reproducibility.
 
-#### 3.1 Delete unnecessary column
+#### 3.1 — Delete unnecessary column
 
 - Remove the column TAMAÑO_DE_LOCALIDAD.
 
-#### 3.2 Fix merged header rows
+#### 3.2 — Fix merged header rows
 
 - The file contains merged header cells:
 
@@ -94,7 +94,7 @@ ENTIDAD	ENT_NOM	MUN	MUN_NOM	LOC	LOC_NOM	AGEB	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE	NSE
 
 - Delete row 1 and 2
 
-#### 3.3 Create the CVEGEO column
+#### 3.3 — Create the CVEGEO column
 
 Insert a new column at position 1 with header **CVEGEO**. 
 
@@ -116,7 +116,7 @@ This produces a valid INEGI CVEGEO:
 **ENTIDAD + MUNICIPIO + LOCALIDAD + AGEB**   
 Format: EEMMMLLLLAAAA
 
-#### 3.4 Replace N/D values
+#### 3.4 — Replace N/D values
 
 Replace all *N/D* values *with empty* cells so they import as *NULL* in SQL Server.
 
@@ -131,7 +131,7 @@ Excel now should look like this:
 
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
 
-#### 3.5 Generate a clean CSV
+#### 3.5 — Generate a clean CSV
 
 Excel exports CSV only as **UTF‑8 with commas**, which causes some locality names to include double quotes.  
   
@@ -141,7 +141,7 @@ The simplest way to obtain a clean, tab‑separated file:
 2. Paste into **Editpad Pro** (or similar)
 3. This produces a **TAB-separated** dataset without Excel quoting issues
 
-#### 3.6 Save the final CSV
+#### 3.6 — Save the final CSV
 
 Save the cleaned file as:
 
@@ -229,7 +229,7 @@ The CSV file should look like this:
 | 0100100010229 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0229|25 |   36| 14|    20|    9|  7|  0|C+ |      111|
 
 
-## 4 Create Final table in MS SQL Server
+## 4 — Create Final table in MS SQL Server
 
 ```sql
 ------------------------------------------
@@ -294,7 +294,7 @@ WITH (
 
 
 
-## 5 Post‑Import Validations
+## 5 — Post‑Import Validations
 
 ```sql
 ----------------------------------------------------
