@@ -92,7 +92,10 @@ We will use a phyton script below to automate this process.
 - Excel save CSV files only UTF-8 comma separated, that creates some locality names with double quotes, 
   the easier way to get clean file is copy the Excel data to Notepad Pro, you will get <tab> separated data
 - Save the CSV **NSE_por_AGEB_AMAI_2024_IMPORT.csv** 
-   
+
+| CVEGEO |ENTIDAD | ENT_NOM | MUN | MUN_NOM |LOC | LOC_NOM | AGEB | AB | CPLUS | C | CMINUS | DPLUS | D | E | NSE | NSE_TOTAL |
+|--------|--------|---------|-----|---------|----|---------|------|----|-------|---|--------|-------|---|---|-----|-----------|   
+
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
 
 ---
