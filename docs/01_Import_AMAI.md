@@ -164,8 +164,8 @@ pip install pandas
 pip install openpyxl
 ```
 
-Open the script in **Visual Studio Code** and run it.
-(Verify the path and filenames if you used different ones.)
+Open the script in **Visual Studio Code** and run it.  
+(Verify the path and filenames if you used different ones.)   
 
 ```phyton
 import pandas as pd
