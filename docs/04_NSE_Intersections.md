@@ -1,4 +1,4 @@
-# 4 NSE calculation fro Boundaries layer = 6 (Neighborhoods)
+# 4 NSE calculation for Boundaries layer = 6 (Neighborhoods)
 
 ## Purpose in the NSE Pipeline
 
