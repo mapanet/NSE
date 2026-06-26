@@ -1,6 +1,6 @@
 # NSE — AMAI Socioeconomic Level for INEGI Neighborhoods
 
-This private repository documents the technical pipeline for calculating the AMAI Socioeconomic Level (NSE) at the neighborhood (colonia), locality, municipality/alcaldia and state levels, integrating the following official datasets:
+This public repository documents the technical pipeline for calculating the AMAI Socioeconomic Level (NSE) at the neighborhood (colonia), locality, municipality/alcaldia and state levels, integrating the following official datasets:
 
 - AMAI 2024 (NSE by AGEB)
 - INEGI Marco Geoestadístico 2025 (AGEB geometries)
