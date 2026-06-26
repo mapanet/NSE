@@ -8,8 +8,8 @@ This public repository documents the technical pipeline for calculating the AMAI
 - Spatial weighting from AGEB (statatistical units) geometries → neighborhoods geometries (colonias) 
 
 The objective is to generate a final, reproducible, auditable, and standardized NSE dataset at the colonia level (Layer 6).   
-This data can be me sumarized later to city layer 5, municipality layer 2, state layer 1.  
-Resulting datasets will be used for real estate analysys for properties and development evaluation together with DENUE and OSM data.
+This data can be me summarized later to city layer 5, municipality layer 2, state layer 1.  
+Resulting datasets will be used for real estate analysis for properties and development evaluation together with DENUE and OSM data.
 
 [<img src="/docs/images/NSEmap.png" width="1000">](/docs/images/NSEmap.png)
 
