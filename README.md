@@ -11,7 +11,7 @@ The objective is to generate a final, reproducible, auditable, and standardized 
 This data can be me summarized later to city layer 5, municipality layer 2, state layer 1.  
 Resulting datasets will be used for real estate analysis for properties and development evaluation together with DENUE and OSM data.
 
-[<img src="/docs/images/NSEmap.png" width="1000">](/docs/images/NSEmap.png)
+[<img src="/docs/images/CDMX_NSE_map.png" width="1000">](/docs/images/CDMX_NSE_map.png)
 
 ## Relation between AMAI, MG 2025 AGEB geometries, and DCAH geometries
 
