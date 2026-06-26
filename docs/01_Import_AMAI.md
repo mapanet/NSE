@@ -89,7 +89,7 @@ To standardize the structure:
 - Add the following headers in row 3:
 
 ```code
-ENTIDAD	ENT_NOM	MUN	MUN_NOM	LOC	LOC_NOM	AGEB	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE	NSE_TOTAL
+CVE_ENT	ENT_NOM	CVE_MUN	MUN_NOM	CVE_LOC	LOC_NOM	CVE_AGEB	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE	NSE_TOTAL
 ```
 
 - Delete row 1 and 2
@@ -178,7 +178,7 @@ df = df.drop([0, 1]).reset_index(drop=True)
 
 # 3. Define new headers
 headers = [
-    "ENTIDAD","ENT_NOM","MUN","MUN_NOM","LOC","LOC_NOM","AGEB",
+    "CVE_ENT","NOM_ENT","CVE_MUN","NOM_MUN_","CVE_LOC","NOM_LOC","CVE_AGEB",
     "AB","CPLUS","C","CMINUS","DPLUS","D","E","NSE","NSE_TOTAL","HABITANTES"
 ]
 df.columns = headers
@@ -187,19 +187,19 @@ df.columns = headers
 df = df.drop(columns=["HABITANTES"])
 
 # 5. Format ENTIDAD, MUN, LOC with leading zeros
-df["ENTIDAD"] = df["ENTIDAD"].astype(str).str.zfill(2)
-df["MUN"]     = df["MUN"].astype(str).str.zfill(3)
-df["LOC"]     = df["LOC"].astype(str).str.zfill(4)
+df["CVE_ENT"] = df["CVE_ENT"].astype(str).str.zfill(2)
+df["CVE_MUN"] = df["CVE_MUN"].astype(str).str.zfill(3)
+df["CVE_LOC"] = df["CVE_LOC"].astype(str).str.zfill(4)
 
 # 6. Insert CVEGEO column at position 0
 df.insert(0, "CVEGEO", "")
 
 # 7. Build CVEGEO = ENTIDAD + MUN + LOC + AGEB
 df["CVEGEO"] = (
-    df["ENTIDAD"].astype(str).str.zfill(2) +
-    df["MUN"].astype(str).str.zfill(3) +
-    df["LOC"].astype(str).str.zfill(4) +
-    df["AGEB"].astype(str).str.zfill(4)
+    df["CVE_ENT"].astype(str).str.zfill(2) +
+    df["CVE_MUN"].astype(str).str.zfill(3) +
+    df["CVE_LOC"].astype(str).str.zfill(4) +
+    df["CVE_AGEB"].astype(str).str.zfill(4)
 )
 
 # 8. Replace "N/D" with empty string
@@ -209,7 +209,7 @@ df = df.replace("N/D", "")
 df = df.replace('"', '', regex=True)
 
 # 10. Save as TSV (tab-separated), UTF-8 without BOM
-df.to_csv("NSE_por_AGEB_AMAI_2024_IMPORT.csv",
+df.to_csv(r"D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv",
     sep="\t",
     index=False,
     encoding="utf-8"
@@ -224,14 +224,14 @@ D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv
 
 The CSV file should look like this:   
 
-| CVEGEO        |ENTIDAD| ENT_NOM       |MUN| MUN_NOM      |LOC | LOC_NOM      |AGEB|AB |CPLUS|C  |CMINUS|DPLUS|D  |E  |NSE|NSE_TOTAL|
-|---------------|-------|---------------|---|--------------|----|--------------|----|---|-----|---|------|-----|---|---|---|---------|
-| 0100100010017 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0017|  0|   12| 39|   111|  153|331|   |D  |      648|
-| 010010001006A |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|006A|178|  124| 60|    24|    9|  4|  0|A/B|      399|
-| 0100100010106 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0106|183|  375|247|   128|   62| 32|   |C+ |     1028|
-| 0100100010163 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0163| 35|  157|228|   167|  124| 78|  0|C  |      789|
-| 0100100010182 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0182|345|  187| 63|    46|   13|  6|  0|A/B|      660|
-| 0100100010229 |01     |Aguascalientes |001|Aguascalientes|0001|Aguascalientes|0229|25 |   36| 14|    20|    9|  7|  0|C+ |      111|
+| CVEGEO        |CVE_ENT| ENT_NOM       |CVE_MUN| MUN_NOM      |CVE_LOC | LOC_NOM      |CVE_AGEB|AB |CPLUS|C  |CMINUS|DPLUS|D  |E  |NSE|NSE_TOTAL|
+|---------------|-------|---------------|-------|--------------|--------|--------------|--------|---|-----|---|------|-----|---|---|---|---------|
+| 0100100010017 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0017    |  0|   12| 39|   111|  153|331|   |D  |      648|
+| 010010001006A |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|006A    |178|  124| 60|    24|    9|  4|  0|A/B|      399|
+| 0100100010106 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0106    |183|  375|247|   128|   62| 32|   |C+ |     1028|
+| 0100100010163 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0163    | 35|  157|228|   167|  124| 78|  0|C  |      789|
+| 0100100010182 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0182    |345|  187| 63|    46|   13|  6|  0|A/B|      660|
+| 0100100010229 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0229    |25 |   36| 14|    20|    9|  7|  0|C+ |      111|
 
 
 ## 4 — Create Final table in MS SQL Server
@@ -254,13 +254,13 @@ DROP TABLE IF EXISTS dbo.AMAI_AGEB_2024;
 
 CREATE TABLE [dbo].[AMAI_AGEB_2024](
 	[CVEGEO] [nvarchar](20) NOT NULL,
-	[ENTIDAD] [varchar](2) NOT NULL,
-	[ENT_NOM] [nvarchar](85) NOT NULL,
-	[MUN] [varchar](3) NOT NULL,
-	[MUN_NOM] [nvarchar](85) NOT NULL,
-	[LOC] [varchar](4) NOT NULL,
+	[CVE_ENT] [varchar](2) NOT NULL,
+	[NOM_ENT] [nvarchar](85) NOT NULL,
+	[CVE_MUN] [varchar](3) NOT NULL,
+	[NOM_MUN] [nvarchar](85) NOT NULL,
+	[CVE_LOC] [varchar](4) NOT NULL,
 	[LOC_NOM] [nvarchar](110) NOT NULL,
-    [AGEB] [varchar](4) NOT NULL,
+    [CVE_AGEB] [varchar](4) NOT NULL,
 	[AB] [int] NULL,
 	[CPLUS] [int] NULL,
 	[C] [int] NULL,
