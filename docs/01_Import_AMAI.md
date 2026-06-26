@@ -259,7 +259,7 @@ CREATE TABLE [dbo].[AMAI_AGEB_2024](
 	[CVE_MUN] [varchar](3) NOT NULL,
 	[NOM_MUN] [nvarchar](85) NOT NULL,
 	[CVE_LOC] [varchar](4) NOT NULL,
-	[LOC_NOM] [nvarchar](110) NOT NULL,
+	[NOM_LOC] [nvarchar](110) NOT NULL,
     [CVE_AGEB] [varchar](4) NOT NULL,
 	[AB] [int] NULL,
 	[CPLUS] [int] NULL,
