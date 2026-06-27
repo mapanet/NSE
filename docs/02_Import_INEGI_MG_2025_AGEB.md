@@ -14,7 +14,7 @@ This table will be used for:
 - D:\AXSI\INEGI\MG_2025\Download (downloaded file and unzipped content to load into QGIS)
 - D:\AXSI\INEGI\MG_2025\AGEB (save the processed AGEB shape MG_AGEB_2025.SHP as EPSG:4023)
 
-## 1 Official Download of Marco Geoestadístico 2025
+## 1 — Official Download of Marco Geoestadístico 2025
 
 The Marco Geoestadístico 2025 can be downloaded from INEGI:
 
@@ -46,7 +46,7 @@ Files inside the dataset:
 - 00_lpr = Locality (point)  
 - 00_l = Locality Urban and Rural (polygons)  
 
-## 2 Contents of the file 00a.shp
+## 2 — Contents of the file 00a.shp
 
 Load `00a.shp` in QGIS, ch eck the layer contains the following fields:
 
@@ -66,7 +66,7 @@ Original CRS: **MEXICO_IRF‑2008_LLC**
 
 ---
 
-## 3 Export from QGIS to CRS EPSG:4326)
+## 3 — Export from QGIS to CRS EPSG:4326)
 
 Export the layer `00a.shp` as:
 
@@ -139,7 +139,7 @@ WITH (
 (82283 rows affected)   
 Completion time: 2026-05-24T18:16:03.7467723-05:00   
 
-## 5 Create Final Table: Boundaries_AGEB_2025
+## 5 — Create Final Table: Boundaries_AGEB_2025
 
 ```sql
 -----------------------------------------------
@@ -187,7 +187,7 @@ Commands completed successfully.
 
 ---
 
-## 6 Insert Data from the Staging Table
+## 6 — Insert Data from the Staging Table
 
 ```sql
 -----------------------------------------
@@ -224,7 +224,7 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 
 
 
-## 8 Geometry Validation and Correction
+## 8 — Geometry Validation and Correction
 
 ### Validate invalid geometries
 
@@ -267,7 +267,7 @@ WHERE geom.STIsValid() = 0;
 
 ---
 
-## 9 Copy geometry: geom column to geography: geog column
+## 9 — Copy geometry: geom column to geography: geog column
 
 ```sql
 -----------------------------------------------------------
