@@ -89,7 +89,7 @@ To standardize the structure:
 - Add the following headers in row 3:
 
 ```code
-CVE_ENT	ENT_NOM	CVE_MUN	MUN_NOM	CVE_LOC	LOC_NOM	CVE_AGEB	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE	NSE_TOTAL	POPULATION_RANGE
+CVE_ENT	NOM_ENT	CVE_MUN	NOM_MUN	CVE_LOC	NOM_LOC	CVE_AGEB	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE	NSE_TOTAL	POPULATION_RANGE
 ```
 
 - Delete row 1 and 2
@@ -99,12 +99,12 @@ CVE_ENT	ENT_NOM	CVE_MUN	MUN_NOM	CVE_LOC	LOC_NOM	CVE_AGEB	NSE_AB	NSE_CPLUS	NSE_C	
 Insert a new column at position 1 with header **CVEGEO**. 
 
 AMAI provides region codes as integers, but INEGI uses **alphanumeric codes with leading zeros**.   
-Standardize the codes as follows: 
+Standardize as the codes as follows (INEGI): 
 
-- ENTIDAD → 2 digits (**00**)
-- MUNICIPIO → 3 digits (**000**)
-- LOCALIDAD → 4 digits (**0000**)
-- AGEB → 4 digits
+- CVE_ENT → 2 digits (**00**)
+- CVE_MUN → 3 digits (**000**)
+- CVE_LOC → 4 digits (**0000**)
+- CVE_AGEB → 4 digits
 
 Formula for CVEGEO:
 
@@ -113,7 +113,7 @@ Formula for CVEGEO:
 ```
 This produces a valid INEGI CVEGEO:
 
-**CVEGEO** = ENTIDAD + MUNICIPIO + LOCALIDAD + AGEB  
+**CVEGEO** = CVE_ENT + CVE_MUN + CVE_LOC + CVE_AGEB  
 Format: EEMMMLLLLAAAA
 
 #### 3.4 — Replace N/D values
