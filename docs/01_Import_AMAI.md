@@ -51,9 +51,9 @@ Original columns:
 | D+ | Dwellings in socioeconomic level D+ |
 | D | Dwellings in socioeconomic level D |
 | E | Dwellings in socioeconomic level E |
-| NIVEL_PREDOMINANTE | Dominant socioeconomic level |
+| NIVEL_PREDOMINANTE | Dominant socioeconomic level (NSE) |
 | VIVIENDAS | Total occupied private dwellings |
-| TAMAÑO_DE_LOCALIDAD | Locality population range |
+| TAMAÑO_DE_LOCALIDAD | Population range |
 
 #### Save the file
 
