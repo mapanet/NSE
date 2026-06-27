@@ -38,7 +38,7 @@ Inside the ZIP you will find:
   - conjunto_de_datos/  
     - 00a.shp **← main AGEB areas file**
 
-Files inside the dataset:
+Contect of files inside the dataset (informational):
 
 - 00_ent = State (polygons)  
 - 00_mun = Municipality (polygons)
