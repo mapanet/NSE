@@ -234,7 +234,7 @@ GO
 
 -- Exclusions:
 -- ✔ AGEBs without population
--- ✔ Prevents one intersection with NSE_TOTAL = 0 from breaking the whole neighborhood
+-- ✔ Prevents one intersection with DWELLINGS_TOTAL = 0 from breaking the whole neighborhood
 -- ✔ AMAI-compatible
 -- ✔ 100% robust
 
@@ -243,14 +243,14 @@ GO
 
 SELECT
     I.CVE_COLONIA,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_AB     ELSE 0 END) AS NSE_AB,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_CPLUS  ELSE 0 END) AS NSE_CPLUS,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_C      ELSE 0 END) AS NSE_C,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_CMINUS ELSE 0 END) AS NSE_CMINUS,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_DPLUS  ELSE 0 END) AS NSE_DPLUS,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_D      ELSE 0 END) AS NSE_D,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_E      ELSE 0 END) AS NSE_E,
-    SUM(CASE WHEN A.NSE_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_TOTAL  ELSE 0 END) AS NSE_TOTAL
+    SUM(CASE WHEN A.DWELLINGS_TOTAL IS NOT NULL THEN I.pct_area * A.AB     ELSE 0 END) AS AB,
+    SUM(CASE WHEN A.DWELLINGS_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_CPLUS  ELSE 0 END) AS NSE_CPLUS,
+    SUM(CASE WHEN A.DWELLINGS_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_C      ELSE 0 END) AS NSE_C,
+    SUM(CASE WHEN A.DWELLINGS_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_CMINUS ELSE 0 END) AS NSE_CMINUS,
+    SUM(CASE WHEN A.DWELLINGS_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_DPLUS  ELSE 0 END) AS NSE_DPLUS,
+    SUM(CASE WHEN A.DWELLINGS_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_D      ELSE 0 END) AS NSE_D,
+    SUM(CASE WHEN A.DWELLINGS_TOTAL IS NOT NULL THEN I.pct_area * A.NSE_E      ELSE 0 END) AS NSE_E,
+    SUM(CASE WHEN A.DWELLINGS_TOTAL IS NOT NULL THEN I.pct_area * A.DWELLINGS_TOTAL  ELSE 0 END) AS DWELLINGS_TOTAL
 INTO COLONIA_NSE
 FROM COLONIA_AGEB_INTERSECT I
 LEFT JOIN NSE_AMAI_2024_AGEB A
@@ -266,18 +266,18 @@ GO
 SELECT COUNT(*) AS Records_NSE_COLONIA FROM COLONIA_NSE;
 
 -----------------------------------------------
--- Validation: Neighborhoods with NSE_TOTAL = 0
+-- Validation: Neighborhoods with DWELLINGS_TOTAL = 0
 -- Must return ~12708 Colonias_No_Pop 
 -----------------------------------------------
 
 SELECT COUNT(*) AS Neighborhood_No_Pop
 FROM COLONIA_NSE
-WHERE NSE_TOTAL = 0;
+WHERE DWELLINGS_TOTAL = 0;
 
 ------------------------------------------------------
 -- Validation example: 
 -- Neighborhood El Cielo (CVE_COLONIA = 2300800010017)
--- CVE_COLONIA   NSE_AB  NSE_PLUS NSE_C   NSE_DPLUS NSE_DE  NSE_TOTAL
+-- CVE_COLONIA   AB  NSE_PLUS NSE_C   NSE_DPLUS NSE_DE  DWELLINGS_TOTAL
 -- 2300800010017 16.0024 19.0050  21.0063 0.00106   0.00043 56.01529
 ------------------------------------------------------
 
@@ -290,7 +290,7 @@ WHERE CVE_COLONIA = '2300800010017';
 
 This generates percentages per level and prepares everything for NSE_SCORE, dominant NSE, and NSE_LABEL:
 
-- NSE_AB_PCT   
+- AB_PCT   
 - NSE_CPLUS_PCT   
 - NSE_C_PCT   
 - NSE_CMINUS_PCT   
@@ -305,7 +305,7 @@ GO
 -- NSE Step 4.4 — Calculate percentages by neighborhood (colonia)
 
 -- This generates:
--- NSE_AB_PCT
+-- AB_PCT
 -- NSE_CPLUS_PCT
 -- NSE_C_PCT   (C + C-)
 -- NSE_DPLUS_PCT
@@ -325,7 +325,7 @@ GO
 --------------------------------------------
 
 ALTER TABLE COLONIA_NSE
-ADD NSE_AB_PCT      numeric(10,4),
+ADD AB_PCT      numeric(10,4),
     NSE_CPLUS_PCT   numeric(10,4),
     NSE_CMINUS_PCT  numeric(10,4),
     NSE_C_PCT       numeric(10,4),
@@ -340,23 +340,23 @@ GO
 
 UPDATE COLONIA_NSE
 SET
-    NSE_AB_PCT      = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_AB     * 100.0 / NSE_TOTAL, 4) END,
-    NSE_CPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_CPLUS  * 100.0 / NSE_TOTAL, 4) END,
-    NSE_C_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_C      * 100.0 / NSE_TOTAL, 4) END,
-    NSE_CMINUS_PCT  = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_CMINUS * 100.0 / NSE_TOTAL, 4) END,
-    NSE_DPLUS_PCT   = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_DPLUS  * 100.0 / NSE_TOTAL, 4) END,
-    NSE_D_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_D      * 100.0 / NSE_TOTAL, 4) END,
-    NSE_E_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_E      * 100.0 / NSE_TOTAL, 4) END;
+    AB_PCT      = CASE WHEN DWELLINGS_TOTAL > 0 THEN ROUND(AB     * 100.0 / DWELLINGS_TOTAL, 4) END,
+    NSE_CPLUS_PCT   = CASE WHEN DWELLINGS_TOTAL > 0 THEN ROUND(NSE_CPLUS  * 100.0 / DWELLINGS_TOTAL, 4) END,
+    NSE_C_PCT       = CASE WHEN DWELLINGS_TOTAL > 0 THEN ROUND(NSE_C      * 100.0 / DWELLINGS_TOTAL, 4) END,
+    NSE_CMINUS_PCT  = CASE WHEN DWELLINGS_TOTAL > 0 THEN ROUND(NSE_CMINUS * 100.0 / DWELLINGS_TOTAL, 4) END,
+    NSE_DPLUS_PCT   = CASE WHEN DWELLINGS_TOTAL > 0 THEN ROUND(NSE_DPLUS  * 100.0 / DWELLINGS_TOTAL, 4) END,
+    NSE_D_PCT       = CASE WHEN DWELLINGS_TOTAL > 0 THEN ROUND(NSE_D      * 100.0 / DWELLINGS_TOTAL, 4) END,
+    NSE_E_PCT       = CASE WHEN DWELLINGS_TOTAL > 0 THEN ROUND(NSE_E      * 100.0 / DWELLINGS_TOTAL, 4) END;
 GO
 
 ----------------------------------------------------------------------
--- Validation 1: Check that no percentages are NULL when NSE_TOTAL > 0
+-- Validation 1: Check that no percentages are NULL when DWELLINGS_TOTAL > 0
 ----------------------------------------------------------------------
 
 SELECT *
 FROM COLONIA_NSE
-WHERE NSE_TOTAL > 0
-  AND (NSE_AB_PCT IS NULL OR NSE_CPLUS_PCT IS NULL OR NSE_C_PCT IS NULL OR NSE_CMINUS_PCT IS NULL OR NSE_DPLUS_PCT IS NULL OR NSE_D_PCT IS NULL OR NSE_E_PCT IS NULL);
+WHERE DWELLINGS_TOTAL > 0
+  AND (AB_PCT IS NULL OR NSE_CPLUS_PCT IS NULL OR NSE_C_PCT IS NULL OR NSE_CMINUS_PCT IS NULL OR NSE_DPLUS_PCT IS NULL OR NSE_D_PCT IS NULL OR NSE_E_PCT IS NULL);
 
 ----------------------------------------------------
 -- Validation 2: Check that percentages sum to ~100%
@@ -364,17 +364,17 @@ WHERE NSE_TOTAL > 0
 
 SELECT TOP 20
     CVE_COLONIA,
-    NSE_AB_PCT + NSE_CPLUS_PCT + NSE_C_PCT  + NSE_CMINUS_PCT + NSE_DPLUS_PCT + NSE_D_PCT + NSE_E_PCT AS SUM_PCT
+    AB_PCT + NSE_CPLUS_PCT + NSE_C_PCT  + NSE_CMINUS_PCT + NSE_DPLUS_PCT + NSE_D_PCT + NSE_E_PCT AS SUM_PCT
 FROM COLONIA_NSE;
 
 ---------------------------------------------------------------------------------
--- Validation 3: Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL
+-- Validation 3: Confirm no colonias with DWELLINGS_TOTAL > 0 have all percentages NULL
 ---------------------------------------------------------------------------------
 
 SELECT *
 FROM COLONIA_NSE
-WHERE NSE_TOTAL > 0
-  AND NSE_AB_PCT IS NULL
+WHERE DWELLINGS_TOTAL > 0
+  AND AB_PCT IS NULL
   AND NSE_CPLUS_PCT IS NULL
   AND NSE_C_PCT IS NULL
   AND NSE_CMINUS_PCT IS NULL
@@ -393,16 +393,16 @@ FROM (
     SELECT 
         CVE_COLONIA,
         CASE 
-            WHEN NSE_AB_PCT     = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'AB'
-            WHEN NSE_CPLUS_PCT  = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'C+'
-            WHEN NSE_C_PCT      = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'C'
-            WHEN NSE_CMINUS_PCT = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'C-'
-            WHEN NSE_DPLUS_PCT  = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'D+'
-            WHEN NSE_D_PCT      = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'D'
-            WHEN NSE_E_PCT      = (SELECT MAX(val) FROM (VALUES (NSE_AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'E'
+            WHEN AB_PCT     = (SELECT MAX(val) FROM (VALUES (AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'AB'
+            WHEN NSE_CPLUS_PCT  = (SELECT MAX(val) FROM (VALUES (AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'C+'
+            WHEN NSE_C_PCT      = (SELECT MAX(val) FROM (VALUES (AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'C'
+            WHEN NSE_CMINUS_PCT = (SELECT MAX(val) FROM (VALUES (AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'C-'
+            WHEN NSE_DPLUS_PCT  = (SELECT MAX(val) FROM (VALUES (AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'D+'
+            WHEN NSE_D_PCT      = (SELECT MAX(val) FROM (VALUES (AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'D'
+            WHEN NSE_E_PCT      = (SELECT MAX(val) FROM (VALUES (AB_PCT),(NSE_CPLUS_PCT),(NSE_C_PCT),(NSE_CMINUS_PCT),(NSE_DPLUS_PCT),(NSE_D_PCT),(NSE_E_PCT)) AS t(val)) THEN 'E'
         END AS NSE_LABEL
     FROM COLONIA_NSE
-    WHERE NSE_TOTAL > 0
+    WHERE DWELLINGS_TOTAL > 0
 ) AS Labels
 GROUP BY NSE_LABEL
 ORDER BY NSE_LABEL ASC;
@@ -412,8 +412,8 @@ ORDER BY NSE_LABEL ASC;
 
 #### Validation 1
 
-Displays a table with percentages, check visually not all percentages _PCT fields are NULL when NSE_TOTAL > 0
-If NSE_TOTAL > 0, at least one _PCT must have a value, but typically several must have a value.
+Displays a table with percentages, check visually not all percentages _PCT fields are NULL when DWELLINGS_TOTAL > 0
+If DWELLINGS_TOTAL > 0, at least one _PCT must have a value, but typically several must have a value.
 
 #### Validation 2
 
@@ -442,7 +442,7 @@ If NSE_TOTAL > 0, at least one _PCT must have a value, but typically several mus
 
 #### Validation 3
 
-NONE (Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL)
+NONE (Confirm no colonias with DWELLINGS_TOTAL > 0 have all percentages NULL)
 
 #### Validation 4
 
@@ -513,7 +513,7 @@ GO
 UPDATE COLONIA_NSE
 SET 
     IDS_PROM =
-          ISNULL(NSE_AB_PCT,0)     * 7
+          ISNULL(AB_PCT,0)     * 7
         + ISNULL(NSE_CPLUS_PCT,0)  * 6
         + ISNULL(NSE_C_PCT,0)      * 5
         + ISNULL(NSE_CMINUS_PCT,0) * 4
@@ -523,7 +523,7 @@ SET
 
     NSE_SCORE =
     (
-          ISNULL(NSE_AB_PCT,0)     * 7
+          ISNULL(AB_PCT,0)     * 7
         + ISNULL(NSE_CPLUS_PCT,0)  * 6
         + ISNULL(NSE_C_PCT,0)      * 5
         + ISNULL(NSE_CMINUS_PCT,0) * 4
@@ -537,10 +537,10 @@ SET
 -- Validation
 ---------------------------------------------------------
 
--- 1. Verify NSE_SCORE is not NULL when NSE_TOTAL > 0
+-- 1. Verify NSE_SCORE is not NULL when DWELLINGS_TOTAL > 0
 SELECT *
 FROM COLONIA_NSE
-WHERE NSE_TOTAL > 0 AND NSE_SCORE IS NULL;
+WHERE DWELLINGS_TOTAL > 0 AND NSE_SCORE IS NULL;
 
 -- 2. Inspect typical values
 SELECT TOP 40 CVE_COLONIA, IDS_PROM, NSE_SCORE
@@ -552,7 +552,7 @@ ORDER BY NSE_SCORE DESC;
 
 #### Validation 1
 
-- No records should appear if NSE_TOTAL > 0 and NSE_SCORE is not null
+- No records should appear if DWELLINGS_TOTAL > 0 and NSE_SCORE is not null
 
 #### Validation 1
 
@@ -604,7 +604,7 @@ SET NSE =
     FROM
     (
         VALUES
-            ('A/B', NSE_AB_PCT),
+            ('A/B', AB_PCT),
             ('C+',  NSE_CPLUS_PCT),
             ('C',   NSE_C_PCT),
             ('C-',  NSE_CMINUS_PCT),
@@ -615,24 +615,24 @@ SET NSE =
     WHERE Valor IS NOT NULL
     ORDER BY Valor DESC
 )
-WHERE NSE_TOTAL > 0;
+WHERE DWELLINGS_TOTAL > 0;
 GO
 
 -- 4. Colonias with no population → NSE = 'N/A'
 UPDATE COLONIA_NSE
 SET NSE = 'N/A'
-WHERE NSE_TOTAL = 0;
+WHERE DWELLINGS_TOTAL = 0;
 GO
 
 ---------------------------------------------------------
 -- Validation
 ---------------------------------------------------------
 
--- 1. No colonias with NSE_TOTAL > 0 should have NSE = NULL
+-- 1. No colonias with DWELLINGS_TOTAL > 0 should have NSE = NULL
 
 SELECT *
 FROM COLONIA_NSE
-WHERE NSE_TOTAL > 0 AND NSE IS NULL;
+WHERE DWELLINGS_TOTAL > 0 AND NSE IS NULL;
 
 -- 2. General distribution
 
@@ -649,7 +649,7 @@ GO
 
 Just headers, no records if there is no NSE = NULL.   
 
-CVE_COLONIA	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE_TOTAL	NSE_AB_PCT	NSE_CPLUS_PCT	NSE_CMINUS_PCT	NSE_C_PCT	NSE_DPLUS_PCT	NSE_D_PCT	NSE_E_PCT	IDS_PROM	NSE_SCORE	NSE
+CVE_COLONIA	AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	DWELLINGS_TOTAL	AB_PCT	NSE_CPLUS_PCT	NSE_CMINUS_PCT	NSE_C_PCT	NSE_DPLUS_PCT	NSE_D_PCT	NSE_E_PCT	IDS_PROM	NSE_SCORE	NSE
 
 #### Validation 2
 
@@ -690,7 +690,7 @@ GO
 UPDATE COLONIA_NSE
 SET NSE_LABEL = 
     CASE 
-        WHEN NSE = 'A/B' THEN CONCAT('A/B (', CAST(ROUND(NSE_AB_PCT,0) AS INT), '%)')
+        WHEN NSE = 'A/B' THEN CONCAT('A/B (', CAST(ROUND(AB_PCT,0) AS INT), '%)')
         WHEN NSE = 'C+'  THEN CONCAT('C+ (',  CAST(ROUND(NSE_CPLUS_PCT,0) AS INT), '%)')
         WHEN NSE = 'C'   THEN CONCAT('C (',   CAST(ROUND(NSE_C_PCT,0) AS INT), '%)')
         WHEN NSE = 'C-'  THEN CONCAT('C- (',  CAST(ROUND(NSE_CMINUS_PCT,0) AS INT), '%)')
@@ -713,7 +713,7 @@ FROM COLONIA_NSE;
 
 -- 2. Count colonias with NSE_LABEL
 -- Expected: 79,775 total colonias
--- Minus ~12,708 with NSE_TOTAL = 0
+-- Minus ~12,708 with DWELLINGS_TOTAL = 0
 -- ≈ 67,067 with valid NSE_LABEL
 
 SELECT COUNT(*) AS Colonias_With_Label
@@ -807,9 +807,9 @@ SET
     NSE_LABEL  = NULL,
     NSE_SCORE  = NULL,
     IDS_PROM   = NULL,
-    NSE_TOTAL  = NULL,
+    DWELLINGS_TOTAL  = NULL,
 
-    NSE_AB     = NULL,
+    AB     = NULL,
     NSE_CPLUS  = NULL,
     NSE_C      = NULL,
     NSE_CMINUS = NULL,
@@ -817,7 +817,7 @@ SET
     NSE_D      = NULL,
     NSE_E      = NULL,
 
-    NSE_AB_PCT     = NULL,
+    AB_PCT     = NULL,
     NSE_CPLUS_PCT  = NULL,
     NSE_C_PCT      = NULL,
     NSE_CMINUS_PCT = NULL,
@@ -840,9 +840,9 @@ SET
     B.NSE_SCORE      = C.NSE_SCORE,
     B.IDS_PROM       = C.IDS_PROM,
 
-    B.NSE_TOTAL      = C.NSE_TOTAL,
+    B.DWELLINGS_TOTAL      = C.DWELLINGS_TOTAL,
 
-    B.NSE_AB         = C.NSE_AB,
+    B.AB         = C.AB,
     B.NSE_CPLUS      = C.NSE_CPLUS,
     B.NSE_C          = C.NSE_C,
     B.NSE_CMINUS     = C.NSE_CMINUS,
@@ -850,7 +850,7 @@ SET
     B.NSE_D          = C.NSE_D,
     B.NSE_E          = C.NSE_E,
 
-    B.NSE_AB_PCT     = C.NSE_AB_PCT,
+    B.AB_PCT     = C.AB_PCT,
     B.NSE_CPLUS_PCT  = C.NSE_CPLUS_PCT,
     B.NSE_C_PCT      = C.NSE_C_PCT,
     B.NSE_CMINUS_PCT = C.NSE_CMINUS_PCT,
@@ -882,11 +882,11 @@ ORDER BY NSE ASC, COUNT(*) DESC;
 SELECT *
 FROM Boundaries
 WHERE Layer = 6
-  AND NSE_TOTAL > 0
+  AND DWELLINGS_TOTAL > 0
   AND NSE_SCORE IS NULL;
 
 -- Colonias with no population should not have NSE assigned
--- Must return ~13859 that didn't have NSE_TOTAL and NSE values
+-- Must return ~13859 that didn't have DWELLINGS_TOTAL and NSE values
 SELECT 
  State, 
  Municipality, 
@@ -896,15 +896,15 @@ SELECT
  NSE_LABEL, 
  NSE_SCORE,
  IDS_PROM,
- NSE_TOTAL,
- NSE_AB,
+ DWELLINGS_TOTAL,
+ AB,
  NSE_CPLUS,
  NSE_C,
  NSE_CMINUS,
  NSE_DPLUS,
  NSE_D,
  NSE_E,
- NSE_AB_PCT,
+ AB_PCT,
  NSE_CPLUS_PCT,
  NSE_C_PCT,
  NSE_CMINUS_PCT,
@@ -913,11 +913,11 @@ SELECT
  NSE_E_PCT
 FROM Boundaries
 WHERE Layer = 6
-  AND NSE_TOTAL = 0
+  AND DWELLINGS_TOTAL = 0
   AND NSE IS NOT NULL;
 
 -- Sample results
-SELECT TOP 20 CVEGEO, NSE, NSE_LABEL, NSE_SCORE, NSE_TOTAL
+SELECT TOP 20 CVEGEO, NSE, NSE_LABEL, NSE_SCORE, DWELLINGS_TOTAL
 FROM Boundaries
 WHERE Layer = 6;
 GO
@@ -940,10 +940,10 @@ GO
 
 #### Validation 2
 
-None as if NSE_TOTAL > 0 AND NSE_SCORE IS NULL
+None as if DWELLINGS_TOTAL > 0 AND NSE_SCORE IS NULL
 
 #### Validation 3
 
-14,162 records where NSE_TOTAL = 0 (as original file has no data for those)
+14,162 records where DWELLINGS_TOTAL = 0 (as original file has no data for those)
 
 
