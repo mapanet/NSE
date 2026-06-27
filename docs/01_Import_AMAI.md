@@ -353,7 +353,7 @@ FROM dbo.AMAI_AGEB_2024
 Your final table in SQL should look like this:  
 
 | CVEGEO        | CVE_ENT | NOM_ENT      | CVE_MUN | NOM_MUN      | CVE_LOC | NOM_LOC        | CVE_AGEB | AB  | CPLUS | C   | CMINUS | DPLUS | D   | E  | NSE | DWELLINGS_TOTAL | POPULATION_RANGE |
-|---------------|---------|--------------|---------|--------------|---------|----------------|----------|-----|-------|-----|--------|-------|-----|----|-----|-----------------| 500,000 a 999,999|
+|---------------|---------|--------------|---------|--------------|---------|----------------|----------|-----|-------|-----|--------|-------|-----|----|-----|-----------------|------------------|
 | 0100100010017 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 0017     | 0   | 12    | 39  | 111    | 153   | 331 |    | D   |              648| 500,000 a 999,999|
 | 010010001006A | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 006A     | 178 | 124   | 60  | 24     | 9     | 4   | 0  | A/B |              399| 500,000 a 999,999|
 | 0100100010106 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 0106     | 183 | 375   | 247 | 128    | 62    | 32  |    | C+  |             1028| 500,000 a 999,999|
