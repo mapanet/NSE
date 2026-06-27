@@ -89,7 +89,7 @@ To standardize the structure:
 - Add the following headers in row 3:
 
 ```code
-CVE_ENT	ENT_NOM	CVE_MUN	MUN_NOM	CVE_LOC	LOC_NOM	CVE_AGEB	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE	NSE_TOTAL
+CVE_ENT	ENT_NOM	CVE_MUN	MUN_NOM	CVE_LOC	LOC_NOM	CVE_AGEB	AB	CPLUS	C	CMINUS	DPLUS	D	E	NSE	DWELLINGS_TOTAL	POPULATION_RANGE
 ```
 
 - Delete row 1 and 2
@@ -179,12 +179,12 @@ df = df.drop([0, 1]).reset_index(drop=True)
 # 3. Define new headers
 headers = [
     "CVE_ENT","NOM_ENT","CVE_MUN","NOM_MUN_","CVE_LOC","NOM_LOC","CVE_AGEB",
-    "AB","CPLUS","C","CMINUS","DPLUS","D","E","NSE","NSE_TOTAL","HABITANTES"
+    "AB","CPLUS","C","CMINUS","DPLUS","D","E","NSE","DWELLINGS_TOTAL","POPULATION_RANGE"
 ]
 df.columns = headers
 
 # 4. Drop HABITANTES column
-df = df.drop(columns=["HABITANTES"])
+#df = df.drop(columns=["POPULATION_RANGE"])
 
 # 5. Format ENTIDAD, MUN, LOC with leading zeros
 df["CVE_ENT"] = df["CVE_ENT"].astype(str).str.zfill(2)
