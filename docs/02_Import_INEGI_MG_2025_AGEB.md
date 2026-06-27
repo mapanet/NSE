@@ -64,7 +64,6 @@ Load `00a.shp` in QGIS, ch eck the layer contains the following fields:
 Total records: **82,263 AGEB**  
 Original CRS: **MEXICO_IRF‑2008_LLC** 
 
----
 
 ## 3 — Export from QGIS to CRS EPSG:4326)
 
@@ -98,7 +97,7 @@ If you edit the CSV you should see something like this:
 |MULTIPOLYGON (((-102.27 21.87, ... -102.27 21.87)))| 01 | 001 | 0001 | 216A | 010010001216A | Urbano |
 |MULTIPOLYGON (((-102.24 21.86, ... -102.24 21.86)))	| 01 | 001 | 0001 | 2649 | 0100100012649 | Urbano |
 
-## 4 Create the MS SQL Staging table
+## 4 — Create the MS SQL Staging table
 
 We create a staging table to import the data as since QGIS creates the CSV with WKT geometry in 1st position.
 Then we will create and copy the imported data to the final table.
@@ -185,7 +184,6 @@ WITH (BOUNDING_BOX = (-180, -90, 180, 90));
 
 Commands completed successfully.   
 
----
 
 ## 6 — Insert Data from the Staging Table
 
@@ -220,8 +218,6 @@ DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 #### Expected results
 
 (82283 rows affected)   
-
-
 
 
 ## 8 — Geometry Validation and Correction
@@ -265,7 +261,6 @@ WHERE geom.STIsValid() = 0;
 
 (0 rows affected)   
 
----
 
 ## 9 — Copy geometry: geom column to geography: geog column
 
