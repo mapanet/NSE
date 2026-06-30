@@ -270,15 +270,15 @@ WHERE Layer IN (1, 2, 5)
   AND NSE_TOTAL IS NOT NULL;
 
 
-/* ---------------------------------------------------------
-   STEP 8.3b — Calculate IDS_PROM (D/E proportion)
-   ---------------------------------------------------------
-   IDS_PROM = (D + E) / NSE_TOTAL
-
-   Notes:
-   - Only calculate for Layers 1, 2, and 5.
-   - Only calculate when NSE_TOTAL IS NOT NULL.
---------------------------------------------------------- */
+---------------------------------------------------------
+-- STEP 8.3b — Calculate IDS_PROM (D/E proportion)
+---------------------------------------------------------
+-- IDS_PROM = (D + E) / NSE_TOTAL
+--
+-- Notes:
+-- Only calculate for Layers 1, 2, and 5.
+-- Only calculate when NSE_TOTAL IS NOT NULL.
+---------------------------------------------------------
 
 UPDATE Boundaries
 SET IDS_PROM =
@@ -287,9 +287,9 @@ WHERE Layer IN (1, 2, 5)
   AND NSE_TOTAL IS NOT NULL;
 
 
-/* ---------------------------------------------------------
-   Validation Queries
---------------------------------------------------------- */
+---------------------------------------------------------
+--   Validation Queries
+---------------------------------------------------------
 
 SELECT TOP 10 
     CVEGEO,
@@ -358,7 +358,7 @@ Logic:
 - If all percentages are 0 → NSE = 'E' (lowest AMAI level).
 - NSE_LABEL = NSE + rounded percentage (integer %).
 
-``sql
+```sql
 USE INMO;
 GO
 
