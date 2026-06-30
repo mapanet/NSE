@@ -202,7 +202,7 @@ The CSV file should look like this:
 
 ```sql
 ------------------------------------------
--- Create table in SQL: AMAI_AGEB_2024
+-- Create table in SQL: AMAI_LOC_2024
 ------------------------------------------
 
 USE INMO
@@ -242,12 +242,12 @@ CREATE TABLE [dbo].[AMAI_LOC_2024](
 GO
 
 ------------------------------------------------
--- Import CSV: NSE_por_AGEB_AMAI_2024_IMPORT.csv
+-- Import CSV: NSE_por_AGEB_LOC_2024_IMPORT.csv
 -- Asumes: CSV is TAB
 -- File is UTF-8 NO BOM
 -- Make sure the directory path matches where you saved the AMAI CSV file.
 ------------------------------------------------
-BULK INSERT AMAI_AGEB_2024
+BULK INSERT AMAI_LOC_2024
 FROM 'D:\AXSI\AMAI\NSE_por_localidad_AMAI_2024_IMPORT.csv'
 WITH (
     FIRSTROW = 2,
