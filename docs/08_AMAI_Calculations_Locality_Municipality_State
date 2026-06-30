@@ -1,0 +1,842 @@
+# 8.0 NSE calculation for Boundaries layer = 5 (City), layer 2 (municipality), layer 1 (state)
+
+## Purpose in the NSE Pipeline
+
+This dataset is used to:
+
+- Build **Boundaries Layer 5** (Localities/Cities)  
+- Calculate **area‑weighted NSE** values per neighborhood  
+
+# 8.1 — Load NSE values into Boundaries Layer 5 (Localities)
+
+AMAI_LOC_2024 already contains CVEGEO at locality level  
+(9-digit CVEGEO). No substring needed.  
+Once we load NSE values into Boundaries Layer 5, we will summarize at level 2 (municipality), 1 (state)  
+
+```sql
+USE INMO;
+GO
+
+------------------------------------------------------------
+-- STEP 1 — Clean AMAI_LOC_2024 (Locality-level NSE dataset)
+------------------------------------------------------------
+-- NSE_TOTAL = NULL when NSE_TOTAL = 0
+-- This prevents invalid percentage calculations later.
+-- Expected: 152 rows affected
+---------------------------------------------------------
+
+UPDATE AMAI_LOC_2024
+SET NSE_TOTAL = NULL
+WHERE NSE_TOTAL = 0;
+
+
+---------------------------------------------------------
+-- STEP 2 — Reset all NSE fields in Boundaries
+---------------------------------------------------------
+-- Layers affected:
+-- Layer 1 = State
+-- Layer 2 = Municipality
+-- Layer 5 = Locality (City)
+-- Result: 53789 rows affected
+---------------------------------------------------------
+
+UPDATE Boundaries
+SET
+    NSE = NULL,
+    NSE_LABEL = NULL,
+    NSE_AB_PCT = NULL,
+    NSE_CPLUS_PCT = NULL,
+    NSE_C_PCT = NULL,
+    NSE_CMINUS_PCT = NULL,
+    NSE_DPLUS_PCT = NULL,
+    NSE_D_PCT = NULL,
+    NSE_E_PCT = NULL,
+    NSE_AB = NULL,
+    NSE_CPLUS = NULL,
+    NSE_C = NULL,
+    NSE_CMINUS = NULL,
+    NSE_DPLUS = NULL,
+    NSE_D = NULL,
+    NSE_E = NULL,
+    NSE_TOTAL = NULL,
+    NSE_SCORE = NULL
+WHERE Layer IN (1, 2, 5);
+
+
+---------------------------------------------------------
+-- STEP 3 — Load NSE values into Layer 5 (Localities)
+---------------------------------------------------------
+-- AMAI_LOC_2024 already contains CVEGEO at locality level
+-- (9-digit CVEGEO). No substring needed.
+-- Results: 51279 rows affected
+---------------------------------------------------------
+
+UPDATE L5
+SET 
+    L5.NSE_AB      = S.NSE_AB,
+    L5.NSE_CPLUS   = S.NSE_CPLUS,
+    L5.NSE_C       = S.NSE_C,
+    L5.NSE_CMINUS  = S.NSE_CMINUS,
+    L5.NSE_DPLUS   = S.NSE_DPLUS,
+    L5.NSE_D       = S.NSE_D,
+    L5.NSE_E       = S.NSE_E,
+    L5.NSE_TOTAL   = S.NSE_TOTAL
+FROM Boundaries AS L5
+LEFT JOIN (
+    SELECT 
+        CVEGEO AS CVE_LOC,
+        SUM(NSE_AB)      AS NSE_AB,
+        SUM(NSE_CPLUS)   AS NSE_CPLUS,
+        SUM(NSE_C)       AS NSE_C,
+        SUM(NSE_CMINUS)  AS NSE_CMINUS,
+        SUM(NSE_DPLUS)   AS NSE_DPLUS,
+        SUM(NSE_D)       AS NSE_D,
+        SUM(NSE_E)       AS NSE_E,
+        SUM(NSE_TOTAL)   AS NSE_TOTAL
+    FROM AMAI_LOC_2024
+    WHERE NSE_TOTAL IS NOT NULL
+    GROUP BY CVEGEO
+) AS S
+    ON L5.CVEGEO = S.CVE_LOC
+WHERE L5.Layer = 5;
+
+
+---------------------------------------------------------------------
+-- STEP 4 — Summarize Localities (Layer 5) → Municipalities (Layer 2)
+---------------------------------------------------------------------
+-- Municipality CVEGEO = first 5 digits
+-- Results: 2478 rows affected
+---------------------------------------------------------------------
+
+UPDATE L2
+SET 
+    L2.NSE_AB      = S.NSE_AB,
+    L2.NSE_CPLUS   = S.NSE_CPLUS,
+    L2.NSE_C       = S.NSE_C,
+    L2.NSE_CMINUS  = S.NSE_CMINUS,
+    L2.NSE_DPLUS   = S.NSE_DPLUS,
+    L2.NSE_D       = S.NSE_D,
+    L2.NSE_E       = S.NSE_E,
+    L2.NSE_TOTAL   = S.NSE_TOTAL
+FROM Boundaries AS L2
+LEFT JOIN (
+    SELECT 
+        LEFT(CVEGEO, 5) AS CVE_MUN,
+        SUM(NSE_AB)      AS NSE_AB,
+        SUM(NSE_CPLUS)   AS NSE_CPLUS,
+        SUM(NSE_C)       AS NSE_C,
+        SUM(NSE_CMINUS)  AS NSE_CMINUS,
+        SUM(NSE_DPLUS)   AS NSE_DPLUS,
+        SUM(NSE_D)       AS NSE_D,
+        SUM(NSE_E)       AS NSE_E,
+        SUM(NSE_TOTAL)   AS NSE_TOTAL
+    FROM Boundaries
+    WHERE Layer = 5
+      AND NSE_TOTAL IS NOT NULL
+    GROUP BY LEFT(CVEGEO, 5)
+) AS S
+    ON L2.CVEGEO = S.CVE_MUN
+WHERE L2.Layer = 2;
+
+
+-----------------------------------------------------------------
+-- STEP 5 — Summarize Municipalities (Layer 2) → States (Layer 1)
+-----------------------------------------------------------------
+-- State CVEGEO = first 2 digits
+-- Results: 32 rows affected
+-----------------------------------------------------------------
+
+UPDATE L1
+SET 
+    L1.NSE_AB      = S.NSE_AB,
+    L1.NSE_CPLUS   = S.NSE_CPLUS,
+    L1.NSE_C       = S.NSE_C,
+    L1.NSE_CMINUS  = S.NSE_CMINUS,
+    L1.NSE_DPLUS   = S.NSE_DPLUS,
+    L1.NSE_D       = S.NSE_D,
+    L1.NSE_E       = S.NSE_E,
+    L1.NSE_TOTAL   = S.NSE_TOTAL
+FROM Boundaries AS L1
+LEFT JOIN (
+    SELECT 
+        LEFT(CVEGEO, 2) AS CVE_ENT,
+        SUM(NSE_AB)      AS NSE_AB,
+        SUM(NSE_CPLUS)   AS NSE_CPLUS,
+        SUM(NSE_C)       AS NSE_C,
+        SUM(NSE_CMINUS)  AS NSE_CMINUS,
+        SUM(NSE_DPLUS)   AS NSE_DPLUS,
+        SUM(NSE_D)       AS NSE_D,
+        SUM(NSE_E)       AS NSE_E,
+        SUM(NSE_TOTAL)   AS NSE_TOTAL
+    FROM Boundaries
+    WHERE Layer = 2
+      AND NSE_TOTAL IS NOT NULL
+    GROUP BY LEFT(CVEGEO, 2)
+) AS S
+    ON L1.CVEGEO = S.CVE_ENT
+WHERE L1.Layer = 1;
+```
+
+
+
+# 8.2 — Calculate NSE percentage fields (_PCT)
+
+IMPORTANT:
+- Percentages must be calculated ONLY for Layers 1, 2, and 5.
+- If NSE_TOTAL is NULL, all percentage fields must remain NULL.
+- This prevents invalid divisions and keeps “N/D” logic intact.
+
+```sql
+USE INMO;
+GO
+
+----------------------------------------------------------------
+-- STEP 8.2 — Calculate NSE percentage fields (_PCT)
+----------------------------------------------------------------
+-- IMPORTANT:
+-- Percentages must be calculated ONLY for Layers 1, 2, and 5.
+-- NSE_TOTAL must NOT be NULL, otherwise percentages remain NULL.
+-- This prevents invalid divisions and preserves “N/D” logic.
+-----------------------------------------------------------------
+
+UPDATE Boundaries
+SET
+    NSE_AB_PCT      = (NSE_AB      * 100.0 / NSE_TOTAL),
+    NSE_CPLUS_PCT   = (NSE_CPLUS   * 100.0 / NSE_TOTAL),
+    NSE_C_PCT       = (NSE_C       * 100.0 / NSE_TOTAL),
+    NSE_CMINUS_PCT  = (NSE_CMINUS  * 100.0 / NSE_TOTAL),
+    NSE_DPLUS_PCT   = (NSE_DPLUS   * 100.0 / NSE_TOTAL),
+    NSE_D_PCT       = (NSE_D       * 100.0 / NSE_TOTAL),
+    NSE_E_PCT       = (NSE_E       * 100.0 / NSE_TOTAL)
+WHERE Layer IN (1, 2, 5)
+  AND NSE_TOTAL IS NOT NULL;
+```
+
+# 8.3 — Calculate NSE_SCORE (AMAI IDS)
+
+AMAI official scoring weights:  
+
+|Level|Score|
+|-----|-----|
+|AB   |    7|
+|C+   |    6|
+|C    |    5|
+|C−   |    4|
+|D+   |    3|
+|D    |    2|
+|E    |    1|
+
+Formula: **IDS = Σ (percentage_level * score_level)**
+
+```sql
+USE INMO;
+GO
+
+/* ---------------------------------------------------------
+   STEP 8.3 — Calculate NSE_SCORE (AMAI IDS)
+   ---------------------------------------------------------
+   AMAI official scoring weights:
+       Level   Score
+       AB      7
+       C+      6
+       C       5
+       C−      4
+       D+      3
+       D       2
+       E       1
+
+   Formula:
+       IDS = Σ (percentage_level * score_level)
+
+   Notes:
+   - Missing levels must be treated as 0 (ISNULL).
+   - Only calculate for Layers 1, 2, and 5.
+   - Only calculate when NSE_TOTAL IS NOT NULL.
+--------------------------------------------------------- */
+
+UPDATE Boundaries
+SET NSE_SCORE =
+    (
+          (ISNULL(NSE_AB_PCT,     0) * 7)
+        + (ISNULL(NSE_CPLUS_PCT,  0) * 6)
+        + (ISNULL(NSE_C_PCT,      0) * 5)
+        + (ISNULL(NSE_CMINUS_PCT, 0) * 4)
+        + (ISNULL(NSE_DPLUS_PCT,  0) * 3)
+        + (ISNULL(NSE_D_PCT,      0) * 2)
+        + (ISNULL(NSE_E_PCT,      0) * 1)
+    ) / 100.0
+WHERE Layer IN (1, 2, 5)
+  AND NSE_TOTAL IS NOT NULL;
+
+
+/* ---------------------------------------------------------
+   STEP 8.3b — Calculate IDS_PROM (D/E proportion)
+   ---------------------------------------------------------
+   IDS_PROM = (D + E) / NSE_TOTAL
+
+   Notes:
+   - Only calculate for Layers 1, 2, and 5.
+   - Only calculate when NSE_TOTAL IS NOT NULL.
+--------------------------------------------------------- */
+
+UPDATE Boundaries
+SET IDS_PROM =
+    (1.0 * (ISNULL(NSE_D, 0) + ISNULL(NSE_E, 0))) / NSE_TOTAL
+WHERE Layer IN (1, 2, 5)
+  AND NSE_TOTAL IS NOT NULL;
+
+
+/* ---------------------------------------------------------
+   Validation Queries
+--------------------------------------------------------- */
+
+SELECT TOP 10 
+    CVEGEO,
+    NSE_TOTAL,
+    NSE_AB_PCT,
+    NSE_CPLUS_PCT,
+    NSE_C_PCT,
+    NSE_CMINUS_PCT,
+    NSE_DPLUS_PCT,
+    NSE_D_PCT,
+    NSE_E_PCT
+FROM Boundaries
+WHERE Layer = 5
+ AND NSE_TOTAL IS NOT NULL
+ORDER BY CVEGEO;
+
+SELECT TOP 10 CVEGEO, NSE_SCORE
+FROM Boundaries
+WHERE Layer = 5
+ AND NSE_TOTAL IS NOT NULL
+ORDER BY CVEGEO;
+```
+
+#### Validation 1
+
+Display all percentages in Layer = 5
+|CVEGEO|NSE_TOTAL|NSE_AB_PCT|NSE_CPLUS_PCT|NSE_C_PCT|NSE_CMINUS_PCT|NSE_DPLUS_PCT|NSE_D_PCT|NSE_E_PCT|
+|100010001	3395	7.19	11.52	15.49	16.73	17.85	26.98	4.24
+100010004	233	0.00	1.72	3.00	8.58	20.17	47.21	19.31
+100010005	192	1.04	5.21	4.17	10.94	21.88	44.27	12.50
+100010010	87	0.00	3.45	16.09	18.39	22.99	35.63	3.45
+100010012	226	0.44	1.33	4.42	7.52	30.09	45.58	10.62
+100010022	37	2.70	0.00	16.22	8.11	13.51	43.24	16.22
+100010028	103	1.94	1.94	3.88	18.45	25.24	42.72	5.83
+100010041	36	2.78	0.00	5.56	5.56	22.22	55.56	8.33
+100010042	192	0.52	2.60	4.69	17.19	22.40	40.10	12.50
+100010045	33	12.12	24.24	27.27	12.12	12.12	12.12	0.00
+
+
+
+
+
+
+
+
+
+#### Validation 3
+
+NONE (Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL)
+
+#### Validation 4
+
+|NSE_LABEL|Neighborhoods|
+|--------|-------------|
+|AB      |6317|
+|C+      |11569|
+|C       |7240|
+|C-      |3073|
+|D+      |756|
+|D       |37718|
+|E       |394|
+
+# 5 — Calculate IDS_PROM and NSE_SCORE
+
+```sql
+USE INMO;
+GO
+
+---------------------------------------------------------
+-- NSE Step 4.5 — Calculate IDS_PROM and NSE_SCORE
+-- IDS_PROM  = weighted raw index (0–700)
+-- NSE_SCORE = normalized index (1–7 scale)
+---------------------------------------------------------
+
+-- This is the weighted AMAI index, using simplified categories:
+--
+-- IDS_PROM:
+-- Category   Weight
+-- A/B        7
+-- C+         6
+-- C          5
+-- C-         4
+-- D+         3
+-- D          2
+-- E          1
+--
+-- NSE_SCORE = IDS_PROM / 100 (scale 1–7)
+
+-----------------------------------------
+-- 1. Drop previous columns if they exist
+-----------------------------------------
+
+IF EXISTS (SELECT 1 FROM sys.columns 
+           WHERE Name = N'IDS_PROM' AND Object_ID = Object_ID(N'COLONIA_NSE'))
+BEGIN
+    ALTER TABLE COLONIA_NSE DROP COLUMN IDS_PROM;
+END;
+
+IF EXISTS (SELECT 1 FROM sys.columns 
+           WHERE Name = N'NSE_SCORE' AND Object_ID = Object_ID(N'COLONIA_NSE'))
+BEGIN
+    ALTER TABLE COLONIA_NSE DROP COLUMN NSE_SCORE;
+END;
+GO
+
+-----------------------
+-- 2. Add clean columns
+-----------------------
+ALTER TABLE COLONIA_NSE
+ADD IDS_PROM  numeric(10,4),
+    NSE_SCORE numeric(10,4);
+GO
+
+---------------------------------------------------------------
+-- 3. Calculate IDS_PROM (raw index) and NSE_SCORE (normalized)
+---------------------------------------------------------------
+UPDATE COLONIA_NSE
+SET 
+    IDS_PROM =
+          ISNULL(NSE_AB_PCT,0)     * 7
+        + ISNULL(NSE_CPLUS_PCT,0)  * 6
+        + ISNULL(NSE_C_PCT,0)      * 5
+        + ISNULL(NSE_CMINUS_PCT,0) * 4
+        + ISNULL(NSE_DPLUS_PCT,0)  * 3
+        + ISNULL(NSE_D_PCT,0)      * 2
+        + ISNULL(NSE_E_PCT,0)      * 1,
+
+    NSE_SCORE =
+    (
+          ISNULL(NSE_AB_PCT,0)     * 7
+        + ISNULL(NSE_CPLUS_PCT,0)  * 6
+        + ISNULL(NSE_C_PCT,0)      * 5
+        + ISNULL(NSE_CMINUS_PCT,0) * 4
+        + ISNULL(NSE_DPLUS_PCT,0)  * 3
+        + ISNULL(NSE_D_PCT,0)      * 2
+        + ISNULL(NSE_E_PCT,0)      * 1
+    ) / 100.0;
+
+
+---------------------------------------------------------
+-- Validation
+---------------------------------------------------------
+
+-- 1. Verify NSE_SCORE is not NULL when NSE_TOTAL > 0
+SELECT *
+FROM COLONIA_NSE
+WHERE NSE_TOTAL > 0 AND NSE_SCORE IS NULL;
+
+-- 2. Inspect typical values
+SELECT TOP 40 CVE_COLONIA, IDS_PROM, NSE_SCORE
+FROM COLONIA_NSE
+ORDER BY NSE_SCORE DESC;
+```
+
+### Expected results
+
+#### Validation 1
+
+- No records should appear if NSE_TOTAL > 0 and NSE_SCORE is not null
+
+#### Validation 1
+
+- Typical values IDS_PROM: 677.3900 (means is almost 7, the highest) and NSE_SCORE represents that in % as 6.7776   
+- This query is NSE_SCORE Descending order so it is pislying the higuest ranked, you **ASC** to display the lower.  
+
+|CVE_COLONIA  |IDS_PROM|NSE_SCORE|
+|-------------|--------|---------|
+|3110200010059|699.9992|7.0000|
+|1904800010254|683.9540|6.8395|
+|1904800010273|677.7567|6.7776|
+|1903900011171|677.3900|6.7739|
+|1901900010234|676.9549|6.7695|
+|1901900010076|676.9533|6.7695|
+|1901900010075|676.9539|6.7695|
+|1901900010074|676.9531|6.7695|
+|1901900010003|676.9513|6.7695|
+|1901900010435|676.8476|6.7685|
+
+# 6 — Calculate dominant NSE (A/B, C+, C, D+, DE)
+
+```sql
+USE INMO;
+GO
+
+-------------------------------------------------------------------
+-- NSE Step 4.6 — Calculate dominant NSE (A/B, C+, C, C-, D+, D, E)
+-- Select the category with the highest percentage
+-------------------------------------------------------------------
+
+-- 1. Drop NSE column if it exists
+IF EXISTS (SELECT 1 FROM sys.columns 
+           WHERE Name = N'NSE' AND Object_ID = Object_ID(N'COLONIA_NSE'))
+BEGIN
+    ALTER TABLE COLONIA_NSE DROP COLUMN NSE;
+END;
+GO
+
+-- 2. Add clean NSE column
+ALTER TABLE COLONIA_NSE
+ADD NSE varchar(5);
+GO
+
+-- 3. Calculate dominant NSE using VALUES()
+UPDATE COLONIA_NSE
+SET NSE =
+(
+    SELECT TOP 1 Nivel
+    FROM
+    (
+        VALUES
+            ('A/B', NSE_AB_PCT),
+            ('C+',  NSE_CPLUS_PCT),
+            ('C',   NSE_C_PCT),
+            ('C-',  NSE_CMINUS_PCT),
+            ('D+',  NSE_DPLUS_PCT),
+            ('D',   NSE_D_PCT),
+            ('E',   NSE_E_PCT)
+    ) AS X(Nivel, Valor)
+    WHERE Valor IS NOT NULL
+    ORDER BY Valor DESC
+)
+WHERE NSE_TOTAL > 0;
+GO
+
+-- 4. Colonias with no population → NSE = 'N/A'
+UPDATE COLONIA_NSE
+SET NSE = 'N/A'
+WHERE NSE_TOTAL = 0;
+GO
+
+---------------------------------------------------------
+-- Validation
+---------------------------------------------------------
+
+-- 1. No colonias with NSE_TOTAL > 0 should have NSE = NULL
+
+SELECT *
+FROM COLONIA_NSE
+WHERE NSE_TOTAL > 0 AND NSE IS NULL;
+
+-- 2. General distribution
+
+SELECT NSE, COUNT(*) AS Colonias
+FROM COLONIA_NSE
+GROUP BY NSE
+ORDER BY NSE ASC;
+GO
+```
+
+### Expected results
+
+#### Validation 1
+
+Just headers, no records if there is no NSE = NULL.   
+
+CVE_COLONIA	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE_TOTAL	NSE_AB_PCT	NSE_CPLUS_PCT	NSE_CMINUS_PCT	NSE_C_PCT	NSE_DPLUS_PCT	NSE_D_PCT	NSE_E_PCT	IDS_PROM	NSE_SCORE	NSE
+
+#### Validation 2
+
+|NSE|Colonias|
+|---|--------|
+|A/B|6087|
+|C+|11747|
+|C|7242|
+|C-|3069|
+|D+|758|
+|D|37770|
+|E|394|
+|N/A|12708|
+
+# 7 — Create NSE_LABEL 
+
+Create NSE_LABEL with letter and percentage, example "A/B (57%)"
+
+```sql
+USE INMO
+GO
+
+---------------------------------------------------------
+-- NSE Step 4.7 — Create NSE_LABEL
+---------------------------------------------------------
+
+-- Logic:
+-- Add a column NSE_LABEL
+-- Build a string with the dominant NSE + rounded percentage
+-- Example: "A/B (47%)", "C+ (32%)", "N/A (0%)"
+
+-- 1. Add NSE_LABEL column
+ALTER TABLE COLONIA_NSE
+ADD NSE_LABEL varchar(15);
+GO
+
+-- 2. Generate NSE_LABEL text
+UPDATE COLONIA_NSE
+SET NSE_LABEL = 
+    CASE 
+        WHEN NSE = 'A/B' THEN CONCAT('A/B (', CAST(ROUND(NSE_AB_PCT,0) AS INT), '%)')
+        WHEN NSE = 'C+'  THEN CONCAT('C+ (',  CAST(ROUND(NSE_CPLUS_PCT,0) AS INT), '%)')
+        WHEN NSE = 'C'   THEN CONCAT('C (',   CAST(ROUND(NSE_C_PCT,0) AS INT), '%)')
+        WHEN NSE = 'C-'  THEN CONCAT('C- (',  CAST(ROUND(NSE_CMINUS_PCT,0) AS INT), '%)')
+        WHEN NSE = 'D+'  THEN CONCAT('D+ (',  CAST(ROUND(NSE_DPLUS_PCT,0) AS INT), '%)')
+        WHEN NSE = 'D'   THEN CONCAT('D (', CAST(ROUND(NSE_D_PCT,0) AS INT), '%)')
+        WHEN NSE = 'E'   THEN CONCAT('E (', CAST(ROUND(NSE_E_PCT,0) AS INT), '%)')
+        WHEN NSE = 'N/A' THEN 'N/A (0%)'
+    END
+WHERE NSE IS NOT NULL;
+GO
+
+---------------------------------------------------------
+-- Validation
+---------------------------------------------------------
+
+-- 1. Sample results
+
+SELECT TOP 20 CVE_COLONIA, NSE, NSE_LABEL
+FROM COLONIA_NSE;
+
+-- 2. Count colonias with NSE_LABEL
+-- Expected: 79,775 total colonias
+-- Minus ~12,708 with NSE_TOTAL = 0
+-- ≈ 67,067 with valid NSE_LABEL
+
+SELECT COUNT(*) AS Colonias_With_Label
+FROM COLONIA_NSE
+WHERE NSE_LABEL IS NOT NULL;
+```
+
+### Expected results
+
+#### Validation 1
+
+|CVE_COLONIA  |NSE|NSE_LABEL|
+|-------------|---|---------|
+|1307400010027|D|D (24%)|
+|1205000010002|D|D (27%)|
+|1000500010024|D|D (22%)|
+|1400800010079|C-|C- (22%)|
+|1305600010031|D|D (23%)|
+|1205000010030|D|D (27%)|
+|1202900010201|D|D (25%)|
+|1305100260003|A/B|A/B (30%)|
+|1200100010246|D|D (40%)|
+|1000500010698|C+|C+ (29%)|
+|1304800010046|C|C (20%)|
+|0710100010324|D|D (24%)|
+|1403900010192|C+|C+ (28%)|
+|1412002310013|C-|C- (23%)|
+|1902900010002|D|D (26%)|
+|2107100010033|D|D (42%)|
+|2111400011362|A/B|A/B (42%)|
+|1605300010760|C|C (19%)|
+|1607700670001|D|D (37%)|
+|0400200010041|D|D (33%)|
+
+#### Validation 2
+
+Colonias_With_Label  
+79775  
+This means all Neighborhoods have a NSE_LABEL
+
+# 8 — Copy COLONIAS_NSE calculations to Boundaries layer = 6
+
+```sql
+USE INMO;
+GO
+
+---------------------------------------------------------
+-- NSE Step 4.8 — Update Boundaries Layer 6 with final values
+-- Requires that Steps 4.5, 4.6, and 4.7 have already been executed
+---------------------------------------------------------
+
+-- 1. Validate that required columns exist in COLONIA_NSE
+--    If any are missing → ABORT
+IF NOT EXISTS (SELECT 1 FROM sys.columns 
+               WHERE Name = 'NSE' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
+BEGIN
+    RAISERROR('ERROR: Missing column NSE. Step 4.6 not executed.', 16, 1);
+    RETURN;
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.columns 
+               WHERE Name = 'NSE_LABEL' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
+BEGIN
+    RAISERROR('ERROR: Missing column NSE_LABEL. Step 4.7 not executed.', 16, 1);
+    RETURN;
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.columns 
+               WHERE Name = 'NSE_SCORE' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
+BEGIN
+    RAISERROR('ERROR: Missing column NSE_SCORE. Step 4.5 not executed.', 16, 1);
+    RETURN;
+END;
+
+IF NOT EXISTS (SELECT 1 FROM sys.columns 
+               WHERE Name = 'IDS_PROM' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
+BEGIN
+    RAISERROR('ERROR: Missing column IDS_PROM. Step 4.5 not executed.', 16, 1);
+    RETURN;
+END;
+
+PRINT 'Validation OK: All required columns exist.';
+GO
+
+---------------------------------------------------------
+-- 2. Clear previous values in Boundaries Layer 6
+---------------------------------------------------------
+UPDATE Boundaries
+SET 
+    NSE        = NULL,
+    NSE_LABEL  = NULL,
+    NSE_SCORE  = NULL,
+    IDS_PROM   = NULL,
+    NSE_TOTAL  = NULL,
+
+    NSE_AB     = NULL,
+    NSE_CPLUS  = NULL,
+    NSE_C      = NULL,
+    NSE_CMINUS = NULL,
+    NSE_DPLUS  = NULL,
+    NSE_D      = NULL,
+    NSE_E      = NULL,
+
+    NSE_AB_PCT     = NULL,
+    NSE_CPLUS_PCT  = NULL,
+    NSE_C_PCT      = NULL,
+    NSE_CMINUS_PCT = NULL,
+    NSE_DPLUS_PCT  = NULL,
+    NSE_D_PCT      = NULL,
+    NSE_E_PCT      = NULL
+WHERE Layer = 6;
+GO
+
+PRINT 'Previous values cleared successfully.';
+GO
+
+---------------------------------------------------------
+-- 3. Copy final data from COLONIA_NSE into Boundaries Layer 6
+---------------------------------------------------------
+UPDATE B
+SET
+    B.NSE            = C.NSE,
+    B.NSE_LABEL      = C.NSE_LABEL,
+    B.NSE_SCORE      = C.NSE_SCORE,
+    B.IDS_PROM       = C.IDS_PROM,
+
+    B.NSE_TOTAL      = C.NSE_TOTAL,
+
+    B.NSE_AB         = C.NSE_AB,
+    B.NSE_CPLUS      = C.NSE_CPLUS,
+    B.NSE_C          = C.NSE_C,
+    B.NSE_CMINUS     = C.NSE_CMINUS,
+    B.NSE_DPLUS      = C.NSE_DPLUS,
+    B.NSE_D          = C.NSE_D,
+    B.NSE_E          = C.NSE_E,
+
+    B.NSE_AB_PCT     = C.NSE_AB_PCT,
+    B.NSE_CPLUS_PCT  = C.NSE_CPLUS_PCT,
+    B.NSE_C_PCT      = C.NSE_C_PCT,
+    B.NSE_CMINUS_PCT = C.NSE_CMINUS_PCT,
+    B.NSE_DPLUS_PCT  = C.NSE_DPLUS_PCT,
+    B.NSE_D_PCT      = C.NSE_D_PCT,
+    B.NSE_E_PCT     = C.NSE_E_PCT
+FROM Boundaries B
+JOIN COLONIA_NSE C
+    ON B.CVEGEO = C.CVE_COLONIA
+WHERE B.Layer = 6;
+GO
+
+PRINT 'Boundaries Layer 6 updated successfully.';
+GO
+
+---------------------------------------------------------
+-- 4. Final validations
+---------------------------------------------------------
+
+-- Distribution of NSE categories
+SELECT NSE, COUNT(*) AS Records
+FROM Boundaries
+WHERE Layer = 6
+GROUP BY NSE
+ORDER BY NSE ASC, COUNT(*) DESC;
+
+-- Colonias with population > 0 should not have NSE_SCORE = NULL
+-- Should retun NONE
+SELECT *
+FROM Boundaries
+WHERE Layer = 6
+  AND NSE_TOTAL > 0
+  AND NSE_SCORE IS NULL;
+
+-- Colonias with no population should not have NSE assigned
+-- Must return ~13859 that didn't have NSE_TOTAL and NSE values
+SELECT 
+ State, 
+ Municipality, 
+ City, 
+ Neighborhood, 
+ NSE, 
+ NSE_LABEL, 
+ NSE_SCORE,
+ IDS_PROM,
+ NSE_TOTAL,
+ NSE_AB,
+ NSE_CPLUS,
+ NSE_C,
+ NSE_CMINUS,
+ NSE_DPLUS,
+ NSE_D,
+ NSE_E,
+ NSE_AB_PCT,
+ NSE_CPLUS_PCT,
+ NSE_C_PCT,
+ NSE_CMINUS_PCT,
+ NSE_DPLUS_PCT,
+ NSE_D_PCT,
+ NSE_E_PCT
+FROM Boundaries
+WHERE Layer = 6
+  AND NSE_TOTAL = 0
+  AND NSE IS NOT NULL;
+
+-- Sample results
+SELECT TOP 20 CVEGEO, NSE, NSE_LABEL, NSE_SCORE, NSE_TOTAL
+FROM Boundaries
+WHERE Layer = 6;
+GO
+```
+
+### Expected results
+
+#### Validation 1
+
+|NSE|Records|
+|---|-------|
+|A/B|   6087|
+|C  |   7242|
+|C+ |  11747|
+|C- |   3069|
+|D  |  37770|
+|D+ |    758|
+|E  |    394|
+|N/A|  12708|
+
+#### Validation 2
+
+None as if NSE_TOTAL > 0 AND NSE_SCORE IS NULL
+
+#### Validation 3
+
+14,162 records where NSE_TOTAL = 0 (as original file has no data for those)
