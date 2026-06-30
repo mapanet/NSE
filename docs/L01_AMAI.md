@@ -30,6 +30,7 @@ Original columns:
 
 | Column | Meaning |
 |--------|---------|
+| CLAVE LOCALIDAD | CVEGEO code |
 | ENTIDAD | State code |
 | NOMBRE ENTIDAD | State name |
 | MUNICIPIO | Municipality code |
@@ -81,32 +82,12 @@ To standardize the structure:
 - Add the following headers in row 3:
 
 ```code
-CVE_ENT	NOM_ENT	CVE_MUN	NOM_MUN	CVE_LOC	NOM_LOC	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE	NSE_TOTAL	POPULATION_RANGE
+CVEGEO	CVE_ENT	NOM_ENT	CVE_MUN	NOM_MUN	CVE_LOC	NOM_LOC	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE	NSE_TOTAL	POPULATION_RANGE
 ```
 
 - Delete row 1 and 2
 
-#### 3.3 — Create the CVEGEO column
 
-Insert a new column at position 1 with header **CVEGEO**. 
-
-AMAI provides region codes as integers, but INEGI uses **alphanumeric codes with leading zeros**.   
-Standardize as the codes as follows (INEGI): 
-
-- CVE_ENT → 2 digits (**00**)
-- CVE_MUN → 3 digits (**000**)
-- CVE_LOC → 4 digits (**0000**)
-- CVE_AGEB → 4 digits
-
-Formula for CVEGEO:
-
-```excel
-=TEXT(B2, "00") & TEXT(D2, "000") & TEXT(F2, "0000") & TEXT(H2, "0000")
-```
-This produces a valid INEGI CVEGEO:
-
-**CVEGEO** = CVE_ENT + CVE_MUN + CVE_LOC + CVE_AGEB  
-Format: EEMMMLLLLAAAA
 
 #### 3.4 — Replace N/D values
 
@@ -163,7 +144,7 @@ Open the script in **Visual Studio Code** and run it.
 import pandas as pd
 
 # 1. Read Excel file without headers
-df = pd.read_excel(r"D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.xlsx", header=None)
+df = pd.read_excel(r"D:\AXSI\AMAI\NSE_por_localidad_AMAI_2024_IMPORT.xlsx", header=None)
 
 # 2. Drop the first two rows (original headers)
 df = df.drop([0, 1]).reset_index(drop=True)
@@ -185,15 +166,15 @@ df["CVE_MUN"] = df["CVE_MUN"].astype(str).str.zfill(3)
 df["CVE_LOC"] = df["CVE_LOC"].astype(str).str.zfill(4)
 
 # 6. Insert CVEGEO column at position 0
-df.insert(0, "CVEGEO", "")
+##df.insert(0, "CVEGEO", "")
 
 # 7. Build CVEGEO = ENTIDAD + MUN + LOC + AGEB
-df["CVEGEO"] = (
-    df["CVE_ENT"].astype(str).str.zfill(2) +
-    df["CVE_MUN"].astype(str).str.zfill(3) +
-    df["CVE_LOC"].astype(str).str.zfill(4) +
-    df["CVE_AGEB"].astype(str).str.zfill(4)
-)
+#df["CVEGEO"] = (
+#    df["CVE_ENT"].astype(str).str.zfill(2) +
+#    df["CVE_MUN"].astype(str).str.zfill(3) +
+#    df["CVE_LOC"].astype(str).str.zfill(4) +
+#    df["CVE_AGEB"].astype(str).str.zfill(4)
+#)
 
 # 8. Replace "N/D" with empty string
 df = df.replace("N/D", "")
@@ -202,17 +183,18 @@ df = df.replace("N/D", "")
 df = df.replace('"', '', regex=True)
 
 # 10. Save as TSV (tab-separated), UTF-8 without BOM
-df.to_csv(r"D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv",
+df.to_csv(r"D:\AXSI\AMAI\NSE_por_localidad_AMAI_2024_IMPORT.csv",
     sep="\t",
     index=False,
     encoding="utf-8"
 )
+
 ```
 
 ### Expected result
 
 ```code
-D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv
+D:\AXSI\AMAI\NSE_por_localidad_AMAI_2024_IMPORT.csv
 ```
 
 The CSV file should look like this:   
