@@ -165,30 +165,19 @@ df["CVE_ENT"] = df["CVE_ENT"].astype(str).str.zfill(2)
 df["CVE_MUN"] = df["CVE_MUN"].astype(str).str.zfill(3)
 df["CVE_LOC"] = df["CVE_LOC"].astype(str).str.zfill(4)
 
-# 6. Insert CVEGEO column at position 0
-##df.insert(0, "CVEGEO", "")
 
-# 7. Build CVEGEO = ENTIDAD + MUN + LOC + AGEB
-#df["CVEGEO"] = (
-#    df["CVE_ENT"].astype(str).str.zfill(2) +
-#    df["CVE_MUN"].astype(str).str.zfill(3) +
-#    df["CVE_LOC"].astype(str).str.zfill(4) +
-#    df["CVE_AGEB"].astype(str).str.zfill(4)
-#)
-
-# 8. Replace "N/D" with empty string
+# 6. Replace "N/D" with empty string
 df = df.replace("N/D", "")
 
-# 9. Remove all double quotes
+# 7. Remove all double quotes
 df = df.replace('"', '', regex=True)
 
-# 10. Save as TSV (tab-separated), UTF-8 without BOM
+# 8. Save as TSV (tab-separated), UTF-8 without BOM
 df.to_csv(r"D:\AXSI\AMAI\NSE_por_localidad_AMAI_2024_IMPORT.csv",
     sep="\t",
     index=False,
     encoding="utf-8"
 )
-
 ```
 
 ### Expected result
@@ -199,14 +188,14 @@ D:\AXSI\AMAI\NSE_por_localidad_AMAI_2024_IMPORT.csv
 
 The CSV file should look like this:   
 
-| CVEGEO        |CVE_ENT| ENT_NOM       |CVE_MUN| MUN_NOM      |CVE_LOC | LOC_NOM      |CVE_AGEB|NSE_AB |NSE_CPLUS|NSE_C  |NSE_CMINUS|NSE_DPLUS|NSE_D  |NSE_E  |NSE| NSE_TOTAL | POPULATION_RANGE |
-|---------------|-------|---------------|-------|--------------|--------|--------------|--------|-------|---------|-------|----------|---------|-------|-------|---|-----------|------------------|
-| 0100100010017 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0017    |      0|       12|     39|       111|      153|    331|       |D  |        648|500,000 a 999,999 |
-| 010010001006A |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|006A    |    178|      124|     60|        24|        9|      4|      0|A/B|        399|500,000 a 999,999 |
-| 0100100010106 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0106    |    183|      375|    247|       128|       62|     32|       |C+ |       1028|500,000 a 999,999 |
-| 0100100010163 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0163    |     35|      157|    228|       167|      124|     78|      0|C  |        789|500,000 a 999,999 |
-| 0100100010182 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0182    |    345|      187|     63|        46|       13|      6|      0|A/B|        660|500,000 a 999,999 |
-| 0100100010229 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0229    |    25 |       36|     14|        20|        9|      7|      0|C+ |        111|500,000 a 999,999 |
+| CVEGEO        |CVE_ENT| ENT_NOM       |CVE_MUN| MUN_NOM      |CVE_LOC | LOC_NOM      |NSE_AB |NSE_CPLUS|NSE_C  |NSE_CMINUS|NSE_DPLUS|NSE_D  |NSE_E  |NSE| NSE_TOTAL | POPULATION_RANGE |
+|---------------|-------|---------------|-------|--------------|--------|--------------|-------|---------|-------|----------|---------|-------|-------|---|-----------|------------------|
+| 0100100010017 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|      0|       12|     39|       111|      153|    331|       |D  |        648|500,000 a 999,999 |
+| 010010001006A |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|    178|      124|     60|        24|        9|      4|      0|A/B|        399|500,000 a 999,999 |
+| 0100100010106 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|    183|      375|    247|       128|       62|     32|       |C+ |       1028|500,000 a 999,999 |
+| 0100100010163 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|     35|      157|    228|       167|      124|     78|      0|C  |        789|500,000 a 999,999 |
+| 0100100010182 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|    345|      187|     63|        46|       13|      6|      0|A/B|        660|500,000 a 999,999 |
+| 0100100010229 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|    25 |       36|     14|        20|        9|      7|      0|C+ |        111|500,000 a 999,999 |
 
 
 ## 4 — Create Final table in MS SQL Server
@@ -227,7 +216,7 @@ GO
 
 DROP TABLE IF EXISTS dbo.AMAI_AGEB_2024;
 
-CREATE TABLE [dbo].[AMAI_AGEB_2024](
+CREATE TABLE [dbo].[AMAI_LOC_2024](
 	[CVEGEO] [nvarchar](20) NOT NULL,
 	[CVE_ENT] [varchar](2) NOT NULL,
 	[NOM_ENT] [nvarchar](85) NOT NULL,
@@ -235,7 +224,6 @@ CREATE TABLE [dbo].[AMAI_AGEB_2024](
 	[NOM_MUN] [nvarchar](85) NOT NULL,
 	[CVE_LOC] [varchar](4) NOT NULL,
 	[NOM_LOC] [nvarchar](110) NOT NULL,
-    [CVE_AGEB] [varchar](4) NOT NULL,
 	[NSE_AB] [int] NULL,
 	[NSE_CPLUS] [int] NULL,
 	[NSE_C] [int] NULL,
@@ -260,7 +248,7 @@ GO
 -- Make sure the directory path matches where you saved the AMAI CSV file.
 ------------------------------------------------
 BULK INSERT AMAI_AGEB_2024
-FROM 'D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv'
+FROM 'D:\AXSI\AMAI\NSE_por_localidad_AMAI_2024_IMPORT.csv'
 WITH (
     FIRSTROW = 2,
     FIELDTERMINATOR = '\t',
@@ -285,17 +273,17 @@ WITH (
 -- No records: This means there is no difference between total vs sum of components   
 
 SELECT *
-FROM AMAI_AGEB_2024
+FROM AMAI_LOC_2024
 WHERE NSE_TOTAL <> (NSE_AB + NSE_CPLUS + NSE_C + NSE_CMINUS + NSE_DPLUS + NSE_D + NSE_E);
 
 ------------------------------------------------
--- Validate correct CVEGEO length (13 characters)
+-- Validate correct CVEGEO length (9 characters)
 -- Exprected result
 -- CVEGEO | NSE_AB | NSE_CPLUS | NSE_C | NSE_CMINUS | NSE_DPLUS | NSE_D | NSE_E | NSE | NSE_TOTAL |
--- No records: This means all CVEGEO are 13 characters: EEMMMLLLLAAAA
+-- No records: This means all CVEGEO are 9 characters: EEMMMLLLL
 
 SELECT *
-FROM AMAI_AGEB_2024
+FROM AMAI_LOC_2024
 WHERE LEN(CVEGEO) <> 13;
 
 ------------------------------------------------
@@ -311,7 +299,6 @@ SELECT TOP (6)
   NOM_MUN,
   CVE_LOC,
   NOM_LOC,
-  CVE_AGEB,
   NSE_AB, 
   NSE_CPLUS, 
   NSE_C, 
@@ -327,13 +314,13 @@ FROM dbo.AMAI_AGEB_2024
 
 Your final table in SQL should look like this:  
 
-| CVEGEO        | CVE_ENT | NOM_ENT      | CVE_MUN | NOM_MUN      | CVE_LOC | NOM_LOC        | CVE_AGEB | NSE_AB | NSE_CPLUS | NSE_C | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E  | NSE | NSE_TOTAL | POPULATION_RANGE |
-|---------------|---------|--------------|---------|--------------|---------|----------------|----------|--------|-----------|-------|------------|-----------|---------|--------|-----|-----------|------------------|
-| 0100100010017 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 0017     |      0 |        12 |    39 |        111 |       153 |     331 |        | D   |        648| 500,000 a 999,999|
-| 010010001006A | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 006A     |    178 |       124 |    60 |         24 |         9 |       4 |      0 | A/B |        399| 500,000 a 999,999|
-| 0100100010106 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 0106     |    183 |       375 |   247 |        128 |        62 |      32 |        | C+  |       1028| 500,000 a 999,999|
-| 0100100010163 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 0163     |    35  |       157 |   228 |        167 |       124 |      78 |      0 | C   |        789| 500,000 a 999,999|
-| 0100100010182 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 0182     |    345 |       187 |    63 |         46 |        13 |       6 |      0 | A/B |        660| 500,000 a 999,999|
-| 0100100010229 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 0229     |    25  |       36  |    14 |         20 |         9 |       7 |      0 | C+  |        111| 500,000 a 999,999|
+| CVEGEO        | CVE_ENT | NOM_ENT      | CVE_MUN | NOM_MUN      | CVE_LOC | NOM_LOC        | NSE_AB | NSE_CPLUS | NSE_C | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E  | NSE | NSE_TOTAL | POPULATION_RANGE |
+|---------------|---------|--------------|---------|--------------|---------|----------------|--------|-----------|-------|------------|-----------|---------|--------|-----|-----------|------------------|
+| 0100100010017 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes |      0 |        12 |    39 |        111 |       153 |     331 |        | D   |        648| 500,000 a 999,999|
+| 010010001006A | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes |    178 |       124 |    60 |         24 |         9 |       4 |      0 | A/B |        399| 500,000 a 999,999|
+| 0100100010106 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes |    183 |       375 |   247 |        128 |        62 |      32 |        | C+  |       1028| 500,000 a 999,999|
+| 0100100010163 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes |    35  |       157 |   228 |        167 |       124 |      78 |      0 | C   |        789| 500,000 a 999,999|
+| 0100100010182 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes |    345 |       187 |    63 |         46 |        13 |       6 |      0 | A/B |        660| 500,000 a 999,999|
+| 0100100010229 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes |    25  |       36  |    14 |         20 |         9 |       7 |      0 | C+  |        111| 500,000 a 999,999|
 
 This table is the official AMAI source for the **NSE calculation steps**.  
