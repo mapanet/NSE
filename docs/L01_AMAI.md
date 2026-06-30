@@ -259,7 +259,7 @@ WITH (
 
 ### Expected result
 
-(246048 rows affected)   
+(189432 rows affected)   
 
 
 
@@ -309,7 +309,7 @@ SELECT TOP (6)
   NSE, 
   NSE_TOTAL,
   POPULATION_RANGE
-FROM dbo.AMAI_AGEB_2024
+FROM dbo.AMAI_LOC_2024
 ```
 
 Your final table in SQL should look like this:  
