@@ -16,9 +16,6 @@ AMAI publishes the dataset in its downloads section:
 https://www.amai.org/NSE/index.php?queVeo=NSEDES&Logeado=s (download NSE por localidad)
 
 
-
-
-
 Important characteristics of the file:
 
 - The filename does not include a year.
@@ -39,7 +36,6 @@ Original columns:
 | NOMBRE MUNICIPIO | Municipality name |
 | LOCALIDAD | Locality code |
 | NOMBRE LOCALIDAD | Locality name |
-| AGEB | AGEB code (4 characters) |
 | AB | Dwellings in socioeconomic level AB |
 | C+ | Dwellings in socioeconomic level C+ |
 | C | Dwellings in socioeconomic level C |
@@ -54,12 +50,12 @@ Original columns:
 #### Save the file
 
 Directory: D:\AXSI\AMAI\Download   
-File name: NSE_por_AGEB_AMAI_2024.xlsx   
+File name: NSE_por_localidad_AMAI_2024.xlsx   
 
 ### Copy the file to the working directory
 
 Directory: D:\AXSI\AMAI\
-Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
+Saves as : NSE_por_localidad_AMAI_2024-IMPORT.xlsx
 
 
 ## 3. — Edit the Excel File to Produce an Importable CSV
@@ -85,7 +81,7 @@ To standardize the structure:
 - Add the following headers in row 3:
 
 ```code
-CVE_ENT	NOM_ENT	CVE_MUN	NOM_MUN	CVE_LOC	NOM_LOC	CVE_AGEB	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE	NSE_TOTAL	POPULATION_RANGE
+CVE_ENT	NOM_ENT	CVE_MUN	NOM_MUN	CVE_LOC	NOM_LOC	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE	NSE_TOTAL	POPULATION_RANGE
 ```
 
 - Delete row 1 and 2
