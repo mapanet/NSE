@@ -13,7 +13,7 @@ Objective: Convert the official AMAI file NSE_por_AGEB_AMAI_2024.xlsx into a nor
 
 AMAI publishes the dataset in its downloads section:
 
-https://www.amai.org/NSE/index.php?queVeo=NSEDES&Logeado=s (download NSE por localidad)
+https://www.amai.org/NSE/index.php?queVeo=NSEDES&Logeado=s (download NSE por AGEB)
 
 https://www.amai.org/descargas/NSE_por_AGEB_AMAI.xlsx
 
