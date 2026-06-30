@@ -1,11 +1,12 @@
-# 8.0 NSE calculation for Boundaries layer = 5 (City), layer 2 (municipality), layer 1 (state)
+# STEP 1 — AMAI LOCALIDAD 2024 Data Ingestion (NSE by LOC)
 
-## Purpose in the NSE Pipeline
+Objective: Convert the official AMAI file NSE_por_localidad_AMAI_2024.xlsx into a normalized SQL table ready for the NSE pipeline.
 
-This dataset is used to:
+## Suggested work directories
 
-- Build **Boundaries Layer 5** (Localities/Cities)  
-- Calculate **area‑weighted NSE** values per neighborhood  
+- D:\AXSI\AMAI — working files
+- D:\AXSI\AMAI\Download  — downloaded source files
+
 
 # 8.1 — Load NSE values into Boundaries Layer 5 (Localities)
 
