@@ -102,7 +102,7 @@ This prevents errors in:
 
 Excel now should look like this:
 
-[<img src="/docs/images/NSE_6.png" width="1000">](/docs/NSE_6.png)
+[<img src="/docs/images/NSE_.png" width="1000">](/docs/NSE_.png)
 
 #### 3.5 — Generate a clean CSV
 
