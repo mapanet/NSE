@@ -13,15 +13,15 @@ Objective: Convert the official AMAI file NSE_por_AGEB_AMAI_2024.xlsx into a nor
 
 AMAI publishes the dataset in its downloads section:
 
+https://www.amai.org/NSE/index.php?queVeo=NSEDES&Logeado=s (download NSE por localidad)
+
 https://www.amai.org/descargas/NSE_por_AGEB_AMAI.xlsx
+
+Alternatively, it can be accessed through the NSE portal:
 
 Depending on the browser, it may download directly as an XLSX file or open in the Office Online viewer:
 
 https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.amai.org%2Fdescargas%2FNSE_por_AGEB_AMAI.xlsx&wdOrigin=BROWSELINK
-
-Alternatively, it can be accessed through the NSE portal:
-
-https://www.amai.org/NSE/index.php?queVeo=NSEDES&Logeado=s (download NSE por AGEB)
 
 Important characteristics of the file:
 
