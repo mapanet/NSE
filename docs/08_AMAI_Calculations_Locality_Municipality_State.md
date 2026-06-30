@@ -474,11 +474,37 @@ SET NSE_LABEL =
             'E (' + CAST(CAST(ISNULL(NSE_E_PCT, 0) AS INT) AS VARCHAR(3)) + '%)'
     END
 WHERE Layer IN (1, 2, 5);
+
+-- Validations
+
+SELECT TOP 10 CVEGEO, NSE_LABEL
+FROM Boundaries
+WHERE Layer = 5
+ AND NSE_TOTAL IS NOT NULL
+ORDER BY CVEGEO;
 ```
 
 #### Expected results
 
 53789 rows affected
+
+#### Validation
+
+Display TIP 10 records from Boundarues layer = 5 (locality) with NSE_LABEL
+|CVEGEO   |NSE_LABEL |
+|---------|----------|
+|100010001|	D/E (31%)|
+|100010004|	D/E (66%)|
+|100010005|	D/E (56%)|
+|100010010|	D/E (39%)|
+|100010012|	D/E (56%)|
+|100010022|	D/E (59%)|
+|100010028|	D/E (48%)|
+|100010041|	D/E (63%)|
+|100010042|	D/E (52%)|
+|100010045|	C (27%)  |
+
+
 
 
 
