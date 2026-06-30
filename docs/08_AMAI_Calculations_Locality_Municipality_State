@@ -475,7 +475,7 @@ SET NSE_LABEL =
             'E (' + CAST(CAST(ISNULL(NSE_E_PCT, 0) AS INT) AS VARCHAR(3)) + '%)'
     END
 WHERE Layer IN (1, 2, 5);
-``
+```
 
 #### Expected results
 
