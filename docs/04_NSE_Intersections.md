@@ -191,7 +191,7 @@ GO
 ------------------------------------------------------------------------
 -- Validation: How many records were generated in COLONIA_AGEB_INTERSECT
 -- Expected result: ~267,718 records
--- Time to run: ~3 minutes
+-- Time to run: ~1 seconds
 -------------------------------------------------------------------------
 
 SELECT COUNT(*) AS Records FROM COLONIA_AGEB_INTERSECT;
@@ -278,7 +278,7 @@ WHERE NSE_TOTAL = 0;
 -- Validation example: 
 -- Neighborhood El Cielo (CVE_COLONIA = 2300800010017)
 -- CVE_COLONIA   NSE_AB  NSE_PLUS NSE_C   NSE_DPLUS NSE_DE  NSE_TOTAL
--- 2300800010017 16.0024 19.0050  21.0063 0.00106   0.00043 56.01529
+-- 2300800010017	6.69871	7.95565	6.69931	2.09404	0.00045	0.00018	0	23.448389
 ------------------------------------------------------
 
 SELECT *
@@ -353,7 +353,7 @@ GO
 -- Validation 1: Check that no percentages are NULL when NSE_TOTAL > 0
 ----------------------------------------------------------------------
 
-SELECT *
+SELECT CVE_COLONIA, NSE_TOTAL, NSE_AB_PCT, NSE_CPLUS_PCT, NSE_C_PCT, NSE_CMINUS_PCT, NSE_DPLUS_PCT, NSE_D_PCT, NSE_E_PCT
 FROM COLONIA_NSE
 WHERE NSE_TOTAL > 0
   AND (NSE_AB_PCT IS NULL OR NSE_CPLUS_PCT IS NULL OR NSE_C_PCT IS NULL OR NSE_CMINUS_PCT IS NULL OR NSE_DPLUS_PCT IS NULL OR NSE_D_PCT IS NULL OR NSE_E_PCT IS NULL);
@@ -385,8 +385,6 @@ WHERE NSE_TOTAL > 0
 -----------------------------------------------------
 -- Validation 4: Distribution of neighborhoods by NSE
 -----------------------------------------------------
-
-
 
 SELECT NSE_LABEL, COUNT(*) AS Neighborhoods
 FROM (
