@@ -24,7 +24,7 @@ Download file:
 
 **794551163061_s.zip**
 
-Screen:
+**Page looks like this:**
 
 [<img src="/docs/images/MG_2025.png" width="1000">](/docs/images/MG_2025.png)
 
