@@ -32,6 +32,8 @@ Important characteristics of the file:
 
 [<img src="/docs/images/AMAI_2024.png" width="1000">](/docs/images/AMAI_2024.png)
 
+---
+
 ## 2. — Original File Contents
 
 The file contains one row per urban AGEB from Census 2020.
