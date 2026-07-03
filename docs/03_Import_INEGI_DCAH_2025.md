@@ -19,7 +19,10 @@ Download: D:\AXSI\INEGI\DCAH_2025\Download
 **File type (tipo de archivo):** SHP (530.26 MB)  
 **Download URL:** [https://www.inegi.org.mx/programas/dcah/#descargas](https://www.inegi.org.mx/programas/dcah/#descargas)
 
+**Page looks like this:**
+
 [<img src="/docs/images/DCAH_2025.png" width="1000">](/docs/images/DCAH_2025.png)
+
 ---
 
 ## 3.1 Download data
