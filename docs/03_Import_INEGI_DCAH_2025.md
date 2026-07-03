@@ -67,7 +67,7 @@ Dataset include:
 
 | Field | Description |
 |-------|--------------|
-| **CVEGEO** | cvegeo code 13 digits EEMMMLLLLAAAA (EE state, MMM municipality, LLLL City, AAAA Neighborhood |
+| **CVEGEO** | cvegeo code 13 digits EEMMMLLLLAAAA (EE state, MMM municipality, LLLL Locality, AAAA Neighborhood |
 | **CVE_ENT** | State code |
 | **CVE_MUN** | Municipality code |
 | **CVE_LOC** | Locality code |
