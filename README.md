@@ -36,10 +36,7 @@ We then interpolate these values to align with **DCAH neighborhood boundaries**,
                      │
                      ▼
    NSE Assigned to DCAH Neighborhoods
-                     │
-                     ▼
-   Censo 2020, INE 2024, DENUE, OSM for data enrichment   
-```
+ ```
 
 
 
