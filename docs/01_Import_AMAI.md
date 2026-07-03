@@ -28,6 +28,7 @@ Important characteristics of the file:
 - The filename does not include a year.
 - It corresponds to the NSE 2024 methodology.
 
+[<img src="/docs/images/AMAI_2024.png" width="1000">](/docs/images/AMAI_2024.png)
 
 ## 2. — Original File Contents
 
