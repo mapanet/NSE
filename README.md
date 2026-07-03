@@ -58,25 +58,6 @@ We then interpolate these values to align with **DCAH neighborhood boundaries**,
 5. [AMAI Households Weighting by Neighborhood](docs/06_Weighting_by_Neighborhood.md)   
 6. [Final validations](docs/07_Validations.md)   
 
-## Data Sources and Institutional References
-
-- **AMAI (Asociación Mexicana de Agencias de Inteligencia de Mercado y Opinión)**     
-Provides the official Socioeconomic Level (NSE) index at AGEB resolution.
-
-- **INEGI (Instituto Nacional de Estadística y Geografía)**  
-  - Marco Geoestadístico 2025: Official AGEB boundaries.
-  - DCAH 2025: Neighborhood (colonia) boundaries.
-  - DENUE: Directory of Economic Units, used for contextualizing socioeconomic data with business activity.
-
-- **INE (Instituto Nacional Electoral)**   
-Electoral boundaries and demographic data, useful for cross-referencing population distributions.
-
-- **CONAPO (Consejo Nacional de Población)**  
-Population projections and demographic indicators, supporting validation and weighting.
-
-- **OSM (OpenStreetMap)**  
-Complementary spatial data for streets, amenities, and neighborhood delineation.
-
 ---
 
 **Author:** Juan Carlos Alcaide Blanco  
