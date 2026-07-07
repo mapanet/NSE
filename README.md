@@ -1,46 +1,80 @@
 # NSE — AMAI Socioeconomic Level for INEGI Neighborhoods
 
 <p align="center">
-<img src="/docs/images/INEGI.webp" alt="INEGI Logo" height="90">
-&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="/docs/images/AMAI.webp" alt="AMAI Logo" height="90">
+  <img src="/docs/images/INEGI.webp" alt="INEGI Logo" height="90">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/docs/images/AMAI.webp" alt="AMAI Logo" height="90">
 </p>
 
-This public repository documents the complete technical pipeline for calculating the AMAI Socioeconomic Level (NSE) at multiple territorial levels in México:
+This repository documents the complete, reproducible, and auditable pipeline for calculating the AMAI Socioeconomic Level (NSE) across multiple territorial units in México:
 
 - Neighborhood (colonia)
 - Locality
 - Municipality / Alcaldía
 - State
 
-The workflow integrates official datasets from AMAI, INEGI, and INE, producing a reproducible, auditable, and standardized NSE dataset suitable for GIS, APIs, real estate analytics, and socioeconomic research.
+The workflow integrates official datasets from AMAI, INEGI, and INE, producing standardized NSE layers suitable for GIS, APIs, real estate analytics, market segmentation, and territorial intelligence.
 
-## Official datasets used
+---
 
-- AMAI 2024 — NSE by AGEB (Nivel Socioeconómico AMAI)
-- INEGI Marco Geoestadístico 2025 — AGEB geometries
-- INEGI DCAH 2025 — Neighborhood (colonia) boundaries
-- Spatial weighting — AGEB statistical units → colonia geometries
+## 🎯 Purpose of this repository
 
-The final output is **Layer 6 (NSE by colonia)**, with optional aggregation to:
+To generate a final Layer 6 (NSE by colonia) dataset using:
 
-- Layer 5 — City
-- Layer 2 — Municipality
-- Layer 1 — State
+- AMAI 2024 NSE values (by AGEB)
+- INEGI MG 2025 AGEB geometries
+- INEGI DCAH 2025 neighborhood geometries
+- Spatial interpolation from AGEB → colonia boundaries
 
-These layers support **real estate analysis, market segmentation, urban planning**, and integration with **DENUE, OSM,** and other geospatial datasets.
+The resulting NSE dataset is used in production at:
 
-## Example: NSE Map of Mexico City
+### 🌐 AXSI Real Estate Platform  
+Explore the interactive NSE map of Mexico City:  
+**https://axsi.io/es**
+
+---
+
+## 📊 Official datasets used
+
+### AMAI 2024 — NSE by AGEB  
+Socioeconomic classification (A/B, C+, C, C-, D+, D) assigned to statistical units.
+
+### INEGI Marco Geoestadístico 2025  
+Official polygon geometries for AGEB / AGEEB units.
+
+### INEGI DCAH 2025  
+Neighborhood (colonia) boundaries for all municipalities and alcaldías.
+
+### INE 2025 Localities  
+Used for rural fallback logic when AGEB census data is unavailable.
+
+### Spatial weighting  
+Interpolation from AGEB polygons → colonia polygons using area‑weighted joins.
+
+---
+
+## 🗺️ Example: NSE Map of Mexico City
 
 [<img src="/docs/images/CDMX_NSE_map.png" width="700">](/docs/images/CDMX_NSE_map.png)
 
-## Relation between AMAI, MG 2025 AGEB geometries, and DCAH geometries
+This map is generated using the SQL + GIS pipeline documented in this repository.
 
-AMAI’s socioeconomic index (NSE) is originally assigned to AGEB / AGEEB statistical units.
-The MG 2025 framework provides the official polygon boundaries for these units.
-To obtain NSE at the neighborhood (colonia) level, we perform a spatial interpolation from AGEB polygons to DCAH polygons.
+---
 
-### Diagram
+## 🔗 Relationship between AMAI, MG 2025 AGEB geometries, and DCAH geometries
+
+AMAI assigns NSE values to AGEB / AGEEB statistical units.  
+INEGI MG 2025 provides the official boundaries for these units.  
+INEGI DCAH 2025 provides neighborhood boundaries (colonias).
+
+To obtain NSE at the colonia level, we perform:
+
+- Spatial intersection  
+- Area‑weighted interpolation  
+- Normalization of keys  
+- AMAI‑compliant aggregation rules  
+
+### 📐 Diagram
 
 ```text
         AMAI (Socioeconomic Index - NSE)
@@ -56,7 +90,7 @@ To obtain NSE at the neighborhood (colonia) level, we perform a spatial interpol
    DCAH Boundaries (Neighborhood Units)
                      │
                      ▼
-   NSE Assigned to DCAH Neighborhoods
+   NSE Assigned to DCAH Neighborhoods (Layer 6)
  ```
 
 
