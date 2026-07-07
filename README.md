@@ -119,9 +119,9 @@ Layer 5 — City
 Layer 2 — Municipality   
 Layer 1 — State   
 
-8 [Import_AMAI_Locality](docs/08_AMAI_Locality.md)
+8. [Import_AMAI_Locality](docs/08_AMAI_Locality.md)
 
-9 [AMAI_Locality_Calculations](docs/09_AMAI_Locality_Calculations.md)
+9. [AMAI_Locality_Calculations](docs/09_AMAI_Locality_Calculations.md)
 
 
 
