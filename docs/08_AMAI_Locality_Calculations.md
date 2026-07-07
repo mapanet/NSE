@@ -1,4 +1,4 @@
-# 08 — AMAI LOCALIDAD 2024 Data Ingestion (NSE by LOC)
+# 09 — AMAI LOCALIDAD 2024 Data Ingestion (NSE by LOC)
 
 Objective: Convert the official AMAI file NSE_por_localidad_AMAI_2024.xlsx into a normalized SQL table ready for the NSE pipeline.
 
@@ -8,7 +8,7 @@ Objective: Convert the official AMAI file NSE_por_localidad_AMAI_2024.xlsx into 
 - D:\AXSI\AMAI\Download  — downloaded source files
 
 
-# 8.1 — Load NSE values into Boundaries Layer 5 (Localities)
+# 9.1 — Load NSE values into Boundaries Layer 5 (Localities)
 
 AMAI_LOC_2024 already contains CVEGEO at locality level  
 (9-digit CVEGEO). No substring needed.  
@@ -179,7 +179,7 @@ WHERE L1.Layer = 1;
 ```
 
 
-# 8.2 — Calculate NSE percentage fields (_PCT)
+# 9.2 — Calculate NSE percentage fields (_PCT)
 
 IMPORTANT:
 - Percentages must be calculated ONLY for Layers 1, 2, and 5.
@@ -344,7 +344,7 @@ Display all percentages in Layer = 5
 |100010042|	2.714|
 |100010045|	4.757|
 
-# 8.4 — Calculate NSE (dominant level) and NSE_LABEL
+# 9.4 — Calculate NSE (dominant level) and NSE_LABEL
 
 Applies to:
  - Layer 1 = State
