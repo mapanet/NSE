@@ -29,7 +29,7 @@ To generate a final Layer 6 (NSE by colonia) dataset using:
 The resulting NSE dataset is used in production at:
 
 ### 🌐 AXSI Real Estate Platform  
-Explore the interactive NSE map of Mexico City:  
+Explore the interactive NSE map of cities or neighborhoods in México:  
 **https://axsi.io/es**
 
 ---
