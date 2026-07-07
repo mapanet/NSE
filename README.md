@@ -113,12 +113,16 @@ Normalize colonia names, CVEGEO codes, and municipality identifiers.
 - Assign NSE category: Determine final NSE class (A/B, C+, C, C-, D+, D).
 - Generate Layer 6: Produce final colonia‑level NSE dataset.
 
-8. Optional aggregation
-8. [Optional aggregation](docs/08_NSE_Intersections.md)
+**Optional aggregation**   
 
 Layer 5 — City
 Layer 2 — Municipality
 Layer 1 — State
+
+8 [Import_AMAI_LOCALITY](docs/08_AMAI_LOCALITY.md)
+
+9 [AMAI_LOCALITY_Calculations](docs/09_AMAI_LOCALITY_Calculations.md)
+
 
 
 ## 📁 Repository Structure
