@@ -115,9 +115,9 @@ Normalize colonia names, CVEGEO codes, and municipality identifiers.
 
 8. Optional aggregation   
 
-Layer 5 — City  
-Layer 2 — Municipality   
-Layer 1 — State   
+   Layer 5 — City  
+   Layer 2 — Municipality   
+   Layer 1 — State   
 
 8. [Import_AMAI_Locality](docs/08_AMAI_Locality.md)
 
