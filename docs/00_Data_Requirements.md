@@ -31,7 +31,7 @@ Each dataset has its own ingestion and processing guide:
 
 To generate Layer 5 (city), the pipeline integrates **1 official dataset**, a specific component to the spatial, demographic, and statistical process.
 
-- **Step 10 — INEGI Localidades 2025 (Localities Polygons "City")**
+- **Step 8 — INEGI Localidades 2025 (Localities Polygons "City")**
   
 For later data enrichment (region names, poulation, dwellings):
 
