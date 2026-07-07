@@ -101,9 +101,13 @@ To obtain NSE at the colonia level, we perform:
 Import AMAI 2024 socioeconomic indicators for AGEBs.
 
 2. [Import INEGI_MG 2025_AGEB geometries](docs/02_Import_INEGI_MG_2025_AGEB.md)   
-3. [Import INEGI DCAH 2025 Neighborhood geometries](docs/03_Import_INEGI_DCAH_2025.md)   
-4. [Neighbood boundaries × AGEB spatial intersection](docs/04_NSE_Intersections.md)
+Normalize keys, validate geometry, and prepare AGEB polygons.
 
+3. [Import INEGI DCAH 2025 Neighborhood geometries](docs/03_Import_INEGI_DCAH_2025.md)   
+Normalize colonia names, CVEGEO codes, and municipality identifiers.
+
+4. [Neighbood boundaries × AGEB spatial intersection](docs/04_NSE_Intersections.md)
+Calculate area‑weighted contributions from AGEB → colonia.
 
 5. Apply AMAI formulas
 Compute weighted socioeconomic indicators per colonia.
