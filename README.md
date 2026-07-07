@@ -6,24 +6,39 @@
 <img src="/docs/images/AMAI.webp" alt="AMAI Logo" height="90">
 </p>
 
-This public repository documents the technical pipeline for calculating the AMAI Socioeconomic Level (NSE) at the neighborhood (colonia), locality, municipality/alcaldia and state levels of México, integrating the following official datasets:
+This public repository documents the complete technical pipeline for calculating the AMAI Socioeconomic Level (NSE) at multiple territorial levels in México:
 
-- AMAI 2024 (NSE by AGEB)
-- INEGI Marco Geoestadístico 2025 (AGEB geometries)
-- INEGI DCAH 2025 neighborhoods (colonias)
-- Spatial weighting from AGEB (statistical units) geometries → neighborhoods geometries (colonias) 
+- Neighborhood (colonia)
+- Locality
+- Municipality / Alcaldía
+- State
 
-The objective is to generate a final, reproducible, auditable, and standardized NSE dataset at the colonia level (Layer 6).   
-This data can be also created a city layer 5, municipality layer 2, state layer 1.  
-Resulting datasets will be used for real estate analysis for properties and development evaluation together with DENUE and OSM data.
+The workflow integrates official datasets from AMAI, INEGI, and INE, producing a reproducible, auditable, and standardized NSE dataset suitable for GIS, APIs, real estate analytics, and socioeconomic research.
+
+## Official datasets used
+
+- AMAI 2024 — NSE by AGEB (Nivel Socioeconómico AMAI)
+- INEGI Marco Geoestadístico 2025 — AGEB geometries
+- INEGI DCAH 2025 — Neighborhood (colonia) boundaries
+- Spatial weighting — AGEB statistical units → colonia geometries
+
+The final output is Layer 6 (NSE by colonia), with optional aggregation to:
+
+- Layer 5 — City
+- Layer 2 — Municipality
+- Layer 1 — State
+
+These layers support **real estate analysis, market segmentation, urban planning**, and integration with **DENUE, OSM,** and other geospatial datasets.
+
+## Example: NSE Map of Mexico City
 
 [<img src="/docs/images/CDMX_NSE_map.png" width="700">](/docs/images/CDMX_NSE_map.png)
 
 ## Relation between AMAI, MG 2025 AGEB geometries, and DCAH geometries
 
-AMAI’s socioeconomic index (NSE) is mapped onto INEGI’s statistical units (AGEBs/AGEEBs).  
-The MG_2025 framework provides the official polygon boundaries of AGEBs.  
-We then interpolate these values to align with **DCAH neighborhood boundaries**, ensuring local-level socioeconomic classification.
+AMAI’s socioeconomic index (NSE) is originally assigned to AGEB / AGEEB statistical units.
+The MG 2025 framework provides the official polygon boundaries for these units.
+To obtain NSE at the neighborhood (colonia) level, we perform a spatial interpolation from AGEB polygons to DCAH polygons.
 
 ### Diagram
 
@@ -45,7 +60,6 @@ We then interpolate these values to align with **DCAH neighborhood boundaries**,
  ```
 
 
-
 ## 📁 Repository Structure
 
 - `/docs` — Step‑by‑step technical documentation (SQL, GIS, ETL, OSM)
@@ -65,6 +79,6 @@ We then interpolate these values to align with **DCAH neighborhood boundaries**,
 
 ---
 
-**Author:** Juan Carlos Alcaide Blanco  
+**Juan Carlos Alcaide Blanco**  
 **Organization:** AXSI / Divex Turismo, S.L.  
 **Location:** Playa del Carmen, Quintana Roo  
