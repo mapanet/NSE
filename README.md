@@ -95,17 +95,15 @@ To obtain NSE at the colonia level, we perform:
 
 ## 🧠 Methodology Overview
 
-**1. [Ingest NSE_AMAI_AGEB_2024_values]**(docs/01_Import_AMAI.md)   
+0. [Data Requirements](docs/00_Data_Requirements.md)   
+
+1. [Import NSE_AMAI_AGEB_2024](docs/01_Import_AMAI.md)
 Import AMAI 2024 socioeconomic indicators for AGEBs.
 
-**2. Load INEGI MG 2025 geometries**
-Normalize keys, validate geometry, and prepare AGEB polygons.
+2. [Import INEGI_MG 2025_AGEB geometries](docs/02_Import_INEGI_MG_2025_AGEB.md)   
+3. [Import INEGI DCAH 2025 Neighborhood geometries](docs/03_Import_INEGI_DCAH_2025.md)   
+4. [Neighbood boundaries × AGEB spatial intersection](docs/04_NSE_Intersections.md)
 
-3. Load INEGI DCAH 2025 neighborhood geometries
-Normalize colonia names, CVEGEO codes, and municipality identifiers.
-
-4. Perform AGEB × colonia spatial intersection
-Calculate area‑weighted contributions from AGEB → colonia.
 
 5. Apply AMAI formulas
 Compute weighted socioeconomic indicators per colonia.
@@ -133,14 +131,6 @@ Validate geometry, topology, key normalization, and missing data.
 - `/scripts` — SQL scripts, PowerShell utilities, Python scripts, automation
 - `/images` — Diagrams, maps, and reference figures
 
-
-## Documentation Index
-
-0. [Data Requirements](docs/00_Data_Requirements.md)   
-1. [Import NSE_AMAI_AGEB_2024](docs/01_Import_AMAI.md)   
-2. [Import INEGI_MG 2025_AGEB geometries](docs/02_Import_INEGI_MG_2025_AGEB.md)   
-3. [Import INEGI DCAH 2025 Neighborhood geometries](docs/03_Import_INEGI_DCAH_2025.md)   
-4. [Neighbood boundaries × AGEB spatial intersection](docs/04_NSE_Intersections.md)   
 
 
 ---
