@@ -22,7 +22,7 @@ The workflow integrates official datasets from AMAI, INEGI, and INE, producing a
 - INEGI DCAH 2025 — Neighborhood (colonia) boundaries
 - Spatial weighting — AGEB statistical units → colonia geometries
 
-The final output is Layer 6 (NSE by colonia), with optional aggregation to:
+The final output is **Layer 6 (NSE by colonia)**, with optional aggregation to:
 
 - Layer 5 — City
 - Layer 2 — Municipality
