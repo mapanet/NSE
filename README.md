@@ -107,26 +107,19 @@ Normalize keys, validate geometry, and prepare AGEB polygons.
 Normalize colonia names, CVEGEO codes, and municipality identifiers.
 
 4. [Neighbood boundaries × AGEB spatial intersection](docs/04_NSE_Intersections.md)
-Calculate area‑weighted contributions from AGEB → colonia.
 
-5. Apply AMAI formulas
-Compute weighted socioeconomic indicators per colonia.
-
-6. Assign NSE category
-Determine final NSE class (A/B, C+, C, C-, D+, D).
-
-7. Generate Layer 6
-Produce final colonia‑level NSE dataset.
+- Calculate area‑weighted contributions from AGEB → colonia.
+- Apply AMAI formulas: Compute weighted socioeconomic indicators per colonia.
+- Assign NSE category: Determine final NSE class (A/B, C+, C, C-, D+, D).
+- Generate Layer 6: Produce final colonia‑level NSE dataset.
 
 8. Optional aggregation
+8. [Optional aggregation](docs/08_NSE_Intersections.md)
+
 Layer 5 — City
-
 Layer 2 — Municipality
-
 Layer 1 — State
 
-9. Audit
-Validate geometry, topology, key normalization, and missing data.
 
 ## 📁 Repository Structure
 
