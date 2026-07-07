@@ -93,6 +93,38 @@ To obtain NSE at the colonia level, we perform:
    NSE Assigned to DCAH Neighborhoods (Layer 6)
  ```
 
+## 🧠 Methodology Overview
+
+**1. [Ingest NSE_AMAI_AGEB_2024_values]**(docs/01_Import_AMAI.md)   
+Import AMAI 2024 socioeconomic indicators for AGEBs.
+
+**2. Load INEGI MG 2025 geometries**
+Normalize keys, validate geometry, and prepare AGEB polygons.
+
+3. Load INEGI DCAH 2025 neighborhood geometries
+Normalize colonia names, CVEGEO codes, and municipality identifiers.
+
+4. Perform AGEB × colonia spatial intersection
+Calculate area‑weighted contributions from AGEB → colonia.
+
+5. Apply AMAI formulas
+Compute weighted socioeconomic indicators per colonia.
+
+6. Assign NSE category
+Determine final NSE class (A/B, C+, C, C-, D+, D).
+
+7. Generate Layer 6
+Produce final colonia‑level NSE dataset.
+
+8. Optional aggregation
+Layer 5 — City
+
+Layer 2 — Municipality
+
+Layer 1 — State
+
+9. Audit
+Validate geometry, topology, key normalization, and missing data.
 
 ## 📁 Repository Structure
 
