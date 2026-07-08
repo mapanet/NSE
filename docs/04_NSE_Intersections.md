@@ -30,6 +30,9 @@ This ensures that the NSE assigned to each neighborhood accurately reflects the 
 
 ---
 
+> **Reference:** See [Methodology Overview](methodology.md) for the complete conceptual description of the NSE calculation process, including dataset relationships, weighting logic, and audit steps.  
+> This page documents the **implementation** — the SQL and GIS workflow used to calculate NSE for Boundaries Layer 6 (Neighborhoods).
+
 # 1 — Check geometries
 
 ```sql
