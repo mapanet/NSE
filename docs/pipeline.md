@@ -59,3 +59,73 @@ This produces the **AGEB × Colonia intersection table**.
 
 For each socioeconomic variable:
 
+**WeightedValue** = (IntersectionArea / AGEB_TotalArea) * AMAI_Value
+
+
+This ensures each colonia inherits NSE values proportionally.
+
+---
+
+## 5. NSE Calculation
+
+### 5.1 Weighted Indicators
+Sum weighted contributions from all intersecting AGEBs.
+
+### 5.2 Composite Score
+Recalculate AMAI’s composite score using weighted variables.
+
+### 5.3 Final NSE Category
+Assign AMAI category based on score thresholds.
+
+---
+
+## 6. Layer Generation
+
+### Layer 6 — Neighborhoods (Colonias)
+Final output includes:
+
+- CVEGEO  
+- Colonia name  
+- Municipality  
+- NSE score  
+- NSE category  
+- Geometry  
+
+### Layer 5 — Cities  
+Aggregation of Layer 6.
+
+### Layer 2 — Municipalities  
+Aggregation by municipality code.
+
+### Layer 1 — States  
+Aggregation by state code.
+
+---
+
+## 7. Geometry & Territorial Audits
+
+- Validate polygon topology  
+- Detect self‑intersections  
+- Compare MG 2025 vs DCAH 2025 boundaries  
+- Check area consistency  
+- Identify missing colonias  
+- Validate CVEGEO alignment
+
+---
+
+## 8. Export & API Integration
+
+Final datasets exported as:
+
+- GeoJSON  
+- Shapefile  
+- SQL tables  
+- API‑ready JSON layers
+
+Used in production at:
+
+**AXSI Real Estate Platform**  
+https://axsi.io/es
+
+
+
