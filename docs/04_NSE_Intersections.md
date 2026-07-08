@@ -1,6 +1,6 @@
 ---  
-title: "NSE Calculation for Boundaries Layer 6"
-description: "Area-weighted AMAI NSE calculation using INEGI MG 2025 and DCAH 2025 datasets."
+title: "NSE Calculation for Boundaries Layer 6"   
+description: "Area-weighted AMAI NSE calculation using INEGI MG 2025 and DCAH 2025 datasets."   
 ---  
 
 # 4 NSE calculation for Boundaries layer = 6 (Neighborhoods)
