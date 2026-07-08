@@ -31,16 +31,6 @@ C  = 0.7 × 30 + 0.3 × 20
 
 This ensures that the NSE assigned to each neighborhood accurately reflects the socioeconomic composition of the AGEBs it overlaps.
 
----
-
-## 1 — Check geometries
-## 2 — Create Intersection Boundaries (layer=6) ↔ AGEB
-## 3 — Create COLONIA_NSE (weighted population)
-## 4 — Calculate percentages by neighborhood (colonia)
-## 5 — Calculate IDS_PROM and NSE_SCORE
-## 6 — Calculate dominant NSE (A/B, C+, C, D+, DE)
-## 7 — Create NSE_LABEL
-## 8 — Copy COLONIAS_NSE calculations to Boundaries layer = 6
 
 ---
 
