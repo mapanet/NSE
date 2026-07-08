@@ -3,6 +3,14 @@
 > **Reference:** See [Methodology Overview](methodology.md) for the complete conceptual description of the NSE calculation process, including dataset relationships, weighting logic, and audit steps.  
 > This page documents the **implementation** — the SQL and GIS workflow used to calculate NSE for Boundaries Layer 6 (Neighborhoods).
 
+
+```yaml
+---
+title: "NSE Calculation for Boundaries Layer 6"
+description: "Area-weighted AMAI NSE calculation using INEGI MG 2025 and DCAH 2025 datasets."
+---
+```
+
 ## Purpose in the NSE Pipeline
 
 This dataset is used to:
