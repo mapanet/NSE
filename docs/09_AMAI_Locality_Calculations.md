@@ -236,24 +236,24 @@ GO
 ---------------------------------------------------------
 --   STEP 8.3 — Calculate NSE_SCORE (AMAI IDS)
 ---------------------------------------------------------
-   AMAI official scoring weights:
-       Level   Score
-       AB      7
-       C+      6
-       C       5
-       C−      4
-       D+      3
-       D       2
-       E       1
-
-   Formula:
-       IDS = Σ (percentage_level * score_level)
-
-   Notes:
-   - Missing levels must be treated as 0 (ISNULL).
-   - Only calculate for Layers 1, 2, and 5.
-   - Only calculate when NSE_TOTAL IS NOT NULL.
---------------------------------------------------------- */
+--   AMAI official scoring weights:
+--   Level   Score
+--   AB      7
+--   C+      6
+--   C       5
+--   C−      4
+--   D+      3
+--   D       2
+--   E       1
+--
+--   Formula:
+--   IDS = Σ (percentage_level * score_level)
+--
+--   Notes:
+-- Missing levels must be treated as 0 (ISNULL).
+-- Only calculate for Layers 1, 2, and 5.
+-- Only calculate when NSE_TOTAL IS NOT NULL.
+---------------------------------------------------------
 
 UPDATE Boundaries
 SET NSE_SCORE =
