@@ -197,6 +197,7 @@ GO
 -- Percentages must be calculated ONLY for Layers 1, 2, and 5.
 -- NSE_TOTAL must NOT be NULL, otherwise percentages remain NULL.
 -- This prevents invalid divisions and preserves “N/D” logic.
+-- Expected: 52586 rows affected
 -----------------------------------------------------------------
 
 UPDATE Boundaries
@@ -212,7 +213,7 @@ WHERE Layer IN (1, 2, 5)
   AND NSE_TOTAL IS NOT NULL;
 ```
 
-# 8.3 — Calculate NSE_SCORE (AMAI IDS)
+# 9.3 — Calculate NSE_SCORE (AMAI IDS)
 
 AMAI official scoring weights:  
 
