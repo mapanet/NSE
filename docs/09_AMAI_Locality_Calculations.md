@@ -233,9 +233,9 @@ Formula: **IDS = Σ (percentage_level * score_level)**
 USE INMO;
 GO
 
-/* ---------------------------------------------------------
-   STEP 8.3 — Calculate NSE_SCORE (AMAI IDS)
-   ---------------------------------------------------------
+---------------------------------------------------------
+--   STEP 8.3 — Calculate NSE_SCORE (AMAI IDS)
+---------------------------------------------------------
    AMAI official scoring weights:
        Level   Score
        AB      7
