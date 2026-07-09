@@ -271,18 +271,19 @@ WHERE Layer IN (1, 2, 5)
 
 
 ---------------------------------------------------------
--- STEP 9.3b — Calculate IDS_PROM (D/E proportion)
+-- STEP 8.3b — Calculate IDS_PROM
 ---------------------------------------------------------
--- IDS_PROM = (D + E) / NSE_TOTAL
---
--- Notes:
--- Only calculate for Layers 1, 2, and 5.
--- Only calculate when NSE_TOTAL IS NOT NULL.
----------------------------------------------------------
-
 UPDATE Boundaries
 SET IDS_PROM =
-    (1.0 * (ISNULL(NSE_D, 0) + ISNULL(NSE_E, 0))) / NSE_TOTAL
+(
+      (ISNULL(NSE_AB,      0) * 7)
+    + (ISNULL(NSE_CPLUS,   0) * 6)
+    + (ISNULL(NSE_C,       0) * 5)
+    + (ISNULL(NSE_CMINUS,  0) * 4)
+    + (ISNULL(NSE_DPLUS,   0) * 3)
+    + (ISNULL(NSE_D,       0) * 2)
+    + (ISNULL(NSE_E,       0) * 1)
+) / NULLIF(NSE_TOTAL, 0)
 WHERE Layer IN (1, 2, 5)
   AND NSE_TOTAL IS NOT NULL;
 
@@ -306,7 +307,7 @@ WHERE Layer = 5
  AND NSE_TOTAL IS NOT NULL
 ORDER BY CVEGEO;
 
-SELECT TOP 10 CVEGEO, NSE_SCORE
+SELECT TOP 10 CVEGEO, NSE_SCORE, IDS_PROM
 FROM Boundaries
 WHERE Layer = 5
  AND NSE_TOTAL IS NOT NULL
