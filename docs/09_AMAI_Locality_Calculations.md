@@ -364,23 +364,23 @@ USE INMO;
 GO
 
 ------------------------------------------------------------
---   STEP 9.4 — Calculate NSE (dominant level) and NSE_LABEL
+--   STEP 8.4 — Calculate NSE (dominant level) and NSE_LABEL
 ------------------------------------------------------------
 --   Applies to:
---   Layer 1 = State
---   Layer 2 = Municipality
---   Layer 5 = Locality (City)
+--     - Layer 1 = State
+--     - Layer 2 = Municipality
+--     - Layer 5 = Locality (City)
 --
 --   Logic:
---   NSE = dominant socioeconomic level based on highest percentage.
---   If all percentages are NULL → NSE = NULL (no AMAI data).
---   If all percentages are 0 → NSE = 'E' (lowest AMAI level).
---   NSE_LABEL = NSE + rounded percentage (integer %).
---------------------------------------------------------- 
+-- NSE = dominant socioeconomic level based on highest percentage.
+-- If all percentages are NULL → NSE = NULL (no AMAI data).
+-- If all percentages are 0 → NSE = 'E' (lowest AMAI level).
+-- NSE_LABEL = NSE + rounded percentage (integer %).
+-------------------------------------------------------------
 
 
 ---------------------------------------------------------
---   G0 — Reset NSE and NSE_LABEL for layers 1, 2, 5
+--  G0 — Reset NSE and NSE_LABEL for layers 1, 2, 5
 ---------------------------------------------------------
 UPDATE Boundaries
 SET NSE = NULL,
@@ -389,7 +389,8 @@ WHERE Layer IN (1, 2, 5);
 
 
 ---------------------------------------------------------
---   G1 — Assign NSE (dominant AMAI level)
+--  G1 — Assign NSE (dominant AMAI level)
+--  Handles NULL and zero cases correctly
 ---------------------------------------------------------
 
 UPDATE B
@@ -412,12 +413,6 @@ OUTER APPLY (
         UNION ALL SELECT 'D+',  B.NSE_DPLUS_PCT
         UNION ALL SELECT 'D',   B.NSE_D_PCT
         UNION ALL SELECT 'E',   B.NSE_E_PCT
-        UNION ALL SELECT 'D/E',
-            CASE 
-                WHEN B.NSE_D_PCT IS NOT NULL AND B.NSE_E_PCT IS NOT NULL 
-                THEN B.NSE_D_PCT + B.NSE_E_PCT 
-                ELSE NULL 
-            END
     ) X
     WHERE X.Value IS NOT NULL AND X.Value > 0
     ORDER BY X.Value DESC
@@ -442,17 +437,15 @@ OUTER APPLY (
 WHERE B.Layer IN (1, 2, 5);
 
 
+
 ---------------------------------------------------------
--- G2 — Assign NSE_LABEL (level + integer percentage)
+--   G2 — Assign NSE_LABEL (level + integer percentage)
 ---------------------------------------------------------
 
 UPDATE Boundaries
 SET NSE_LABEL = 
     CASE 
-        WHEN NSE IS NULL THEN NULL
-
-        WHEN NSE = 'D/E' THEN 
-            'D/E (' + CAST(CAST(ISNULL(NSE_D_PCT + NSE_E_PCT, 0) AS INT) AS VARCHAR(3)) + '%)'
+        WHEN NSE IS NULL THEN 'N/A'
 
         WHEN NSE = 'A/B' THEN 
             'A/B (' + CAST(CAST(ISNULL(NSE_AB_PCT, 0) AS INT) AS VARCHAR(3)) + '%)'
@@ -477,13 +470,14 @@ SET NSE_LABEL =
     END
 WHERE Layer IN (1, 2, 5);
 
+
 -- Validations
 
 SELECT TOP 10 CVEGEO, NSE_LABEL
 FROM Boundaries
 WHERE Layer = 5
  AND NSE_TOTAL IS NOT NULL
-ORDER BY CVEGEO;
+ORDER BY NSE_LABEL, CVEGEO;
 ```
 
 #### Expected results
