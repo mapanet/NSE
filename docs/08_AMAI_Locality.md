@@ -154,7 +154,7 @@ df = df.drop([0, 1]).reset_index(drop=True)
 
 # 3. Define new headers
 headers = [
-    "CVE_ENT","NOM_ENT","CVE_MUN","NOM_MUN_","CVE_LOC","NOM_LOC","CVE_AGEB",
+    "CVEGEO", "CVE_ENT","NOM_ENT","CVE_MUN","NOM_MUN","CVE_LOC","NOM_LOC",
     "NSE_AB","NSE_CPLUS","NSE_C","NSE_CMINUS","NSE_DPLUS","NSE_D","NSE_E","NSE",
     "NSE_TOTAL","POPULATION_RANGE"
 ]
@@ -168,14 +168,23 @@ df["CVE_ENT"] = df["CVE_ENT"].astype(str).str.zfill(2)
 df["CVE_MUN"] = df["CVE_MUN"].astype(str).str.zfill(3)
 df["CVE_LOC"] = df["CVE_LOC"].astype(str).str.zfill(4)
 
+# 6. Insert CVEGEO column at position 0
+# df.insert(0, "CVEGEO", "")
 
-# 6. Replace "N/D" with empty string
+# 7. Build CVEGEO = ENTIDAD + MUN + LOC + AGEB
+#df["CVEGEO"] = (
+#    df["CVE_ENT"].astype(str).str.zfill(2) +
+#    df["CVE_MUN"].astype(str).str.zfill(3) +
+#3    df["CVE_LOC"].astype(str).str.zfill(4)
+#)
+
+# 8. Replace "N/D" with empty string
 df = df.replace("N/D", "")
 
-# 7. Remove all double quotes
+# 8. Remove all double quotes
 df = df.replace('"', '', regex=True)
 
-# 8. Save as TSV (tab-separated), UTF-8 without BOM
+# 9. Save as TSV (tab-separated), UTF-8 without BOM
 df.to_csv(r"D:\AXSI\AMAI\NSE_por_localidad_AMAI_2024_IMPORT.csv",
     sep="\t",
     index=False,
