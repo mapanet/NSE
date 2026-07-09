@@ -191,7 +191,7 @@ USE INMO;
 GO
 
 ----------------------------------------------------------------
--- STEP 8.2 — Calculate NSE percentage fields (_PCT)
+-- STEP 9.2 — Calculate NSE percentage fields (_PCT)
 ----------------------------------------------------------------
 -- IMPORTANT:
 -- Percentages must be calculated ONLY for Layers 1, 2, and 5.
@@ -234,7 +234,7 @@ USE INMO;
 GO
 
 ---------------------------------------------------------
---   STEP 8.3 — Calculate NSE_SCORE (AMAI IDS)
+--   STEP 9.3 — Calculate NSE_SCORE (AMAI IDS)
 ---------------------------------------------------------
 --   AMAI official scoring weights:
 --   Level   Score
@@ -271,7 +271,7 @@ WHERE Layer IN (1, 2, 5)
 
 
 ---------------------------------------------------------
--- STEP 8.3b — Calculate IDS_PROM (D/E proportion)
+-- STEP 9.3b — Calculate IDS_PROM (D/E proportion)
 ---------------------------------------------------------
 -- IDS_PROM = (D + E) / NSE_TOTAL
 --
@@ -362,34 +362,34 @@ Logic:
 USE INMO;
 GO
 
-/* ---------------------------------------------------------
-   STEP 8.4 — Calculate NSE (dominant level) and NSE_LABEL
-   ---------------------------------------------------------
-   Applies to:
-     - Layer 1 = State
-     - Layer 2 = Municipality
-     - Layer 5 = Locality (City)
+------------------------------------------------------------
+--   STEP 9.4 — Calculate NSE (dominant level) and NSE_LABEL
+------------------------------------------------------------
+--   Applies to:
+--   Layer 1 = State
+--   Layer 2 = Municipality
+--   Layer 5 = Locality (City)
+--
+--   Logic:
+--   NSE = dominant socioeconomic level based on highest percentage.
+--   If all percentages are NULL → NSE = NULL (no AMAI data).
+--   If all percentages are 0 → NSE = 'E' (lowest AMAI level).
+--   NSE_LABEL = NSE + rounded percentage (integer %).
+--------------------------------------------------------- 
 
-   Logic:
-   - NSE = dominant socioeconomic level based on highest percentage.
-   - If all percentages are NULL → NSE = NULL (no AMAI data).
-   - If all percentages are 0 → NSE = 'E' (lowest AMAI level).
-   - NSE_LABEL = NSE + rounded percentage (integer %).
---------------------------------------------------------- */
 
-
-/* ---------------------------------------------------------
-   G0 — Reset NSE and NSE_LABEL for layers 1, 2, 5
---------------------------------------------------------- */
+---------------------------------------------------------
+--   G0 — Reset NSE and NSE_LABEL for layers 1, 2, 5
+---------------------------------------------------------
 UPDATE Boundaries
 SET NSE = NULL,
     NSE_LABEL = NULL
 WHERE Layer IN (1, 2, 5);
 
 
-/* ---------------------------------------------------------
-   G1 — Assign NSE (dominant AMAI level)
---------------------------------------------------------- */
+---------------------------------------------------------
+--   G1 — Assign NSE (dominant AMAI level)
+---------------------------------------------------------
 
 UPDATE B
 SET NSE =
@@ -441,9 +441,9 @@ OUTER APPLY (
 WHERE B.Layer IN (1, 2, 5);
 
 
-/* ---------------------------------------------------------
-   G2 — Assign NSE_LABEL (level + integer percentage)
---------------------------------------------------------- */
+---------------------------------------------------------
+-- G2 — Assign NSE_LABEL (level + integer percentage)
+---------------------------------------------------------
 
 UPDATE Boundaries
 SET NSE_LABEL = 
