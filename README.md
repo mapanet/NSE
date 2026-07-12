@@ -101,7 +101,7 @@ Para obtener NSE a nivel colonia se realizan:
 Importación de indicadores socioeconómicos AMAI 2024 para AGEBs.
 
 2. [Importar INEGI_MG 2025_AGEB geometries](docs/02_Importar_INEGI_MG_2025_AGEB.md)   
-Normalize keys, validate geometry, and prepare AGEB polygons.
+Normalizar claves, validar geometrías y preparar los polígonos de AGEB.
 
 3. [Importar INEGI DCAH 2025 Colonias geometrias](docs/03_Importar_INEGI_DCAH_2025.md)   
 Normalización de nombres de colonias, códigos CVEGEO e identificadores municipales
