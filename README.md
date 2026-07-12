@@ -1,4 +1,4 @@
-# NSE — AMAI Socioeconomic Level for INEGI Neighborhoods
+# NSE — Nivel Socioeconómico AMAI para Colonias de INEGI
 
 <p align="center">
   <img src="/docs/images/INEGI.webp" alt="INEGI Logo" height="90">
@@ -6,136 +6,134 @@
   <img src="/docs/images/AMAI.webp" alt="AMAI Logo" height="90">
 </p>
 
-This repository documents the complete, reproducible, and auditable pipeline for calculating the AMAI Socioeconomic Level (NSE) across multiple territorial units in México:
+Este repositorio documenta el pipeline completo, reproducible y auditable para calcular el **Nivel Socioeconómico (NSE) AMAI** en múltiples unidades territoriales de México:
 
-- Neighborhood (colonia)
-- Locality
-- Municipality / Alcaldía
-- State
+- Colonia  
+- Localidad  
+- Municipio / Alcaldía  
+- Estado  
 
-The workflow integrates official datasets from AMAI, INEGI, and INE, producing standardized NSE layers suitable for GIS, APIs, real estate analytics, market segmentation, and territorial intelligence.
+El flujo integra datasets oficiales de **AMAI**, **INEGI** y **INE**, generando capas NSE estandarizadas para uso en **GIS**, **APIs**, **analítica inmobiliaria**, **segmentación de mercado** e **inteligencia territorial**.
 
 ---
 
-## 🎯 Purpose of this repository
+## 🎯 Objetivo del repositorio
 
-To generate a final Layer 6 (NSE by colonia) dataset using:
+Generar la **Capa 6 (NSE por colonia)** utilizando:
 
-- AMAI 2024 NSE values (by AGEB)
-- INEGI MG 2025 AGEB geometries
-- INEGI DCAH 2025 neighborhood geometries
-- Spatial interpolation from AGEB → colonia boundaries
+- Valores NSE AMAI 2024 (por AGEB)  
+- Geometrías AGEB del INEGI MG 2025  
+- Geometrías de colonias del INEGI DCAH 2025  
+- Interpolación espacial AGEB → colonia mediante ponderación por área  
 
-The resulting NSE dataset is used in production at:
+El dataset resultante se utiliza en producción en:
 
-### 🌐 AXSI Real Estate Platform  
-Explore the interactive NSE map of cities or neighborhoods in México:  
+### 🌐 Plataforma AXSI Real Estate  
+Explora el mapa interactivo de NSE por ciudades o colonias de México:  
 **https://axsi.io/es**
 
 ---
 
-## 📊 Official datasets used
+## 📊 Datasets oficiales utilizados
 
-### AMAI 2024 — NSE by AGEB  
-Socioeconomic classification (A/B, C+, C, C-, D+, D) assigned to statistical units.
+### AMAI 2024 — NSE por AGEB  
+Clasificación socioeconómica (A/B, C+, C, C-, D+, D) asignada a unidades estadísticas.
 
 ### INEGI Marco Geoestadístico 2025  
-Official polygon geometries for AGEB / AGEEB units.
+Geometrías oficiales de polígonos AGEB / AGEEB.
 
 ### INEGI DCAH 2025  
-Neighborhood (colonia) boundaries for all municipalities and alcaldías.
+Límites de colonias para todos los municipios y alcaldías del país.
 
-### INE 2025 Localities  
-Used for rural fallback logic when AGEB census data is unavailable.
+### INE 2025 — Localidades  
+Usado para lógica de respaldo en zonas rurales cuando no existe información censal por AGEB.
 
-### Spatial weighting  
-Interpolation from AGEB polygons → colonia polygons using area‑weighted joins.
+### Ponderación espacial  
+Interpolación AGEB → colonia mediante uniones espaciales ponderadas por área.
 
 ---
 
-## 🗺️ Example: NSE Map of Mexico City
+## 🗺️ Ejemplo: Mapa NSE de la Ciudad de México
 
 [<img src="/docs/images/CDMX_NSE_map.png" width="700">](/docs/images/CDMX_NSE_map.png)
 
-This map is generated using the SQL + GIS pipeline documented in this repository.
+Este mapa se genera utilizando el pipeline SQL + GIS documentado en este repositorio.
 
 ---
 
-## 🔗 Relationship between AMAI, MG 2025 AGEB geometries, and DCAH geometries
+## 🔗 Relación entre AMAI, geometrías AGEB MG 2025 y geometrías DCAH
 
-AMAI assigns NSE values to AGEB / AGEEB statistical units.  
-INEGI MG 2025 provides the official boundaries for these units.  
-INEGI DCAH 2025 provides neighborhood boundaries (colonias).
+AMAI asigna valores NSE a unidades estadísticas AGEB / AGEEB.  
+INEGI MG 2025 provee los límites oficiales de estas unidades.  
+INEGI DCAH 2025 provee los límites de colonias.
 
-To obtain NSE at the colonia level, we perform:
+Para obtener NSE a nivel colonia se realizan:
 
-- Spatial intersection  
-- Area‑weighted interpolation  
-- Normalization of keys  
-- AMAI‑compliant aggregation rules  
+- Intersecciones espaciales  
+- Interpolación ponderada por área  
+- Normalización de claves  
+- Reglas de agregación compatibles con AMAI  
 
-### 📐 Diagram
+### 📐 Diagrama
 
 ```text
-        AMAI (Socioeconomic Index - NSE)
+        AMAI (Índice Socioeconómico - NSE)
                      │
                      ▼
-          AGEB / AGEEB (Statistical Unit)
+          AGEB / AGEEB (Unidad Estadística)
                      │
                      ▼
-   MG 2025 Polygons (Official Boundaries)
+   MG 2025 Polígonos (Límites Oficiales)
                      │
-          Interpolation / Spatial Join
+          Interpolación / Unión Espacial
                      ▼
-   DCAH Boundaries (Neighborhood Units)
+   DCAH Colonias (Unidades Territoriales)
                      │
                      ▼
-   NSE Assigned to DCAH Neighborhoods (Layer 6)
+   NSE Asignado a Colonias (Capa 6)
  ```
 
-## 🧠 Methodology Overview
+## Resumen de la Metodología
 
-0. [Data Requirements](docs/00_Data_Requirements.md)   
+0. [Requirementos](docs/00_Requirementos.md)   
 
-1. [Import NSE_AMAI_AGEB_2024](docs/01_Import_AMAI.md)   
-Import AMAI 2024 socioeconomic indicators for AGEBs.
+1. [Importar NSE_AMAI_AGEB_2024](docs/01_Importar_AMAI.md)   
+Importación de indicadores socioeconómicos AMAI 2024 para AGEBs.
 
 2. [Import INEGI_MG 2025_AGEB geometries](docs/02_Import_INEGI_MG_2025_AGEB.md)   
 Normalize keys, validate geometry, and prepare AGEB polygons.
 
-3. [Import INEGI DCAH 2025 Neighborhood geometries](docs/03_Import_INEGI_DCAH_2025.md)   
-Normalize colonia names, CVEGEO codes, and municipality identifiers.
+3. [Importar INEGI DCAH 2025 Colonias geometrias](docs/03_Importar_INEGI_DCAH_2025.md)   
+Normalización de nombres de colonias, códigos CVEGEO e identificadores municipales
 
-4. [Neighbood boundaries × AGEB spatial intersection](docs/04_NSE_Intersections.md)   
+4. [Geometrias de Colonias × AGEB interseccion espacial](docs/04_NSE_Intersecciones.md)   
 
-- Calculate area‑weighted contributions from AGEB → colonia.
-- Apply AMAI formulas: Compute weighted socioeconomic indicators per colonia.
-- Assign NSE category: Determine final NSE class (A/B, C+, C, C-, D+, D).
-- Generate Layer 6: Produce final colonia‑level NSE dataset.
+- Cálculo de contribuciones ponderadas por área AGEB → colonia
+- Aplicación de fórmulas AMAI: indicadores socioeconómicos ponderados por colonia
+- Asignación de categoría NSE (A/B, C+, C, C-, D+, D)
+- Generación de Capa 6: dataset final de NSE por colonia
 
-8. Optional aggregation   
+8. Agregación opcional: 
 
-   Layer 5 — City  
-   Layer 2 — Municipality   
-   Layer 1 — State   
+   Capa  5 — Ciudad  
+   Capa  2 — Municipio   
+   Capa  1 — Estado   
 
-8. [Import_AMAI_Locality](docs/08_AMAI_Locality.md)
+8. [Importar_AMAI_Localitdades](docs/08_AMAI_Localidades.md)
 
-9. [AMAI_Locality_Calculations](docs/09_AMAI_Locality_Calculations.md)
+9. [AMAI_Calculos_Localidades](docs/09_AMAI_Calculis_Localidades.md)
 
 
 
 ## 📁 Repository Structure
 
-- `/docs` — Step‑by‑step technical documentation (SQL, GIS, ETL, OSM)
-- `/data` — CSV, SHP, and original source files (not public)
-- `/scripts` — SQL scripts, PowerShell utilities, Python scripts, automation
-- `/images` — Diagrams, maps, and reference figures
-
-
+- `/docs` — Documentación técnica paso a paso (SQL, GIS, ETL, OSM)
+- `/data` — Archivos CSV, SHP y fuentes originales (no públicos)
+- `/scripts` — Scripts SQL, utilidades PowerShell, scripts Python, automatización
+- `/images` — 
 
 ---
 
 **Juan Carlos Alcaide Blanco**  
-**Organization:** AXSI / Divex Turismo, S.L.  
-**Location:** Playa del Carmen, Quintana Roo  
+**Organizacion:** AXSI / Divex Turismo, S.L.  
+**Localidad:** Playa del Carmen, Quintana Roo  
