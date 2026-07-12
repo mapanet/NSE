@@ -44,7 +44,7 @@ https://axsi.io/es
 
 ## 🧩 About this project
 
-Repository:  
+Repositorio:  
 https://github.com/mapanet/NSE/
 
 Author: **Juan Carlos Alcaide Blanco**  
