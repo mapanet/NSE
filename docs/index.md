@@ -1,43 +1,44 @@
-# NSE Documentation — AMAI Socioeconomic Level for INEGI Neighborhoods
+# Documentación NSE — Nivel Socioeconómico AMAI para Colonias INEGI
 
-This site contains the complete technical documentation for the **NSE (Nivel Socioeconómico AMAI)** pipeline developed by mapanet / AXSI.  
-It explains the datasets, methodology, spatial processing, SQL workflow, and validation steps required to generate **Layer 6 — NSE by colonia** for all of Mexico.
+Este sitio contiene la documentación técnica completa del pipeline de **NSE (Nivel Socioeconómico AMAI)** desarrollado por mapanet / AXSI.  
+Explica los datasets, la metodología, el procesamiento espacial, el flujo SQL y los pasos de validación necesarios para generar **Layer 6 — NSE por colonia** para todo México.
 
 ---
 
-## 📘 Overview
+## 📘 Panorama General
 
-The NSE pipeline integrates:
+El pipeline NSE integra:
 
-- **AMAI 2024 NSE values** (by AGEB)
-- **INEGI MG 2025 geometries** (AGEB / AGEEB)
-- **INEGI DCAH 2025 neighborhood boundaries** (colonias)
-- **INE 2025 localities** (rural fallback)
-- Area‑weighted interpolation from AGEB → colonia
+- **Valores NSE AMAI 2024** (por AGEB)
+- **Geometrías INEGI MG 2025** (AGEB / AGEEB)
+- **Delimitación de Colonias INEGI DCAH 2025** (polígonos de colonias)
+- **Localidades INE 2025** (fallback rural)
+- Interpolación ponderada por área desde AGEB → colonia
 
-The result is a reproducible, audit‑ready socioeconomic dataset used in production at AXSI Real Estate.
+El resultado es un dataset socioeconómico reproducible y listo para auditoría, utilizado en producción en AXSI Real Estate.
+
 
 ---
 
 ## 📁 Documentation Index
 
-### 0. [Data Requirements](00_Data_Requirements.md)
-### 1. [Import AMAI NSE 2024](01_Import_AMAI.md)
-### 2. [Import INEGI MG 2025 AGEB geometries](02_Import_INEGI_MG_2025_AGEB.md)
-### 3. [Import INEGI DCAH 2025 Neighborhood geometries](03_Import_INEGI_DCAH_2025.md)
-### 4. [AGEB × Neighborhood Spatial Intersection](04_NSE_Intersections.md)
-### 5. [NSE Calculation Methodology](methodology.md)
-### 6. [Pipeline Overview](pipeline.md)
-### 7. [INEGI Notes & Territorial Considerations](inegi.md)
-### 8. [AMAI Notes & Classification Rules](amai.md)
+### 0. [Requerimientos](00_Requerimientos.md)
+### 1. [Importar AMAI NSE 2024](01_Importar_AMAI.md)
+### 2. [Importar INEGI MG 2025 — Geometrías AGEB](02_Importar_INEGI_MG_2025_AGEB.md)
+### 3. [Importar INEGI DCAH 2025 — Geometrías de Colonias](03_Importar_INEGI_DCAH_2025.md)
+### 4. [Intersección Espacial de Áreas AGEB × Colonias](04_NSE_Intersecciones.md)
+### 5. [Metodología de Cálculo de NSE](methodologia.md)
+### 6. [Descripción general del pipeline](pipeline.md)
+### 7. [Notas INEGI y Consideraciones Territoriales](inegi.md)
+### 8. [Notas AMAI y Reglas de Clasificación](amai.md)
 
 ---
 
-## 🗺️ Live NSE Map (CDMX)
+## 🗺️ Mapa NSE en Vivo (CDMX)
 
-The final NSE dataset is used in production at:
+El dataset final de NSE se utiliza en producción en:
 
-**AXSI Real Estate Platform**  
+**Plataforma AXSI Mercado inmoboliario**  
 https://axsi.io/es
 
 ---
