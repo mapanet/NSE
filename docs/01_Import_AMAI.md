@@ -1,4 +1,4 @@
-# STEP 1 — AMAI 2025 Data Ingestion (NSE by AGEB)
+# STEP 1 — AMAI 2024 Data Ingestion (NSE by AGEB)
 
 Objective: Convert the official AMAI file NSE_por_AGEB_AMAI_2024.xlsx into a normalized SQL table ready for the NSE pipeline.
 
