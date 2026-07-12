@@ -1,4 +1,6 @@
-# Cálculo de NSE para Colonias (Boundaries Layer 6)
+# REQUERIMIENTOS
+
+## Cálculo de NSE para Colonias (Boundaries Layer 6)
 
 Este documento describe el pipeline técnico completo utilizado para calcular el **Nivel Socioeconómico (NSE) AMAI** a nivel **Colonia (Neighborhood)**, conocido como **Boundaries Layer 6**.  
 La Capa 6 es el **dataset final enriquecido**, donde cada polígono de colonia contiene su categoría NSE correspondiente y los valores demográficos ponderados.
