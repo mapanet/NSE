@@ -26,7 +26,7 @@ El resultado es un dataset socioeconómico reproducible y listo para auditoría,
 ### 1. [Importar AMAI NSE 2024](01_Importar_AMAI.md)
 ### 2. [Importar INEGI MG 2025 — Geometrías AGEB](02_Importar_INEGI_MG_2025_AGEB.md)
 ### 3. [Importar INEGI DCAH 2025 — Geometrías de Colonias](03_Importar_INEGI_DCAH_2025.md)
-### 4. [Intersección Espacial de Áreas AGEB × Colonias](04_NSE_Intersecciones.md)
+### 4. [intersecciones Espacialwa de Áreas AGEB × Colonias](04_NSE_intersecciones.md)
 ### 5. [Metodología de Cálculo de NSE](methodologia.md)
 ### 6. [Descripción general del pipeline](pipeline.md)
 ### 7. [Notas INEGI y Consideraciones Territoriales](inegi.md)
