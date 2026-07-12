@@ -210,7 +210,7 @@ https://axsi.io/es
 ## 10. Related Documentation
 
 - [Requerimeitos](00_REquerimientos.md)  
-- [Importar AMAI NSE 2024](01_Importat_AMAI.md)  
+- [Importar AMAI NSE 2024](01_Importar_AMAI.md)  
 - [Importar INEGI MG 2025 AGEB geometries](02_Importar_INEGI_MG_2025_AGEB.md)  
 - [Importar INEGI DCAH 2025 Neighborhood geometries](03_Importar_INEGI_DCAH_2025.md)  
 - [Interseccion Espacial areas AGEB × Colonias](04_NSE_Intersecciones.md)  
