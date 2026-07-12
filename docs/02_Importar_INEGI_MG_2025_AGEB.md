@@ -1,112 +1,116 @@
-# STEP 2 — Marco Geoestadístico 2025 geometries
+# PASO 2 — Geometrías del Marco Geoestadístico 2025
 
-Objective: Build table `Boundaries_AGEB_2025` with the official AGEB geometries from INEGI MG 2025.  
+**Objetivo:** Construir la tabla `Boundaries_AGEB_2025` con las geometrías oficiales de AGEB del Marco Geoestadístico INEGI 2025.
 
-This table will be used for:  
+Esta tabla se utilizará para:
 
-- Intersecting neighborhoods (colonias) with AGEB area geometries
-- Calculating area proportions
-- Weighting AMAI population by neighborhood (colonia)
+- Intersectar colonias (neighborhoods) con las geometrías de área de AGEB  
+- Calcular proporciones de área  
+- Ponderar la población AMAI por colonia (neighborhood)
 
-## Suggested work directories
+## Directorios de trabajo sugeridos
 
-- D:\AXSI\INEGI\MG_2025 (work files)
-- D:\AXSI\INEGI\MG_2025\Download (downloaded file and unzipped content to load into QGIS)
-- D:\AXSI\INEGI\MG_2025\AGEB (save the processed AGEB shape MG_AGEB_2025.SHP as EPSG:4023)
+- `D:\AXSI\INEGI\MG_2025` (archivos de trabajo)  
+- `D:\AXSI\INEGI\MG_2025\Download` (archivo descargado y contenido descomprimido para cargar en QGIS)  
+- `D:\AXSI\INEGI\MG_2025\AGEB` (guardar el shape procesado **MG_AGEB_2025.SHP** en **EPSG:4023**)
 
-## 1 — Official Download of Marco Geoestadístico 2025
+## 1 — Descarga oficial del Marco Geoestadístico 2025
 
-The Marco Geoestadístico 2025 can be downloaded from INEGI:
+El Marco Geoestadístico 2025 puede descargarse desde el sitio oficial de INEGI:
 
 https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=889463807469
 
-Download file:
+Archivo a descargar:
 
 **794551163061_s.zip**
 
-**Page looks like this:**
+**La página se ve así:**
 
 [<img src="/docs/images/MG_2025.png" width="1000">](/docs/images/MG_2025.png)
 
-### Save as
+### Guardar como
 
-D:\AXSI\INEGI\MG_2025\Download\794551163061_s.zip
+`D:\AXSI\INEGI\MG_2025\Download\794551163061_s.zip`
 
-Inside the ZIP you will find:
+Dentro del archivo ZIP encontrarás:
 
-- mg_2025_integrado.zip  
-  - conjunto_de_datos/  
-    - 00a.shp **← main AGEB areas file**
+- `mg_2025_integrado.zip`  
+  - `conjunto_de_datos/`  
+    - `00a.shp` **← archivo principal de áreas AGEB**
 
-Contect of files inside the dataset (informational):
+Contenido de los archivos dentro del dataset (informativo):
 
-- 00_ent = State (polygons)  
-- 00_mun = Municipality (polygons)
-- 00_a = Urban and Rural AGEB (polygons **← AGEB areas**  
-- 00_lpr = Locality (point)  
-- 00_l = Locality Urban and Rural (polygons)  
-
-## 2 — Contents of the file 00a.shp
-
-Load `00a.shp` in QGIS, ch eck the layer contains the following fields:
+- `00_ent` = Entidad federativa (polígonos)  
+- `00_mun` = Municipio (polígonos)  
+- `00_a` = AGEB urbanas y rurales (polígonos **← áreas AGEB**)  
+- `00_lpr` = Localidad (punto)  
+- `00_l` = Localidad urbana y rural (polígonos)
 
 
-| Field     | Description                          |
-|-----------|--------------------------------------|
-| CVE_ENT   | State code (2 digits)                |
-| CVE_MUN   | Municipality code (3 digits)         |
-| CVE_LOC   | Locality code (4 digits)             |
-| CVE_AGEB  | AGEB code (4 digits)                 |
-| CVEGEO    | Full geographic key (13 digits)      |
-| AMBITO    | Urbano / Rural                       |
-| geom      | Geometry (Polygon / MultiPolygon)    |
+## 2 — Contenido del archivo 00a.shp
 
-Total records: **82,263 AGEB**  
-Original CRS: **MEXICO_IRF‑2008_LLC** 
+Carga `00a.shp` en QGIS y verifica que la capa contenga los siguientes campos:
+
+| Campo     | Descripción                              |
+|-----------|-------------------------------------------|
+| CVE_ENT   | Código de entidad (2 dígitos)             |
+| CVE_MUN   | Código de municipio (3 dígitos)           |
+| CVE_LOC   | Código de localidad (4 dígitos)           |
+| CVE_AGEB  | Código de AGEB (4 dígitos)                |
+| CVEGEO    | Clave geográfica completa (13 dígitos)    |
+| AMBITO    | Urbano / Rural                            |
+| geom      | Geometría (Polygon / MultiPolygon)        |
+
+Total de registros: **82,263 AGEB**  
+CRS original: **MEXICO_IRF‑2008_LLC**
 
 
-## 3 — Export from QGIS to CRS EPSG:4326)
 
-Export the layer `00a.shp` as:
+## 3 — Exportar desde QGIS a CRS EPSG:4326
+
+Exporta la capa `00a.shp` como:
 
 **D:\AXSI\INEGI\MG_2025\AGEB\MG_AGEB_2025.shp**  
-Make sure select CRS: **EPSG:4326** (very important)
+Asegúrate de seleccionar el CRS: **EPSG:4326** (muy importante)
 
-From this new layer MG_AGEB_2025, export to CSV as:
+A partir de esta nueva capa `MG_AGEB_2025`, exporta a CSV como:
 
 **D:\AXSI\INEGI\MG_2025\Boundaries_AGEB_2025_WKT.csv**
 
-- UTF‑8 encoding  
-- TAB delimiter
-- WKT as EPSG:4326 coordinates
+- Codificación UTF‑8  
+- Delimitador TAB  
+- Geometría WKT en coordenadas EPSG:4326
 
-| Column   | Description |
-|----------|-------------|
-| WKT      | Geometry in WKT format |
-| CVE_ENT  | State code |
-| CVE_MUN  | Municipality code |
-| CVE_LOC  | Locality code |
-| CVE_AGEB | AGEB code |
-| CVEGEO   | Full geographic key |
-| AMBITO   | Urbano / Rural |
+### Columnas del CSV
 
-If you edit the CSV you should see something like this:
+| Columna  | Descripción                     |
+|----------|---------------------------------|
+| WKT      | Geometría en formato WKT        |
+| CVE_ENT  | Código de entidad               |
+| CVE_MUN  | Código de municipio             |
+| CVE_LOC  | Código de localidad             |
+| CVE_AGEB | Código de AGEB                  |
+| CVEGEO   | Clave geográfica completa       |
+| AMBITO   | Urbano / Rural                  |
 
-| WKT | CVE_ENT |CVE_MUN | CVE_LOC | CVE_AGEB | CVEGEO | AMBITO |
-|---------------------------------------------------|---------|---------|---------|---------|--------------|-------|
-|MULTIPOLYGON (((-102.27 21.87, ... -102.27 21.87)))| 01 | 001 | 0001 | 216A | 010010001216A | Urbano |
-|MULTIPOLYGON (((-102.24 21.86, ... -102.24 21.86)))	| 01 | 001 | 0001 | 2649 | 0100100012649 | Urbano |
+Si editas el CSV deberías ver algo similar a:
 
-## 4 — Create the MS SQL Staging table
+| WKT | CVE_ENT | CVE_MUN | CVE_LOC | CVE_AGEB | CVEGEO        | AMBITO |
+|-----|---------|---------|---------|----------|---------------|--------|
+| MULTIPOLYGON (((-102.27 21.87, ... -102.27 21.87))) | 01 | 001 | 0001 | 216A | 010010001216A | Urbano |
+| MULTIPOLYGON (((-102.24 21.86, ... -102.24 21.86))) | 01 | 001 | 0001 | 2649 | 0100100012649 | Urbano |
 
-We create a staging table to import the data as since QGIS creates the CSV with WKT geometry in 1st position.
-Then we will create and copy the imported data to the final table.
 
-* check file path you used to store CSV file
+## 4 — Crear la tabla Staging en MS SQL Server
+
+Creamos una tabla de staging para importar los datos, ya que QGIS genera el CSV con la geometría WKT en la primera posición.  
+Después copiaremos los datos importados a la tabla final.
+
+*Verifica la ruta del archivo CSV que guardaste.*
 
 ```sql
 ------------------------------
--- 4 Create the taging Table
+-- 4 Crear la tabla Staging
 ------------------------------
 DROP TABLE IF EXISTS dbo.Boundaries_AGEB_2025_IMPORT;
 
@@ -121,7 +125,7 @@ CREATE TABLE Boundaries_AGEB_2025_IMPORT (
 );
 
 ------------------------
--- Import CSV (TSV) file
+-- Importar archivo CSV (TSV)
 ------------------------
 BULK INSERT Boundaries_AGEB_2025_IMPORT 
 FROM 'D:\AXSI\INEGI\MG_2025\Boundaries_AGEB_2025_WKT.csv' 
@@ -133,44 +137,45 @@ WITH (
 );
 ```
 
-#### Expected result
+#### Resultado esperado
 
 (82283 rows affected)   
-Completion time: 2026-05-24T18:16:03.7467723-05:00   
 
-## 5 — Create Final Table: Boundaries_AGEB_2025
+
+## 5 — Crear la tabla final: Boundaries_AGEB_2025
+
 
 ```sql
 -----------------------------------------------
--- 5 Create Final Table: Boundaries_AGEB_2025
+-- 5 Crear tabla final: Boundaries_AGEB_2025
 -----------------------------------------------
 DROP TABLE IF EXISTS dbo.Boundaries_AGEB_2025;
 
 CREATE TABLE dbo.Boundaries_AGEB_2025
 (
-    ID            BIGINT IDENTITY(1,1) PRIMARY KEY,
-    CVEGEO        NVARCHAR(13) NOT NULL UNIQUE,
+    ID                  BIGINT IDENTITY(1,1) PRIMARY KEY,
+    CVEGEO              NVARCHAR(13) NOT NULL UNIQUE,
 
-    -- Components of CVEGEO key
-    CVE_ENT       CHAR(2)  NULL,
-    CVE_MUN       CHAR(3)  NULL,
-    CVE_LOC       CHAR(4)  NULL,
-    CVE_AGEB      CHAR(4)  NULL,
+    -- Componentes de la clave CVEGEO
+    CVE_ENT             CHAR(2)  NULL,
+    CVE_MUN             CHAR(3)  NULL,
+    CVE_LOC             CHAR(4)  NULL,
+    CVE_AGEB            CHAR(4)  NULL,
 
-    -- Type (Ámbito): Urbano, Rural (urban or rural)
-    Type          CHAR(10)  NULL,
+    -- Tipo (Ámbito): Urbano / Rural
+    Type                CHAR(10)  NULL,
 
-    -- Population and Dwellings (will be filled with Census 2020)
-    Population	int	NULL,
-    Dwellings	int	NULL,
-    Occupied_Dwellings	int	NULL
+    -- Población y viviendas (se llenará con Censo 2020)
+    Population          INT NULL,
+    Dwellings           INT NULL,
+    Occupied_Dwellings  INT NULL,
 
-    -- Geometries
-    geom          GEOMETRY NOT NULL,
-    geog          GEOGRAPHY NULL,
+    -- Geometrías
+    geom                GEOMETRY   NOT NULL,
+    geog                GEOGRAPHY  NULL
 );
 
--- Spatial indexes
+-- Índices espaciales
 CREATE SPATIAL INDEX SIDX_Boundaries_AGEB_2025_geog
 ON dbo.Boundaries_AGEB_2025(geog)
 USING GEOGRAPHY_AUTO_GRID;
@@ -180,16 +185,16 @@ ON dbo.Boundaries_AGEB_2025(geom)
 WITH (BOUNDING_BOX = (-180, -90, 180, 90));
 ```
 
-#### Expect results
+#### Resultado esperado
 
 Commands completed successfully.   
 
 
-## 6 — Insert Data from the Staging Table
+## 6 Insertar datos desde la tabla Staging
 
 ```sql
 -----------------------------------------
--- 6 Insert Data from the Staging Table
+-- 6 Insertar datos desde la tabla Staging
 -----------------------------------------
 INSERT INTO Boundaries_AGEB_2025 (
     CVEGEO, CVE_ENT, CVE_MUN, CVE_LOC, CVE_AGEB, Type, geom
@@ -205,117 +210,123 @@ SELECT
 FROM Boundaries_AGEB_2025_IMPORT;
 
 --------------------
--- Valite geometries
+-- Validar geometrías
 --------------------
-UPDATE Boundaries_AGEB_2025 SET geom = geom.MakeValid() WHERE geom.STIsValid() = 0;
+UPDATE Boundaries_AGEB_2025 
+SET geom = geom.MakeValid() 
+WHERE geom.STIsValid() = 0;
 
 -------------------------
--- drop the staging table
+-- Eliminar tabla Staging
 -------------------------
 DROP TABLE dbo.Boundaries_AGEB_2025_IMPORT;
 ```
 
-#### Expected results
+#### Resultado esperado
 
-(82283 rows affected)   
+(82283 registros)   
 
 
-## 8 — Geometry Validation and Correction
+## 8 — Validación y corrección de geometrías
 
-### Validate invalid geometries
+### Validar geometrías inválidas
 
-✅ Querys should return nothing
+✅ Las consultas deben regresar **cero registros**
 
 ```sql
 -----------------------------------------
--- 2.8 Geometry Validation and Correction
+-- 2.8 Validación y corrección de geometrías
 -----------------------------------------
 SELECT ID, CVEGEO
 FROM Boundaries_AGEB_2025
 WHERE geom.STIsValid() = 0;
 ```
 
-#### Expected results
+#### Resultado esperado
 
-ID	CVEGEO   
+ID    CVEGEO  
 None  
-(all geometries are valid)   
+(todas las geometrías son válidas)
 
-### Correct invalid geometries using MakeValid
+### Corregir geometrías inválidas usando MakeValid
 
-If query returns results, it indicates a problem that must be fixed, use the next step to correct them.
+Si la consulta devuelve resultados, indica un problema que debe corregirse.  
+Usa el siguiente paso para repararlas.
 
-1️⃣ Only if Invalid geometries run:
-This SQL should make all invalid to valid and return zero rows:
+1️⃣ Solo si existen geometrías inválidas:  
+Este SQL debe convertir todas las geometrías inválidas en válidas y devolver cero filas:
 
 ```sql
------------------------------------------------
--- 1 Correct invalid geometries using MakeValid
------------------------------------------------
+---------------------------------------------------
+-- 1 Corregir geometrías inválidas usando MakeValid
+---------------------------------------------------
 UPDATE Boundaries_AGEB_2025
 SET geom = geom.MakeValid()
 WHERE geom.STIsValid() = 0;
 ```
 
-#### Expected results
+#### Resultado esperado
 
 (0 rows affected)   
 
 
-## 9 — Copy geometry: geom column to geography: geog column
+## 9 — Copiar geometría: columna geom → columna geog
+
 
 ```sql
 -----------------------------------------------------------
--- 9 Copy geometry: geom column to geography: geog column
+-- 9 Copiar geometría: columna geom a columna geog
 -----------------------------------------------------------
 UPDATE Boundaries_AGEB_2025
 SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 ```
 
-#### Expected results
+#### Resultado esperado
 
 (82283 rows affected)   
 
 ---
 
-### Validate geog (geography)
+### Validar geog (geography)
 
-2️⃣ Missing geography check
-This should also return zero rows:
+2️⃣ Verificación de geografía faltante  
+Esta consulta también debe regresar **cero filas**:
 
 ```sql
-------------------------------
--- 2 - Missing geography check
-------------------------------
+-----------------------------------------
+-- 2 - Verificación de geografía faltante
+----------------------------------------
 SELECT ID
 FROM Boundaries_AGEB_2025
 WHERE geog IS NULL;
+
 ```
 
-#### Expected results
+#### Resultado esperado
 
 ID  
 None  
-(all geography fields have a geometry)  
+(todas las geometrías geográficas están presentes)
 
 ---
 
-## Final Result
+## Resultado Final
 
-The table `Boundaries_AGEB_2025` now contains:
+La tabla `Boundaries_AGEB_2025` ahora contiene:
 
-- 82,263 AGEB
-- Valid geometries
-- Complete CVEGEO
-- Urban/Rural scope
-- Population and Dwellings fields ready to be filled later
+- 82,263 AGEB  
+- Geometrías válidas  
+- CVEGEO completo  
+- Clasificación Urbano/Rural  
+- Campos de Población y Viviendas listos para llenarse posteriormente
 
-It is used for:
+Se utiliza para:
 
-- Intersecting neighborhood (colonias) with AGEB geometries
-- Calculating area proportions
-- Weighting AMAI population by neighborhood (colonia)
-- Serving as the base for NSE calculation per Neighborhood (colonia)
+- Intersectar colonias con las geometrías de AGEB  
+- Calcular proporciones de área  
+- Ponderar la población AMAI por colonia  
+- Servir como base para el cálculo del NSE por colonia
+
 
 
 
