@@ -43,7 +43,7 @@ https://axsi.io/es
 
 ---
 
-## 🧩 About this project
+## 🧩 Acerca de este proyecto
 
 Repositorio:  
 https://github.com/mapanet/NSE/
