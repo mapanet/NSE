@@ -1,157 +1,169 @@
-# 3.0 INEGI DCAH 2025 (Neighborhood Polygons)
+# 3.0 INEGI DCAH 2025 (Polígonos de Colonias)
 
-This document describes the process to import the **INEGI DCAH 2025** dataset, which contains the official polygon boundaries of neighborhoods (*colonias*) and other human settlements in Mexico.  
-These geometries are used to build **Boundaries Layer 6**, where the AMAI Socioeconomic Level (NSE) is calculated for each neighborhood.
+Este documento describe el proceso para importar el dataset **INEGI DCAH 2025**, que contiene los límites poligonales oficiales de colonias y otros asentamientos humanos en México.  
+Estas geometrías se utilizan para construir el **Boundaries Layer 6**, donde se calcula el Nivel Socioeconómico AMAI (NSE) para cada colonia.
 
-Suggested working directories  
+Directorios sugeridos
 
 Working : D:\AXSI\INEGI\DCAH_2025  
 Download: D:\AXSI\INEGI\DCAH_2025\Download  
 
 ---
 
-## Dataset Description
+## Descripción del Dataset
 
-**Source:** INEGI — *Delimitación de colonias y otros asentamientos humanos (DCAH)*  
-**Edition (edicion):** 2025  
-**Coverage (cobertura):** 2025‑01‑01 to 2025‑12‑31  
-**Datum:** ITRF2008, Ellipsoid GRS80  
-**File type (tipo de archivo):** SHP (530.26 MB)  
-**Download URL:** [https://www.inegi.org.mx/programas/dcah/#descargas](https://www.inegi.org.mx/programas/dcah/#descargas)
+**Fuente:** INEGI — *Delimitación de colonias y otros asentamientos humanos (DCAH)*  
+**Edición:** 2025  
+**Cobertura:** 2025‑01‑01 a 2025‑12‑31  
+**Datum:** ITRF2008, Elipsoide GRS80  
+**Tipo de archivo:** SHP (530.26 MB)  
+**URL de descarga:** https://www.inegi.org.mx/programas/dcah/#descargas
 
-**Page looks like this:**
+**La página se ve así:**
 
 [<img src="/docs/images/DCAH_2025.png" width="1000">](/docs/images/DCAH_2025.png)
 
 ---
 
-## 3.1 Download data
+## 3.1 Descargar datos
 
-1. Open the INEGI DCAH download page:  
-   [https://www.inegi.org.mx/programas/dcah/#descargas](https://www.inegi.org.mx/programas/dcah/#descargas)
+1. Abrir la página de descarga de INEGI DCAH:  
+   https://www.inegi.org.mx/programas/dcah/#descargas
 
-Cartografía geoestadística histórica de México
+Cartografía geoestadística histórica de México  
 => https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=794551131954
 
-Información Topográfica a escala 1:50,000 y sus actualizaciones
+Información Topográfica a escala 1:50,000 y sus actualizaciones  
 => https://www.inegi.org.mx/programas/topografia/50000/#descargas
 
-2. In the **Filters** section, leave all options as default:
-   - **Entity:** Estados Unidos Mexicanos  
-   - **Scale:** Sin escala  
-   - **Edition:** (leave blank)
+2. En la sección **Filtros**, dejar todas las opciones por defecto:
+   - **Entidad:** Estados Unidos Mexicanos  
+   - **Escala:** Sin escala  
+   - **Edición:** (vacío)
 
-3. Click **Consultar** or **Buscar** to display available editions.
+3. Hacer clic en **Consultar** o **Buscar** para mostrar las ediciones disponibles.
 
-4. From the results table, select:
+4. En la tabla de resultados, seleccionar:
    - **Delimitación de colonias y otros asentamientos humanos 2025**  
-   - File type: **SHP**  
-   - Size: **530.26 MB**
+   - Tipo de archivo: **SHP**  
+   - Tamaño: **530.26 MB**
 
-5. Download the ZIP file and extract the contents into:
+5. Descargar el archivo ZIP y extraer su contenido en:
 
-Directory: D:\INEGI\DCAH_2025\Download
-File name: **794551163078_s.zip** 2025 edition
+Directorio: D:\INEGI\DCAH_2025\Download  
+Nombre del archivo: **794551163078_s.zip** (edición 2025)
 
-Inside you will find a series of zip's by state and one named: 00_integrado.zip that contain data of all states.
-Extract the files is BOLD:
+Dentro encontrarás varios ZIP por estado y uno llamado: **00_integrado.zip**, que contiene datos de todos los estados.  
+Extrae los archivos en **negritas**:
 
-- 00_integrado.zip
-  - conjunto_de_datos
-      - **00as.shp** (SHP file main) Datum: ITRF2008
-      - **00as.cpg** (SHP file accesory)
-      - **00as.dbf** (SHP file accesory)
-      - **00as.prj** (SHP file accesory)
-      - **00as.sbn** (SHP file accesory)
-      - **00as.sbx** (SHP file accesory)
-      - **00as.shx** (SHP file accesory)
+- 00_integrado.zip  
+  - conjunto_de_datos  
+      - **00as.shp** (archivo SHP principal) Datum: ITRF2008  
+      - **00as.cpg**  
+      - **00as.dbf**  
+      - **00as.prj**  
+      - **00as.sbn**  
+      - **00as.sbx**  
+      - **00as.shx**
 
-Dataset include:
+El dataset incluye:
 
-| Field | Description |
-|-------|--------------|
-| **CVEGEO** | cvegeo code 13 digits EEMMMLLLLAAAA (EE state, MMM municipality, LLLL Locality, AAAA Neighborhood |
-| **CVE_ENT** | State code |
-| **CVE_MUN** | Municipality code |
-| **CVE_LOC** | Locality code |
-| **CVE_ASEN** | Locality code |
-| **CP** | Postal code |
-| **FECHA_ACT** | Last Update MM/YYYY |
-| **INSTITUCIO** | Source name |
-| **NOM_ASEN** | Neighborhood name |
-| **TIPO** | Category name (Fraccionamiento, Colonia, etc. (Urbanization type) |
-| **geom** | Neighborhood boundary polygon |
+| Campo | Descripción |
+|-------|-------------|
+| **CVEGEO** | Código cvegeo de 13 dígitos EEMMMLLLLAAAA (EE estado, MMM municipio, LLLL localidad, AAAA colonia) |
+| **CVE_ENT** | Código de estado |
+| **CVE_MUN** | Código de municipio |
+| **CVE_LOC** | Código de localidad |
+| **CVE_ASEN** | Código de asentamiento |
+| **CP** | Código postal |
+| **FECHA_ACT** | Última actualización MM/YYYY |
+| **INSTITUCIO** | Nombre de la institución fuente |
+| **NOM_ASEN** | Nombre de la colonia |
+| **TIPO** | Tipo de asentamiento (Fraccionamiento, Colonia, etc.) |
+| **geom** | Polígono de la colonia |
+
+---
+## 3.2 Cargar 00as.shp en QGIS
+
+Verifica que **NOM_ASEN** sea legible (acentos).  
+El dataset original viene en **Windows‑1252**, pero QGIS puede cargarlo como **UTF‑8**.  
+Si es necesario, ajusta la codificación en:
+
+**Propiedades de la capa → Fuente → Windows‑1252**
+
+Revisa los acentos en la tabla de atributos.
+
+### Exportar como
+
+Directorio: D:\AXSI\INEGI\DCAH_2025  
+Nombre del archivo: **Boundaries_INEGI_DCAH_2025.shp**  
+CRS: **EPSG:4023**  
+Codificación: **UTF‑8**
+
+Después de exportar:
+
+- Elimina la capa original **00as.shp** de QGIS
 
 ---
 
-## 3.2 Load the 00as.shp into QGIS
+# 3.3 Guardar como CSV con geometrías WKT
 
-Verify NOM_ASEN is legible (accents) data originally is Windows-1252 but file may be loaded as UTF-8)
-(if needed, use layer Properties > Source > Windows-1252 to set encoding, check accents in Attributes table)
+Exporta la capa **Boundaries_INEGI_DCAH_2025** a CSV con geometrías WKT:
 
-### Export it as
+- Directorio: D:\AXSI\INEGI\DCAH_2025  
+- Archivo: **Boundaries_INEGI_DCAH_2025.csv**  
+- CRS: **EPSG:4023**  
+- Codificación: **UTF‑8**  
+- Geometría: **As WKT**  
+- Delimitador: **TAB**  
+- String quoting: **IF_NEEDED**  
+- Escribir BOM: **NO**  
+- Agregar archivo guardado al mapa: **Desactivado**
 
-Directory: D:\AXSI\INEGI\DCAH_2025  
-File name: Boundaries_INEGI_DCAH_2025.shp  
-CRS: **ESPG:4023**  
-Encoding: **UTF-8**  
-
-- Delete source 00as.shp layer in QGIS
-
----
-
-# 3.3 Save as CSV with WKT geometries
-
-Export Boundaries_INEGI_DCAH_2025 layer to CSV with WKT geometries
-
-- Directory: D:\AXSI\INEGI\DCAH_2025
-- File name: Boundaries_INEGI_DCAH_2025.CSV
-- CRS: **ESPG:4023**
-- Encoding: **UTF-8**
-- Geometry: **As WKT**
-- Delimiter: **TAB**
-- String quting: **IF_NEEDED**
-- Write BOM: **NO**
-- Add saved file to MAP: **Uncheck**
-
-Save "OK"
-
-----
-
-Edit Boundaries_INEGI_DCAH_2025.CSV with EditPad Pro or Notepad+
-
-Replace all doune quotes (") created in the geometries "MULTIPOLYGON ((( ... )))"
-
-Save file, making sure is **UTF-8** and **No BOM**
-
-### Result file
-
-| Field | Description |
-|-------|--------------|
-| **WTK** | Neighborhood boundary polygon |
-| **CVEGEO** | cvegeo code 13 digits
-| **CVE_ENT** | State code |
-| **CVE_MUN** | Municipality code |
-| **CVE_LOC** | Locality code |
-| **CVE_ASEN** | Locality code |
-| **CP** | Postal code |
-| **FECHA_ACT** | Last Update MM/YYYY |
-| **INSTITUCIO** | Source name |
-| **NOM_ASEN** | Neighborhood name |
-| **TIPO** | Category name (Fraccionamiento, Colonia, etc. (Urbanization type) |
+Guardar → **OK**
 
 ---
 
-# 3.4 Upload CSV geometries to SQL
+Edita **Boundaries_INEGI_DCAH_2025.csv** con EditPad Pro o Notepad++:
+
+- Reemplaza todas las comillas dobles `"` que aparezcan dentro de las geometrías  
+  (por ejemplo: `"MULTIPOLYGON ((( ... )))"`)
+
+Guarda el archivo asegurando:
+
+- **UTF‑8**  
+- **Sin BOM**
+
+### Archivo resultante
+
+| Campo | Descripción |
+|-------|-------------|
+| **WKT** | Polígono de la colonia |
+| **CVEGEO** | Código cvegeo de 13 dígitos |
+| **CVE_ENT** | Código de estado |
+| **CVE_MUN** | Código de municipio |
+| **CVE_LOC** | Código de localidad |
+| **CVE_ASEN** | Código de asentamiento |
+| **CP** | Código postal |
+| **FECHA_ACT** | Última actualización MM/YYYY |
+| **INSTITUCIO** | Nombre de la institución |
+| **NOM_ASEN** | Nombre de la colonia |
+| **TIPO** | Tipo de asentamiento (Fraccionamiento, Colonia, etc.) |
+
+---
+
+# 3.4 Subir geometrías CSV a SQL
+
 
 ```sql
---------------------------------------------
--- 3.4 — Upload Upload CSV geometries to SQL
---------------------------------------------
+-----------------------------------
+-- 3.4 — Subir geometrías CSV a SQL
+-----------------------------------
 
 -----------------------------
--- 3.4.1 Create staging table
+-- 3.4.1 Crear tabla staging
 -----------------------------
+
 DROP TABLE IF EXISTS INEGI_DCAH_Staging;
 GO
 
@@ -184,11 +196,11 @@ WITH (
 );
 GO
 ```
-### Expected results
+### Resultado esperado
 
 (79775 rows affected)
 
-### Check results on INEGI_DCAH_Staging
+### Revisar resultados en INEGI_DCAH_Staging
 
 ```sql
 SELECT TOP (5) WKT, GVEGEO, CVE_ENT, CVE_MUN, CVE_LOC, CVE_ASEN, CP, FECHA_ACT, INSTITICIO, NOM_ASEN, TIPO
@@ -205,7 +217,7 @@ MULTIPOLYGON|0503300010084|05|033|0001|0084|00000|11/2022|AYUNTAMIENTO|EJIDAL VA
 
 ---
 
-# 3.5 Create Boundaries table
+# 3.5 Crear tabla Boundaries
 
 ```sql
 CREATE TABLE [dbo].[Boundaries](
@@ -267,7 +279,7 @@ GO
 
 --- 
 
-## 3.6 Copy DCAH Staging Data into Boundaries (Layer = 6)
+## 3.6 Copiar datos DCAH Staging a Boundaries (Layer = 6)
 
 ```sql
 ------------------------------------------------------------
@@ -297,11 +309,11 @@ FROM dbo.INEGI_DCAH_Staging;
 GO
 ```
 
-### Expected result
+### Resultado esperado
 
-(79775 rows affected)
+(79775 registros)
 
-### Delete staging if copy was sucessfull
+### Borrar staging si la copia fue existosa
 
 ```sql
 DROP TABLE IF EXISTS dbo.INEGI_DCAH_Staging;
@@ -309,14 +321,14 @@ DROP TABLE IF EXISTS dbo.INEGI_DCAH_Staging;
 
 ---
 
-## 3.8 Validate geomtery (geom)
+## 3.8 Validar geometrías importadas
 
-The imported WKT geometries must be checked for validity.  
-Invalid geometries are repaired using `MakeValid()`.
+Las geometrías WKT importadas deben revisarse para verificar su validez.  
+Las geometrías inválidas se reparan utilizando `MakeValid()`.
 
 ```sql
 ----------------------------------
--- 3.8.0 Detect invalid geometries
+-- 3.8.0 Validar geometrías importadas
 ----------------------------------
 
 SELECT ID, CVEGEO
@@ -324,17 +336,18 @@ FROM dbo.Boundaries
 WHERE geom.STIsValid() = 0;
 ```
 
-### Expected result
+### Resultado esperado
 
 ID CVEGEO   
 None  
-If other than None, run next process, otherwise run next step 8.9  
+Si el valor es distinto de None, ejecutar el siguiente proceso;  
+de lo contrario, continuar con el paso 8.9.
+
 
 ```sql
-
--------------------------------------------
--- 3.8.1 Fix invalid geometries (MakeValid)
--------------------------------------------
+-------------------------------------------------
+-- 3.8.1 Reparar geometrías inválidas (MakeValid)
+-------------------------------------------------
 
 UPDATE dbo.Boundaries
 SET geom = geom.MakeValid()
@@ -343,21 +356,22 @@ WHERE geom.STIsValid() = 0;
 
 ----
 
-## 3.9 Generate Geography (geog) from Geometry
+## 3.9 Generar Geography (geog) a partir de Geometry
 
-The geog column stores the same geometry in SQL Server’s geography type (EPSG:4326).  
-This enables distance calculations and geodesic operations.  
+La columna **geog** almacena la misma geometría en el tipo **geography** de SQL Server (EPSG:4326).  
+Esto permite realizar cálculos de distancia y operaciones geodésicas.
+
 
 ```sql
 UPDATE dbo.Boundaries
 SET geog = geography::STGeomFromText(geom.STAsText(), 4326);
 ```
 
-### Excepcted result
+### Resultado esperado
 
-(79775 rows affected)
+(79775 registros)
 
-Validation:
+Validación:
 
 ```sql
 SELECT ID, CVEGEO
@@ -365,16 +379,16 @@ FROM dbo.Boundaries
 WHERE geog IS NULL;
 ```
 
-### Excepcted result
+### Resultado esperao
 
-IS CVEGEO   
+ID CVEGEO   
 None  
 
 ---
 
-## 3.10 Compute Bounding Box Fields
+## 3.10 Calcular campos de Bounding Box
 
-Bounding box values are derived from the geom envelope:  
+Los valores del bounding box se derivan del *envelope* de la geometría **geom**.
 
 - minLat
 - maxLat
@@ -390,11 +404,11 @@ SET
     maxLon = geom.STEnvelope().STPointN(3).STX;
 ```
 
-### Excepcted result
+### Resultado esperado
 
 (79775 rows affected)
 
-Validation:
+Validación:
 
 ```sql
 SELECT TOP 20 CVEGEO, minLat, maxLat, minLon, maxLon
@@ -405,43 +419,43 @@ You should see valid numeric values.
 
 ---
 
-## 3.11 Create Spatial Indexes
+## 3.11 Crear índices espaciales
 
-Spatial indexes significantly improve performance for intersection, containment, and proximity queries.
+Los índices espaciales mejoran significativamente el rendimiento en consultas de intersección, contención y proximidad.
 
 ```sql
 ------------------------------------------
--- 3.11.1 Spatial Index for geom (geometry)
+-- 3.11.1 Índice espacial para geom (geometry)
 ------------------------------------------
 CREATE SPATIAL INDEX SIDX_Boundaries_geom
 ON dbo.Boundaries_TEMP(geom)
 WITH (BOUNDING_BOX = (-180, -90, 180, 90));
 
 --------------------------------------------
--- 3.11.2 Spatial Index for geog (geography)
+-- 3.11.2 Índice espacial para geog (geography)
 --------------------------------------------
-
 CREATE SPATIAL INDEX SIDX_Boundaries_geog
 ON dbo.Boundaries_TEMP(geog);
 ```
 
-### Excepcted result
+### Resultado esperado
 
 Commands completed successfully.
 
 ---
 
 
-## Next Steps to calculate NSE (socioeconomic levels)
+## Próximos pasos para calcular el NSE (niveles socioeconómicos)
 
-1. Validate geometries integrity of **Boundaries_AGEB_2025** and **Boundaries** layer 6 (no empty or self‑intersecting polygons).  
-2. Check and normalize Boundaries_AGEB_2025 keys **CVEGEO** = CVE_ENT + CVE_MUN + CVE_LOC + CVE_ASEN  
-3. Intersect with AGEB geometries from **Boundaries_AGEB_2025** (INEGI MG 2025).  
-4. Apply area‑weighted NSE aggregation using **AMAI 2024** and **Census 2020** data.  
-5. Enrich **Boundaries Layer 6 NSE dataset** with NSE calculations.
+1. Validar la integridad de las geometrías en **Boundaries_AGEB_2025** y en **Boundaries** capa 6 (sin polígonos vacíos ni auto‑intersecciones).  
+2. Revisar y normalizar las claves de Boundaries_AGEB_2025:  
+   **CVEGEO = CVE_ENT + CVE_MUN + CVE_LOC + CVE_ASEN**  
+3. Intersectar con las geometrías AGEB de **Boundaries_AGEB_2025** (INEGI MG 2025).  
+4. Aplicar la agregación NSE ponderada por área utilizando datos **AMAI 2024** y **Censo 2020**.  
+5. Enriquecer el **dataset NSE de Boundaries Layer 6** con los cálculos de NSE.
 
 ---
 
-**Result:**  
-A complete, validated neighborhood‑level dataset ready for NSE calculation, mapping, and API integration.
+**Resultado:**  
+Un dataset completo y validado a nivel colonia, listo para el cálculo de NSE, mapeo y uso en la API.
 
