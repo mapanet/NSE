@@ -1,187 +1,210 @@
-# STEP 1 — AMAI 2024 Data Ingestion (NSE by AGEB)
+# PASO 1 — Ingesta de Datos AMAI 2024 (NSE por AGEB)
 
-Objective: Convert the official AMAI file NSE_por_AGEB_AMAI_2024.xlsx into a normalized SQL table ready for the NSE pipeline.
+**Objetivo:** Convertir el archivo oficial **NSE_por_AGEB_AMAI_2024.xlsx** en una tabla SQL normalizada y lista para el pipeline de NSE.
 
-## Suggested work directories
+## Directorios de trabajo sugeridos
 
-- D:\AXSI\AMAI — working files
-- D:\AXSI\AMAI\Download  — downloaded source files
+- **D:\AXSI\AMAI** — archivos de trabajo  
+- **D:\AXSI\AMAI\Download** — archivos fuente descargados
+
 
 ---
 
-## 1. — Official Source File
+## 1. — Archivo Fuente Oficial
 
-AMAI publishes the dataset in its downloads section:
+AMAI publica el dataset en su sección de descargas:
 
-https://www.amai.org/NSE/index.php?queVeo=NSEDES&Logeado=s (download NSE por AGEB)
+https://www.amai.org/NSE/index.php?queVeo=NSEDES&Logeado=s (descarga de NSE por AGEB)
 
 https://www.amai.org/descargas/NSE_por_AGEB_AMAI.xlsx
 
-Alternatively, it can be accessed through the NSE portal:
+Alternativamente, puede accederse desde el portal NSE:
 
-Depending on the browser, it may download directly as an XLSX file or open in the Office Online viewer:
+Dependiendo del navegador, puede descargarse directamente como archivo XLSX o abrirse en el visor de Office Online:
 
 https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.amai.org%2Fdescargas%2FNSE_por_AGEB_AMAI.xlsx&wdOrigin=BROWSELINK
 
-Important characteristics of the file:
+Características importantes del archivo:
 
-- The filename does not include a year.
-- It corresponds to the NSE 2024 methodology.
+- El nombre del archivo **no incluye año**.  
+- Corresponde a la **metodología NSE 2024**.
 
-**Page looks like this:**
+**La página se ve así:**
 
 [<img src="/docs/images/AMAI_2024.png" width="1000">](/docs/images/AMAI_2024.png)
 
+
 ---
 
-## 2. — Original File Contents
+## 2. — Contenido del Archivo Original
 
-The file contains one row per urban AGEB from Census 2020.
+El archivo contiene **una fila por cada AGEB urbana del Censo 2020**.
 
-Original columns:
+Columnas originales:
 
-| Column | Meaning |
-|--------|---------|
-| ENTIDAD | State code |
-| NOMBRE ENTIDAD | State name |
-| MUNICIPIO | Municipality code |
-| NOMBRE MUNICIPIO | Municipality name |
-| LOCALIDAD | Locality code |
-| NOMBRE LOCALIDAD | Locality name |
-| AGEB | AGEB code (4 characters) |
-| AB | Dwellings in socioeconomic level AB |
-| C+ | Dwellings in socioeconomic level C+ |
-| C | Dwellings in socioeconomic level C |
-| C- | Dwellings in socioeconomic level C- |
-| D+ | Dwellings in socioeconomic level D+ |
-| D | Dwellings in socioeconomic level D |
-| E | Dwellings in socioeconomic level E |
-| NIVEL_PREDOMINANTE | Dominant socioeconomic level (NSE) |
-| VIVIENDAS | Total occupied private dwellings |
-| TAMAÑO_DE_LOCALIDAD | Population range |
+| Columna | Significado |
+|---------|-------------|
+| ENTIDAD | Código de la entidad federativa |
+| NOMBRE ENTIDAD | Nombre de la entidad |
+| MUNICIPIO | Código del municipio |
+| NOMBRE MUNICIPIO | Nombre del municipio |
+| LOCALIDAD | Código de la localidad |
+| NOMBRE LOCALIDAD | Nombre de la localidad |
+| AGEB | Clave AGEB (4 caracteres) |
+| AB | Viviendas en nivel socioeconómico AB |
+| C+ | Viviendas en nivel socioeconómico C+ |
+| C | Viviendas en nivel socioeconómico C |
+| C- | Viviendas en nivel socioeconómico C- |
+| D+ | Viviendas en nivel socioeconómico D+ |
+| D | Viviendas en nivel socioeconómico D |
+| E | Viviendas en nivel socioeconómico E |
+| NIVEL_PREDOMINANTE | Nivel socioeconómico predominante (NSE) |
+| VIVIENDAS | Total de viviendas particulares habitadas |
+| TAMAÑO_DE_LOCALIDAD | Rango de población |
 
-#### Save the file
+**La página se ve así:**
 
-Directory: D:\AXSI\AMAI\Download   
-File name: NSE_por_AGEB_AMAI_2024.xlsx   
-
-### Copy the file to the working directory
-
-Directory: D:\AXSI\AMAI\
-Saves as : NSE_por_AGEB_AMAI_2024-IMPORT.xlsx
+[<img src="/docs/images/AMAI_2024.png" width="1000">](/docs/images/AMAI_2024.png)
 
 
-## 3. — Edit the Excel File to Produce an Importable CSV
+#### Guardar el archivo
 
-Although the next section provides a **PYTHON SCRIPT** that automates the entire process,   
-the manual steps are documented here for clarity, auditing, and reproducibility.
+Directorio: **D:\AXSI\AMAI\Download**  
+Nombre del archivo: **NSE_por_AGEB_AMAI_2024.xlsx**
 
-#### 3.1 — Delete unnecessary column
+### Copiar el archivo al directorio de trabajo
 
-- Remove the column TAMAÑO_DE_LOCALIDAD.
+Directorio: **D:\AXSI\AMAI\**  
+Guardar como: **NSE_por_AGEB_AMAI_2024-IMPORT.xlsx**
 
-#### 3.2 — Fix merged header rows
 
-- The file contains merged header cells:
+
+## 3. — Editar el Archivo Excel para Generar un CSV Importable
+
+Aunque la siguiente sección proporciona un **SCRIPT EN PYTHON** que automatiza todo el proceso,  
+los pasos manuales se documentan aquí para mayor claridad, auditoría y reproducibilidad.
+
+#### 3.1 — Eliminar columna innecesaria
+
+- Eliminar la columna **TAMAÑO_DE_LOCALIDAD**.
+
+#### 3.2 — Corregir filas de encabezado combinadas
+
+- El archivo contiene celdas de encabezado combinadas.
+
 
 ```text
  TOTAL DE VIVIENDAS POR NIVEL SOCIOECONÓMICO   
  AB     C+    C     C-     D+     D     E
  ```
 
-To standardize the structure:
+Para estandarizar la estructura:
 
-- Add the following headers in row 3:
+- Agrega los siguientes encabezados en la fila 3:
+
 
 ```code
 CVE_ENT	NOM_ENT	CVE_MUN	NOM_MUN	CVE_LOC	NOM_LOC	CVE_AGEB	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE	NSE_TOTAL	POPULATION_RANGE
 ```
 
-- Delete row 1 and 2
+- Eliminar las filas 1 y 2
 
-#### 3.3 — Create the CVEGEO column
+#### 3.3 — Crear la columna CVEGEO
 
-Insert a new column at position 1 with header **CVEGEO**. 
+Inserta una nueva columna en la posición 1 con el encabezado **CVEGEO**.
 
-AMAI provides region codes as integers, but INEGI uses **alphanumeric codes with leading zeros**.   
-Standardize as the codes as follows (INEGI): 
+AMAI proporciona los códigos de región como enteros, pero INEGI utiliza **códigos alfanuméricos con ceros a la izquierda**.  
+Estandariza los códigos de la siguiente manera (formato INEGI):
+
 
 - CVE_ENT → 2 digits (**00**)
 - CVE_MUN → 3 digits (**000**)
 - CVE_LOC → 4 digits (**0000**)
 - CVE_AGEB → 4 digits
 
-Formula for CVEGEO:
+Formula para clave CVEGEO:
+
+Ingles:
 
 ```excel
 =TEXT(B2, "00") & TEXT(D2, "000") & TEXT(F2, "0000") & TEXT(H2, "0000")
 ```
-This produces a valid INEGI CVEGEO:
+
+Español:
+
+```excel
+=TEXTO(B2;"00") & TEXTO(D2;"000") & TEXTO(F2;"0000") & TEXTO(H2;"0000")
+```
+
+Esto produce un CVEGEO válido conforme al estándar INEGI:
 
 **CVEGEO** = CVE_ENT + CVE_MUN + CVE_LOC + CVE_AGEB  
-Format: EEMMMLLLLAAAA
+Formato: **EEMMMLLLLAAAA**
 
-#### 3.4 — Replace N/D values
 
-Replace all *N/D* values *with empty* cells so they import as *NULL* in SQL Server.
+#### 3.4 — Reemplazar valores N/D
 
-This prevents errors in:
+Reemplaza todos los valores **N/D** por **celdas vacías** para que se importen como **NULL** en SQL Server.
+
+Esto evita errores en:
 
 - SUM()
-- Percentage calculations
-- Validation scripts
-- Pipeline consistency checks
+- Cálculos de porcentajes
+- Scripts de validación
+- Revisiones de consistencia del pipeline
 
-Excel now should look like this:
+Ahora el archivo de Excel debe verse así:
 
 [<img src="/docs/images/NSE_4.png" width="1000">](/docs/NSE_4.png)
 
-#### 3.5 — Generate a clean CSV
 
-Excel exports CSV only as **UTF‑8 with commas**, which causes some locality names to include double quotes.  
-  
-The simplest way to obtain a clean, tab‑separated file:   
+#### 3.5 — Generar un CSV limpio
 
-1. Select all Excel data
-2. Paste into **Editpad Pro** (or similar)
-3. This produces a **TAB-separated** dataset without Excel quoting issues
+Excel exporta archivos CSV únicamente como **UTF‑8 con comas**, lo cual provoca que algunos nombres de localidades incluyan **comillas dobles**.
 
-#### 3.6 — Save the final CSV
+La forma más sencilla de obtener un archivo limpio, separado por tabuladores:
 
-Save the cleaned file as:
+1. Seleccionar todos los datos del archivo Excel  
+2. Pegarlos en **EditPad Pro** (o herramienta similar)  
+3. Esto produce un dataset **separado por TAB** sin los problemas de comillas que genera Excel
+
+
+#### 3.6 — Guardar el CSV final
+
+Guarda el archivo ya limpiado como:
 
 ```code
 D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv
 ```
-Encoding: UTF‑8 (No BOM)
+Codificación: UTF‑8 (No BOM)
 
 ---
 
-## Phyton script
+## Script de Python
 
-Save the following script to: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py**
+Guarda el siguiente script en: **D:\AXSI\AMAI\Convert_Excel_to_CSV.py**
 
-This script requires **pandas** and **openpyxl**.  
-In Windows CMD (with administrator rights), run: 
+Este script requiere **pandas** y **openpyxl**.  
+En Windows CMD (con privilegios de administrador), ejecuta:
 
 ```code
-pip install pandas   
+pip install pandas
 pip install openpyxl
 ```
 
-Open the script in **Visual Studio Code** and run it.  
-(Verify the path and filenames if you used different ones.)   
+Abre el script en Visual Studio Code y ejecútalo.
+(Verifica la ruta y los nombres de archivo si utilizaste otros diferentes.)
 
 ```phyton
 import pandas as pd
 
-# 1. Read Excel file without headers
+# 1. Leer el archivo Excel sin encabezados
 df = pd.read_excel(r"D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.xlsx", header=None)
 
-# 2. Drop the first two rows (original headers)
+# 2. Eliminar las primeras dos filas (encabezados originales)
 df = df.drop([0, 1]).reset_index(drop=True)
 
-# 3. Define new headers
+# 3. Definir los nuevos encabezados
 headers = [
     "CVE_ENT","NOM_ENT","CVE_MUN","NOM_MUN_","CVE_LOC","NOM_LOC","CVE_AGEB",
     "NSE_AB","NSE_CPLUS","NSE_C","NSE_CMINUS","NSE_DPLUS","NSE_D","NSE_E","NSE",
@@ -189,18 +212,18 @@ headers = [
 ]
 df.columns = headers
 
-# 4. Drop HABITANTES column
+# 4. Eliminar la columna HABITANTES (si aplica)
 #df = df.drop(columns=["POPULATION_RANGE"])
 
-# 5. Format ENTIDAD, MUN, LOC with leading zeros
+# 5. Formatear ENTIDAD, MUN, LOC con ceros a la izquierda
 df["CVE_ENT"] = df["CVE_ENT"].astype(str).str.zfill(2)
 df["CVE_MUN"] = df["CVE_MUN"].astype(str).str.zfill(3)
 df["CVE_LOC"] = df["CVE_LOC"].astype(str).str.zfill(4)
 
-# 6. Insert CVEGEO column at position 0
+# 6. Insertar la columna CVEGEO en la posición 0
 df.insert(0, "CVEGEO", "")
 
-# 7. Build CVEGEO = ENTIDAD + MUN + LOC + AGEB
+# 7. Construir CVEGEO = ENTIDAD + MUN + LOC + AGEB
 df["CVEGEO"] = (
     df["CVE_ENT"].astype(str).str.zfill(2) +
     df["CVE_MUN"].astype(str).str.zfill(3) +
@@ -208,27 +231,30 @@ df["CVEGEO"] = (
     df["CVE_AGEB"].astype(str).str.zfill(4)
 )
 
-# 8. Replace "N/D" with empty string
+# 8. Reemplazar "N/D" por cadena vacía
 df = df.replace("N/D", "")
 
-# 9. Remove all double quotes
+# 9. Eliminar todas las comillas dobles
 df = df.replace('"', '', regex=True)
 
-# 10. Save as TSV (tab-separated), UTF-8 without BOM
-df.to_csv(r"D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv",
+# 10. Guardar como TSV (separado por tabuladores), UTF-8 sin BOM
+df.to_csv(
+    r"D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv",
     sep="\t",
     index=False,
     encoding="utf-8"
 )
+
 ```
 
-### Expected result
+### Resultado esperado
 
 ```code
 D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv
 ```
 
-The CSV file should look like this:   
+El archivo CSV debe verse así:
+  
 
 | CVEGEO        |CVE_ENT| ENT_NOM       |CVE_MUN| MUN_NOM      |CVE_LOC | LOC_NOM      |CVE_AGEB|NSE_AB |NSE_CPLUS|NSE_C  |NSE_CMINUS|NSE_DPLUS|NSE_D  |NSE_E  |NSE| NSE_TOTAL | POPULATION_RANGE |
 |---------------|-------|---------------|-------|--------------|--------|--------------|--------|-------|---------|-------|----------|---------|-------|-------|---|-----------|------------------|
@@ -240,11 +266,11 @@ The CSV file should look like this:
 | 0100100010229 |01     |Aguascalientes |001    |Aguascalientes|0001    |Aguascalientes|0229    |    25 |       36|     14|        20|        9|      7|      0|C+ |        111|500,000 a 999,999 |
 
 
-## 4 — Create Final table in MS SQL Server
+## 4 — Crear la tabla final en MS SQL Server
 
 ```sql
 ------------------------------------------
--- Create table in SQL: AMAI_AGEB_2024
+### 4.1 — Crear tabla final: AMAI_AGEB_2024
 ------------------------------------------
 
 USE INMO
@@ -284,12 +310,13 @@ CREATE TABLE [dbo].[AMAI_AGEB_2024](
 ) ON [PRIMARY]
 GO
 
-------------------------------------------------
--- Import CSV: NSE_por_AGEB_AMAI_2024_IMPORT.csv
--- Asumes: CSV is TAB
--- File is UTF-8 NO BOM
--- Make sure the directory path matches where you saved the AMAI CSV file.
-------------------------------------------------
+-----------------------------------------------------------------------------------
+-- 4.2 — Importar el CSV: NSE_por_AGEB_AMAI_2024_IMPORT.csv
+-- Importar CSV: NSE_por_AGEB_AMAI_2024_IMPORT.csv  
+-- Se asume: el CSV está separado por TAB  
+-- Archivo en UTF‑8 SIN BOM  
+-- Verifica que la ruta del directorio coincida con donde guardaste el archivo AMAI
+-----------------------------------------------------------------------------------
 BULK INSERT AMAI_AGEB_2024
 FROM 'D:\AXSI\AMAI\NSE_por_AGEB_AMAI_2024_IMPORT.csv'
 WITH (
@@ -300,7 +327,7 @@ WITH (
 );
 ```
 
-### Expected result
+### Resultado esperado
 
 (246048 rows affected)   
 
@@ -310,29 +337,41 @@ WITH (
 
 ```sql
 ----------------------------------------------------
--- Validate that TOTAL = sum of socioeconomic levels
--- Exprected result
+-- Validar que TOTAL = suma de los niveles socioeconómicos
+-- Resultado esperado:
 -- CVEGEO | NSE_AB | NSE_CPLUS | NSE_C | NSE_CMINUS | NSE_DPLUS | NSE_D | NSE_E | NSE | NSE_TOTAL |
--- No records: This means there is no difference between total vs sum of components   
+-- Sin registros: Esto significa que no existe diferencia entre el total y la suma de los componentes
 
 SELECT *
 FROM AMAI_AGEB_2024
 WHERE NSE_TOTAL <> (NSE_AB + NSE_CPLUS + NSE_C + NSE_CMINUS + NSE_DPLUS + NSE_D + NSE_E);
 
 ------------------------------------------------
--- Validate correct CVEGEO length (13 characters)
--- Exprected result
+-- Validar que CVEGEO tenga la longitud correcta (13 caracteres)
+-- Resultado esperado:
 -- CVEGEO | NSE_AB | NSE_CPLUS | NSE_C | NSE_CMINUS | NSE_DPLUS | NSE_D | NSE_E | NSE | NSE_TOTAL |
--- No records: This means all CVEGEO are 13 characters: EEMMMLLLLAAAA
+-- Sin registros: Esto significa que todos los CVEGEO tienen 13 caracteres: EEMMMLLLLAAAA
 
-SELECT *
-FROM AMAI_AGEB_2024
+SELECT
+    CVEGEO,
+    NSE_AB,
+    NSE_CPLUS,
+    NSE_C,
+    NSE_CMINUS,
+    NSE_DPLUS,
+    NSE_D,
+    NSE_E,
+    NSE,
+    NSE_TOTAL
+FROM dbo.AMAI_AGEB_2024
 WHERE LEN(CVEGEO) <> 13;
 
+
 ------------------------------------------------
--- Final Result
--- SQL to display top 6 records to verify data:
--- Show top 6 rows
+-- Resultado final
+-- SQL para mostrar los primeros 6 registros y verificar los datos:
+-- Mostrar las primeras 6 filas
+
 
 SELECT TOP (6) 
   CVEGEO, 
@@ -356,7 +395,7 @@ SELECT TOP (6)
 FROM dbo.AMAI_AGEB_2024
 ```
 
-Your final table in SQL should look like this:  
+Tu tabla final en SQL debería verse así:   
 
 | CVEGEO        | CVE_ENT | NOM_ENT      | CVE_MUN | NOM_MUN      | CVE_LOC | NOM_LOC        | CVE_AGEB | NSE_AB | NSE_CPLUS | NSE_C | NSE_CMINUS | NSE_DPLUS | NSE_D   | NSE_E  | NSE | NSE_TOTAL | POPULATION_RANGE |
 |---------------|---------|--------------|---------|--------------|---------|----------------|----------|--------|-----------|-------|------------|-----------|---------|--------|-----|-----------|------------------|
@@ -367,7 +406,8 @@ Your final table in SQL should look like this:
 | 0100100010182 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 0182     |    345 |       187 |    63 |         46 |        13 |       6 |      0 | A/B |        660| 500,000 a 999,999|
 | 0100100010229 | 01	  |Aguascalientes| 001     |Aguascalientes|0001	    | Aguascalientes | 0229     |    25  |       36  |    14 |         20 |         9 |       7 |      0 | C+  |        111| 500,000 a 999,999|
 
-This table is the official AMAI source for the **NSE calculation steps**.  
+Esta tabla es la fuente oficial de AMAI para los **pasos de cálculo del NSE**.
+
 
 
 
