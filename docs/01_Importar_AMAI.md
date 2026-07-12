@@ -29,11 +29,6 @@ Características importantes del archivo:
 - El nombre del archivo **no incluye año**.  
 - Corresponde a la **metodología NSE 2024**.
 
-**La página se ve así:**
-
-[<img src="/docs/images/AMAI_2024.png" width="1000">](/docs/images/AMAI_2024.png)
-
-
 ---
 
 ## 2. — Contenido del Archivo Original
