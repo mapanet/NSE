@@ -1,6 +1,6 @@
-# Documentación NSE — Nivel Socioeconómico AMAI para Colonias INEGI
+# Documentación Nivel Socioeconómico AMAI para Colonias INEGI
 
-Este sitio contiene la documentación técnica completa del pipeline de **NSE (Nivel Socioeconómico AMAI)** desarrollado por mapanet / AXSI.  
+Este sitio contiene la documentación técnica completa del pipeline de **NSE (Nivel Socioeconómico AMAI 2024)** desarrollado por mapanet / AXSI.  
 Explica los datasets, la metodología, el procesamiento espacial, el flujo SQL y los pasos de validación necesarios para generar **Layer 6 — NSE por colonia** para todo México.
 
 ---
