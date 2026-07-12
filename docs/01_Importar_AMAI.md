@@ -328,7 +328,7 @@ WITH (
 
 
 
-## 5 — Post‑Import Validations
+## 5 — Validaciones tras importar
 
 ```sql
 ----------------------------------------------------
