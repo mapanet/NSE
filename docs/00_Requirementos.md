@@ -41,7 +41,7 @@ Para enriquecimiento posterior (nombres de regiones, población, viviendas):
 
 **Fuente:** AMAI  
 **Unidad:** Viviendas particulares habitadas  
-**Proceso de importación:** [01_Import_AMAI](01_Import_AMAI.md)
+**Proceso de importación:** [01_Importar_AMAI](01_Importar_AMAI.md)
 
 Proporciona el número de viviendas por nivel socioeconómico:
 
