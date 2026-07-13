@@ -1,6 +1,6 @@
 # 4 Cálculo de NSE para Boundaries layer = 6 (Colonias)
 
-> **Referencia:** Consulta el documento [Methodologia](methodologia.md) para la descripción conceptual completa del proceso de cálculo NSE, incluyendo relaciones entre datasets, lógica de ponderación y pasos de auditoría.  
+> **Referencia:** Consulta el documento [Metodología](methodologia.md) para la descripción conceptual completa del proceso de cálculo NSE, incluyendo relaciones entre datasets, lógica de ponderación y pasos de auditoría.  
 > Esta página documenta la **implementación**: el flujo SQL y GIS utilizado para calcular el NSE para Boundaries Layer 6 (Colonias).
 
 ## Propósito dentro del pipeline NSE
