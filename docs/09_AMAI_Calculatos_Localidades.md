@@ -1,6 +1,6 @@
-# 9 — AMAI LOCALIDAD 2024 Data Ingestion (NSE by LOC)
+# 9 — Ingesta de Datos AMAI LOCALIDAD 2024 (NSE por LOC)
 
-Objective: Convert the official AMAI file NSE_por_localidad_AMAI_2024.xlsx into a normalized SQL table ready for the NSE pipeline.
+Objetivo: Convertir el archivo oficial **NSE_por_localidad_AMAI_2024.xlsx** en una tabla SQL normalizada lista para el pipeline de NSE.
 
 ## Suggested work directories
 
