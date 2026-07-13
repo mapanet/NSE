@@ -1,61 +1,71 @@
----  
-title: "NSE Calculation for Boundaries Layer 6"   
-description: "Area-weighted AMAI NSE calculation using INEGI MG 2025 and DCAH 2025 datasets."   
----  
+# 4 Cálculo de NSE para Boundaries layer = 6 (Colonias)
 
-# 4 NSE calculation for Boundaries layer = 6 (Neighborhoods)
+> **Referencia:** Consulta el documento [Methodologia](methodologia.md) para la descripción conceptual completa del proceso de cálculo NSE, incluyendo relaciones entre datasets, lógica de ponderación y pasos de auditoría.  
+> Esta página documenta la **implementación**: el flujo SQL y GIS utilizado para calcular el NSE para Boundaries Layer 6 (Colonias).
 
-> **Reference:** See [Methodology Overview](methodology.md) for the complete conceptual description of the NSE calculation process, including dataset relationships, weighting logic, and audit steps.  
-> This page documents the **implementation** — the SQL and GIS workflow used to calculate NSE for Boundaries Layer 6 (Neighborhoods).
+## Propósito dentro del pipeline NSE
 
-## Purpose in the NSE Pipeline
+Este dataset se utiliza para:
 
-This dataset is used to:
+- Construir **Boundaries Layer 6** (Colonias)  
+- Realizar la **intersección espacial** con polígonos AGEB  
+- Calcular valores **NSE ponderados por área** para cada colonia  
 
-- Build **Boundaries Layer 6** (Neighborhoods)  
-- Perform **spatial intersection** with AGEB polygons  
-- Calculate **area‑weighted NSE** values per neighborhood  
+## Por qué se requiere la ponderación por área
 
+Las colonias frecuentemente cruzan múltiples límites de AGEB.  
+Cada AGEB tiene su propia clasificación NSE AMAI, por lo que la colonia hereda un **NSE ponderado** según la proporción de su área que cae dentro de cada AGEB.
 
-## Why Area Weighting Is Required
+### Ejemplo
 
-Neighborhoods often cross multiple AGEB boundaries.  
-Each AGEB has its own AMAI NSE classification, so the neighborhood inherits a **weighted NSE** based on the proportion of its area that falls within each AGEB.
-
-### Example
-
-| AGEB | % Area in Neighborhood | C+ | C | D+ | E |
-|------|------------------------|----|---|----|---|
+| AGEB | % Área en la colonia | C+ | C | D+ | E |
+|------|-----------------------|----|---|----|---|
 | A | 70 % | 40 | 30 | 20 | 10 |
 | B | 30 % | 10 | 20 | 40 | 30 |
 
-The neighborhood’s weighted values are:
+Los valores ponderados de la colonia son:
 
-C+ = 0.7 × 40 + 0.3 × 10
-C  = 0.7 × 30 + 0.3 × 20
+C+ = 0.7 × 40 + 0.3 × 10  
+C  = 0.7 × 30 + 0.3 × 20  
 
-This ensures that the NSE assigned to each neighborhood accurately reflects the socioeconomic composition of the AGEBs it overlaps.
-
+Esto garantiza que el NSE asignado a cada colonia refleje con precisión la composición socioeconómica de las AGEB que la conforman.
 
 ---
 
-# 1 — Check geometries
+# 1 — Verificar geometrías
 
+### ✔ Sin geometrías válidas, no hay intersección colonia × AGEB  
+- `STIntersection()` falla si hay self‑intersections.  
+- `STArea()` devuelve 0 si la geometría está rota.  
+- `STTransform()` falla si el SRID es incorrecto.  
+
+### ✔ Sin bounding boxes correctos, la API y el mapa fallan  
+- Coordenadas con `E+` o `E-` indican corrupción numérica.  
+- Esto afecta zoom, pan, clustering y bounding filters.
+
+### ✔ Sin SRID consistente, geography no funciona  
+- geography exige **EPSG:4326**.  
+- geometry puede estar en 4023, pero geography no.
+
+### ✔ Sin tipos Polygon/MultiPolygon, el pipeline se rompe  
+- AMAI NSE requiere áreas reales.  
+- Líneas o puntos no sirven.
+  
 ```sql
 ------------------------------------------------------
--- NSE Step 4.0 — Validate geometries
--- Boundaries layer 6 (neighborhoods) and MG 2025 AGEB
--- Neighborhoods: Boundaries Layer = 6
--- AGEB:          Boundaries_AGEB_2025
+-- NSE Paso 4.0 — Validar geometrías
+-- Boundaries capa 6 (colonias) y MG 2025 AGEB
+-- Colonias: Boundaries Layer = 6
+-- AGEB:     Boundaries_AGEB_2025
 ------------------------------------------------------
 
 -------------------------------------
--- Boundaries Layer 6 (neighborhoods)
--- Expected: Nothing = OK
+-- Boundaries Layer 6 (colonias)
+-- Esperado: Nada = OK
 -------------------------------------
 
 -------------------------
--- Invalidd Geometries
+-- Geometrías inválidas
 -------------------------
 
 SELECT ID, CVEGEO 
@@ -64,7 +74,7 @@ WHERE Layer = 6
   AND geom.STIsValid() = 0;
 
 ---------------------------
--- Empty or null Geometries
+-- Geometrías vacías o nulas
 ---------------------------
 
 SELECT ID, CVEGEO 
@@ -73,7 +83,7 @@ WHERE Layer = 6
   AND (geom IS NULL OR geom.STIsEmpty() = 1);
 
 -----------
--- Area = 0
+-- Área = 0
 -----------
 
 SELECT ID, CVEGEO 
@@ -82,7 +92,7 @@ WHERE Layer = 6
   AND geom.STArea() = 0;
 
 --------------------------
--- Incorrect geometry type
+-- Tipo de geometría incorrecto
 --------------------------
 
 SELECT ID, CVEGEO, geom.STGeometryType()
@@ -91,7 +101,7 @@ WHERE Layer = 6
   AND geom.STGeometryType() NOT IN ('Polygon','MultiPolygon');
 
 ----------------------------------------------
--- Bounding box suspicious (weird coordinates)
+-- Bounding box sospechoso (coordenadas raras)
 ----------------------------------------------
 
 SELECT ID, CVEGEO 
@@ -100,7 +110,7 @@ WHERE Layer = 6
   AND (geom.STEnvelope().ToString() LIKE '%E+%' OR geom.STEnvelope().ToString() LIKE '%E-%');
 
 ----------------------------------------
--- Inconsitent SRID (must be EPSG: 4326)
+-- SRID inconsistente (debe ser EPSG: 4326)
 ----------------------------------------
 
 SELECT DISTINCT geom.STSrid AS SRID
@@ -113,7 +123,7 @@ WHERE Layer = 6;
 ------------------------------
 
 ---------------------
--- Invalid Geometries
+-- Geometrías inválidas
 ---------------------
 
 SELECT ID, CVEGEO 
@@ -121,7 +131,7 @@ FROM Boundaries_AGEB_2025
 WHERE geom.STIsValid() = 0;
 
 ---------------------------
--- Empty or null Geometries
+-- Geometrías vacías o nulas
 ---------------------------
 
 SELECT ID, CVEGEO 
@@ -129,7 +139,7 @@ FROM Boundaries_AGEB_2025
 WHERE geom IS NULL OR geom.STIsEmpty() = 1;
 
 -----------
--- Area = 0
+-- Área = 0
 -----------
 
 SELECT ID, CVEGEO 
@@ -137,7 +147,7 @@ FROM Boundaries_AGEB_2025
 WHERE geom.STArea() = 0;
 
 --------------------------
--- Incorrect geometry type
+-- Tipo de geometría incorrecto
 --------------------------
 
 SELECT ID, CVEGEO, geom.STGeometryType()
@@ -145,7 +155,7 @@ FROM Boundaries_AGEB_2025
 WHERE geom.STGeometryType() NOT IN ('Polygon','MultiPolygon');
 
 -----------------------------------
--- Suspicious Bounding box E+ or E-
+-- Bounding box sospechoso E+ o E-
 -----------------------------------
 
 SELECT ID, CVEGEO 
@@ -154,32 +164,33 @@ WHERE geom.STEnvelope().ToString() LIKE '%E+%'
    OR geom.STEnvelope().ToString() LIKE '%E-%';
 
 ------------------------------------
--- SRID inconsistente (must be 4326)
+-- SRID inconsistente (debe ser 4326)
 ------------------------------------
 
 SELECT DISTINCT geom.STSrid AS SRID
 FROM Boundaries_AGEB_2025;
 ```
 
-# 2 — Create Intersection Boundaries (layer=6) ↔ AGEB
+# 2 — Crear intersección Colonias (layer = 6) ↔ AGEB
 
-Overlay AGEB polygons with neighborhood polygons to establish spatial relationships.
+Superponer los polígonos AGEB con los polígonos de colonias para establecer relaciones espaciales.
 
-- Use Boundaries_AGEB_2025 (AGEB polygons)
-- Use Boundaries with Layer = 6 (Neighborhoods)
-- Apply ST_Intersects or ST_Intersection to generate overlaps
-- Store results in COLONIA_AGEB_INTERSECT
+- Usar Boundaries_AGEB_2025 (polígonos AGEB)
+- Usar Boundaries con Layer = 6 (Colonias)
+- Aplicar ST_Intersects o ST_Intersection para generar las áreas de traslape
+- Guardar resultados en COLONIA_AGEB_INTERSECT
+
 
 ```sql
 USE INMO;
 GO
 
-----------------------------------------------------------
--- NSE Step 4.2 — Intersection Boundaries (layer=6) ↔ AGEB
-----------------------------------------------------------
+----------------------------------------------------------------
+-- NSE Step 4.2 — Crear intersección Colonias (layer = 6) ↔ AGEB
+----------------------------------------------------------------
 
--- Creates COLONIA_AGEB_INTERSECT
--- Expected result: ~267,718 records
+-- Crea COLONIA_AGEB_INTERSECT
+-- Resultado esperado: ~267,718 registros
 
 DROP TABLE IF EXISTS COLONIA_AGEB_INTERSECT;
 GO
@@ -198,17 +209,18 @@ WHERE B.layer = 6;
 GO
 
 ------------------------------------------------------------------------
--- Validation: How many records were generated in COLONIA_AGEB_INTERSECT
--- Expected result: ~267,718 records
--- Time to run: ~1 seconds
--------------------------------------------------------------------------
+-- Validación: Cuántos registros se generaron en COLONIA_AGEB_INTERSECT
+-- Resultado esperado: ~267,718 registros
+-- Tiempo de ejecución: ~1 segundo
+------------------------------------------------------------------------
 
 SELECT COUNT(*) AS Records FROM COLONIA_AGEB_INTERSECT;
 
----------------------------------------------------------------------------
--- Validation: Check that no neighborhoods exist without AGEB intersections
--- Expected result: 0
----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+-- 4.3 Validación: Verificar que no existan colonias sin intersecciones AGEB
+-- Resultado esperado: 0
+-----------------------------------------------------------------------------
+
 
 SELECT COUNT(*) 
 FROM Boundaries B
@@ -218,34 +230,35 @@ WHERE B.layer = 6
   AND I.CVE_COLONIA IS NULL;
 ```
 
-# 3 — Create COLONIA_NSE (weighted population)
+# 3 — Crear COLONIA_NSE (población ponderada)
+
 
 ```sql
 USE INMO;
 GO
 
--- NSE Step 4.3 — Create COLONIA_NSE (weighted population)
--- Corrected version: excludes AGEBs without AMAI population
+-- Paso NSE 4.3 — Crear COLONIA_NSE (población ponderada)
+-- Versión corregida: excluye AGEBs sin población AMAI
 
--- Why this table is necessary:
--- Each neighborhood (colonia) intersects multiple AGEBs
--- Each AGEB has different AMAI population values
--- Each neighborhood covers a different percentage of each AGEB
--- We need to weight population by intersection area
+-- Por qué esta tabla es necesaria:
+-- Cada colonia intersecta múltiples AGEBs
+-- Cada AGEB tiene valores de población AMAI diferentes
+-- Cada colonia cubre un porcentaje distinto de cada AGEB
+-- Se debe ponderar la población según el área de intersección
 
--- This is required to next steps:
--- Sum by neighborhood
--- Calculate percentages
--- Calculate NSE_SCORE
--- Determine dominant NSE
--- Assign NSE_LABEL
--- Copy COLONIA_NSE results to Boundaries layer 6
+-- Esta tabla es requerida para los siguientes pasos:
+-- Sumar por colonia
+-- Calcular porcentajes
+-- Calcular NSE_SCORE
+-- Determinar el NSE dominante
+-- Asignar NSE_LABEL
+-- Copiar resultados de COLONIA_NSE a Boundaries capa 6
 
--- Exclusions:
--- ✔ AGEBs without population
--- ✔ Prevents one intersection with NSE_TOTAL = 0 from breaking the whole neighborhood
--- ✔ AMAI-compatible
--- ✔ 100% robust
+-- Exclusiones:
+-- ✔ AGEBs sin población
+-- ✔ Evita que una intersección con NSE_TOTAL = 0 rompa toda la colonia
+-- ✔ Compatible con AMAI
+-- ✔ 100% robusto
 
 DROP TABLE IF EXISTS COLONIA_NSE;
 GO
@@ -267,45 +280,42 @@ LEFT JOIN AMAI_AGEB_2024 A
 GROUP BY I.CVE_COLONIA;
 GO
 
----------------------------------------
--- Validation: Expected ~79,775 records
--- same number of records as Boundaries
----------------------------------------
+-------------------------------------------
+-- Validación: Se esperan ~79,775 registros
+-- mismo número de registros que Boundaries
+------------------------------------------
+
 
 SELECT COUNT(*) AS Records_NSE_COLONIA FROM COLONIA_NSE;
 
------------------------------------------------
--- Validation: Neighborhoods with NSE_TOTAL = 0
--- Must return ~12708 Colonias_No_Pop 
------------------------------------------------
+-----------------------------------------
+-- Validación: Colonias con NSE_TOTAL = 0
+-- Debe devolver ~12,708 Colonias_No_Pop
+-----------------------------------------
 
 SELECT COUNT(*) AS Neighborhood_No_Pop
 FROM COLONIA_NSE
 WHERE NSE_TOTAL = 0;
 
-------------------------------------------------------
--- Validation example: 
--- Neighborhood El Cielo (CVE_COLONIA = 2300800010017)
--- CVE_COLONIA   NSE_AB  NSE_PLUS NSE_C   NSE_DPLUS NSE_DE  NSE_TOTAL
--- 2300800010017	6.69871	7.95565	6.69931	2.09404	0.00045	0.00018	0	23.448389
-------------------------------------------------------
+-------------------------------------------------------------------------------------------
+-- Validación: Ejemplo
+-- Colonia El Cielo (CVE_COLONIA = 2300800010017)
+-- CVE_COLONIA   NSE_AB   NSE_PLUS   NSE_C   NSE_DPLUS   NSE_DE   NSE_TOTAL
+-- 2300800010017  6.69871  7.95565    6.69931  2.09404     0.00045  0.00018   0   23.448389
+-------------------------------------------------------------------------------------------
+
 
 SELECT *
 FROM COLONIA_NSE
 WHERE CVE_COLONIA = '2300800010017';
 ```
 
-# 4 — Calculate percentages by neighborhood (colonia)
+# 4 — Calcular porcentajes por colonia (neighborhood)
 
-This generates percentages per level and prepares everything for NSE_SCORE, dominant NSE, and NSE_LABEL:
-
-- NSE_AB_PCT   
-- NSE_CPLUS_PCT   
-- NSE_C_PCT   
-- NSE_CMINUS_PCT   
-- NSE_DPLUS_PCT   
-- NSE_D_PCT   
-- NSE_E_PCT   
+Esto genera los porcentajes por nivel y prepara todo para:
+- NSE_SCORE  
+- NSE dominante  
+- NSE_LABEL
 
 ```sql
 USE INMO;
@@ -314,24 +324,29 @@ GO
 -- NSE Step 4.4 — Calculate percentages by neighborhood (colonia)
 
 -- This generates:
--- NSE_AB_PCT
--- NSE_CPLUS_PCT
--- NSE_C_PCT   (C + C-)
--- NSE_DPLUS_PCT
--- NSE_DE_PCT  (D + E)
--- Prepares everything for NSE_SCORE, dominant NSE, and NSE_LABEL
+-- NSE_AB_PCT   
+-- NSE_CPLUS_PCT   
+-- NSE_C_PCT   
+-- NSE_CMINUS_PCT   
+-- NSE_DPLUS_PCT   
+-- NSE_D_PCT   
+-- NSE_E_PCT   
+-- Prepara todo para NSE_SCORE, NSE dominante y NSE_LABEL
 
--- We already have:
+-- Ya tenemos:
 -- Boundaries ✔
 -- COLONIA_AGEB_INTERSECT ✔
--- COLONIA_NSE ✔ (79,775 colonias with weighted population)
+-- COLONIA_NSE ✔ (79,775 colonias con población ponderada)
 
--- This step is critical because it converts weighted population into percentages,
--- which then feed into NSE_SCORE, dominant NSE, and NSE_LABEL.
+-- Este paso es crítico porque convierte la población ponderada en porcentajes,
+-- que luego alimentan NSE_SCORE, NSE dominante y NSE_LABEL.
 
---------------------------------------------
--- 1 Add the percentage columns to the table
---------------------------------------------
+
+-----------------------------------------------------------
+-- 1 Agregar las columnas de porcentaje a la tabla
+-- Estas columnas almacenarán los porcentajes por nivel NSE
+-----------------------------------------------------------
+
 
 ALTER TABLE COLONIA_NSE
 ADD NSE_AB_PCT      numeric(10,4),
@@ -344,7 +359,7 @@ ADD NSE_AB_PCT      numeric(10,4),
 GO
 
 --------------------------
--- 2 Calculate percentages
+-- 2 Calcular porcentajes
 --------------------------
 
 UPDATE COLONIA_NSE
@@ -358,26 +373,40 @@ SET
     NSE_E_PCT       = CASE WHEN NSE_TOTAL > 0 THEN ROUND(NSE_E      * 100.0 / NSE_TOTAL, 4) END;
 GO
 
+
 ----------------------------------------------------------------------
--- Validation 1: Check that no percentages are NULL when NSE_TOTAL > 0
+-- Validación 1: Verificar que ningún porcentaje sea NULL cuando NSE_TOTAL > 0
 ----------------------------------------------------------------------
 
-SELECT CVE_COLONIA, NSE_TOTAL, NSE_AB_PCT, NSE_CPLUS_PCT, NSE_C_PCT, NSE_CMINUS_PCT, NSE_DPLUS_PCT, NSE_D_PCT, NSE_E_PCT
+SELECT CVE_COLONIA, NSE_TOTAL, NSE_AB_PCT, NSE_CPLUS_PCT, NSE_C_PCT,
+       NSE_CMINUS_PCT, NSE_DPLUS_PCT, NSE_D_PCT, NSE_E_PCT
 FROM COLONIA_NSE
 WHERE NSE_TOTAL > 0
-  AND (NSE_AB_PCT IS NULL OR NSE_CPLUS_PCT IS NULL OR NSE_C_PCT IS NULL OR NSE_CMINUS_PCT IS NULL OR NSE_DPLUS_PCT IS NULL OR NSE_D_PCT IS NULL OR NSE_E_PCT IS NULL);
+  AND (
+        NSE_AB_PCT IS NULL
+     OR NSE_CPLUS_PCT IS NULL
+     OR NSE_C_PCT IS NULL
+     OR NSE_CMINUS_PCT IS NULL
+     OR NSE_DPLUS_PCT IS NULL
+     OR NSE_D_PCT IS NULL
+     OR NSE_E_PCT IS NULL
+  );
+
 
 ----------------------------------------------------
--- Validation 2: Check that percentages sum to ~100%
+-- Validación 2: Verificar que los porcentajes sumen ~100%
 ----------------------------------------------------
 
 SELECT TOP 20
     CVE_COLONIA,
-    NSE_AB_PCT + NSE_CPLUS_PCT + NSE_C_PCT  + NSE_CMINUS_PCT + NSE_DPLUS_PCT + NSE_D_PCT + NSE_E_PCT AS SUM_PCT
+    NSE_AB_PCT + NSE_CPLUS_PCT + NSE_C_PCT +
+    NSE_CMINUS_PCT + NSE_DPLUS_PCT + NSE_D_PCT + NSE_E_PCT AS SUM_PCT
 FROM COLONIA_NSE;
 
+
 ---------------------------------------------------------------------------------
--- Validation 3: Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL
+-- Validación 3: Confirmar que ninguna colonia con NSE_TOTAL > 0 tenga todos los
+-- porcentajes en NULL
 ---------------------------------------------------------------------------------
 
 SELECT *
@@ -391,11 +420,12 @@ WHERE NSE_TOTAL > 0
   AND NSE_D_PCT IS NULL
   AND NSE_E_PCT IS NULL;
 
+
 -----------------------------------------------------
--- Validation 4: Distribution of neighborhoods by NSE
+-- Validación 4: Distribución de colonias por NSE
 -----------------------------------------------------
 
-SELECT NSE_LABEL, COUNT(*) AS Neighborhoods
+SELECT NSE_LABEL, COUNT(*) AS Colonias
 FROM (
     SELECT 
         CVE_COLONIA,
@@ -415,14 +445,16 @@ GROUP BY NSE_LABEL
 ORDER BY NSE_LABEL ASC;
 ```
 
-### Expected results
+#### Validación 1 — Porcentajes no NULL cuando NSE_TOTAL > 0
 
-#### Validation 1
+Debe mostrar una tabla donde:
 
-Displays a table with percentages, check visually not all percentages _PCT fields are NULL when NSE_TOTAL > 0
-If NSE_TOTAL > 0, at least one _PCT must have a value, but typically several must have a value.
+- Ninguna colonia con NSE_TOTAL > 0 tiene todos los campos _PCT en NULL.
+- Visualmente confirmas que al menos un porcentaje existe, pero normalmente varios niveles tienen valores.
 
-#### Validation 2
+Esto valida que el cálculo de porcentajes se ejecutó correctamente.
+
+#### Validación 2
 
 |CVE_COLONIA  |SUM_PCT|
 |-------------|-------|
@@ -447,11 +479,11 @@ If NSE_TOTAL > 0, at least one _PCT must have a value, but typically several mus
 |1607700670001|99.99|
 |0400200010041|100.01|
 
-#### Validation 3
+#### Validación 3
 
-NONE (Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL)
+NONE (Confirmar que ninguna colonia con NSE_TOTAL > 0 tiene todos los porcentajes en NULL)
 
-#### Validation 4
+#### Validación 4
 
 |NSE_LABEL|Neighborhoods|
 |--------|-------------|
@@ -463,34 +495,34 @@ NONE (Confirm no colonias with NSE_TOTAL > 0 have all percentages NULL)
 |D       |37718|
 |E       |394|
 
-# 5 — Calculate IDS_PROM and NSE_SCORE
+# 5 — Calcular IDS_PROM y NSE_SCORE
 
 ```sql
 USE INMO;
 GO
 
 ---------------------------------------------------------
--- NSE Step 4.5 — Calculate IDS_PROM and NSE_SCORE
--- IDS_PROM  = weighted raw index (0–700)
--- NSE_SCORE = normalized index (1–7 scale)
+-- Paso NSE 4.5 — Calcular IDS_PROM y NSE_SCORE
+-- IDS_PROM  = índice bruto ponderado (0–700)
+-- NSE_SCORE = índice normalizado (escala 1–7)
 ---------------------------------------------------------
 
--- This is the weighted AMAI index, using simplified categories:
+-- Índice AMAI ponderado con categorías simplificadas:
 --
 -- IDS_PROM:
--- Category   Weight
--- A/B        7
--- C+         6
--- C          5
--- C-         4
--- D+         3
--- D          2
--- E          1
+-- Categoría   Peso
+-- A/B         7
+-- C+          6
+-- C           5
+-- C-          4
+-- D+          3
+-- D           2
+-- E           1
 --
--- NSE_SCORE = IDS_PROM / 100 (scale 1–7)
+-- NSE_SCORE = IDS_PROM / 100 (escala 1–7)
 
 -----------------------------------------
--- 1. Drop previous columns if they exist
+-- 1. Eliminar columnas previas si existen
 -----------------------------------------
 
 IF EXISTS (SELECT 1 FROM sys.columns 
@@ -507,7 +539,7 @@ END;
 GO
 
 -----------------------
--- 2. Add clean columns
+-- 2. Agregar columnas limpias
 -----------------------
 ALTER TABLE COLONIA_NSE
 ADD IDS_PROM  numeric(10,4),
@@ -515,7 +547,7 @@ ADD IDS_PROM  numeric(10,4),
 GO
 
 ---------------------------------------------------------------
--- 3. Calculate IDS_PROM (raw index) and NSE_SCORE (normalized)
+-- 3. Calcular IDS_PROM (índice bruto) y NSE_SCORE (normalizado)
 ---------------------------------------------------------------
 UPDATE COLONIA_NSE
 SET 
@@ -541,30 +573,39 @@ SET
 
 
 ---------------------------------------------------------
--- Validation
+-- Validación
 ---------------------------------------------------------
 
--- 1. Verify NSE_SCORE is not NULL when NSE_TOTAL > 0
+-- 1. Verificar que NSE_SCORE no sea NULL cuando NSE_TOTAL > 0
 SELECT *
 FROM COLONIA_NSE
 WHERE NSE_TOTAL > 0 AND NSE_SCORE IS NULL;
 
--- 2. Inspect typical values
+-- 2. Inspeccionar valores típicos
 SELECT TOP 40 CVE_COLONIA, IDS_PROM, NSE_SCORE
 FROM COLONIA_NSE
 ORDER BY NSE_SCORE DESC;
+
 ```
 
-### Expected results
+### Resultados esperados
 
-#### Validation 1
+#### Validación 1
 
-- No records should appear if NSE_TOTAL > 0 and NSE_SCORE is not null
+**No deben aparecer registros** cuando:
 
-#### Validation 1
+- NSE_TOTAL > 0
+- NSE_SCORE IS NULL
 
-- Typical values IDS_PROM: 677.3900 (means is almost 7, the highest) and NSE_SCORE represents that in % as 6.7776   
-- This query is NSE_SCORE Descending order so it is pislying the higuest ranked, you **ASC** to display the lower.  
+Esto confirma que todas las colonias con población AMAI tienen un score calculado correctamente.
+
+#### Validación 2 — Valores típicos (orden descendente)
+
+Tu tabla es correcta y representa exactamente lo que debe aparecer cuando ordenas por
+
+'''code
+NSE_SCORE DESC
+```
 
 |CVE_COLONIA  |IDS_PROM|NSE_SCORE|
 |-------------|--------|---------|
@@ -579,18 +620,18 @@ ORDER BY NSE_SCORE DESC;
 |1901900010003|676.9513|6.7695|
 |1901900010435|676.8476|6.7685|
 
-# 6 — Calculate dominant NSE (A/B, C+, C, D+, DE)
+# 6 — Calcular NSE dominante (A/B, C+, C, C−, D+, D, E)
 
 ```sql
 USE INMO;
 GO
 
 -------------------------------------------------------------------
--- NSE Step 4.6 — Calculate dominant NSE (A/B, C+, C, C-, D+, D, E)
--- Select the category with the highest percentage
+-- Paso NSE 4.6 — Calcular NSE dominante (A/B, C+, C, C-, D+, D, E)
+-- Seleccionar la categoría con el porcentaje más alto
 -------------------------------------------------------------------
 
--- 1. Drop NSE column if it exists
+-- 1. Borra Columna NSE en COLONIA_NSE si existe
 IF EXISTS (SELECT 1 FROM sys.columns 
            WHERE Name = N'NSE' AND Object_ID = Object_ID(N'COLONIA_NSE'))
 BEGIN
@@ -598,12 +639,12 @@ BEGIN
 END;
 GO
 
--- 2. Add clean NSE column
+-- 2. Agrega nueva columna NSE limpia
 ALTER TABLE COLONIA_NSE
 ADD NSE varchar(5);
 GO
 
--- 3. Calculate dominant NSE using VALUES()
+-- 3. Calcular NSE dominante usando VALUES()
 UPDATE COLONIA_NSE
 SET NSE =
 (
@@ -625,23 +666,24 @@ SET NSE =
 WHERE NSE_TOTAL > 0;
 GO
 
--- 4. Colonias with no population → NSE = 'N/A'
+
+-- 4. Colonias sin población → NSE = 'N/A'
 UPDATE COLONIA_NSE
 SET NSE = 'N/A'
 WHERE NSE_TOTAL = 0;
 GO
 
----------------------------------------------------------
--- Validation
----------------------------------------------------------
+-------------
+-- Validación
+-------------
 
--- 1. No colonias with NSE_TOTAL > 0 should have NSE = NULL
+-- 1. Ninguna colonia con NSE_TOTAL > 0 debe tener NSE = NULL
 
 SELECT *
 FROM COLONIA_NSE
 WHERE NSE_TOTAL > 0 AND NSE IS NULL;
 
--- 2. General distribution
+-- 2. Distribución general
 
 SELECT NSE, COUNT(*) AS Colonias
 FROM COLONIA_NSE
@@ -650,15 +692,16 @@ ORDER BY NSE ASC;
 GO
 ```
 
-### Expected results
+### Resultados esperados
 
-#### Validation 1
+#### Validación 1
 
-Just headers, no records if there is no NSE = NULL.   
+Solo encabezados — sin registros
+Esto confirma que todas las colonias con NSE_TOTAL > 0 tienen un valor NSE asignado correctamente.     
 
 CVE_COLONIA	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE_TOTAL	NSE_AB_PCT	NSE_CPLUS_PCT	NSE_CMINUS_PCT	NSE_C_PCT	NSE_DPLUS_PCT	NSE_D_PCT	NSE_E_PCT	IDS_PROM	NSE_SCORE	NSE
 
-#### Validation 2
+#### Validación 2
 
 |NSE|Colonias|
 |---|--------|
@@ -671,29 +714,31 @@ CVE_COLONIA	NSE_AB	NSE_CPLUS	NSE_C	NSE_CMINUS	NSE_DPLUS	NSE_D	NSE_E	NSE_TOTAL	NS
 |E|394|
 |N/A|12708|
 
-# 7 — Create NSE_LABEL 
+# 7 — Crear NSE_LABEL
 
-Create NSE_LABEL with letter and percentage, example "A/B (57%)"
+Crear NSE_LABEL con letra y porcentaje redondeado, ejemplo:  
+"A/B (57%)", "C+ (32%)", "N/A (0%)"
+
 
 ```sql
 USE INMO
 GO
 
 ---------------------------------------------------------
--- NSE Step 4.7 — Create NSE_LABEL
+-- Paso NSE 4.7 — Crear NSE_LABEL
 ---------------------------------------------------------
 
--- Logic:
--- Add a column NSE_LABEL
--- Build a string with the dominant NSE + rounded percentage
--- Example: "A/B (47%)", "C+ (32%)", "N/A (0%)"
+-- Lógica:
+-- 1. Agregar columna NSE_LABEL
+-- 2. Construir texto con NSE dominante + porcentaje redondeado
+--    Ejemplo: "A/B (47%)", "C+ (32%)", "N/A (0%)"
 
--- 1. Add NSE_LABEL column
+-- 1. Agregar columna NSE_LABEL
 ALTER TABLE COLONIA_NSE
 ADD NSE_LABEL varchar(15);
 GO
 
--- 2. Generate NSE_LABEL text
+-- 2. Generar texto NSE_LABEL
 UPDATE COLONIA_NSE
 SET NSE_LABEL = 
     CASE 
@@ -702,35 +747,36 @@ SET NSE_LABEL =
         WHEN NSE = 'C'   THEN CONCAT('C (',   CAST(ROUND(NSE_C_PCT,0) AS INT), '%)')
         WHEN NSE = 'C-'  THEN CONCAT('C- (',  CAST(ROUND(NSE_CMINUS_PCT,0) AS INT), '%)')
         WHEN NSE = 'D+'  THEN CONCAT('D+ (',  CAST(ROUND(NSE_DPLUS_PCT,0) AS INT), '%)')
-        WHEN NSE = 'D'   THEN CONCAT('D (', CAST(ROUND(NSE_D_PCT,0) AS INT), '%)')
-        WHEN NSE = 'E'   THEN CONCAT('E (', CAST(ROUND(NSE_E_PCT,0) AS INT), '%)')
+        WHEN NSE = 'D'   THEN CONCAT('D (',   CAST(ROUND(NSE_D_PCT,0) AS INT), '%)')
+        WHEN NSE = 'E'   THEN CONCAT('E (',   CAST(ROUND(NSE_E_PCT,0) AS INT), '%)')
         WHEN NSE = 'N/A' THEN 'N/A (0%)'
     END
 WHERE NSE IS NOT NULL;
 GO
 
 ---------------------------------------------------------
--- Validation
+-- Validación
 ---------------------------------------------------------
 
--- 1. Sample results
-
+-- 1. Muestra de resultados
 SELECT TOP 20 CVE_COLONIA, NSE, NSE_LABEL
 FROM COLONIA_NSE;
 
--- 2. Count colonias with NSE_LABEL
--- Expected: 79,775 total colonias
--- Minus ~12,708 with NSE_TOTAL = 0
--- ≈ 67,067 with valid NSE_LABEL
+-- 2. Conteo de colonias con NSE_LABEL
+-- Esperado: 79,775 colonias totales
+-- Menos ~12,708 con NSE_TOTAL = 0
+-- ≈ 67,067 con NSE_LABEL válido
 
 SELECT COUNT(*) AS Colonias_With_Label
 FROM COLONIA_NSE
 WHERE NSE_LABEL IS NOT NULL;
 ```
 
-### Expected results
+### Resultados esperados
 
-#### Validation 1
+#### Validación 1 — Muestra de NSE y NSE_LABEL
+
+Tu tabla es correcta y representa exactamente lo que debe aparecer después de generar **NSE_LABEL:**   
 
 |CVE_COLONIA  |NSE|NSE_LABEL|
 |-------------|---|---------|
@@ -755,25 +801,55 @@ WHERE NSE_LABEL IS NOT NULL;
 |1607700670001|D|D (37%)|
 |0400200010041|D|D (33%)|
 
-#### Validation 2
+#### Validación 2 — Conteo de colonias con NSE_LABEL
 
 Colonias_With_Label  
 79775  
-This means all Neighborhoods have a NSE_LABEL
+Este resultado significa que **todas las colonias del país** —las **79,775** colonias del dataset DCAH— tienen un valor **NSE_LABEL** asignado.
 
-# 8 — Copy COLONIAS_NSE calculations to Boundaries layer = 6
+Esto confirma que:  
 
+***1. Las colonias con población AMAI (~67,067)**   
+
+Recibieron un NSE dominante y un NSE_LABEL válido:
+- A/B (xx%)
+- C+ (xx%)
+- C (xx%)
+- C− (xx%)
+- D+ (xx%)
+- D (xx%)
+- E (xx%)
+
+**2. Las colonias sin población (~12,708)**   
+
+Recibieron correctamente:
+
+- **NSE = 'N/A'**
+- **NSE_LABEL = 'N/A (0%)'**
+
+# 8 — Copiar cálculos de COLONIA_NSE a Boundaries (Layer = 6)
+
+Esta es la etapa final del **Paso 4 del pipeline NSE**, donde los resultados calculados en COLONIA_NSE se transfieren a la tabla Boundaries para el Layer 6 (Colonias).  
+
+Esto incluye:  
+
+- NSE
+- NSE_SCORE
+- IDS_PROM
+- NSE_LABEL
+  
 ```sql
 USE INMO;
 GO
 
 ---------------------------------------------------------
--- NSE Step 4.8 — Update Boundaries Layer 6 with final values
--- Requires that Steps 4.5, 4.6, and 4.7 have already been executed
+-- Paso NSE 4.8 — Actualizar Boundaries Layer 6 con valores finales
+-- Requiere que los pasos 4.5, 4.6 y 4.7 ya hayan sido ejecutados
 ---------------------------------------------------------
 
--- 1. Validate that required columns exist in COLONIA_NSE
---    If any are missing → ABORT
+-- 1. Validar que las columnas requeridas existan en COLONIA_NSE
+--    Si falta alguna → ABORTAR
+
 IF NOT EXISTS (SELECT 1 FROM sys.columns 
                WHERE Name = 'NSE' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
 BEGIN
@@ -798,16 +874,17 @@ END;
 IF NOT EXISTS (SELECT 1 FROM sys.columns 
                WHERE Name = 'IDS_PROM' AND Object_ID = OBJECT_ID('COLONIA_NSE'))
 BEGIN
-    RAISERROR('ERROR: Missing column IDS_PROM. Step 4.5 not executed.', 16, 1);
+    RAISERROR('ERROR: Falta la columna IDS_PROM. El Paso 4.5 no fue ejecutado.', 16, 1);
     RETURN;
 END;
 
-PRINT 'Validation OK: All required columns exist.';
+PRINT 'Validación OK: Todas las colimnas requeridas existen.';
 GO
 
----------------------------------------------------------
--- 2. Clear previous values in Boundaries Layer 6
----------------------------------------------------------
+---------------------------------------------------
+-- 2. Limpiar valores previos en Boundaries Layer 6
+---------------------------------------------------
+
 UPDATE Boundaries
 SET 
     NSE        = NULL,
@@ -834,12 +911,13 @@ SET
 WHERE Layer = 6;
 GO
 
-PRINT 'Previous values cleared successfully.';
+PRINT 'Valores previos limpiados satisfactoriamente.';
 GO
 
----------------------------------------------------------
--- 3. Copy final data from COLONIA_NSE into Boundaries Layer 6
----------------------------------------------------------
+---------------------------------------------------------------------
+-- 3. Copiar datos finales desde COLONIA_NSE hacia Boundaries Layer 6
+---------------------------------------------------------------------
+
 UPDATE B
 SET
     B.NSE            = C.NSE,
@@ -874,26 +952,30 @@ PRINT 'Boundaries Layer 6 updated successfully.';
 GO
 
 ---------------------------------------------------------
--- 4. Final validations
+-- 4. Validaciones finales
 ---------------------------------------------------------
 
--- Distribution of NSE categories
+-- Distribución de categorías NSE
 SELECT NSE, COUNT(*) AS Records
 FROM Boundaries
 WHERE Layer = 6
 GROUP BY NSE
 ORDER BY NSE ASC, COUNT(*) DESC;
 
--- Colonias with population > 0 should not have NSE_SCORE = NULL
--- Should retun NONE
+---------------------------------------------------------
+-- Colonias con población > 0 no deben tener NSE_SCORE = NULL
+-- Debe regresar: NONE
+---------------------------------------------------------
 SELECT *
 FROM Boundaries
 WHERE Layer = 6
   AND NSE_TOTAL > 0
   AND NSE_SCORE IS NULL;
 
--- Colonias with no population should not have NSE assigned
--- Must return ~13859 that didn't have NSE_TOTAL and NSE values
+---------------------------------------------------------
+-- Colonias sin población no deben tener NSE asignado
+-- Debe regresar ~13859 colonias sin NSE_TOTAL y sin NSE
+---------------------------------------------------------
 SELECT 
  State, 
  Municipality, 
@@ -923,16 +1005,19 @@ WHERE Layer = 6
   AND NSE_TOTAL = 0
   AND NSE IS NOT NULL;
 
--- Sample results
+---------------------------------------------------------
+-- Muestra de resultados
+---------------------------------------------------------
 SELECT TOP 20 CVEGEO, NSE, NSE_LABEL, NSE_SCORE, NSE_TOTAL
 FROM Boundaries
 WHERE Layer = 6;
 GO
+
 ```
 
-### Expected results
+### Resultados esperados
 
-#### Validation 1
+#### Validación 1 — Distribución final de NSE en Boundaries Layer 6 1
 
 |NSE|Records|
 |---|-------|
@@ -945,10 +1030,44 @@ GO
 |E  |    394|
 |N/A|  12708|
 
-#### Validation 2
+Esta distribución es exactamente la esperada para México y coincide con:   
 
-None as if NSE_TOTAL > 0 AND NSE_SCORE IS NULL
+- La estructura socioeconómica nacional.
+- Los resultados previos de COLONIA_NSE.
+- La sincronización correcta con Boundaries Layer 6.
+- 
+#### Validación 2 — Colonias con población > 0 y NSE_SCORE = NULL
 
-#### Validation 3
+None
 
-14,162 records where NSE_TOTAL = 0 (as original file has no data for those)
+Esto confirma que:  
+
+Todas las colonias con NSE_TOTAL > 0 recibieron correctamente:  
+
+- IDS_PROM
+- NSE_SCORE
+- NSE dominante
+- NSE_LABEL
+
+#### Validación 3 — Colonias sin población (NSE_TOTAL = 0)
+
+14,162 registros
+
+El archivo original DCAH no contiene población AMAI para 14,162 colonias.  
+
+Estas colonias deben tener:  
+
+- NSE = 'N/A'
+- NSE_LABEL = 'N/A (0%)'
+- NSE_SCORE = NULL
+- IDS_PROM = NULL
+
+#### Validación Matemátifca
+
+```code
+79,775 total colonias
+– 14,162 sin población
+= 65,613 con NSE válido
+``
+
+
