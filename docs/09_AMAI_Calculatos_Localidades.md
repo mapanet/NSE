@@ -1,13 +1,3 @@
-# 9 — Ingesta de Datos AMAI LOCALIDAD 2024 (NSE por LOC)
-
-Objetivo: Convertir el archivo oficial **NSE_por_localidad_AMAI_2024.xlsx** en una tabla SQL normalizada lista para el pipeline de NSE.
-
-## Suggested work directories
-
-- D:\AXSI\AMAI — working files
-- D:\AXSI\AMAI\Download  — downloaded source files
-
-
 # 9.1 — Load NSE values into Boundaries Layer 5 (Localities)
 
 AMAI_LOC_2024 already contains CVEGEO at locality level  
