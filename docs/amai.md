@@ -4,17 +4,17 @@ This document summarizes the AMAI socioeconomic methodology and classification r
 
 ---
 
-## 1. AMAI NSE Overview
+## 1. Panorama general del NSE de AMAI
 
-AMAI defines socioeconomic levels based on:
+AMAI define los niveles socioeconómicos con base en:  
 
-- Household characteristics  
-- Education  
-- Assets  
-- Services  
-- Composite socioeconomic score  
+- Características del hogar
+- Educación
+- Bienes
+- Servicios
+- Puntaje socioeconómico compuesto  
 
-The official categories are:
+Las categorías oficiales son:
 
 - **A/B**  
 - **C+**  
@@ -25,38 +25,38 @@ The official categories are:
 
 ---
 
-## 2. AMAI Variables
+## 2. Variables de AMAI
 
-Key variables include:
+Las variables clave incluyen:  
 
-- Household size  
-- Education level  
-- Internet access  
-- Vehicle ownership  
-- Computer/tablet ownership  
-- Housing characteristics  
-- Access to services  
+- Tamaño del hogar
+- Nivel educativo
+- Acceso a internet
+- Propiedad de vehículo
+- Propiedad de computadora/tableta
+- Características de la vivienda
+- Acceso a servicios
 
-These are aggregated into a composite score.
-
----
-
-## 3. Composite Score Calculation
-
-AMAI applies weights to each variable:
-
-**NSE_Score** = Σ (Indicator × Weight)
-
-In the neighborhood (colonia) pipeline, each indicator is **area‑weighted** based on AGEB overlap.
+Estas se agregan para formar un puntaje compuesto.
 
 ---
 
-## 4. Category Thresholds
+## 3. Cálculo del Puntaje Compuesto
 
-AMAI defines score ranges for each category.  
-These thresholds are applied after interpolation.
+AMAI aplica pesos a cada variable:
 
-Example (illustrative):
+**NSE_Score** = Σ (Indicador  × Peso)
+
+En el pipeline de colonias, cada indicador se **pondera por área** según el traslape con AGEB
+
+---
+
+## 4. Umbrales de Categoría
+
+AMAI define rangos de puntaje para cada categoría.  
+Estos umbrales se aplican después de la interpolación.  
+
+Ejemplo (ilustrativo):  
 
 - A/B: ≥ 90  
 - C+: 75–89  
@@ -67,22 +67,22 @@ Example (illustrative):
 
 ---
 
-## 5. Rural Classification
+## 5. Clasificación Rural
 
-Since rural AGEBs lack census data:
+Dado que las AGEB rurales no cuentan con datos censales:
 
-- Use INE locality indicators  
-- Apply AMAI rural rules  
-- Ensure rural colonias receive valid NSE values
+- Usar los indicadores de localidades del INE
+- Aplicar las reglas rurales de AMAI
+- Asegurar que las colonias rurales reciban valores NSE válidos
 
 ---
 
-## 6. Notes for Implementation
+## 6. Notas para la Implementación
 
-- Always use AMAI 2024 dataset  
-- Do not mix AMAI with INEGI socioeconomic tables  
-- Maintain AMAI weights and thresholds exactly  
-- Document any rural fallback logic  
-- Validate interpolation sums and category assignments
+- Usar siempre el dataset AMAI 2024
+- No mezclar AMAI con tablas socioeconómicas de INEGI
+- Mantener exactamente los pesos y umbrales definidos por AMAI
+- Documentar cualquier lógica de fallback rural
+- Validar las sumas de interpolación y las asignaciones de categoría
 
 
