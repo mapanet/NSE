@@ -1,130 +1,125 @@
-# Pipeline Overview — NSE AMAI for INEGI Neighborhoods
+# Panorama del Pipeline — NSE AMAI para Colonias de INEGI
 
-This page summarizes the complete end‑to‑end workflow used to generate **NSE AMAI by colonia** (Boundaries Layer 6).  
-It connects all datasets, SQL steps, geospatial operations, and validation procedures into a single reproducible pipeline.
+Esta página resume el flujo completo end‑to‑end utilizado para generar el **NSE AMAI por colonia** (Capa 6 de Boundaries).  
+Conecta todos los datasets, pasos SQL, operaciones geoespaciales y procedimientos de validación en un solo pipeline reproducible.
 
 ---
 
-## 1. Data Ingestion
+## 1. Ingesta de Datos
 
 ### 1.1 AMAI NSE 2024
-- Socioeconomic indicators by AGEB  
-- Composite NSE score  
-- Final AMAI category (A/B, C+, C, C-, D+, D)
+- Indicadores socioeconómicos por AGEB  
+- Puntaje compuesto NSE  
+- Categoría final AMAI (A/B, C+, C, C-, D+, D)
 
-### 1.2 INEGI MG 2025 (AGEB geometries)
-- Urban AGEB polygons  
-- Rural AGEEB polygons  
-- CVEGEO codes  
-- Municipality and state identifiers
+### 1.2 INEGI MG 2025 (Geometrías de AGEB)
+- Polígonos de AGEB urbanas  
+- Polígonos de AGEB rurales (AGEEB)  
+- Códigos CVEGEO  
+- dentificadores de municipio y estado
 
-### 1.3 INEGI DCAH 2025 (Neighborhood geometries)
-- Colonia polygons  
+### 1.3 INEGI DCAH 2025 (Geometrías de colonias)
+- Polígonos de colonias  
 - CVEGEO  
-- Municipality and locality metadata
+- Metadatos de municipio y localidad
 
-### 1.4 INE 2025 Localities (Rural fallback)
-- Used when rural AGEB census data is unavailable
-
----
-
-## 2. Key Normalization
-
-Before joining datasets:
-
-- Normalize CVEGEO formats  
-- LTRIM/RTRIM all text fields  
-- Convert CHAR → VARCHAR  
-- Uppercase colonia names  
-- Standardize municipality/state codes  
-
-This prevents NULL propagation and join mismatches.
+### 1.4 Localidades INE 2025 (Fallback rural)
+- Usadas cuando no existen datos censales para AGEB rurales
 
 ---
 
-## 3. Spatial Intersection (AGEB ↔ Colonia)
+## 2. Normalización de Claves
 
-Core geospatial step:
+Antes de unir datasets:
 
-- Intersect AGEB polygons with colonia polygons  
-- Compute intersection area  
-- Compute percentage contribution of each AGEB  
-- Generate weighted socioeconomic indicators
-
-This produces the **AGEB × Colonia intersection table**.
-
----
-
-## 4. Area‑Weighted Interpolation
-
-For each socioeconomic variable:
-
-**WeightedValue** = (IntersectionArea / AGEB_TotalArea) * AMAI_Value
-
-
-This ensures each colonia inherits NSE values proportionally.
+- Normalizar formatos de CVEGEO  
+- Aplicar LTRIM/RTRIM a todos los campos de texto  
+- Convertir CHAR → VARCHAR  
+- Poner nombres de colonias en mayúsculas  
+- Estandarizar códigos de municipio/estado   
+  
+Esto evita propagación de NULL y errores en los joins.
 
 ---
 
-## 5. NSE Calculation
+## 3. Intersección Espacial (AGEB ↔ Colonia)
 
-### 5.1 Weighted Indicators
-Sum weighted contributions from all intersecting AGEBs.
+Paso geoespacial central:
 
-### 5.2 Composite Score
-Recalculate AMAI’s composite score using weighted variables.
+- Intersectar polígonos de AGEB con polígonos de colonias  
+- Calcular área de intersección  
+- Calcular porcentaje de contribución de cada AGEB  
+- Generar indicadores socioeconómicos ponderados  
 
-### 5.3 Final NSE Category
-Assign AMAI category based on score thresholds.
+Esto produce la **tabla de intersección AGEB × Colonia.**  
+
+
+## 4. Interpolación Ponderada por Área
+
+Para cada variable socioeconómica:
+
+**ValorPonderado** = (ÁreaIntersección / ÁreaTotalAGEB) × ValorAMAI
+
+Esto asegura que cada colonia herede valores NSE de forma proporcional.
+
+
+## 5. Cálculo de NSE
+
+### 5.1 Indicadores Ponderados
+Suma de las contribuciones ponderadas de todas las AGEB que intersectan. 
+
+### 5.2 Puntaje Compuesto
+Recalcular el puntaje compuesto de AMAI usando variables ponderadas.
+
+### 5.3 Categoría Final NSE
+Asignar la categoría AMAI según los umbrales de puntaje.
 
 ---
 
-## 6. Layer Generation
+## 6. Generación de Capas
 
-### Layer 6 — Neighborhoods (Colonias)
-Final output includes:
+### Capa 6 — Colonias (Neighborhoods)
+El resultado final incluye:
 
 - CVEGEO  
-- Colonia name  
-- Municipality  
-- NSE score  
-- NSE category  
-- Geometry  
+- Nombre de la colonia  
+- Municipio  
+- Puntaje NSE  
+- Categoría NSE  
+- Geometría  
 
-### Layer 5 — Cities  
-Aggregation of Layer 6.
+### Capa 5 — Ciudades  
+Agregación de la Capa 6.
 
-### Layer 2 — Municipalities  
-Aggregation by municipality code.
+### Capa 2 — Municipios  
+Agregación por código de municipio.
 
-### Layer 1 — States  
-Aggregation by state code.
+### Capa 1 — Estados  
+Agregación por código de estado.
 
----
 
-## 7. Geometry & Territorial Audits
+## 7. Auditorías de Geometría y Territorio
 
-- Validate polygon topology  
-- Detect self‑intersections  
-- Compare MG 2025 vs DCAH 2025 boundaries  
-- Check area consistency  
-- Identify missing colonias  
-- Validate CVEGEO alignment
+- Validar topología de polígonos   
+- Detectar auto‑intersecciones   
+- Comparar límites MG 2025 vs DCAH 2025   
+- Revisar consistencia de áreas   
+- Identificar colonias faltantes   
+- Validar alineación de CVEGEO   
 
----
 
-## 8. Export & API Integration
+## 8. Exportación e Integración con API
 
-Final datasets exported as:
+Los datasets finales se exportan como:   
 
-- GeoJSON  
-- Shapefile  
-- SQL tables  
-- API‑ready JSON layers
+- GeoJSON   
+- Shapefile   
+- Tablas SQL   
+- Capas JSON listas para API   
 
-Used in production at:
+Usando en proyecto piloto de produccion en:
 
-**AXSI Real Estate Platform**  
+**Platforma AXSI Bienes Raices**  
 https://axsi.io/es
 
 
