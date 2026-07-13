@@ -1,20 +1,21 @@
-# 9.1 — Load NSE values into Boundaries Layer 5 (Localities)
+# 9.1 — Cargar valores NSE en Boundaries Layer 5 (Localidades)
 
-AMAI_LOC_2024 already contains CVEGEO at locality level  
-(9-digit CVEGEO). No substring needed.  
-Once we load NSE values into Boundaries Layer 5, we will summarize at level 2 (municipality), 1 (state)  
+**AMAI_LOC_2024** ya contiene **CVEGEO a nivel localidad**  
+(CVEGEO de 9 dígitos). No se necesita aplicar *substring*.
+Una vez que carguemos los valores NSE en Boundaries Layer 5, se realizará la **agregación en el nivel 2 (municipio) y nivel 1 (estado).**
 
 ```sql
 USE INMO;
 GO
 
 ------------------------------------------------------------
--- STEP 1 — Clean AMAI_LOC_2024 (Locality-level NSE dataset)
+-- PASO 1 — Limpiar AMAI_LOC_2024 (dataset NSE a nivel localidad)
 ------------------------------------------------------------
--- NSE_TOTAL = NULL when NSE_TOTAL = 0
--- This prevents invalid percentage calculations later.
--- Expected: 152 rows affected
----------------------------------------------------------
+-- NSE_TOTAL = NULL cuando NSE_TOTAL = 0
+-- Esto evita cálculos inválidos de porcentajes más adelante.
+-- Resultado esperado: 152 filas afectadas
+------------------------------------------------------------
+
 
 UPDATE AMAI_LOC_2024
 SET NSE_TOTAL = NULL
@@ -22,14 +23,15 @@ WHERE NSE_TOTAL = 0;
 
 
 ---------------------------------------------------------
--- STEP 2 — Reset all NSE fields in Boundaries
+-- PASO 2 — Restablecer todos los campos NSE en Boundaries
 ---------------------------------------------------------
--- Layers affected:
--- Layer 1 = State
--- Layer 2 = Municipality
--- Layer 5 = Locality (City)
--- Result: 53789 rows affected
+-- Capas afectadas:
+-- Layer 1 = Estado
+-- Layer 2 = Municipio
+-- Layer 5 = Localidad (Ciudad)
+-- Resultado: 53,789 filas afectadas
 ---------------------------------------------------------
+
 
 UPDATE Boundaries
 SET
@@ -55,12 +57,13 @@ WHERE Layer IN (1, 2, 5);
 
 
 ---------------------------------------------------------
--- STEP 3 — Load NSE values into Layer 5 (Localities)
+-- PASO 3 — Cargar valores NSE en Layer 5 (Localidades)
 ---------------------------------------------------------
--- AMAI_LOC_2024 already contains CVEGEO at locality level
--- (9-digit CVEGEO). No substring needed.
--- Results: 51279 rows affected
+-- AMAI_LOC_2024 ya contiene CVEGEO a nivel localidad
+-- (CVEGEO de 9 dígitos). No se necesita aplicar substring.
+-- Resultado: 51,279 filas afectadas
 ---------------------------------------------------------
+
 
 UPDATE L5
 SET 
@@ -93,11 +96,12 @@ WHERE L5.Layer = 5;
 
 
 ---------------------------------------------------------------------
--- STEP 4 — Summarize Localities (Layer 5) → Municipalities (Layer 2)
+-- PASO 4 — Resumir Localidades (Layer 5) → Municipios (Layer 2)
 ---------------------------------------------------------------------
--- Municipality CVEGEO = first 5 digits
--- Results: 2478 rows affected
+-- El CVEGEO de municipio = primeros 5 dígitos
+-- Resultado: 2,478 filas afectadas
 ---------------------------------------------------------------------
+
 
 UPDATE L2
 SET 
@@ -131,11 +135,12 @@ WHERE L2.Layer = 2;
 
 
 -----------------------------------------------------------------
--- STEP 5 — Summarize Municipalities (Layer 2) → States (Layer 1)
+-- PASO 5 — Resumir Municipios (Layer 2) → Estados (Layer 1)
 -----------------------------------------------------------------
--- State CVEGEO = first 2 digits
--- Results: 32 rows affected
+-- El CVEGEO de estado = primeros 2 dígitos
+-- Resultado: 32 filas afectadas
 -----------------------------------------------------------------
+
 
 UPDATE L1
 SET 
@@ -169,26 +174,27 @@ WHERE L1.Layer = 1;
 ```
 
 
-# 9.2 — Calculate NSE percentage fields (_PCT)
+# 9.2 — Calcular campos de porcentaje NSE (_PCT)
 
-IMPORTANT:
-- Percentages must be calculated ONLY for Layers 1, 2, and 5.
-- If NSE_TOTAL is NULL, all percentage fields must remain NULL.
-- This prevents invalid divisions and keeps “N/D” logic intact.
+IMPORTANTE:  
+- Los porcentajes deben calcularse **ÚNICAMENTE** para las Layers **1, 2 y 5.**
+- Si **NSE_TOTAL es NULL**, todos los campos de porcentaje deben permanecer **NULL.**
+- Esto evita divisiones inválidas y mantiene intacta la lógica de “N/D”.
 
 ```sql
 USE INMO;
 GO
 
 ----------------------------------------------------------------
--- STEP 9.2 — Calculate NSE percentage fields (_PCT)
+-- PASO 9.2 — Calcular campos de porcentaje NSE (_PCT)
 ----------------------------------------------------------------
--- IMPORTANT:
--- Percentages must be calculated ONLY for Layers 1, 2, and 5.
--- NSE_TOTAL must NOT be NULL, otherwise percentages remain NULL.
--- This prevents invalid divisions and preserves “N/D” logic.
--- Expected: 52586 rows affected
------------------------------------------------------------------
+-- IMPORTANTE:
+-- Los porcentajes deben calcularse ÚNICAMENTE para las Layers 1, 2 y 5.
+-- NSE_TOTAL NO debe ser NULL; de lo contrario, los porcentajes permanecen NULL.
+-- Esto evita divisiones inválidas y preserva la lógica de “N/D”.
+-- Resultado esperado: 52,586 filas afectadas
+----------------------------------------------------------------
+
 
 UPDATE Boundaries
 SET
@@ -203,9 +209,9 @@ WHERE Layer IN (1, 2, 5)
   AND NSE_TOTAL IS NOT NULL;
 ```
 
-# 9.3 — Calculate NSE_SCORE (AMAI IDS)
+# 9.3 Calcular NSE_SCORE (AMAI IDS)
 
-AMAI official scoring weights:  
+Pesos oficiales de puntuación de AMAI:  
 
 |Level|Score|
 |-----|-----|
@@ -217,17 +223,18 @@ AMAI official scoring weights:
 |D    |    2|
 |E    |    1|
 
-Formula: **IDS = Σ (percentage_level * score_level)**
+Fórmula:
+IDS = Σ (porcentaje_nivel * puntaje_nivel)
 
 ```sql
 USE INMO;
 GO
 
 ---------------------------------------------------------
---   STEP 9.3 — Calculate NSE_SCORE (AMAI IDS)
+--   PASO 9.3 — Calcular NSE_SCORE (AMAI IDS)
 ---------------------------------------------------------
---   AMAI official scoring weights:
---   Level   Score
+--   Pesos oficiales de AMAI:
+--   Nivel   Puntaje
 --   AB      7
 --   C+      6
 --   C       5
@@ -236,13 +243,13 @@ GO
 --   D       2
 --   E       1
 --
---   Formula:
---   IDS = Σ (percentage_level * score_level)
+--   Fórmula:
+--   IDS = Σ (porcentaje_nivel * puntaje_nivel)
 --
---   Notes:
--- Missing levels must be treated as 0 (ISNULL).
--- Only calculate for Layers 1, 2, and 5.
--- Only calculate when NSE_TOTAL IS NOT NULL.
+--   Notas:
+-- Los niveles faltantes deben tratarse como 0 (ISNULL).
+-- Solo calcular para Layers 1, 2 y 5.
+-- Solo calcular cuando NSE_TOTAL NO sea NULL.
 ---------------------------------------------------------
 
 UPDATE Boundaries
@@ -261,7 +268,7 @@ WHERE Layer IN (1, 2, 5)
 
 
 ---------------------------------------------------------
--- STEP 8.3b — Calculate IDS_PROM
+-- PASO 8.3b — Calcular IDS_PROM
 ---------------------------------------------------------
 UPDATE Boundaries
 SET IDS_PROM =
@@ -279,7 +286,7 @@ WHERE Layer IN (1, 2, 5)
 
 
 ---------------------------------------------------------
---   Validation Queries
+--   Consultas de validación
 ---------------------------------------------------------
 
 SELECT TOP 10 
@@ -304,9 +311,9 @@ WHERE Layer = 5
 ORDER BY CVEGEO;
 ```
 
-#### Validation 1
+#### Validación 1
 
-Display all percentages in Layer = 5
+Muestra los porcentakes del capa = 5
 
 |CVEGEO   |NSE_TOTAL|NSE_AB_PCT|NSE_CPLUS_PCT|NSE_C_PCT|NSE_CMINUS_PCT|NSE_DPLUS_PCT|NSE_D_PCT|NSE_E_PCT|
 |---------|---------|----------|-------------|---------|--------------|-------------|---------|---------|
@@ -321,7 +328,7 @@ Display all percentages in Layer = 5
 |100010042|	  192	|0.52	   |         2.60|	   4.69|	     17.19|	       22.40|	 40.10|	   12.50|
 |100010045|	  33	|12.12	   |        24.24|	  27.27|	     12.12|	       12.12|	 12.12|	    0.00|
 
-#### Validation 2
+#### Validación 2
 
 |CVEGEO   |NSE_SCORE|
 |---------|---------|
@@ -336,42 +343,43 @@ Display all percentages in Layer = 5
 |100010042|	2.714|
 |100010045|	4.757|
 
-# 9.4 — Calculate NSE (dominant level) and NSE_LABEL
+# 9.4 — Calcular NSE (nivel dominante) y NSE_LABEL
 
-Applies to:
- - Layer 1 = State
- - Layer 2 = Municipality
- - Layer 5 = Locality (City)
+Aplica a:
+- Layer 1 = Estado
+- Layer 2 = Municipio
+- Layer 5 = Localidad (Ciudad)
 
-Logic:
-- NSE = dominant socioeconomic level based on highest percentage.
-- If all percentages are NULL → NSE = NULL (no AMAI data).
-- If all percentages are 0 → NSE = 'E' (lowest AMAI level).
-- NSE_LABEL = NSE + rounded percentage (integer %).
+Lógica:
+- NSE = nivel socioeconómico dominante basado en el porcentaje más alto.
+- Si todos los porcentajes son NULL → NSE = NULL (sin datos AMAI).
+- Si todos los porcentajes son 0 → NSE = 'E' (nivel AMAI más bajo).
+- NSE_LABEL = NSE + porcentaje redondeado (porcentaje entero).
 
 ```sql
 USE INMO;
 GO
 
 ------------------------------------------------------------
---   STEP 8.4 — Calculate NSE (dominant level) and NSE_LABEL
+--   PASO 9.4 — Calcular NSE (nivel dominante) y NSE_LABEL
 ------------------------------------------------------------
---   Applies to:
---     - Layer 1 = State
---     - Layer 2 = Municipality
---     - Layer 5 = Locality (City)
+--   Aplica a:
+--     - Layer 1 = Estado
+--     - Layer 2 = Municipio
+--     - Layer 5 = Localidad (Ciudad)
 --
---   Logic:
--- NSE = dominant socioeconomic level based on highest percentage.
--- If all percentages are NULL → NSE = NULL (no AMAI data).
--- If all percentages are 0 → NSE = 'E' (lowest AMAI level).
--- NSE_LABEL = NSE + rounded percentage (integer %).
+--   Lógica:
+-- NSE = nivel socioeconómico dominante basado en el porcentaje más alto.
+-- Si todos los porcentajes son NULL → NSE = NULL (sin datos AMAI).
+-- Si todos los porcentajes son 0 → NSE = 'E' (nivel AMAI más bajo).
+-- NSE_LABEL = NSE + porcentaje redondeado (porcentaje entero).
 -------------------------------------------------------------
 
 
 ---------------------------------------------------------
---  G0 — Reset NSE and NSE_LABEL for layers 1, 2, 5
+--  G0 — Restablecer NSE y NSE_LABEL para layers 1, 2, 5
 ---------------------------------------------------------
+
 UPDATE Boundaries
 SET NSE = NULL,
     NSE_LABEL = NULL
@@ -379,8 +387,8 @@ WHERE Layer IN (1, 2, 5);
 
 
 ---------------------------------------------------------
---  G1 — Assign NSE (dominant AMAI level)
---  Handles NULL and zero cases correctly
+--  G1 — Asignar NSE (nivel AMAI dominante)
+--  Maneja correctamente los casos de NULL y de ceros
 ---------------------------------------------------------
 
 UPDATE B
@@ -393,7 +401,7 @@ SET NSE =
 FROM Boundaries B
 
 OUTER APPLY (
-    /* Dominant level among percentages > 0 */
+    /* Nivel dominante entre porcentajes > 0 */
     SELECT TOP 1 Level
     FROM (
         SELECT 'A/B' AS Level, B.NSE_AB_PCT      AS Value
@@ -409,7 +417,7 @@ OUTER APPLY (
 ) Dom
 
 OUTER APPLY (
-    /* Count non-null values to detect “no AMAI data” */
+    /* Contar valores no nulos para detectar “sin datos AMAI” */
     SELECT 
         COUNT(Value) AS NonNullCount,
         MAX(Value)   AS MaxValue
@@ -429,8 +437,9 @@ WHERE B.Layer IN (1, 2, 5);
 
 
 ---------------------------------------------------------
---   G2 — Assign NSE_LABEL (level + integer percentage)
+--   G2 — Asignar NSE_LABEL (nivel + porcentaje entero)
 ---------------------------------------------------------
+
 
 UPDATE Boundaries
 SET NSE_LABEL = 
@@ -461,7 +470,7 @@ SET NSE_LABEL =
 WHERE Layer IN (1, 2, 5);
 
 
--- Validations
+-- Validaciones
 
 SELECT TOP 10 CVEGEO, NSE_LABEL
 FROM Boundaries
@@ -470,13 +479,14 @@ WHERE Layer = 5
 ORDER BY NSE_LABEL, CVEGEO;
 ```
 
-#### Expected results
+#### Resultado esperado
 
 53789 rows affected
 
-#### Validation
+#### Validación
 
-Display TIP 10 records from Boundarues layer = 5 (locality) with NSE_LABEL
+Muestra los primeros 10 registros de Boundarues layer = 5 (localidad) con NSE_LABEL
+
 |CVEGEO   |NSE_LABEL |
 |---------|----------|
 |100010001|	D/E (31%)|
